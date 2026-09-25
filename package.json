@@ -1,0 +1,22 @@
+{
+  "name": "news",
+  "private": true,
+  "version": "0.1.0",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r lint",
+    "db:migrate": "dotenv -e .env -- pnpm --filter @news/db exec prisma migrate dev",
+    "db:generate": "dotenv -e .env -- pnpm --filter @news/db exec prisma generate",
+    "worker:dev": "dotenv -e .env -- pnpm --filter @news/worker dev",
+    "api:dev": "dotenv -e .env -- pnpm --filter @news/api dev"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "dotenv-cli": "^7.4.4",
+    "typescript": "^5.7.2"
+  }
+}
