@@ -18,9 +18,10 @@ Ne lis que ce dont la tâche a besoin.
 
 ## État actuel
 
-- **Jalon en cours : J3** (J2 fait le 2026-09-25). Mettre à jour cette ligne à chaque fin de jalon.
+- **Jalon en cours : J4** (J3 fait le 2026-09-26). Mettre à jour cette ligne à chaque fin de jalon.
 - **J1 fait** : monorepo pnpm (`apps/api`, `apps/worker`, `packages/domain`, `packages/db`, `packages/providers`), schéma Prisma, adaptateur PandaScore (ligues → séries → tournois → matchs), jobs BullMQ (catalogue/calendrier/live), upsert idempotent, quota et latence loggés. Vérifié en conditions réelles sur Champions 2026. **Brackets et classements (`event_link`/`standing`) pas encore alimentés, reportés au J5.**
 - **J2 fait** : API `/v1` (`home`, `agenda`, `events/:id`, `competitions/:id`) + `/health`, cache Redis (15-60s) avec invalidation par Pub/Sub depuis le worker (`EventScheduled`/`EventStarted`/`EventFinished`/`ScoreChanged`), `ETag`/`304`, validation des entrées (`class-validator`), rate limiting (`@nestjs/throttler`), spec OpenAPI générée et client Dart généré dans `packages/api_client_dart` (gitignoré, régénéré par `pnpm generate:client`). Vérifié en conditions réelles sur Champions 2026 (7 tests e2e Supertest). **`event_moment`/`context_snippet` pas encore créées** (moments du direct, « pourquoi ce match compte ») : reportées après le J1, viendront au J6.
+- **J3 fait** : appli Flutter dans `apps/mobile` (Android/iOS, pas de plateforme web dans le projet Flutter, cf. `docs/00` §7), thème V2 (tokens couleurs/rayons/typo Inter), Riverpod + client généré + cache local **drift**, un seul intercepteur Dio pour `ETag`/`304` et le repli hors ligne. Écrans **17 Accueil**, **09 Agenda**, **01 Saison Valorant**, **03 Prochain match** + tab bar en verre flottante. Vérifié en conditions réelles (vraies données Champions 2026) dans le navigateur et sur un téléphone Android physique (`adb reverse tcp:3000 tcp:3000`). Mode avion et mouvement réduit vérifiés (dont un test automatisé, `live_dot_test.dart`). Petit ajout d'API : `parentId` sur `CompetitionResponseDto` pour permettre à l'appli de remonter jusqu'à la ligue racine (nécessaire pour la frise de saison). **Sans abonnements** (comptes = J4) : pas de « Tes suivis » ni « À découvrir » sur l'Accueil ; boutons « M'alerter »/« sans spoil » visuels seulement ; **fidélité pixel-perfect aux maquettes reportée** à une passe dédiée.
 - Déjà présent dans le dépôt :
   - `tests-pandascore/` : scripts de test de l'API PandaScore et **réponses réelles** dans `samples/` et `samples-multijeux/`. Réutilisées comme **fixtures de tests** de l'adaptateur PandaScore.
   - `politique-quiz/` : extraction de l'open data de l'Assemblée (scrutins, députés) pour le prototype du jeu « Qui a voté ? ». `data/` est ignoré par Git (≈ 250 Mo, retéléchargeable).
@@ -40,7 +41,7 @@ Ne lis que ce dont la tâche a besoin.
 ```
 apps/api            NestJS — contrôleurs /v1, auth, cache, OpenAPI
 apps/worker         NestJS — jobs BullMQ, ingestion, moteur de notifications
-apps/mobile         Flutter (emplacement proposé, à confirmer au J3)
+apps/mobile         Flutter (Android/iOS ; pas de cible web pour ce projet)
 packages/domain     types et règles métier partagés (statuts, formats, calculs de bracket)
 packages/db         schéma Prisma, migrations, client
 packages/providers  un adaptateur par fournisseur (pandascore, liquipedia, …)
@@ -103,14 +104,20 @@ pnpm --filter @news/db exec prisma studio
 # Spec OpenAPI + client Dart généré (packages/api_client_dart, gitignoré)
 pnpm generate:client       # openapi.json + client Dart + build_runner en un coup
 pnpm generate:openapi      # juste la spec, dans openapi.json à la racine
+
+# Appli Flutter (apps/mobile)
+flutter test               # tests de widgets
+flutter analyze            # analyse statique
+flutter run -d <device>    # sur un émulateur ou un téléphone en USB (debug)
+adb reverse tcp:3000 tcp:3000   # Android (émulateur ou téléphone) : fait pointer son localhost vers l'API locale
 ```
 
-`.env` doit contenir `PANDASCORE_TOKEN` (voir `.env.example`) pour que le worker ingère de vraies données. `pnpm generate:client` a besoin de Java (openapi-generator) et du SDK Dart.
+`.env` doit contenir `PANDASCORE_TOKEN` (voir `.env.example`) pour que le worker ingère de vraies données. `pnpm generate:client` a besoin de Java (openapi-generator) et du SDK Dart. `flutter run` a besoin que `pnpm api:dev` tourne déjà (et `adb reverse` sur Android).
 
 ## Maquettes (Figma)
 
 - Fichier : https://www.figma.com/design/1GfSNwpyE1WoWEdUzT638L — 26 écrans V2 (iPhone 390×844, thème sombre, Inter).
-- **Quota MCP Figma presque épuisé** (plan Starter, ~20 appels/mois) : **ne pas appeler le MCP Figma sans demande explicite.** S'appuyer sur `docs/02` et sur les captures dans `docs/maquettes/` (voir le README de ce dossier).
+- **Quota MCP Figma épuisé** (plan Starter, ~20 appels/mois — atteint le 2026-09-26) : **ne pas appeler le MCP Figma.** S'appuyer sur `docs/02` et sur les captures (PNG et export SVG) dans `docs/maquettes/` (voir le README de ce dossier).
 
 ## Outils conseillés
 

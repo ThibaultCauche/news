@@ -11,6 +11,10 @@ const logger = createLogger("api");
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix("v1", { exclude: ["health"] });
+  // CORS reste fermé par défaut (règle 9 de CLAUDE.md, l'appli mobile n'en a
+  // pas besoin) ; n'active une origine que pour vérifier l'appli Flutter web
+  // en local, jamais en prod (`CORS_DEV_ORIGIN` n'est jamais défini ailleurs).
+  if (process.env.CORS_DEV_ORIGIN) app.enableCors();
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   const document = SwaggerModule.createDocument(

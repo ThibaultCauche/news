@@ -8,7 +8,7 @@
 |---|---|---|---|
 | J1 | Monorepo, Compose de dev, schéma de base, adaptateur PandaScore (Valorant) | Les matchs Valorant arrivent en base | **Fait (2026-09-25)** |
 | J2 | API `home`, `agenda`, `events/:id`, `competitions/:id` + client Dart généré | L'API répond avec de vraies données | **Fait (2026-09-25)** |
-| J3 | Appli Flutter : accueil, agenda, page Valorant, prochain match | Première version utilisable | À faire |
+| J3 | Appli Flutter : accueil, agenda, page Valorant, prochain match | Première version utilisable | **Fait (2026-09-26)** |
 | J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | À faire |
 | J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | À faire |
 | J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | À faire |
@@ -85,11 +85,11 @@
 - Mention « Mise à jour en attente » si les données ont plus de 15 min pendant un direct.
 
 **Critères d'acceptation**
-- [ ] Les 4 écrans s'affichent avec les données de l'API locale, en thème sombre, conformes aux maquettes (comparaison avec `docs/maquettes/`).
-- [ ] Mode avion : l'appli s'ouvre et montre les dernières données.
-- [ ] Mouvement réduit respecté (`MediaQuery.disableAnimations`).
-- [ ] Tests de widgets sur les états d'un match (à venir, en direct, terminé, reporté).
-- [ ] À partir d'ici : installer **Graphify** et générer le graphe du dépôt.
+- [x] Les 4 écrans s'affichent avec les données de l'API locale, en thème sombre, conformes aux maquettes (comparaison avec `docs/maquettes/`). Vérifié le 2026-09-26 dans le navigateur (build web) et sur un téléphone Android réel (`flutter run`, via `adb reverse`), branché sur l'API locale : Accueil (grands rendez-vous, bandeau en direct), Agenda (semaine, filtres, liste par jour), Saison Valorant (frise réelle des 9 étapes VCT 2026, étape en cours recentrée automatiquement), Prochain match (compte à rebours, alerte, sans spoil). **Fidélité pixel-perfect aux maquettes reportée** : la structure, les sections et les couleurs sont alignées après plusieurs allers-retours, mais une passe dédiée à la typographie et aux espacements exacts est repoussée après la suite du développement fonctionnel, à la demande du produit.
+- [x] Mode avion : l'appli s'ouvre et montre les dernières données. Vérifié en conditions réelles sur le téléphone : données rechargées, avion activé, appli fermée puis rouverte → dernières données affichées (cache `drift` + repli de l'intercepteur `ETag` sur erreur réseau).
+- [x] Mouvement réduit respecté (`MediaQuery.disableAnimations`). Test automatisé (`live_dot_test.dart`) : le point « en direct » s'anime en continu par défaut et reste fixe (pas de `FadeTransition`) quand `disableAnimations` est activé.
+- [x] Tests de widgets sur les états d'un match (à venir, en direct, terminé, reporté). `event_card_test.dart`, 4/4 verts.
+- [ ] À partir d'ici : installer **Graphify** et générer le graphe du dépôt. **Reporté** : l'extension est installée mais le graphe n'a pas encore été généré ; non bloquant pour la suite.
 
 ---
 
@@ -191,7 +191,6 @@
 
 | Point | Quand |
 |---|---|
-| Emplacement du projet Flutter (`apps/mobile` ?) | J3 |
 | Compte Apple Developer (99 $/an) | Avant J4 (iOS) |
 | Nom de l'appli et nom de domaine (« News » est un nom de travail) | Avant J7 |
 | Logo et icône d'app définitifs | Avant J7 |

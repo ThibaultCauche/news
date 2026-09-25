@@ -30,6 +30,7 @@ export class CompetitionStandingDto {
 // `structure` reste `null` jusque-là.
 export class CompetitionResponseDto {
   @ApiProperty() id!: string;
+  @ApiProperty({ nullable: true, type: String }) parentId!: string | null;
   @ApiProperty() name!: string;
   @ApiProperty() kind!: string;
   @ApiProperty({ nullable: true, type: String }) format!: string | null;
@@ -65,6 +66,7 @@ export class CompetitionsService {
 
     const response: CompetitionResponseDto = {
       id: competition.id,
+      parentId: competition.parentId,
       name: competition.name,
       kind: competition.kind,
       format: competition.format,
