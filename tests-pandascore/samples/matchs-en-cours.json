@@ -1,0 +1,207 @@
+[
+  {
+    "slug": "nongshim-redforce-vs-nrg-2026-09-25",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "serie": {
+      "id": 10953,
+      "name": "Champions",
+      "year": 2026,
+      "begin_at": "2026-09-24T09:00:00Z",
+      "end_at": "2026-10-18T21:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026",
+      "modified_at": "2026-09-10T10:05:24Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Champions 2026"
+    },
+    "scheduled_at": "2026-09-25T09:00:00Z",
+    "games": [
+      {
+        "complete": true,
+        "id": 52124,
+        "position": 1,
+        "status": "finished",
+        "length": 2732,
+        "finished": true,
+        "match_id": 1682154,
+        "begin_at": "2026-09-25T09:09:58Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-25T09:55:30Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128471,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52125,
+        "position": 2,
+        "status": "running",
+        "length": null,
+        "finished": false,
+        "match_id": 1682154,
+        "begin_at": "2026-09-25T10:09:26Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52126,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1682154,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21884,
+    "match_type": "best_of",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 132692,
+          "name": "Nongshim RedForce",
+          "location": "KR",
+          "slug": "nongshim-redforce",
+          "modified_at": "2026-09-09T07:36:47Z",
+          "acronym": "NS",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/132692/nongshim_red_forcelogo_square.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128471,
+          "name": "NRG",
+          "location": "US",
+          "slug": "nrg-valorant",
+          "modified_at": "2026-09-09T07:36:48Z",
+          "acronym": "NRG",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128471/nrg_2020.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128471/799px_nrg_2024_allmode.png"
+        }
+      }
+    ],
+    "results": [
+      {
+        "team_id": 132692,
+        "score": 0
+      },
+      {
+        "team_id": 128471,
+        "score": 1
+      }
+    ],
+    "end_at": null,
+    "tournament": {
+      "id": 21884,
+      "name": "Group D",
+      "type": "offline",
+      "country": "CN",
+      "begin_at": "2026-09-25T09:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-10-03T15:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026-group-d",
+      "serie_id": 10953,
+      "modified_at": "2026-09-11T18:14:01Z",
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "s",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "serie_id": 10953,
+    "status": "running",
+    "league_id": 4531,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "de",
+        "embed_url": "https://player.twitch.tv/?channel=harmii",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/harmii"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://www.youtube.com/embed/FZLZk15DJhw",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=FZLZk15DJhw"
+      },
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ],
+    "forfeit": false,
+    "rescheduled": false,
+    "videogame_title": null,
+    "id": 1682154,
+    "name": "NS vs NRG",
+    "game_advantage": null,
+    "draw": false,
+    "number_of_games": 3,
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "winner_id": null,
+    "detailed_stats": true,
+    "winner_type": "Team",
+    "winner": null,
+    "modified_at": "2026-09-25T10:14:18Z",
+    "begin_at": "2026-09-25T09:09:56Z",
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "videogame_version": {
+      "name": "12.05",
+      "current": false
+    },
+    "original_scheduled_at": "2026-09-25T09:00:00Z"
+  }
+]

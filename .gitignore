@@ -1,0 +1,36 @@
+# Secrets
+.env
+.env.*
+!.env.example
+**/.env
+
+# Dépendances et builds
+node_modules/
+dist/
+build/
+coverage/
+.turbo/
+*.tsbuildinfo
+
+# Flutter / Dart
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+**/ios/Pods/
+**/android/.gradle/
+
+# Données volumineuses retéléchargeables
+politique-quiz/data/
+*.zip
+
+# Firebase (clés propres à l'environnement)
+google-services.json
+GoogleService-Info.plist
+
+# Divers
+.DS_Store
+Thumbs.db
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json

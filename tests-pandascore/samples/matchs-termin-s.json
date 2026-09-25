@@ -1,0 +1,4142 @@
+[
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 0,
+        "team_id": 133288
+      },
+      {
+        "score": 2,
+        "team_id": 128538
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10953,
+      "name": "Champions",
+      "year": 2026,
+      "begin_at": "2026-09-24T09:00:00Z",
+      "end_at": "2026-10-18T21:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026",
+      "modified_at": "2026-09-10T10:05:24Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Champions 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-24T12:00:00Z",
+    "tournament": {
+      "id": 21883,
+      "name": "Group C",
+      "type": "offline",
+      "country": "CN",
+      "begin_at": "2026-09-24T09:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-10-03T12:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026-group-c",
+      "modified_at": "2026-09-11T18:12:49Z",
+      "serie_id": 10953,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "s",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 128538,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52121,
+        "position": 1,
+        "status": "finished",
+        "length": 2738,
+        "finished": true,
+        "match_id": 1682153,
+        "begin_at": "2026-09-24T12:27:17Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T13:12:56Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128538,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52122,
+        "position": 2,
+        "status": "finished",
+        "length": 1913,
+        "finished": true,
+        "match_id": 1682153,
+        "begin_at": "2026-09-24T13:24:11Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T13:56:04Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128538,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-24T12:27:16Z",
+    "serie_id": 10953,
+    "status": "finished",
+    "winner": {
+      "id": 128538,
+      "name": "G2 Esports",
+      "location": "DE",
+      "slug": "g2-esports-valorant",
+      "modified_at": "2026-09-09T07:34:39Z",
+      "acronym": "G2",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/128538/900px_g2_esports_2019.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128538/189px_g2_esports_2019_darkmode.png"
+    },
+    "scheduled_at": "2026-09-24T12:30:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-24T14:06:32Z",
+    "end_at": "2026-09-24T13:56:04Z",
+    "id": 1682153,
+    "name": "TYLOO vs G2",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133288,
+          "name": "TYLOO",
+          "location": "CN",
+          "slug": "tyloo-valorant",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "acronym": "TYLOO",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133288/600px_ty_loo_2016_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128538,
+          "name": "G2 Esports",
+          "location": "DE",
+          "slug": "g2-esports-valorant",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "acronym": "G2",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128538/900px_g2_esports_2019.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128538/189px_g2_esports_2019_darkmode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": false,
+        "language": "ko",
+        "embed_url": "https://www.youtube.com/embed/EsjNn-mRnMs",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=EsjNn-mRnMs"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.06",
+      "current": true
+    },
+    "slug": "tyloo-vs-g2-esports-2026-09-24",
+    "tournament_id": 21883,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 1,
+        "team_id": 128541
+      },
+      {
+        "score": 2,
+        "team_id": 128917
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10953,
+      "name": "Champions",
+      "year": 2026,
+      "begin_at": "2026-09-24T09:00:00Z",
+      "end_at": "2026-10-18T21:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026",
+      "modified_at": "2026-09-10T10:05:24Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Champions 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-24T09:00:00Z",
+    "tournament": {
+      "id": 21883,
+      "name": "Group C",
+      "type": "offline",
+      "country": "CN",
+      "begin_at": "2026-09-24T09:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-10-03T12:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026-group-c",
+      "modified_at": "2026-09-11T18:12:49Z",
+      "serie_id": 10953,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "s",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 128917,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52118,
+        "position": 1,
+        "status": "finished",
+        "length": 2094,
+        "finished": true,
+        "match_id": 1682152,
+        "begin_at": "2026-09-24T09:21:58Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T09:56:53Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128917,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52119,
+        "position": 2,
+        "status": "finished",
+        "length": 2292,
+        "finished": true,
+        "match_id": 1682152,
+        "begin_at": "2026-09-24T10:11:10Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T10:49:23Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52120,
+        "position": 3,
+        "status": "finished",
+        "length": 3504,
+        "finished": true,
+        "match_id": 1682152,
+        "begin_at": "2026-09-24T11:00:07Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T11:58:32Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128917,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-24T09:21:57Z",
+    "serie_id": 10953,
+    "status": "finished",
+    "winner": {
+      "id": 128917,
+      "name": "Paper Rex",
+      "location": "SG",
+      "slug": "paper-rex-valorant",
+      "modified_at": "2026-09-09T07:34:41Z",
+      "acronym": "PR",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/128917/712px_paper_rex_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128917/712px_paper_rex_darkmode.png"
+    },
+    "scheduled_at": "2026-09-24T09:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": false,
+    "modified_at": "2026-09-24T12:01:00Z",
+    "end_at": "2026-09-24T11:58:31Z",
+    "id": 1682152,
+    "name": "TL vs PR",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128917,
+          "name": "Paper Rex",
+          "location": "SG",
+          "slug": "paper-rex-valorant",
+          "modified_at": "2026-09-09T07:34:41Z",
+          "acronym": "PR",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128917/712px_paper_rex_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128917/712px_paper_rex_darkmode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "ko",
+        "embed_url": "https://www.youtube.com/embed/EsjNn-mRnMs",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=EsjNn-mRnMs"
+      },
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_la",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_la"
+      },
+      {
+        "main": false,
+        "language": "pt",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_br",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_br"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.06",
+      "current": true
+    },
+    "slug": "team-liquid-vs-paper-rex-2026-09-24",
+    "tournament_id": 21883,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 1,
+        "team_id": 139256
+      },
+      {
+        "score": 3,
+        "team_id": 136774
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10979,
+      "name": "Game Changers China Qualifier",
+      "year": 2026,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers China Qualifier 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": false,
+    "original_scheduled_at": "2026-09-20T09:00:00Z",
+    "tournament": {
+      "id": 21939,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "detailed_stats": false,
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026-playoffs",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "serie_id": 10979,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "d",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 136774,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52294,
+        "position": 1,
+        "status": "finished",
+        "length": 2409,
+        "finished": true,
+        "match_id": 1689161,
+        "begin_at": "2026-09-20T09:03:40Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-20T09:43:50Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52295,
+        "position": 2,
+        "status": "finished",
+        "length": 2554,
+        "finished": true,
+        "match_id": 1689161,
+        "begin_at": "2026-09-20T09:54:06Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-20T10:36:41Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52296,
+        "position": 3,
+        "status": "finished",
+        "length": 2337,
+        "finished": true,
+        "match_id": 1689161,
+        "begin_at": "2026-09-20T10:45:24Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-20T11:24:22Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139256,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52297,
+        "position": 4,
+        "status": "finished",
+        "length": 1796,
+        "finished": true,
+        "match_id": 1689161,
+        "begin_at": "2026-09-20T11:33:11Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-20T12:03:07Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-20T09:03:40Z",
+    "serie_id": 10979,
+    "status": "finished",
+    "winner": {
+      "id": 136774,
+      "name": "Nova Esports GC",
+      "location": "",
+      "slug": "nova-esports-gc",
+      "modified_at": "2026-09-13T19:31:27Z",
+      "acronym": "NE.GC",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+    },
+    "scheduled_at": "2026-09-20T09:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": false,
+    "modified_at": "2026-09-20T12:03:10Z",
+    "end_at": "2026-09-20T12:03:07Z",
+    "id": 1689161,
+    "name": "Grand Final: Havoc & Yonder GC vs NE.GC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139256,
+          "name": "Havoc & Yonder GC",
+          "location": "CN",
+          "slug": "havoc-yonder-gc",
+          "modified_at": "2026-09-13T19:28:01Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139256/havoc___younder_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139256/havoc___younder_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136774,
+          "name": "Nova Esports GC",
+          "location": "",
+          "slug": "nova-esports-gc",
+          "modified_at": "2026-09-13T19:31:27Z",
+          "acronym": "NE.GC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": null,
+        "official": false,
+        "raw_url": "https://www.douyu.com/11688843"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://www.youtube.com/embed/VDlolSiTwSU",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=VDlolSiTwSU"
+      }
+    ],
+    "videogame_version": null,
+    "slug": "havoc-yonder-gc-2026-09-20",
+    "tournament_id": 21939,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 5
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 132068
+      },
+      {
+        "score": 3,
+        "team_id": 139243
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-20T08:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 139243,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52253,
+        "position": 1,
+        "status": "finished",
+        "length": 2761,
+        "finished": true,
+        "match_id": 1686015,
+        "begin_at": "2026-09-20T07:13:11Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-20T07:59:13Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52254,
+        "position": 2,
+        "status": "finished",
+        "length": 3602,
+        "finished": true,
+        "match_id": 1686015,
+        "begin_at": "2026-09-20T08:15:05Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-20T09:15:07Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 132068,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52255,
+        "position": 3,
+        "status": "finished",
+        "length": 2809,
+        "finished": true,
+        "match_id": 1686015,
+        "begin_at": "2026-09-20T09:26:54Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-20T10:13:43Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 132068,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52256,
+        "position": 4,
+        "status": "finished",
+        "length": 2753,
+        "finished": true,
+        "match_id": 1686015,
+        "begin_at": "2026-09-20T10:28:55Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-20T11:14:49Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52257,
+        "position": 5,
+        "status": "finished",
+        "length": 2028,
+        "finished": true,
+        "match_id": 1686015,
+        "begin_at": "2026-09-20T11:27:30Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-20T12:01:18Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-20T07:13:11Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 139243,
+      "name": "Gen.G GC",
+      "location": "KR",
+      "slug": "gen-g-gc",
+      "modified_at": "2026-09-12T07:01:11Z",
+      "acronym": null,
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139243/600px_gen.g_esports_2026_allmode.png",
+      "dark_mode_image_url": null
+    },
+    "scheduled_at": "2026-09-20T07:10:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-20T12:59:59Z",
+    "end_at": "2026-09-20T12:01:18Z",
+    "id": 1686015,
+    "name": "Grand Final: FL.FE vs Gen.G GC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 132068,
+          "name": "FENNEL Female",
+          "location": "JP",
+          "slug": "fennel-female",
+          "modified_at": "2026-09-12T07:06:16Z",
+          "acronym": "FL.FE",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/132068/fennel_2021_may_full.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132068/186px_fennel_2021_may_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139243,
+          "name": "Gen.G GC",
+          "location": "KR",
+          "slug": "gen-g-gc",
+          "modified_at": "2026-09-12T07:01:11Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139243/600px_gen.g_esports_2026_allmode.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.00",
+      "current": false
+    },
+    "slug": "fennel-female-2026-09-20",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 5
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 1,
+        "team_id": 139261
+      },
+      {
+        "score": 3,
+        "team_id": 136774
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10979,
+      "name": "Game Changers China Qualifier",
+      "year": 2026,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers China Qualifier 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": false,
+    "original_scheduled_at": "2026-09-19T09:00:00Z",
+    "tournament": {
+      "id": 21939,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "detailed_stats": false,
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026-playoffs",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "serie_id": 10979,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "d",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 136774,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52299,
+        "position": 1,
+        "status": "finished",
+        "length": 1930,
+        "finished": true,
+        "match_id": 1689162,
+        "begin_at": "2026-09-19T09:04:45Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-19T09:36:56Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139261,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52300,
+        "position": 2,
+        "status": "finished",
+        "length": 2185,
+        "finished": true,
+        "match_id": 1689162,
+        "begin_at": "2026-09-19T09:46:24Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-19T10:22:49Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52301,
+        "position": 3,
+        "status": "finished",
+        "length": 3991,
+        "finished": true,
+        "match_id": 1689162,
+        "begin_at": "2026-09-19T10:34:41Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-19T11:41:12Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52302,
+        "position": 4,
+        "status": "finished",
+        "length": 2857,
+        "finished": true,
+        "match_id": 1689162,
+        "begin_at": "2026-09-19T11:53:36Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-19T12:41:14Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-19T09:04:45Z",
+    "serie_id": 10979,
+    "status": "finished",
+    "winner": {
+      "id": 136774,
+      "name": "Nova Esports GC",
+      "location": "",
+      "slug": "nova-esports-gc",
+      "modified_at": "2026-09-13T19:31:27Z",
+      "acronym": "NE.GC",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+    },
+    "scheduled_at": "2026-09-19T09:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": false,
+    "modified_at": "2026-09-19T12:41:15Z",
+    "end_at": "2026-09-19T12:41:13Z",
+    "id": 1689162,
+    "name": "Lower Bracket Final: Yew Reign Gaming vs NE.GC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139261,
+          "name": "Yew Reign Gaming",
+          "location": "CN",
+          "slug": "yew-reign-gaming",
+          "modified_at": "2026-09-13T19:30:24Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139261/yew_reign_gaming_logo_allmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139261/yew_reign_gaming_logo_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136774,
+          "name": "Nova Esports GC",
+          "location": "",
+          "slug": "nova-esports-gc",
+          "modified_at": "2026-09-13T19:31:27Z",
+          "acronym": "NE.GC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": null,
+        "official": false,
+        "raw_url": "https://www.douyu.com/11688843"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://www.youtube.com/embed/UaYoJzrYg8s",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=UaYoJzrYg8s"
+      }
+    ],
+    "videogame_version": null,
+    "slug": "yew-reign-gaming-2026-09-19",
+    "tournament_id": 21939,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 5
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 131830
+      },
+      {
+        "score": 3,
+        "team_id": 139243
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-19T08:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 139243,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52248,
+        "position": 1,
+        "status": "finished",
+        "length": 3096,
+        "finished": true,
+        "match_id": 1686014,
+        "begin_at": "2026-09-19T07:13:59Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-19T08:05:35Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52249,
+        "position": 2,
+        "status": "finished",
+        "length": 2064,
+        "finished": true,
+        "match_id": 1686014,
+        "begin_at": "2026-09-19T08:22:28Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-19T08:56:53Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 131830,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52250,
+        "position": 3,
+        "status": "finished",
+        "length": 2930,
+        "finished": true,
+        "match_id": 1686014,
+        "begin_at": "2026-09-19T09:09:00Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-19T09:57:50Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 131830,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52251,
+        "position": 4,
+        "status": "finished",
+        "length": 2715,
+        "finished": true,
+        "match_id": 1686014,
+        "begin_at": "2026-09-19T10:12:43Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-19T10:57:58Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52252,
+        "position": 5,
+        "status": "finished",
+        "length": 2185,
+        "finished": true,
+        "match_id": 1686014,
+        "begin_at": "2026-09-19T11:11:45Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-19T11:48:10Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-19T07:13:59Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 139243,
+      "name": "Gen.G GC",
+      "location": "KR",
+      "slug": "gen-g-gc",
+      "modified_at": "2026-09-12T07:01:11Z",
+      "acronym": null,
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139243/600px_gen.g_esports_2026_allmode.png",
+      "dark_mode_image_url": null
+    },
+    "scheduled_at": "2026-09-19T07:10:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-19T12:25:21Z",
+    "end_at": "2026-09-19T11:48:10Z",
+    "id": 1686014,
+    "name": "Lower Bracket Final: FLC vs Gen.G GC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 131830,
+          "name": "Team Falcons VEGA",
+          "location": "SA",
+          "slug": "team-falcons-vega",
+          "modified_at": "2026-09-12T07:06:15Z",
+          "acronym": "FLC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/131830/217px_team_falcons_2022_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139243,
+          "name": "Gen.G GC",
+          "location": "KR",
+          "slug": "gen-g-gc",
+          "modified_at": "2026-09-12T07:01:11Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139243/600px_gen.g_esports_2026_allmode.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/-AKxN7RcUtM",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=-AKxN7RcUtM"
+      },
+      {
+        "main": false,
+        "language": "id",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_id",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_id"
+      },
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.05",
+      "current": false
+    },
+    "slug": "team-falcons-vega-2026-09-19",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 5
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 136774
+      },
+      {
+        "score": 1,
+        "team_id": 139260
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10979,
+      "name": "Game Changers China Qualifier",
+      "year": 2026,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers China Qualifier 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": false,
+    "original_scheduled_at": "2026-09-18T11:00:00Z",
+    "tournament": {
+      "id": 21939,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "detailed_stats": false,
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026-playoffs",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "serie_id": 10979,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "d",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 136774,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52291,
+        "position": 1,
+        "status": "finished",
+        "length": 2041,
+        "finished": true,
+        "match_id": 1689160,
+        "begin_at": "2026-09-18T10:42:07Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-18T11:16:09Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139260,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52292,
+        "position": 2,
+        "status": "finished",
+        "length": 2537,
+        "finished": true,
+        "match_id": 1689160,
+        "begin_at": "2026-09-18T11:26:14Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-18T12:08:31Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52293,
+        "position": 3,
+        "status": "finished",
+        "length": 2310,
+        "finished": true,
+        "match_id": 1689160,
+        "begin_at": "2026-09-18T12:41:31Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-18T13:20:02Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-18T10:42:07Z",
+    "serie_id": 10979,
+    "status": "finished",
+    "winner": {
+      "id": 136774,
+      "name": "Nova Esports GC",
+      "location": "",
+      "slug": "nova-esports-gc",
+      "modified_at": "2026-09-13T19:31:27Z",
+      "acronym": "NE.GC",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+    },
+    "scheduled_at": "2026-09-18T10:40:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-18T13:20:02Z",
+    "end_at": "2026-09-18T13:20:01Z",
+    "id": 1689160,
+    "name": "Lower Bracket Semifinal: NE.GC vs VLG GC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136774,
+          "name": "Nova Esports GC",
+          "location": "",
+          "slug": "nova-esports-gc",
+          "modified_at": "2026-09-13T19:31:27Z",
+          "acronym": "NE.GC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139260,
+          "name": "VLG GC",
+          "location": "CN",
+          "slug": "vlg-gc",
+          "modified_at": "2026-09-13T19:01:10Z",
+          "acronym": "VLG GC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139260/731px_vlg_allmode_2026.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139260/731px_vlg_allmode_2026.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": null,
+        "official": false,
+        "raw_url": "https://www.douyu.com/11688843"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://www.youtube.com/embed/jVgyJ0n5wUE",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=jVgyJ0n5wUE"
+      }
+    ],
+    "videogame_version": null,
+    "slug": "nova-esports-gc-2026-09-18",
+    "tournament_id": 21939,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 1,
+        "team_id": 139242
+      },
+      {
+        "score": 2,
+        "team_id": 139243
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-18T10:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 139243,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52245,
+        "position": 1,
+        "status": "finished",
+        "length": 4500,
+        "finished": true,
+        "match_id": 1686013,
+        "begin_at": "2026-09-18T09:58:56Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-18T11:13:56Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139242,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52246,
+        "position": 2,
+        "status": "finished",
+        "length": 2836,
+        "finished": true,
+        "match_id": 1686013,
+        "begin_at": "2026-09-18T11:26:36Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-18T12:13:53Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52247,
+        "position": 3,
+        "status": "finished",
+        "length": 2580,
+        "finished": true,
+        "match_id": 1686013,
+        "begin_at": "2026-09-18T12:32:26Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-18T13:15:27Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-18T09:58:56Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 139243,
+      "name": "Gen.G GC",
+      "location": "KR",
+      "slug": "gen-g-gc",
+      "modified_at": "2026-09-12T07:01:11Z",
+      "acronym": null,
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139243/600px_gen.g_esports_2026_allmode.png",
+      "dark_mode_image_url": null
+    },
+    "scheduled_at": "2026-09-18T10:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-18T14:17:22Z",
+    "end_at": "2026-09-18T13:15:26Z",
+    "id": 1686013,
+    "name": "Lower Bracket Semifinal: FSF vs Gen.G GC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139242,
+          "name": "FULL SENSE SISU",
+          "location": "TH",
+          "slug": "full-sense-sisu",
+          "modified_at": "2026-09-15T08:19:51Z",
+          "acronym": "FSF",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139242/600px_full_sense_2025_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139242/600px_full_sense_2025_full_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139243,
+          "name": "Gen.G GC",
+          "location": "KR",
+          "slug": "gen-g-gc",
+          "modified_at": "2026-09-12T07:01:11Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139243/600px_gen.g_esports_2026_allmode.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/fl9cCwK8EvQ",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=fl9cCwK8EvQ"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.02",
+      "current": false
+    },
+    "slug": "full-sense-sisu-2026-09-18",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 139256
+      },
+      {
+        "score": 0,
+        "team_id": 139261
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10979,
+      "name": "Game Changers China Qualifier",
+      "year": 2026,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers China Qualifier 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": false,
+    "original_scheduled_at": "2026-09-18T09:00:00Z",
+    "tournament": {
+      "id": 21939,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "detailed_stats": false,
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026-playoffs",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "serie_id": 10979,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "d",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 139256,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52276,
+        "position": 1,
+        "status": "finished",
+        "length": 2493,
+        "finished": true,
+        "match_id": 1689155,
+        "begin_at": "2026-09-18T09:02:31Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-18T09:44:04Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139256,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52277,
+        "position": 2,
+        "status": "finished",
+        "length": 1261,
+        "finished": true,
+        "match_id": 1689155,
+        "begin_at": "2026-09-18T09:52:27Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-18T10:13:29Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139256,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-18T09:02:31Z",
+    "serie_id": 10979,
+    "status": "finished",
+    "winner": {
+      "id": 139256,
+      "name": "Havoc & Yonder GC",
+      "location": "CN",
+      "slug": "havoc-yonder-gc",
+      "modified_at": "2026-09-13T19:28:01Z",
+      "acronym": null,
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139256/havoc___younder_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139256/havoc___younder_darkmode.png"
+    },
+    "scheduled_at": "2026-09-18T09:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": false,
+    "modified_at": "2026-09-18T10:13:30Z",
+    "end_at": "2026-09-18T10:13:28Z",
+    "id": 1689155,
+    "name": "Upper Bracket Final: Havoc & Yonder GC vs Yew Reign Gaming",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139256,
+          "name": "Havoc & Yonder GC",
+          "location": "CN",
+          "slug": "havoc-yonder-gc",
+          "modified_at": "2026-09-13T19:28:01Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139256/havoc___younder_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139256/havoc___younder_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139261,
+          "name": "Yew Reign Gaming",
+          "location": "CN",
+          "slug": "yew-reign-gaming",
+          "modified_at": "2026-09-13T19:30:24Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139261/yew_reign_gaming_logo_allmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139261/yew_reign_gaming_logo_allmode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": null,
+        "official": false,
+        "raw_url": "https://www.douyu.com/11688843"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://www.youtube.com/embed/jVgyJ0n5wUE",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=jVgyJ0n5wUE"
+      }
+    ],
+    "videogame_version": null,
+    "slug": "havoc-yonder-gc-2026-09-18",
+    "tournament_id": 21939,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 132068
+      },
+      {
+        "score": 0,
+        "team_id": 131830
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-18T08:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 132068,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52230,
+        "position": 1,
+        "status": "finished",
+        "length": 3964,
+        "finished": true,
+        "match_id": 1686008,
+        "begin_at": "2026-09-18T07:07:51Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-18T08:13:56Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 132068,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52231,
+        "position": 2,
+        "status": "finished",
+        "length": 2715,
+        "finished": true,
+        "match_id": 1686008,
+        "begin_at": "2026-09-18T08:30:54Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-18T09:16:10Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 132068,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-18T07:07:51Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 132068,
+      "name": "FENNEL Female",
+      "location": "JP",
+      "slug": "fennel-female",
+      "modified_at": "2026-09-12T07:06:16Z",
+      "acronym": "FL.FE",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/132068/fennel_2021_may_full.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132068/186px_fennel_2021_may_darkmode.png"
+    },
+    "scheduled_at": "2026-09-18T07:10:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-18T09:34:46Z",
+    "end_at": "2026-09-18T09:16:09Z",
+    "id": 1686008,
+    "name": "Upper Bracket Final: FL.FE vs FLC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 132068,
+          "name": "FENNEL Female",
+          "location": "JP",
+          "slug": "fennel-female",
+          "modified_at": "2026-09-12T07:06:16Z",
+          "acronym": "FL.FE",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/132068/fennel_2021_may_full.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132068/186px_fennel_2021_may_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 131830,
+          "name": "Team Falcons VEGA",
+          "location": "SA",
+          "slug": "team-falcons-vega",
+          "modified_at": "2026-09-12T07:06:15Z",
+          "acronym": "FLC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/131830/217px_team_falcons_2022_allmode.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/fl9cCwK8EvQ",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=fl9cCwK8EvQ"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.02",
+      "current": false
+    },
+    "slug": "fennel-female-2026-09-18",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 3,
+        "team_id": 131274
+      },
+      {
+        "score": 1,
+        "team_id": 133737
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10805,
+      "name": "Game Changers North America",
+      "year": 2026,
+      "begin_at": "2026-07-13T21:00:00Z",
+      "end_at": "2026-09-18T08:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-north-america-stage-2-2026",
+      "modified_at": "2026-07-18T10:37:42Z",
+      "league_id": 4531,
+      "season": "Stage 2",
+      "full_name": "Game Changers North America Stage 2 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-17T21:00:00Z",
+    "tournament": {
+      "id": 21721,
+      "name": "Playoffs",
+      "type": "online/offline",
+      "country": null,
+      "begin_at": "2026-09-01T21:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-18T02:00:00Z",
+      "winner_id": 131274,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-north-america-stage-2-2026-playoffs",
+      "modified_at": "2026-09-18T01:34:44Z",
+      "serie_id": 10805,
+      "league_id": 4531,
+      "prizepool": "60000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "NA",
+      "live_supported": false
+    },
+    "winner_id": 131274,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 51964,
+        "position": 1,
+        "status": "finished",
+        "length": 2253,
+        "finished": true,
+        "match_id": 1641335,
+        "begin_at": "2026-09-17T21:13:06Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-17T21:50:39Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133737,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 51965,
+        "position": 2,
+        "status": "finished",
+        "length": 3429,
+        "finished": true,
+        "match_id": 1641335,
+        "begin_at": "2026-09-17T22:03:28Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-17T23:00:38Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 131274,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 51966,
+        "position": 3,
+        "status": "finished",
+        "length": 3044,
+        "finished": true,
+        "match_id": 1641335,
+        "begin_at": "2026-09-17T23:15:56Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-18T00:06:40Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 131274,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 51967,
+        "position": 4,
+        "status": "finished",
+        "length": 4437,
+        "finished": true,
+        "match_id": 1641335,
+        "begin_at": "2026-09-18T00:20:46Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-18T01:34:43Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 131274,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-17T21:13:06Z",
+    "serie_id": 10805,
+    "status": "finished",
+    "winner": {
+      "id": 131274,
+      "name": "Shopify Rebellion Gold",
+      "location": "US",
+      "slug": "shopify-rebellion-gc",
+      "modified_at": "2026-09-17T22:07:29Z",
+      "acronym": "SRG",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/131274/406px_shopify_rebellion_gold_lightmode.png",
+      "dark_mode_image_url": null
+    },
+    "scheduled_at": "2026-09-17T21:10:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-18T01:44:59Z",
+    "end_at": "2026-09-18T01:34:43Z",
+    "id": 1641335,
+    "name": "Grand final: SRG vs FLY.R",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 131274,
+          "name": "Shopify Rebellion Gold",
+          "location": "US",
+          "slug": "shopify-rebellion-gc",
+          "modified_at": "2026-09-17T22:07:29Z",
+          "acronym": "SRG",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/131274/406px_shopify_rebellion_gold_lightmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133737,
+          "name": "FlyQuest RED",
+          "location": "US",
+          "slug": "flyquest-red-valorant",
+          "modified_at": "2026-08-18T14:42:22Z",
+          "acronym": "FLY.R",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133737/600px_fly_quest_red_2023_allmode.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/OGAw2Hv21aA",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=OGAw2Hv21aA"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_americas",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_americas"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.05",
+      "current": false
+    },
+    "slug": "shopify-rebellion-gold-2026-09-17",
+    "tournament_id": 21721,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 5
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 139243
+      },
+      {
+        "score": 1,
+        "team_id": 135541
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-17T10:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 139243,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52242,
+        "position": 1,
+        "status": "finished",
+        "length": 2493,
+        "finished": true,
+        "match_id": 1686012,
+        "begin_at": "2026-09-17T11:10:13Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-17T11:51:47Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52243,
+        "position": 2,
+        "status": "finished",
+        "length": 2694,
+        "finished": true,
+        "match_id": 1686012,
+        "begin_at": "2026-09-17T12:09:45Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-17T12:54:40Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 135541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52244,
+        "position": 3,
+        "status": "finished",
+        "length": 2533,
+        "finished": true,
+        "match_id": 1686012,
+        "begin_at": "2026-09-17T13:06:54Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-17T13:49:07Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139243,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-17T11:10:13Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 139243,
+      "name": "Gen.G GC",
+      "location": "KR",
+      "slug": "gen-g-gc",
+      "modified_at": "2026-09-12T07:01:11Z",
+      "acronym": null,
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139243/600px_gen.g_esports_2026_allmode.png",
+      "dark_mode_image_url": null
+    },
+    "scheduled_at": "2026-09-17T11:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-17T13:58:34Z",
+    "end_at": "2026-09-17T13:49:07Z",
+    "id": 1686012,
+    "name": "Lower Bracket Quarterfinal 2: Gen.G GC vs SL9",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139243,
+          "name": "Gen.G GC",
+          "location": "KR",
+          "slug": "gen-g-gc",
+          "modified_at": "2026-09-12T07:01:11Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139243/600px_gen.g_esports_2026_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 135541,
+          "name": "swaglord9000",
+          "location": "AU",
+          "slug": "swaglord9000",
+          "modified_at": "2026-09-15T08:21:12Z",
+          "acronym": "SL9",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/135541/66c3c4cdc06d6.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/Gpz9h4xqho0",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=Gpz9h4xqho0"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.00",
+      "current": false
+    },
+    "slug": "gen-g-gc-2026-09-17",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 0,
+        "team_id": 139255
+      },
+      {
+        "score": 2,
+        "team_id": 139260
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10979,
+      "name": "Game Changers China Qualifier",
+      "year": 2026,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers China Qualifier 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": false,
+    "original_scheduled_at": "2026-09-17T11:00:00Z",
+    "tournament": {
+      "id": 21939,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "detailed_stats": false,
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026-playoffs",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "serie_id": 10979,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "d",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 139260,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52285,
+        "position": 1,
+        "status": "finished",
+        "length": 2704,
+        "finished": true,
+        "match_id": 1689158,
+        "begin_at": "2026-09-17T10:38:19Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-17T11:23:24Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139260,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52286,
+        "position": 2,
+        "status": "finished",
+        "length": 2293,
+        "finished": true,
+        "match_id": 1689158,
+        "begin_at": "2026-09-17T11:34:57Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-17T12:13:11Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139260,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-17T10:38:19Z",
+    "serie_id": 10979,
+    "status": "finished",
+    "winner": {
+      "id": 139260,
+      "name": "VLG GC",
+      "location": "CN",
+      "slug": "vlg-gc",
+      "modified_at": "2026-09-13T19:01:10Z",
+      "acronym": "VLG GC",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139260/731px_vlg_allmode_2026.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139260/731px_vlg_allmode_2026.png"
+    },
+    "scheduled_at": "2026-09-17T10:40:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-17T12:13:12Z",
+    "end_at": "2026-09-17T12:13:10Z",
+    "id": 1689158,
+    "name": "Lower Bracket Quarterfinal 1: 101 Outlaws vs VLG GC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139255,
+          "name": "101 Outlaws",
+          "location": "TW",
+          "slug": "101-outlaws",
+          "modified_at": "2026-09-13T19:25:23Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139255/544px_101_outlaws_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139255/544px_101_outlaws_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139260,
+          "name": "VLG GC",
+          "location": "CN",
+          "slug": "vlg-gc",
+          "modified_at": "2026-09-13T19:01:10Z",
+          "acronym": "VLG GC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139260/731px_vlg_allmode_2026.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139260/731px_vlg_allmode_2026.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": null,
+        "official": false,
+        "raw_url": "https://www.douyu.com/11688843"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://www.youtube.com/embed/oMv-S0NLazw",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=oMv-S0NLazw"
+      }
+    ],
+    "videogame_version": null,
+    "slug": "vlg-gc-2026-09-17",
+    "tournament_id": 21939,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 136774
+      },
+      {
+        "score": 0,
+        "team_id": 139258
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10979,
+      "name": "Game Changers China Qualifier",
+      "year": 2026,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers China Qualifier 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": false,
+    "original_scheduled_at": "2026-09-17T09:00:00Z",
+    "tournament": {
+      "id": 21939,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "detailed_stats": false,
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026-playoffs",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "serie_id": 10979,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "d",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 136774,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52288,
+        "position": 1,
+        "status": "finished",
+        "length": 2338,
+        "finished": true,
+        "match_id": 1689159,
+        "begin_at": "2026-09-17T09:06:02Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-17T09:45:01Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52289,
+        "position": 2,
+        "status": "finished",
+        "length": 1243,
+        "finished": true,
+        "match_id": 1689159,
+        "begin_at": "2026-09-17T09:54:22Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-17T10:15:06Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-17T09:06:02Z",
+    "serie_id": 10979,
+    "status": "finished",
+    "winner": {
+      "id": 136774,
+      "name": "Nova Esports GC",
+      "location": "",
+      "slug": "nova-esports-gc",
+      "modified_at": "2026-09-13T19:31:27Z",
+      "acronym": "NE.GC",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+    },
+    "scheduled_at": "2026-09-17T09:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": false,
+    "modified_at": "2026-09-17T10:15:07Z",
+    "end_at": "2026-09-17T10:15:05Z",
+    "id": 1689159,
+    "name": "Lower Bracket Quarterfinal 2: NE.GC vs QuGuangHao Gaming",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136774,
+          "name": "Nova Esports GC",
+          "location": "",
+          "slug": "nova-esports-gc",
+          "modified_at": "2026-09-13T19:31:27Z",
+          "acronym": "NE.GC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139258,
+          "name": "QuGuangHao Gaming",
+          "location": "CN",
+          "slug": "quguanghao-gaming",
+          "modified_at": "2026-09-13T19:21:54Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139258/596px_qu_guang_hao_gaming_allmode.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": null,
+        "official": false,
+        "raw_url": "https://www.douyu.com/11688843"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://www.youtube.com/embed/oMv-S0NLazw",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=oMv-S0NLazw"
+      }
+    ],
+    "videogame_version": null,
+    "slug": "quguanghao-gaming-2026-09-17",
+    "tournament_id": 21939,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 139242
+      },
+      {
+        "score": 1,
+        "team_id": 139241
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-17T08:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 139242,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52239,
+        "position": 1,
+        "status": "finished",
+        "length": 3082,
+        "finished": true,
+        "match_id": 1686011,
+        "begin_at": "2026-09-17T07:12:05Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-17T08:03:27Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139241,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52240,
+        "position": 2,
+        "status": "finished",
+        "length": 3021,
+        "finished": true,
+        "match_id": 1686011,
+        "begin_at": "2026-09-17T08:18:48Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-17T09:09:10Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139242,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52241,
+        "position": 3,
+        "status": "finished",
+        "length": 3584,
+        "finished": true,
+        "match_id": 1686011,
+        "begin_at": "2026-09-17T09:24:01Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-17T10:23:46Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139242,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-17T07:12:04Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 139242,
+      "name": "FULL SENSE SISU",
+      "location": "TH",
+      "slug": "full-sense-sisu",
+      "modified_at": "2026-09-15T08:19:51Z",
+      "acronym": "FSF",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139242/600px_full_sense_2025_full_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139242/600px_full_sense_2025_full_darkmode.png"
+    },
+    "scheduled_at": "2026-09-17T07:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-17T10:41:58Z",
+    "end_at": "2026-09-17T10:23:45Z",
+    "id": 1686011,
+    "name": "Lower Bracket Quarterfinal 1: FSF vs wiwiwi",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139242,
+          "name": "FULL SENSE SISU",
+          "location": "TH",
+          "slug": "full-sense-sisu",
+          "modified_at": "2026-09-15T08:19:51Z",
+          "acronym": "FSF",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139242/600px_full_sense_2025_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139242/600px_full_sense_2025_full_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139241,
+          "name": "wiwiwi",
+          "location": "",
+          "slug": "wiwiwi",
+          "modified_at": "2026-09-12T07:01:10Z",
+          "acronym": null,
+          "image_url": null,
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/Gpz9h4xqho0",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=Gpz9h4xqho0"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.00",
+      "current": false
+    },
+    "slug": "full-sense-sisu-2026-09-17",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 139261
+      },
+      {
+        "score": 1,
+        "team_id": 139255
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10979,
+      "name": "Game Changers China Qualifier",
+      "year": 2026,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers China Qualifier 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": false,
+    "original_scheduled_at": "2026-09-16T11:00:00Z",
+    "tournament": {
+      "id": 21939,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "detailed_stats": false,
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026-playoffs",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "serie_id": 10979,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "d",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 139261,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52273,
+        "position": 1,
+        "status": "finished",
+        "length": 2409,
+        "finished": true,
+        "match_id": 1689154,
+        "begin_at": "2026-09-16T11:55:08Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-16T12:35:17Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139261,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52274,
+        "position": 2,
+        "status": "finished",
+        "length": 3211,
+        "finished": true,
+        "match_id": 1689154,
+        "begin_at": "2026-09-16T12:45:47Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-16T13:39:19Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139255,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52275,
+        "position": 3,
+        "status": "finished",
+        "length": 2401,
+        "finished": true,
+        "match_id": 1689154,
+        "begin_at": "2026-09-16T13:50:11Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-16T14:30:13Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139261,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-16T11:55:08Z",
+    "serie_id": 10979,
+    "status": "finished",
+    "winner": {
+      "id": 139261,
+      "name": "Yew Reign Gaming",
+      "location": "CN",
+      "slug": "yew-reign-gaming",
+      "modified_at": "2026-09-13T19:30:24Z",
+      "acronym": null,
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139261/yew_reign_gaming_logo_allmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139261/yew_reign_gaming_logo_allmode.png"
+    },
+    "scheduled_at": "2026-09-16T11:55:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-16T14:30:14Z",
+    "end_at": "2026-09-16T14:30:12Z",
+    "id": 1689154,
+    "name": "Upper Bracket Semifinal 2: Yew Reign Gaming vs 101 Outlaws",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139261,
+          "name": "Yew Reign Gaming",
+          "location": "CN",
+          "slug": "yew-reign-gaming",
+          "modified_at": "2026-09-13T19:30:24Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139261/yew_reign_gaming_logo_allmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139261/yew_reign_gaming_logo_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139255,
+          "name": "101 Outlaws",
+          "location": "TW",
+          "slug": "101-outlaws",
+          "modified_at": "2026-09-13T19:25:23Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139255/544px_101_outlaws_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139255/544px_101_outlaws_darkmode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": null,
+        "official": false,
+        "raw_url": "https://www.douyu.com/11688843"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://www.youtube.com/embed/8KZnCiHmgUk",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=8KZnCiHmgUk"
+      }
+    ],
+    "videogame_version": null,
+    "slug": "yew-reign-gaming-2026-09-16",
+    "tournament_id": 21939,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 135541
+      },
+      {
+        "score": 0,
+        "team_id": 137079
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-16T09:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 135541,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52236,
+        "position": 1,
+        "status": "finished",
+        "length": 2617,
+        "finished": true,
+        "match_id": 1686010,
+        "begin_at": "2026-09-16T10:05:54Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-16T10:49:31Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 135541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52237,
+        "position": 2,
+        "status": "finished",
+        "length": 2167,
+        "finished": true,
+        "match_id": 1686010,
+        "begin_at": "2026-09-16T11:03:21Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-16T11:39:28Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 135541,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-16T10:05:54Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 135541,
+      "name": "swaglord9000",
+      "location": "AU",
+      "slug": "swaglord9000",
+      "modified_at": "2026-09-15T08:21:12Z",
+      "acronym": "SL9",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/135541/66c3c4cdc06d6.png",
+      "dark_mode_image_url": null
+    },
+    "scheduled_at": "2026-09-16T10:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-16T13:52:42Z",
+    "end_at": "2026-09-16T11:39:28Z",
+    "id": 1686010,
+    "name": "Lower Bracket Round 1 match 2: SL9 vs SSQ",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 135541,
+          "name": "swaglord9000",
+          "location": "AU",
+          "slug": "swaglord9000",
+          "modified_at": "2026-09-15T08:21:12Z",
+          "acronym": "SL9",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/135541/66c3c4cdc06d6.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 137079,
+          "name": "Sasanqua",
+          "location": "JP",
+          "slug": "sasanqua",
+          "modified_at": "2026-09-15T08:34:04Z",
+          "acronym": "SSQ",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/137079/190px_sasanqua_logo_light_mode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/137079/sasanqua_logo_dark_mode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "th",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_th",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_th"
+      },
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/Lm27ScQO5W4",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=Lm27ScQO5W4"
+      },
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "13.02",
+      "current": false
+    },
+    "slug": "swaglord9000-2026-09-16",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 1,
+        "team_id": 136774
+      },
+      {
+        "score": 2,
+        "team_id": 139256
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10979,
+      "name": "Game Changers China Qualifier",
+      "year": 2026,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers China Qualifier 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": false,
+    "original_scheduled_at": "2026-09-16T09:00:00Z",
+    "tournament": {
+      "id": 21939,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-13T08:00:00Z",
+      "detailed_stats": false,
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 136774,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-china-qualifier-2026-playoffs",
+      "modified_at": "2026-09-20T14:00:50Z",
+      "serie_id": 10979,
+      "league_id": 4531,
+      "prizepool": null,
+      "tier": "d",
+      "has_bracket": true,
+      "region": "ASIA",
+      "live_supported": false
+    },
+    "winner_id": 139256,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52270,
+        "position": 1,
+        "status": "finished",
+        "length": 2355,
+        "finished": true,
+        "match_id": 1689153,
+        "begin_at": "2026-09-16T09:05:10Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-16T09:44:26Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136774,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52271,
+        "position": 2,
+        "status": "finished",
+        "length": 2600,
+        "finished": true,
+        "match_id": 1689153,
+        "begin_at": "2026-09-16T09:54:38Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-16T10:37:59Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139256,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52272,
+        "position": 3,
+        "status": "finished",
+        "length": 2321,
+        "finished": true,
+        "match_id": 1689153,
+        "begin_at": "2026-09-16T10:52:07Z",
+        "detailed_stats": false,
+        "end_at": "2026-09-16T11:30:48Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139256,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-16T09:05:10Z",
+    "serie_id": 10979,
+    "status": "finished",
+    "winner": {
+      "id": 139256,
+      "name": "Havoc & Yonder GC",
+      "location": "CN",
+      "slug": "havoc-yonder-gc",
+      "modified_at": "2026-09-13T19:28:01Z",
+      "acronym": null,
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139256/havoc___younder_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139256/havoc___younder_darkmode.png"
+    },
+    "scheduled_at": "2026-09-16T09:00:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": false,
+    "modified_at": "2026-09-16T11:30:49Z",
+    "end_at": "2026-09-16T11:30:48Z",
+    "id": 1689153,
+    "name": "Upper Bracket Semifinal 1: NE.GC vs Havoc & Yonder GC",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136774,
+          "name": "Nova Esports GC",
+          "location": "",
+          "slug": "nova-esports-gc",
+          "modified_at": "2026-09-13T19:31:27Z",
+          "acronym": "NE.GC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139256,
+          "name": "Havoc & Yonder GC",
+          "location": "CN",
+          "slug": "havoc-yonder-gc",
+          "modified_at": "2026-09-13T19:28:01Z",
+          "acronym": null,
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139256/havoc___younder_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139256/havoc___younder_darkmode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": null,
+        "official": false,
+        "raw_url": "https://www.douyu.com/11688843"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://www.youtube.com/embed/8KZnCiHmgUk",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=8KZnCiHmgUk"
+      }
+    ],
+    "videogame_version": null,
+    "slug": "nova-esports-gc-vs-havoc-yonder-gc-2026-09-16",
+    "tournament_id": 21939,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 0,
+        "team_id": 137288
+      },
+      {
+        "score": 2,
+        "team_id": 139241
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-16T07:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 139241,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52233,
+        "position": 1,
+        "status": "finished",
+        "length": 3195,
+        "finished": true,
+        "match_id": 1686009,
+        "begin_at": "2026-09-16T07:47:57Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-16T08:41:12Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139241,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52234,
+        "position": 2,
+        "status": "finished",
+        "length": 1805,
+        "finished": true,
+        "match_id": 1686009,
+        "begin_at": "2026-09-16T08:56:01Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-16T09:26:06Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 139241,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-16T07:47:57Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 139241,
+      "name": "wiwiwi",
+      "location": "",
+      "slug": "wiwiwi",
+      "modified_at": "2026-09-12T07:01:10Z",
+      "acronym": null,
+      "image_url": null,
+      "dark_mode_image_url": null
+    },
+    "scheduled_at": "2026-09-16T07:45:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-16T09:51:27Z",
+    "end_at": "2026-09-16T09:26:06Z",
+    "id": 1686009,
+    "name": "Lower Bracket Round 1 match 1: RE.GC vs wiwiwi",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 137288,
+          "name": "Rising Esports GC",
+          "location": "AU",
+          "slug": "rising-esports-gc",
+          "modified_at": "2026-09-12T07:17:49Z",
+          "acronym": "RE.GC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/137288/506px_rising_esports_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139241,
+          "name": "wiwiwi",
+          "location": "",
+          "slug": "wiwiwi",
+          "modified_at": "2026-09-12T07:01:10Z",
+          "acronym": null,
+          "image_url": null,
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "th",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_th",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_th"
+      },
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/Lm27ScQO5W4",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=Lm27ScQO5W4"
+      },
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "12.05",
+      "current": false
+    },
+    "slug": "rising-esports-gc-2026-09-16",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  },
+  {
+    "draw": false,
+    "results": [
+      {
+        "score": 2,
+        "team_id": 131830
+      },
+      {
+        "score": 0,
+        "team_id": 139242
+      }
+    ],
+    "forfeit": false,
+    "serie": {
+      "id": 10969,
+      "name": "Game Changers Pacific",
+      "year": 2026,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "end_at": "2026-09-20T14:00:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026",
+      "modified_at": "2026-09-20T14:00:33Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Game Changers Pacific 2026"
+    },
+    "league_id": 4531,
+    "detailed_stats": true,
+    "original_scheduled_at": "2026-09-16T05:00:00Z",
+    "tournament": {
+      "id": 21920,
+      "name": "Playoffs",
+      "type": "online",
+      "country": null,
+      "begin_at": "2026-09-14T07:00:00Z",
+      "detailed_stats": true,
+      "end_at": "2026-09-20T12:01:00Z",
+      "winner_id": 139243,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-game-changers-pacific-2026-playoffs",
+      "modified_at": "2026-09-21T06:33:43Z",
+      "serie_id": 10969,
+      "league_id": 4531,
+      "prizepool": "20000 United States Dollar",
+      "tier": "d",
+      "has_bracket": true,
+      "region": "OCE",
+      "live_supported": false
+    },
+    "winner_id": 131830,
+    "match_type": "best_of",
+    "winner_type": "Team",
+    "games": [
+      {
+        "complete": true,
+        "id": 52227,
+        "position": 1,
+        "status": "finished",
+        "length": 3047,
+        "finished": true,
+        "match_id": 1686007,
+        "begin_at": "2026-09-16T05:07:49Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-16T05:58:36Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 131830,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52228,
+        "position": 2,
+        "status": "finished",
+        "length": 2980,
+        "finished": true,
+        "match_id": 1686007,
+        "begin_at": "2026-09-16T06:12:17Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-16T07:01:57Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 131830,
+          "type": "Team"
+        }
+      }
+    ],
+    "begin_at": "2026-09-16T05:07:49Z",
+    "serie_id": 10969,
+    "status": "finished",
+    "winner": {
+      "id": 131830,
+      "name": "Team Falcons VEGA",
+      "location": "SA",
+      "slug": "team-falcons-vega",
+      "modified_at": "2026-09-12T07:06:15Z",
+      "acronym": "FLC",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/131830/217px_team_falcons_2022_allmode.png",
+      "dark_mode_image_url": null
+    },
+    "scheduled_at": "2026-09-16T05:10:00Z",
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "rescheduled": true,
+    "modified_at": "2026-09-16T07:27:42Z",
+    "end_at": "2026-09-16T07:01:57Z",
+    "id": 1686007,
+    "name": "Upper Bracket Semifinal 2: FLC vs FSF",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 131830,
+          "name": "Team Falcons VEGA",
+          "location": "SA",
+          "slug": "team-falcons-vega",
+          "modified_at": "2026-09-12T07:06:15Z",
+          "acronym": "FLC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/131830/217px_team_falcons_2022_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 139242,
+          "name": "FULL SENSE SISU",
+          "location": "TH",
+          "slug": "full-sense-sisu",
+          "modified_at": "2026-09-15T08:19:51Z",
+          "acronym": "FSF",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/139242/600px_full_sense_2025_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139242/600px_full_sense_2025_full_darkmode.png"
+        }
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "videogame_title": null,
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/Lm27ScQO5W4",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=Lm27ScQO5W4"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_pacific",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_pacific"
+      }
+    ],
+    "videogame_version": {
+      "name": "12.05",
+      "current": false
+    },
+    "slug": "team-falcons-vega-2026-09-16",
+    "tournament_id": 21920,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "number_of_games": 3
+  }
+]

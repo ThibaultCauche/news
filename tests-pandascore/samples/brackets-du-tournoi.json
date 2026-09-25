@@ -1,0 +1,711 @@
+[
+  {
+    "id": 1685232,
+    "name": "Decider Match: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-03T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "slug": "2026-10-03-5c5cb51e-2cb4-41d7-8a50-6af031de2b27",
+    "games": [
+      {
+        "complete": false,
+        "id": 52154,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685232,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52155,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685232,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52156,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685232,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "modified_at": "2026-09-11T18:27:57Z",
+    "tournament_id": 21883,
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-03T09:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1685230
+      },
+      {
+        "type": "winner",
+        "match_id": 1685231
+      }
+    ],
+    "original_scheduled_at": "2026-10-03T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685231,
+    "name": "Elimination Match: TYLOO vs TL",
+    "status": "not_started",
+    "results": [
+      {
+        "score": 0,
+        "team_id": 133288
+      },
+      {
+        "score": 0,
+        "team_id": 128541
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-01T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "slug": "team-liquid-2026-10-01",
+    "games": [
+      {
+        "complete": false,
+        "id": 52151,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685231,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52152,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685231,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52153,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685231,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "modified_at": "2026-09-24T14:51:13Z",
+    "tournament_id": 21883,
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-01T09:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133288,
+          "name": "TYLOO",
+          "location": "CN",
+          "slug": "tyloo-valorant",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "acronym": "TYLOO",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133288/600px_ty_loo_2016_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1682152
+      },
+      {
+        "type": "loser",
+        "match_id": 1682153
+      }
+    ],
+    "original_scheduled_at": "2026-10-01T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685230,
+    "name": "Winners Match: G2 vs PR",
+    "status": "not_started",
+    "results": [
+      {
+        "score": 0,
+        "team_id": 128538
+      },
+      {
+        "score": 0,
+        "team_id": 128917
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-09-29T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "slug": "paper-rex-2026-09-29",
+    "games": [
+      {
+        "complete": false,
+        "id": 52148,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685230,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52149,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685230,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52150,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685230,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "modified_at": "2026-09-24T14:51:11Z",
+    "tournament_id": 21883,
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-09-29T09:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128538,
+          "name": "G2 Esports",
+          "location": "DE",
+          "slug": "g2-esports-valorant",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "acronym": "G2",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128538/900px_g2_esports_2019.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128538/189px_g2_esports_2019_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128917,
+          "name": "Paper Rex",
+          "location": "SG",
+          "slug": "paper-rex-valorant",
+          "modified_at": "2026-09-09T07:34:41Z",
+          "acronym": "PR",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128917/712px_paper_rex_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128917/712px_paper_rex_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1682152
+      },
+      {
+        "type": "winner",
+        "match_id": 1682153
+      }
+    ],
+    "original_scheduled_at": "2026-09-29T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1682153,
+    "name": "TYLOO vs G2",
+    "status": "finished",
+    "results": [
+      {
+        "score": 2,
+        "team_id": 128538
+      },
+      {
+        "score": 0,
+        "team_id": 133288
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-09-24T12:27:16Z",
+    "detailed_stats": true,
+    "end_at": "2026-09-24T13:56:04Z",
+    "forfeit": false,
+    "winner_id": 128538,
+    "winner_type": "Team",
+    "slug": "tyloo-vs-g2-esports-2026-09-24",
+    "games": [
+      {
+        "complete": true,
+        "id": 52121,
+        "position": 1,
+        "status": "finished",
+        "length": 2738,
+        "finished": true,
+        "match_id": 1682153,
+        "begin_at": "2026-09-24T12:27:17Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T13:12:56Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128538,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52122,
+        "position": 2,
+        "status": "finished",
+        "length": 1913,
+        "finished": true,
+        "match_id": 1682153,
+        "begin_at": "2026-09-24T13:24:11Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T13:56:04Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128538,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "modified_at": "2026-09-24T14:06:32Z",
+    "tournament_id": 21883,
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-09-24T12:30:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133288,
+          "name": "TYLOO",
+          "location": "CN",
+          "slug": "tyloo-valorant",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "acronym": "TYLOO",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133288/600px_ty_loo_2016_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128538,
+          "name": "G2 Esports",
+          "location": "DE",
+          "slug": "g2-esports-valorant",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "acronym": "G2",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128538/900px_g2_esports_2019.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128538/189px_g2_esports_2019_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-09-24T12:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": false,
+        "language": "ko",
+        "embed_url": "https://www.youtube.com/embed/EsjNn-mRnMs",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=EsjNn-mRnMs"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1682152,
+    "name": "TL vs PR",
+    "status": "finished",
+    "results": [
+      {
+        "score": 2,
+        "team_id": 128917
+      },
+      {
+        "score": 1,
+        "team_id": 128541
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-09-24T09:21:57Z",
+    "detailed_stats": true,
+    "end_at": "2026-09-24T11:58:31Z",
+    "forfeit": false,
+    "winner_id": 128917,
+    "winner_type": "Team",
+    "slug": "team-liquid-vs-paper-rex-2026-09-24",
+    "games": [
+      {
+        "complete": true,
+        "id": 52118,
+        "position": 1,
+        "status": "finished",
+        "length": 2094,
+        "finished": true,
+        "match_id": 1682152,
+        "begin_at": "2026-09-24T09:21:58Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T09:56:53Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128917,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52119,
+        "position": 2,
+        "status": "finished",
+        "length": 2292,
+        "finished": true,
+        "match_id": 1682152,
+        "begin_at": "2026-09-24T10:11:10Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T10:49:23Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 52120,
+        "position": 3,
+        "status": "finished",
+        "length": 3504,
+        "finished": true,
+        "match_id": 1682152,
+        "begin_at": "2026-09-24T11:00:07Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T11:58:32Z",
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128917,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "modified_at": "2026-09-24T12:01:00Z",
+    "tournament_id": 21883,
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-09-24T09:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128917,
+          "name": "Paper Rex",
+          "location": "SG",
+          "slug": "paper-rex-valorant",
+          "modified_at": "2026-09-09T07:34:41Z",
+          "acronym": "PR",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128917/712px_paper_rex_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128917/712px_paper_rex_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-09-24T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "ko",
+        "embed_url": "https://www.youtube.com/embed/EsjNn-mRnMs",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=EsjNn-mRnMs"
+      },
+      {
+        "main": false,
+        "language": "ja",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_jpn"
+      },
+      {
+        "main": false,
+        "language": "zh",
+        "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorantesports_cn"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_la",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_la"
+      },
+      {
+        "main": false,
+        "language": "pt",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_br",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_br"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  }
+]

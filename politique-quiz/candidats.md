@@ -1,0 +1,417 @@
+# Candidats pour le jeu « Qui a voté ? »
+
+8434 scrutins lus, 4737 sur les thèmes, 165 gardés.
+
+## Carburant & énergie (15)
+
+- **n°7409** (2026-06-17, scrutin public solennel) — adopté 290/59/116 — l'ensemble de la proposition de loi visant à relancer les investissements dans le secteur de l'hydroélectricité pour contribuer à la transition énergétique (texte de la commission mixte paritaire).
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS abstention · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°5354** (2026-02-05, scrutin public ordinaire) — adopté 56/8/12 — l'ensemble de la proposition de loi visant à relancer les investissements dans le secteur de l’hydroélectricité pour contribuer à la transition énergétique (première lecture).
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS abstention · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°2653** (2025-06-24, scrutin public solennel) — rejeté 142/377/47 — l'ensemble de la proposition de loi portant programmation nationale pour l'énergie et le climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR abstention · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 pour · NI contre
+- **n°2472** (2025-06-18, scrutin public ordinaire) — rejeté 63/188/0 — l'amendement n° 518 de Mme Laernoes à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2473** (2025-06-18, scrutin public ordinaire) — rejeté 26/224/1 — l'amendement n° 587 de M. Benbrahim à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2474** (2025-06-18, scrutin public ordinaire) — rejeté 26/224/1 — l'amendement n° 588 de M. Benbrahim à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2475** (2025-06-18, scrutin public ordinaire) — rejeté 7/219/27 — l'amendement n° 165 de M. Bruneau à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC contre · DR contre · ECOS contre · DEM contre · HOR contre · LIOT pour · GDR pour · PO847173 contre · NI contre
+- **n°2476** (2025-06-18, scrutin public ordinaire) — rejeté 117/129/4 — le sous-amendement n° 714 de Mme Voynet à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour l
+  - Groupes : RN contre · EPR abstention · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°2477** (2025-06-18, scrutin public ordinaire) — rejeté 63/190/0 — le sous-amendement n° 723 de Mme Laernoes à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2478** (2025-06-18, scrutin public ordinaire) — rejeté 62/189/0 — le sous-amendement n° 724 de Mme Laernoes à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2480** (2025-06-18, scrutin public ordinaire) — rejeté 100/146/7 — le sous-amendement n° 772 de M. Nury à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les 
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 pour · NI contre
+- **n°2481** (2025-06-18, scrutin public ordinaire) — rejeté 26/225/0 — le sous-amendement n° 746 de M. Benbrahim à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2482** (2025-06-18, scrutin public ordinaire) — rejeté 64/190/0 — le sous-amendement n° 725 de Mme Laernoes et le sous-amendement identique suivant à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant progra
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2483** (2025-06-18, scrutin public ordinaire) — rejeté 117/131/2 — le sous-amendement n° 825 de M. Amblard à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour l
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR pour · LIOT pour · GDR abstention · PO847173 pour · NI contre
+- **n°2484** (2025-06-18, scrutin public ordinaire) — adopté 161/89/1 — le sous-amendement n° 779 de M. Bruneau à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour l
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI contre
+
+## Environnement & climat (22)
+
+- **n°7494** (2026-06-24, scrutin public solennel) — adopté 338/0/151 — l’ensemble de la proposition de loi visant à réduire l’impact environnemental de l’industrie textile (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP abstention · SOC abstention · DR pour · ECOS abstention · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°7493** (2026-06-24, scrutin public ordinaire) — adopté 329/0/2 — l’amendement n° 2 (rect.) du Gouvernement à la proposition de loi visant à réduire l’impact environnemental de l’industrie textile (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°6069** (2026-04-08, scrutin public ordinaire) — adopté 70/0/27 — l'ensemble de la proposition de loi visant à reconnaître une politique nationale d'adaptation au changement climatique et à adapter les mécanismes d'assurance (première lecture).
+  - Groupes : RN abstention · EPR pour · LFI-NFP pour · SOC pour · DR abstention · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR abstention · NI pour
+- **n°5839** (2026-03-26, scrutin public ordinaire) — adopté 122/0/0 — l'ensemble de la proposition de loi visant à renforcer la place des agriculteurs dans l'aménagement du territoire et à sécuriser l'exercice des activités agricoles face au changement climatique (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°2653** (2025-06-24, scrutin public solennel) — rejeté 142/377/47 — l'ensemble de la proposition de loi portant programmation nationale pour l'énergie et le climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR abstention · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 pour · NI contre
+- **n°2472** (2025-06-18, scrutin public ordinaire) — rejeté 63/188/0 — l'amendement n° 518 de Mme Laernoes à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2473** (2025-06-18, scrutin public ordinaire) — rejeté 26/224/1 — l'amendement n° 587 de M. Benbrahim à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2474** (2025-06-18, scrutin public ordinaire) — rejeté 26/224/1 — l'amendement n° 588 de M. Benbrahim à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2475** (2025-06-18, scrutin public ordinaire) — rejeté 7/219/27 — l'amendement n° 165 de M. Bruneau à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les années 2025 à 2035 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC contre · DR contre · ECOS contre · DEM contre · HOR contre · LIOT pour · GDR pour · PO847173 contre · NI contre
+- **n°2476** (2025-06-18, scrutin public ordinaire) — rejeté 117/129/4 — le sous-amendement n° 714 de Mme Voynet à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour l
+  - Groupes : RN contre · EPR abstention · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°2477** (2025-06-18, scrutin public ordinaire) — rejeté 63/190/0 — le sous-amendement n° 723 de Mme Laernoes à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2478** (2025-06-18, scrutin public ordinaire) — rejeté 62/189/0 — le sous-amendement n° 724 de Mme Laernoes à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2480** (2025-06-18, scrutin public ordinaire) — rejeté 100/146/7 — le sous-amendement n° 772 de M. Nury à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour les 
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 pour · NI contre
+- **n°2481** (2025-06-18, scrutin public ordinaire) — rejeté 26/225/0 — le sous-amendement n° 746 de M. Benbrahim à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2482** (2025-06-18, scrutin public ordinaire) — rejeté 64/190/0 — le sous-amendement n° 725 de Mme Laernoes et le sous-amendement identique suivant à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant progra
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 contre · NI contre
+- **n°2483** (2025-06-18, scrutin public ordinaire) — rejeté 117/131/2 — le sous-amendement n° 825 de M. Amblard à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour l
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR pour · LIOT pour · GDR abstention · PO847173 pour · NI contre
+- **n°2484** (2025-06-18, scrutin public ordinaire) — adopté 161/89/1 — le sous-amendement n° 779 de M. Bruneau à l'amendement n° 503 de M. Armand et aux amendements identiques suivants à l'article 3 (supprimé) de la proposition de loi portant programmation nationale énergie et climat pour l
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI contre
+- **n°2460** (2025-06-17, scrutin public solennel) — adopté 261/107/40 — l'ensemble du projet de loi autorisant la ratification de la résolution LP.3(4) portant amendement de l’article 6 du Protocole de Londres de 1996 à la Convention de 1972 sur la prévention de la pollution des mers résulta
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT contre · GDR contre · PO847173 pour · NI pour
+- **n°1203** (2025-04-02, scrutin public ordinaire) — adopté 63/42/54 — l'ensemble du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de transport, de santé et de circulation des personn
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC abstention · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 abstention · NI pour
+- **n°997** (2025-03-13, scrutin public ordinaire) — adopté 113/3/0 — l'ensemble de la proposition de loi visant à assouplir la gestion des compétences "eau" et "assainissement" (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°685** (2025-01-30, scrutin public ordinaire) — adopté 79/0/14 — l'ensemble de la proposition de résolution européenne relative à l’adoption et à la mise en œuvre d’exigences à l’importation pour le respect de normes de production équivalentes aux normes de production essentielles, en
+  - Groupes : RN pour · EPR pour · LFI-NFP abstention · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°684** (2025-01-30, scrutin public ordinaire) — adopté 77/0/13 — l'article unique de la proposition de résolution européenne relative à l’adoption et à la mise en œuvre d’exigences à l’importation pour le respect de normes de production équivalentes aux normes de production essentiell
+  - Groupes : RN pour · EPR pour · LFI-NFP abstention · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+
+## Agriculture (15)
+
+- **n°8427** (2026-07-20, scrutin public solennel) — adopté 296/224/41 — l'ensemble du projet de loi d'urgence pour la protection et la souveraineté agricoles (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM abstention · HOR abstention · LIOT pour · GDR contre · UDDPLR pour · NI pour
+- **n°8422** (2026-07-20, scrutin public ordinaire) — rejeté 126/247/1 — la motion de rejet préalable, déposée par Mme Mathilde Panot, du projet de loi d'urgence pour la protection et la souveraineté agricoles (texte de la commission mixte paritaire).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · UDDPLR contre · NI contre
+- **n°8423** (2026-07-20, scrutin public ordinaire) — adopté 211/163/13 — la proposition du Gouvernement de prolonger la séance en cours au delà de minuit (projet de loi d'urgence pour la protection et la souveraineté agricoles) (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR contre · LIOT abstention · GDR contre · UDDPLR pour · NI pour
+- **n°7324** (2026-06-04, scrutin public ordinaire) — adopté 82/1/5 — l'ensemble de la proposition de loi portant plusieurs mesures de justice en faveur de la revalorisation des pensions de retraites agricoles (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°7348** (2026-06-04, scrutin public ordinaire) — adopté 76/0/0 — l'ensemble de la proposition de loi visant à prévenir le mal-être et le risque suicidaire dans le monde agricole (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°7259** (2026-06-02, scrutin public solennel) — adopté 369/178/15 — l'ensemble du projet de loi d'urgence pour la protection et la souveraineté agricoles (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC abstention · DR pour · ECOS contre · DEM pour · HOR pour · LIOT abstention · GDR contre · UDDPLR pour · NI pour
+- **n°5839** (2026-03-26, scrutin public ordinaire) — adopté 122/0/0 — l'ensemble de la proposition de loi visant à renforcer la place des agriculteurs dans l'aménagement du territoire et à sécuriser l'exercice des activités agricoles face au changement climatique (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°2957** (2025-07-08, scrutin public solennel) — adopté 316/223/25 — l'ensemble de la proposition de loi visant à lever les contraintes à l'exercice du métier d'agriculteur (texte de la commission mixte paritaire).
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR abstention · LIOT abstention · GDR contre · PO847173 pour · NI pour
+- **n°2956** (2025-07-08, scrutin public ordinaire) — rejeté 158/264/3 — la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi visant à lever les contraintes à l'exercice du métier d'agriculteur (texte de la commission mixte paritaire).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · PO847173 contre · NI contre
+- **n°2105** (2025-05-26, scrutin public ordinaire) — adopté 274/121/7 — la motion de rejet préalable, déposée par MM. Julien Dive, Laurent Wauquiez, Gabriel Attal, Marc Fesneau et Paul Christophe de la proposition de loi visant à lever les contraintes à l’exercice du métier d’agriculteur (pr
+  - Groupes : RN pour · EPR abstention · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR pour · LIOT pour · GDR contre · PO847173 pour · NI pour
+- **n°959** (2025-03-11, scrutin public ordinaire) — adopté 203/3/4 — l'ensemble de la proposition de loi visant à lutter contre la disparition des terres agricoles et renforcer la régulation des prix du foncier agricole (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°844** (2025-02-19, scrutin public solennel) — adopté 369/160/2 — l'ensemble du projet de loi d'orientation pour la souveraineté alimentaire et agricole et le renouvellement des générations en agriculture (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 pour · NI pour
+- **n°789** (2025-02-12, scrutin public ordinaire) — adopté 203/44/0 — l'ensemble de la proposition de loi visant à adapter le fonctionnement des instances de gouvernance des chambres d'agriculture et de la mutualité sociale agricole (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°589** (2025-01-22, scrutin public ordinaire) — adopté 134/24/1 — l'ensemble de la proposition de loi relative à l'exercice de la démocratie agricole (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°456** (2024-11-26, scrutin public solennel) — adopté 485/69/1 — la déclaration du Gouvernement portant sur les négociations en cours relatives à l'accord d'association entre l'Union européenne et le Mercosur (application de l'article 50-1 de la Constitution).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+
+## Guerre & défense (15)
+
+- **n°7987** (2026-07-07, scrutin public solennel) — adopté 313/199/5 — l'ensemble de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM abstention · HOR pour · LIOT pour · UDDPLR pour · GDR contre · NI pour
+- **n°7982** (2026-07-07, scrutin public ordinaire) — adopté 225/129/2 — la proposition du Gouvernement de prolonger la séance en cours au-delà de vingt heures (proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fon
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · UDDPLR pour · NI contre
+- **n°7985** (2026-07-07, scrutin public ordinaire) — rejeté 117/232/2 — l'amendement n° 37 de Mme Hadizadeh au titre de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · UDDPLR contre · GDR pour · NI contre
+- **n°7983** (2026-07-07, scrutin public ordinaire) — rejeté 112/227/2 — l'amendement n° 16 de M. Bompard au titre de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · UDDPLR contre · GDR pour · NI contre
+- **n°7984** (2026-07-07, scrutin public ordinaire) — rejeté 105/234/3 — l'amendement n° 32 de M. Amirshahi au titre de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · UDDPLR contre · NI contre
+- **n°7986** (2026-07-07, scrutin public ordinaire) — rejeté 98/224/3 — l'amendement n° 38 de M. Eskenazi au titre de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · UDDPLR contre · GDR pour · NI contre
+- **n°7905** (2026-07-01, scrutin public solennel) — adopté 375/113/2 — l'ensemble du projet de loi actualisant la programmation militaire pour les années 2024 à 2030 et portant diverses dispositions intéressant la défense (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR contre · NI pour
+- **n°6736** (2026-05-19, scrutin public solennel) — adopté 440/122/4 — l'ensemble du projet de loi actualisant la programmation militaire pour les années 2024 à 2030 et portant diverses dispositions intéressant la défense (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR abstention · NI pour
+- **n°5845** (2026-03-26, scrutin public ordinaire) — adopté 39/17/0 — l'ensemble de la proposition de loi visant à renforcer l'enseignement de la défense nationale dans le cadre du parcours de citoyenneté (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°4698** (2025-12-10, scrutin public solennel) — adopté 411/88/22 — la déclaration du Gouvernement portant sur la stratégie de défense nationale (application de l'article 50-1 de la Constitution).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · UDDPLR pour · NI pour
+- **n°988** (2025-03-12, scrutin public solennel) — adopté 288/54/132 — l'article unique de la proposition de résolution européenne appelant au renforcement du soutien à l'Ukraine.
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 abstention · NI pour
+- **n°987** (2025-03-12, scrutin public ordinaire) — rejeté 57/152/81 — l'amendement n° 51 de Mme Chikirou à l'article unique de la proposition de résolution européenne appelant au renforcement du soutien à l'Ukraine.
+  - Groupes : RN abstention · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 abstention · NI contre
+- **n°984** (2025-03-12, scrutin public ordinaire) — rejeté 110/162/4 — l'amendement n° 34 de M. Ciotti et l'amendement identique suivant à l'article unique de la proposition de résolution européenne appelant au renforcement du soutien à l'Ukraine.
+  - Groupes : RN pour · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 pour · NI contre
+- **n°985** (2025-03-12, scrutin public ordinaire) — rejeté 99/181/8 — l'amendement n° 40 de M. Anglade à l'article unique de la proposition de résolution européenne appelant au renforcement du soutien à l'Ukraine.
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC pour · DR abstention · ECOS contre · DEM pour · HOR pour · LIOT contre · GDR contre · PO847173 contre · NI pour
+- **n°986** (2025-03-12, scrutin public ordinaire) — adopté 154/55/73 — l'amendement n° 42 de M. Anglade à l'article unique de la proposition de résolution européenne appelant au renforcement du soutien à l'Ukraine.
+  - Groupes : RN abstention · EPR pour · LFI-NFP abstention · SOC contre · DR contre · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 pour · NI pour
+
+## Police & sécurité (17)
+
+- **n°7987** (2026-07-07, scrutin public solennel) — adopté 313/199/5 — l'ensemble de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM abstention · HOR pour · LIOT pour · UDDPLR pour · GDR contre · NI pour
+- **n°7982** (2026-07-07, scrutin public ordinaire) — adopté 225/129/2 — la proposition du Gouvernement de prolonger la séance en cours au-delà de vingt heures (proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fon
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · UDDPLR pour · NI contre
+- **n°7985** (2026-07-07, scrutin public ordinaire) — rejeté 117/232/2 — l'amendement n° 37 de Mme Hadizadeh au titre de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · UDDPLR contre · GDR pour · NI contre
+- **n°7983** (2026-07-07, scrutin public ordinaire) — rejeté 112/227/2 — l'amendement n° 16 de M. Bompard au titre de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · UDDPLR contre · GDR pour · NI contre
+- **n°7984** (2026-07-07, scrutin public ordinaire) — rejeté 105/234/3 — l'amendement n° 32 de M. Amirshahi au titre de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · UDDPLR contre · NI contre
+- **n°7986** (2026-07-07, scrutin public ordinaire) — rejeté 98/224/3 — l'amendement n° 38 de M. Eskenazi au titre de la proposition de loi visant à reconnaître une présomption de légitime défense pour les forces de l'ordre, dans l'exercice de leurs fonctions (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · UDDPLR contre · GDR pour · NI contre
+- **n°5106** (2026-01-22, scrutin public ordinaire) — adopté 157/101/1 — l'article unique de la proposition de résolution européenne visant à inscrire la mouvance des frères musulmans sur la liste européenne des organisations terroristes.
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · UDDPLR pour · NI pour
+- **n°4802** (2025-12-17, scrutin public solennel) — adopté 394/61/2 — la déclaration du Gouvernement portant sur la lutte contre le narcotrafic et la criminalité organisée (application de l'article 50-1 de la Constitution).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°1624** (2025-05-13, scrutin public solennel) — adopté 341/187/8 — l'ensemble de la proposition de loi visant à renforcer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT contre · GDR contre · PO847173 pour · NI pour
+- **n°1623** (2025-05-13, scrutin public ordinaire) — rejeté 103/176/0 — la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi visant à renforcer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (texte de la commission mixte parit
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°1473** (2025-04-29, scrutin public solennel) — adopté 396/68/34 — l'ensemble de la proposition de loi visant à sortir la France du piège du narcotrafic (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR abstention · PO847173 pour · NI pour
+- **n°1471** (2025-04-29, scrutin public ordinaire) — rejeté 39/231/12 — la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi visant à sortir la France du piège du narcotrafic (texte de la commission mixte paritaire).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS abstention · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI contre
+- **n°1262** (2025-04-03, scrutin public ordinaire) — adopté 63/42/2 — l'ensemble de la proposition de loi visant à faire exécuter les peines d’emprisonnement ferme (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 pour · NI contre
+- **n°1194** (2025-04-01, scrutin public solennel) — adopté 436/75/39 — l'ensemble de la proposition de loi visant à sortir la France du piège du narcotrafic (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR abstention · PO847173 pour · NI pour
+- **n°1053** (2025-03-18, scrutin public ordinaire) — adopté 234/39/1 — l'article 2 de la proposition de loi visant à sortir la France du piège du narcotrafic (première lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°805** (2025-02-13, scrutin public ordinaire) — adopté 125/58/0 — l'ensemble de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 pour · NI contre
+- **n°792** (2025-02-12, scrutin public ordinaire) — rejeté 96/202/0 — la motion de rejet préalable, déposée par M. Boris Vallaud, de la proposition de loi visant à restaurer l'autorité de la justice à l'égard des mineurs délinquants et de leurs parents (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+
+## Retraites (15)
+
+- **n°7354** (2026-06-11, scrutin public ordinaire) — adopté 165/0/3 — l'ensemble de la proposition de loi visant à renforcer la solidarité envers les retraités pauvres (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°7324** (2026-06-04, scrutin public ordinaire) — adopté 82/1/5 — l'ensemble de la proposition de loi portant plusieurs mesures de justice en faveur de la revalorisation des pensions de retraites agricoles (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°2257** (2025-06-05, scrutin public ordinaire) — adopté 198/35/0 — la proposition de résolution visant à abroger la loi n° 2023-270 du 14 avril 2023 de financement rectificative de la sécurité sociale pour 2023 dite réforme des retraites.
+  - Groupes : RN pour · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · PO847173 contre · NI pour
+- **n°457** (2024-11-28, scrutin public ordinaire) — rejeté 97/229/16 — l'amendement n° 869 de M. Alfandari avant l'article premier de la proposition de loi d'abrogation de la retraite à 64 ans (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC contre · DR abstention · ECOS contre · DEM abstention · HOR pour · LIOT abstention · GDR contre · PO847173 abstention · NI pour
+- **n°459** (2024-11-28, scrutin public ordinaire) — rejeté 95/226/19 — l'amendement n° 879 de Mme Colin-Osterlé avant l'article premier de la proposition de loi d'abrogation de la retraite à 64 ans (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC contre · DR abstention · ECOS contre · DEM pour · HOR pour · LIOT abstention · GDR contre · PO847173 abstention · NI abstention
+- **n°460** (2024-11-28, scrutin public ordinaire) — rejeté 97/230/22 — l'amendement n° 3 de M. Sitzenstuhl avant l'article premier de la proposition de loi d'abrogation de la retraite à 64 ans (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC contre · DR abstention · ECOS contre · DEM contre · HOR pour · LIOT abstention · GDR contre · PO847173 abstention · NI abstention
+- **n°468** (2024-11-28, scrutin public ordinaire) — rejeté 100/241/1 — l'amendement de suppression n° 4 de M. Sitzenstuhl et les amendements identiques suivants à l'article premier de la proposition de loi d'abrogation de la retraite à 64 ans (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT contre · GDR contre · PO847173 pour · NI pour
+- **n°458** (2024-11-28, scrutin public ordinaire) — rejeté 75/225/12 — l'amendement n° 883 de M. Alfandari avant l'article premier de la proposition de loi d'abrogation de la retraite à 64 ans (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC contre · DR abstention · ECOS contre · DEM pour · HOR pour · LIOT contre · GDR contre · PO847173 pour · NI contre
+- **n°465** (2024-11-28, scrutin public ordinaire) — rejeté 82/210/20 — l'amendement n° 885 de Mme Colin-Osterlé avant l'article premier de la proposition de loi d'abrogation de la retraite à 64 ans (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC contre · DR abstention · ECOS contre · DEM pour · HOR pour · LIOT abstention · GDR contre · PO847173 abstention · NI abstention
+- **n°466** (2024-11-28, scrutin public ordinaire) — rejeté 74/219/23 — l'amendement n° 878 de M. Gernigon avant l'article premier de la proposition de loi d'abrogation de la retraite à 64 ans (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC contre · DR abstention · ECOS contre · DEM contre · HOR pour · LIOT abstention · GDR contre · PO847173 abstention · NI abstention
+- **n°217** (2024-10-31, scrutin public ordinaire) — rejeté 119/197/18 — l'ensemble de la proposition de loi visant à restaurer un système de retraite plus juste en annulant les dernières réformes portant sur l’âge de départ et le nombre d’annuités (première lecture).
+  - Groupes : RN abstention · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 abstention · NI contre
+- **n°214** (2024-10-31, scrutin public ordinaire) — adopté 194/146/3 — l'article 2 quinquies de la proposition de loi visant à restaurer un système de retraite plus juste en annulant les dernières réformes portant sur l’âge de départ et le nombre d’annuités (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR pour · LIOT abstention · GDR contre · PO847173 pour · NI contre
+- **n°213** (2024-10-31, scrutin public ordinaire) — rejeté 129/206/11 — l'amendement n° 5 de M. Ménagé après l'article 2 de la proposition de loi visant à restaurer un système de retraite plus juste en annulant les dernières réformes portant sur l’âge de départ et le nombre d’annuités (premi
+  - Groupes : RN pour · EPR contre · LFI-NFP pour · SOC contre · DR pour · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 pour · NI contre
+- **n°215** (2024-10-31, scrutin public ordinaire) — adopté 111/89/14 — l'article 2 octies de la proposition de loi visant à restaurer un système de retraite plus juste en annulant les dernières réformes portant sur l’âge de départ et le nombre d’annuités (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR contre · ECOS contre · DEM contre · HOR pour · LIOT pour · GDR abstention · PO847173 abstention · NI contre
+- **n°216** (2024-10-31, scrutin public ordinaire) — rejeté 133/161/28 — l'amendement n° 7 de M. Dive après l'article 2 octies de la proposition de loi visant à restaurer un système de retraite plus juste en annulant les dernières réformes portant sur l’âge de départ et le nombre d’annuités (
+  - Groupes : RN contre · EPR pour · LFI-NFP pour · SOC contre · DR contre · ECOS pour · DEM contre · HOR pour · LIOT pour · GDR abstention · PO847173 pour · NI pour
+
+## Immigration (15)
+
+- **n°1308** (2025-04-08, scrutin public solennel) — adopté 339/174/11 — l'ensemble de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 pour · NI pour
+- **n°1307** (2025-04-08, scrutin public ordinaire) — rejeté 105/185/0 — la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (texte de la commission mixte paritaire).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI contre
+- **n°738** (2025-02-06, scrutin public ordinaire) — adopté 162/93/3 — l'ensemble de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 pour · NI contre
+- **n°710** (2025-02-06, scrutin public ordinaire) — adopté 179/105/10 — l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM abstention · HOR pour · LIOT pour · GDR contre · PO847173 pour · NI contre
+- **n°737** (2025-02-06, scrutin public ordinaire) — rejeté 85/161/6 — la demande de seconde délibération, présentée par M. Bernalicis, de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN contre · EPR abstention · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM abstention · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°695** (2025-02-06, scrutin public ordinaire) — rejeté 113/190/1 — l'amendement n° 1 de M. Bernalicis et les amendements identiques suivants de suppression de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (premiè
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM pour · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°696** (2025-02-06, scrutin public ordinaire) — rejeté 90/187/2 — l'amendement n° 2 de M. Taché et l'amendement identique suivant de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première l
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI contre
+- **n°697** (2025-02-06, scrutin public ordinaire) — rejeté 119/132/25 — l'amendement n° 7 de M. Gillet et l'amendement identique suivant de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première 
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 pour · NI pour
+- **n°698** (2025-02-06, scrutin public ordinaire) — rejeté 112/145/25 — l'amendement n° 87 de M. Ciotti de rédaction globale de l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR contre · LIOT abstention · GDR contre · PO847173 pour · NI contre
+- **n°701** (2025-02-06, scrutin public ordinaire) — rejeté 102/173/2 — l'amendement n° 56 de Mme Capdevielle à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°702** (2025-02-06, scrutin public ordinaire) — rejeté 98/184/0 — l'amendement n° 14 de M. Taché et l'amendement identique suivant à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°699** (2025-02-06, scrutin public ordinaire) — rejeté 94/171/2 — l'amendement n° 78 de Mme Faucillon à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°700** (2025-02-06, scrutin public ordinaire) — rejeté 93/172/1 — l'amendement n° 12 de M. Taché et l'amendement identique suivant à l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°713** (2025-02-06, scrutin public ordinaire) — rejeté 91/165/0 — l'amendement n° 31 de M. Bernalicis après l'article unique de la proposition de loi visant à renforcer les conditions d'accès à la nationalité française à Mayotte (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI pour
+- **n°218** (2024-10-31, scrutin public ordinaire) — adopté 186/144/6 — l'amendement de suppression n° 1 de Mme Élisa Martin et les amendements identiques suivants à l'article premier de la proposition de loi visant à assouplir les conditions d’expulsion des étrangers constituant une menace 
+  - Groupes : RN contre · EPR pour · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM pour · HOR abstention · LIOT pour · GDR pour · PO847173 contre · NI pour
+
+## Fin de vie (15)
+
+- **n°8280** (2026-07-15, scrutin public solennel) — adopté 291/241/29 — l'ensemble de la proposition de loi relative au droit à l'aide à mourir (lecture définitive).
+  - Groupes : RN pour · EPR abstention · LFI-NFP pour · SOC abstention · DR pour · ECOS pour · DEM pour · HOR contre · LIOT contre · GDR abstention · UDDPLR contre · NI contre
+- **n°7894** (2026-06-30, scrutin public solennel) — adopté 295/232/35 — l'ensemble de la proposition de loi relative au droit à l'aide à mourir (nouvelle lecture).
+  - Groupes : RN abstention · EPR abstention · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR contre · LIOT pour · GDR abstention · UDDPLR contre · NI contre
+- **n°7492** (2026-06-23, scrutin public ordinaire) — adopté 124/102/4 — l'article 2 de la proposition de loi relative au droit à l'aide à mourir (nouvelle lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR pour · LIOT pour · GDR pour · UDDPLR contre · NI pour
+- **n°7432** (2026-06-22, scrutin public ordinaire) — rejeté 91/139/1 — la motion de rejet péalable, déposée par M. Patrick Hetzel, de la proposition de loi relative au droit à l'aide à mourir (nouvelle lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM contre · HOR contre · LIOT contre · UDDPLR pour · GDR contre · NI pour
+- **n°5728** (2026-02-25, scrutin public solennel) — adopté 491/0/69 — l'ensemble de la proposition de loi visant à garantir l'égal accès de tous à l'accompagnement et aux soins palliatifs (deuxième lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP abstention · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°5729** (2026-02-25, scrutin public solennel) — adopté 299/226/37 — l'ensemble de la proposition de loi relative au droit à l'aide à mourir (deuxième lecture).
+  - Groupes : RN abstention · EPR abstention · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM abstention · HOR abstention · LIOT pour · UDDPLR contre · GDR abstention · NI contre
+- **n°5723** (2026-02-25, scrutin public ordinaire) — adopté 191/42/71 — l'article 4 de la proposition de loi relative au droit à l'aide à mourir (seconde délibération) (deuxième lecture).
+  - Groupes : RN abstention · EPR contre · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · UDDPLR abstention · NI pour
+- **n°5725** (2026-02-25, scrutin public ordinaire) — adopté 186/101/14 — l'article 6 de la proposition de loi relative au droit à l'aide à mourir (seconde délibération) (deuxième lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · UDDPLR contre · NI pour
+- **n°5727** (2026-02-25, scrutin public ordinaire) — adopté 185/104/12 — l'article 9 de la proposition de loi relative au droit à l'aide à mourir (seconde délibération) (deuxième lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM contre · HOR contre · LIOT pour · UDDPLR contre · GDR pour · NI pour
+- **n°5719** (2026-02-25, scrutin public ordinaire) — rejeté 116/177/10 — le sous-amendement n° 6 de Mme Gruet à l'amendement n° 3 de M. Valletoux à l'article 2 de la proposition de loi relative au droit à l'aide à mourir (seconde délibération) (deuxième lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR contre · LIOT contre · GDR contre · UDDPLR pour · NI pour
+- **n°5720** (2026-02-25, scrutin public ordinaire) — adopté 192/103/7 — l'amendement n° 3 de M. Valletoux à l'article 2 de la proposition de loi relative au droit à l'aide à mourir (seconde délibération) (deuxième lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°5705** (2026-02-24, scrutin public ordinaire) — adopté 136/117/5 — l'article 17 (examen prioritaire) de la proposition de loi relative au droit à l'aide à mourir (deuxième lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · UDDPLR contre · NI pour
+- **n°2106** (2025-05-27, scrutin public solennel) — adopté 560/0/3 — l’ensemble de la proposition de loi visant à garantir l'égal accès de tous à l’accompagnement et aux soins palliatifs (première lecture).
+  - Groupes : RN abstention · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°2107** (2025-05-27, scrutin public solennel) — adopté 305/199/57 — l’ensemble de la proposition de loi relative au droit à l’aide à mourir (première lecture).
+  - Groupes : RN abstention · EPR pour · LFI-NFP pour · SOC pour · DR abstention · ECOS pour · DEM contre · HOR abstention · LIOT abstention · GDR abstention · PO847173 contre · NI contre
+- **n°1886** (2025-05-20, scrutin public ordinaire) — adopté 164/103/7 — l'article 4 de la proposition de loi relative au droit à l'aide à mourir (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 abstention · NI pour
+
+## Impôts & budget (15)
+
+- **n°4758** (2025-12-16, scrutin public solennel) — adopté 247/232/90 — l'ensemble du projet de loi de financement de la sécurité sociale pour 2026 (lecture définitive).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR abstention · UDDPLR contre · NI pour
+- **n°4757** (2025-12-16, scrutin public ordinaire) — rejeté 171/285/16 — la motion de rejet préalable, déposée par Mme Mathilde Panot, du projet de loi de financement de la sécurité sociale pour 2026 (lecture définitive).
+  - Groupes : RN pour · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · UDDPLR pour · NI contre
+- **n°4696** (2025-12-09, scrutin public solennel) — adopté 247/234/93 — l'ensemble du projet de loi de financement de la sécurité sociale pour 2026 (nouvelle lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC pour · DR contre · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR abstention · UDDPLR contre · NI pour
+- **n°4695** (2025-12-09, scrutin public ordinaire) — adopté 227/86/189 — la troisième partie du projet de loi de financement de la sécurité sociale pour 2026 (nouvelle lecture).
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC pour · DR contre · ECOS abstention · DEM pour · HOR pour · LIOT pour · GDR contre · UDDPLR contre · NI pour
+- **n°4241** (2025-11-21, scrutin public solennel) — rejeté 1/404/84 — la première partie du projet de loi de finances pour 2026 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP contre · SOC contre · DR contre · ECOS contre · DEM abstention · HOR contre · LIOT abstention · GDR contre · UDDPLR contre · NI contre
+- **n°3936** (2025-11-18, scrutin public ordinaire) — rejeté 107/145/82 — l'ensemble du projet de loi de finances de fin de gestion pour 2025 (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC abstention · DR contre · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · UDDPLR contre · NI pour
+- **n°3684** (2025-11-12, scrutin public ordinaire) — adopté 255/146/104 — l'article 45 bis (examen prioritaire) du projet de loi de financement de la sécurité sociale pour 2026 (première lecture).
+  - Groupes : RN pour · EPR abstention · LFI-NFP contre · SOC pour · DR abstention · ECOS abstention · DEM abstention · HOR contre · LIOT abstention · GDR contre · UDDPLR contre · NI pour
+- **n°3679** (2025-11-12, scrutin public ordinaire) — adopté 391/0/0 — l'article 45 (examen prioritaire) du projet de loi de financement de la sécurité sociale pour 2026 (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°3680** (2025-11-12, scrutin public ordinaire) — rejeté 70/266/158 — l'amendement de suppression n° 653 de Mme Colin-Oesterlé et les amendements identiques suivants à l'article 45 bis (examen prioritaire) du projet de loi de financement de la sécurité sociale pour 2026 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP abstention · SOC contre · DR abstention · ECOS contre · DEM contre · HOR pour · LIOT abstention · GDR abstention · UDDPLR pour · NI contre
+- **n°3398** (2025-11-04, scrutin public ordinaire) — rejeté 61/326/24 — la motion de rejet préalable, déposée par Mme Mathilde Panot, du projet de loi de financement de la sécurité sociale pour 2026 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC contre · DR contre · ECOS abstention · DEM contre · HOR contre · LIOT contre · GDR pour · UDDPLR contre · NI contre
+- **n°881** (2025-02-20, scrutin public ordinaire) — adopté 116/39/31 — l'ensemble de la proposition de loi instaurant un impôt plancher de 2 % sur le patrimoine des ultra riches (première lecture).
+  - Groupes : RN abstention · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · PO847173 contre · NI pour
+- **n°518** (2024-12-04, scrutin public ordinaire) — adopté 318/103/55 — l'ensemble du projet de loi de finances de fin de gestion pour 2024 (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC abstention · DR pour · ECOS contre · DEM pour · HOR pour · LIOT abstention · GDR contre · PO847173 pour · NI pour
+- **n°445** (2024-11-19, scrutin public ordinaire) — rejeté 53/146/5 — l'ensemble de la première partie du projet de loi de finances de fin des gestion pour 2024 (première lecture).
+  - Groupes : RN contre · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT abstention · GDR contre · PO847173 contre · NI pour
+- **n°438** (2024-11-12, scrutin public solennel) — rejeté 192/362/19 — la première partie du projet de loi de finances pour 2025 (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI contre
+- **n°242** (2024-11-04, scrutin public ordinaire) — adopté 126/98/68 — l'ensemble de la deuxième partie du projet de loi de financement de la sécurité sociale pour 2025 (première lecture).
+  - Groupes : RN abstention · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT abstention · GDR pour · PO847173 contre · NI pour
+
+## Censure du gouvernement (15)
+
+- **n°7979** (2026-07-06, motion de censure) — rejeté 132/0/0 — la motion de censure déposée en application de l'article 49, alinéa 2, de la Constitution par Mmes Cyrielle Chatelain, Nadège Abomangoli et 56 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°5730** (2026-02-25, motion de censure) — rejeté 140/0/0 — la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Jean-Philippe Tanguy et 59 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°5284** (2026-02-02, motion de censure) — rejeté 260/0/0 — la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par M. Stéphane Peu, Mme Mathilde Panot, Mme Cyrielle Chatelain et 110 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°5285** (2026-02-02, motion de censure) — rejeté 135/0/0 — la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Marine Le Pen, M. Éric Ciotti et 104 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR pour · NI pour
+- **n°5193** (2026-01-27, motion de censure) — rejeté 267/0/0 — la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Cyrielle Chatelain, Mme Mathilde Panot, M. Stéphane Peu et 110 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°5194** (2026-01-27, motion de censure) — rejeté 140/0/0 — la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Marine Le Pen, M. Éric Ciotti et 102 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°5154** (2026-01-23, motion de censure) — rejeté 269/0/0 — la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot, Mme Cyrielle Chatelain, M. Stéphane Peu et 108 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°5155** (2026-01-23, motion de censure) — rejeté 142/0/0 — la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Marine Le Pen, M. Éric CIotti et 102 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°4986** (2026-01-14, motion de censure) — rejeté 256/0/0 — la motion de censure déposée en application de l'article 49, alinéa 2, de la Constitution par Mme Mathilde Panot et 57 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°4987** (2026-01-14, motion de censure) — rejeté 142/0/0 — la motion de censure déposée en application de l'article 49, alinéa 2, de la Constitution par Mme Marine Le Pen et 57 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°3058** (2025-10-16, motion de censure) — rejeté 271/0/0 — la motion de censure déposée en application de l'article 49, alinéa 2, de la Constitution par Mme Mathilde Panot et 86 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°2876** (2025-07-01, motion de censure) — rejeté 189/0/0 — la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Boris Vallaud et 65 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°842** (2025-02-19, motion de censure) — rejeté 181/0/0 — la motion de censure, déposée en application de l'article 49, alinéa 2, de la Constitution, par M. Boris Vallaud et 65 députés.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°519** (2024-12-04, motion de censure) — adopté 331/0/0 — la motion de censure déposée en application de l'article 49, alinéa 3, de la Constitution par Mme Mathilde Panot, M. Boris Vallaud, Mme Cyrielle Chatelain, M. André Chassaigne et 181 membres de l'Assemblée.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°1** (2024-10-08, motion de censure) — rejeté 197/0/0 — la motion de censure déposée en application de l'article 49, alinéa 2, de la Constitution par M. Boris Vallaud, Mme Mathilde Panot, Mme Cyrielle Chatelain, M. André Chassaigne et 188 de leurs collègues.
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+
+## Logement (15)
+
+- **n°7408** (2026-06-17, scrutin public solennel) — adopté 292/160/14 — l'ensemble de la proposition de loi visant à améliorer l'accès au logement des travailleurs des services publics (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC contre · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR contre · NI pour
+- **n°7027** (2026-05-28, scrutin public ordinaire) — adopté 85/29/20 — l'ensemble de la proposition de loi pour la mobilisation de l'habitat existant en réponse à la crise du logement (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC abstention · DR pour · ECOS abstention · DEM pour · HOR pour · LIOT pour · UDDPLR pour · GDR abstention · NI pour
+- **n°7022** (2026-05-28, scrutin public ordinaire) — adopté 51/27/33 — l'article 2 de la proposition de loi pour la mobilisation de l'habitat existant en réponse à la crise du logement (première lecture).
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR abstention · UDDPLR abstention · NI pour
+- **n°7024** (2026-05-28, scrutin public ordinaire) — adopté 92/0/21 — l'article 3 de la proposition de loi pour la mobilisation de l'habitat existant en réponse à la crise du logement (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP abstention · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR abstention · UDDPLR pour · NI pour
+- **n°4962** (2026-01-12, scrutin public ordinaire) — adopté 46/7/11 — l'ensemble de la proposition de loi visant à améliorer l'accès au logement des travailleurs des services publics (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC abstention · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR abstention · NI pour
+- **n°4745** (2025-12-11, scrutin public ordinaire) — adopté 105/56/4 — l'ensemble de la proposition de loi pour retrouver la confiance et l'équilibre dans les rapports locatifs (première lecture).
+  - Groupes : RN contre · EPR abstention · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · UDDPLR contre · NI pour
+- **n°4740** (2025-12-11, scrutin public ordinaire) — adopté 95/51/6 — l'article premier de la proposition de loi pour retrouver la confiance et l'équilibre dans les rapports locatifs (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · UDDPLR contre · NI pour
+- **n°3056** (2025-10-15, scrutin public ordinaire) — adopté 65/41/52 — l'ensemble de la proposition de loi de simplification du droit de l'urbanisme et du logement (texte de la commission mixte paritaire).
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR abstention · UDDPLR abstention · NI pour
+- **n°2262** (2025-06-05, scrutin public ordinaire) — adopté 169/0/3 — l'ensemble de la proposition de loi expérimentant l'encadrement des loyers et améliorant l'habitat dans les outre-mer (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 abstention · NI pour
+- **n°2272** (2025-06-05, scrutin public ordinaire) — adopté 103/17/5 — l'ensemble de la proposition de loi visant à accorder le versement des allocations familiales dès le premier enfant (première lecture).
+  - Groupes : RN pour · EPR abstention · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°2266** (2025-06-05, scrutin public ordinaire) — adopté 98/22/1 — l'article premier de la proposition de loi visant à accorder le versement des allocations familiales dès le premier enfant (première lecture).
+  - Groupes : RN pour · EPR contre · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM contre · HOR contre · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°2215** (2025-06-03, scrutin public ordinaire) — adopté 214/0/0 — l'ensemble de la proposition de loi visant à faciliter la transformation des bureaux et autres bâtiments en logements (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°1717** (2025-05-15, scrutin public ordinaire) — adopté 119/28/2 — l'ensemble de la proposition de loi de simplification du droit de l'urbanisme et du logement (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR abstention · PO847173 pour · NI pour
+- **n°1692** (2025-05-15, scrutin public ordinaire) — adopté 66/45/12 — l'article 2 de la proposition de loi de simplification du droit de l'urbanisme et du logement (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC abstention · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR abstention · PO847173 contre · NI pour
+- **n°219** (2024-10-31, scrutin public ordinaire) — adopté 169/132/7 — l'amendement de suppression n° 1 de M. Coulomme et les amendements identiques suivants à l'article unique de la proposition de loi visant à réduire les contraintes énergétiques pesant sur l’offre locative et à juguler le
+  - Groupes : RN contre · EPR pour · LFI-NFP pour · SOC pour · DR contre · ECOS pour · DEM pour · HOR abstention · LIOT pour · GDR pour · PO847173 contre · NI pour
+
+## Santé (15)
+
+- **n°6286** (2026-05-04, scrutin public ordinaire) — adopté 72/0/0 — l'ensemble de la proposition de loi facilitant l'exercice en France des médecins diplômés au Royaume-Uni ayant débuté leurs études avant le Brexit (deuxième lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°5829** (2026-03-26, scrutin public ordinaire) — adopté 92/0/2 — l'ensemble de la proposition de loi relative aux missions des professionnels de santé, vétérinaires et psychothérapeutes des services d'incendie et de secours (deuxième lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°5415** (2026-02-16, scrutin public ordinaire) — adopté 52/0/0 — l'ensemble de la proposition de loi facilitant l'exercice en France des médecins diplômés au Royaume-Uni avant le Brexit (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°3057** (2025-10-15, scrutin public ordinaire) — adopté 130/0/0 — l'article unique du projet de loi autorisant la ratification de la convention n° 155 sur la sécurité et la santé des travailleurs, 1981 (première lecture).
+  - Groupes : RN pour · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · UDDPLR pour · NI pour
+- **n°2685** (2025-06-25, scrutin public ordinaire) — adopté 135/27/23 — l'ensemble de la proposition de loi visant à renforcer la sécurité des professionnels de santé (texte de la commission mixte paritaire).
+  - Groupes : RN pour · EPR pour · LFI-NFP contre · SOC abstention · DR pour · ECOS abstention · DEM pour · HOR pour · LIOT pour · GDR abstention · PO847173 pour · NI pour
+- **n°2684** (2025-06-25, scrutin public ordinaire) — rejeté 24/134/9 — la motion de rejet préalable, déposée par Mme Mathilde Panot, de la proposition de loi visant à renforcer la sécurité des professionnels de santé (texte de la commission mixte paritaire).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC abstention · DR contre · ECOS abstention · DEM contre · HOR contre · LIOT contre · GDR pour · PO847173 contre · NI contre
+- **n°1607** (2025-05-07, scrutin public ordinaire) — adopté 99/9/10 — l'ensemble de la proposition de loi visant à lutter contre les déserts médicaux, d'initiative transpartisane (première lecture).
+  - Groupes : RN abstention · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°1606** (2025-05-07, scrutin public ordinaire) — adopté 92/18/0 — l'article 4 de la proposition de loi visant à lutter contre les déserts médicaux, d'initiative transpartisane (première lecture).
+  - Groupes : RN contre · EPR contre · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°1203** (2025-04-02, scrutin public ordinaire) — adopté 63/42/54 — l'ensemble du projet de loi portant diverses dispositions d'adaptation au droit de l'Union européenne en matière économique, financière, environnementale, énergétique, de transport, de santé et de circulation des personn
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC abstention · DR pour · ECOS contre · DEM pour · HOR pour · LIOT pour · GDR contre · PO847173 abstention · NI pour
+- **n°1213** (2025-04-02, scrutin public ordinaire) — rejeté 85/153/4 — le sous-amendement n° 125 de M. Bazin à l'amendement n° 55 de M. Garot et l'amendement identique suivant de rétablissement de l'article premier (supprimé) de la proposition de loi visant à lutter contre les déserts médic
+  - Groupes : RN pour · EPR contre · LFI-NFP contre · SOC contre · DR contre · ECOS contre · DEM contre · HOR contre · LIOT contre · GDR contre · PO847173 pour · NI pour
+- **n°1214** (2025-04-02, scrutin public ordinaire) — adopté 155/85/3 — l'amendement n° 55 de M. Garot et l'amendement identique suivant de rétablissement de l'article premier (supprimé) de la proposition de loi visant à lutter contre les déserts médicaux, d'initiative transpartisane (premiè
+  - Groupes : RN contre · EPR pour · LFI-NFP pour · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°912** (2025-03-06, scrutin public ordinaire) — adopté 155/0/17 — l'ensemble de la proposition de loi relative à l'organisation et aux missions des professionnels de santé, vétérinaires, psychothérapeutes et psychologues professionnels et volontaires des services d'incendie et de secou
+  - Groupes : RN pour · EPR pour · LFI-NFP abstention · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°901** (2025-03-06, scrutin public ordinaire) — adopté 44/11/40 — l'article premier de la proposition de loi relative à l'organisation et aux missions des personnels de santé professionnels et volontaires des services d'incendie et de secours (première lecture).
+  - Groupes : RN abstention · EPR pour · LFI-NFP contre · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 abstention · NI pour
+- **n°685** (2025-01-30, scrutin public ordinaire) — adopté 79/0/14 — l'ensemble de la proposition de résolution européenne relative à l’adoption et à la mise en œuvre d’exigences à l’importation pour le respect de normes de production équivalentes aux normes de production essentielles, en
+  - Groupes : RN pour · EPR pour · LFI-NFP abstention · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour
+- **n°684** (2025-01-30, scrutin public ordinaire) — adopté 77/0/13 — l'article unique de la proposition de résolution européenne relative à l’adoption et à la mise en œuvre d’exigences à l’importation pour le respect de normes de production équivalentes aux normes de production essentiell
+  - Groupes : RN pour · EPR pour · LFI-NFP abstention · SOC pour · DR pour · ECOS pour · DEM pour · HOR pour · LIOT pour · GDR pour · PO847173 pour · NI pour

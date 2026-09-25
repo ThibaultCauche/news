@@ -1,0 +1,353 @@
+{
+  "type": "Team",
+  "rosters": [
+    {
+      "id": 133288,
+      "name": "TYLOO",
+      "location": "CN",
+      "slug": "tyloo-valorant",
+      "players": [
+        {
+          "active": true,
+          "id": 24088,
+          "name": "SLOWLY",
+          "role": null,
+          "slug": "slowly",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "age": 25,
+          "birthday": "2001-09-23",
+          "first_name": "Kelun",
+          "last_name": "Sun",
+          "nationality": "CN",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/24088/600px_slowly_at_pro_house_2021.png"
+        },
+        {
+          "active": true,
+          "id": 41760,
+          "name": "SiuFatBB",
+          "role": null,
+          "slug": "siufanbb",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "age": 27,
+          "birthday": "1999-06-19",
+          "first_name": "Hei",
+          "last_name": "Ka Pong",
+          "nationality": "HK",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/41760/gfn_siu_fat_bb_2022.png"
+        },
+        {
+          "active": true,
+          "id": 49272,
+          "name": "Scales",
+          "role": null,
+          "slug": "scales",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "age": 21,
+          "birthday": "2004-10-20",
+          "first_name": "Zhang ",
+          "last_name": "Zhen ",
+          "nationality": "CN",
+          "image_url": null
+        },
+        {
+          "active": true,
+          "id": 51840,
+          "name": "splash",
+          "role": null,
+          "slug": "splash-moses-christophe-jonathan",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "age": 19,
+          "birthday": "2007-08-14",
+          "first_name": "Moses Christophe",
+          "last_name": "Jonathan",
+          "nationality": "ID",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/51840/6583cc067d94b.png"
+        },
+        {
+          "active": true,
+          "id": 63756,
+          "name": "Erv",
+          "role": null,
+          "slug": "erv",
+          "modified_at": "2026-09-09T07:34:35Z",
+          "age": 22,
+          "birthday": "2004-02-16",
+          "first_name": "Shen",
+          "last_name": "Zhiwei",
+          "nationality": "CN",
+          "image_url": null
+        }
+      ],
+      "modified_at": "2026-09-09T07:34:36Z",
+      "acronym": "TYLOO",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/133288/600px_ty_loo_2016_allmode.png",
+      "dark_mode_image_url": null,
+      "current_videogame": {
+        "id": 26,
+        "name": "Valorant",
+        "slug": "valorant"
+      }
+    },
+    {
+      "id": 128917,
+      "name": "Paper Rex",
+      "location": "SG",
+      "slug": "paper-rex-valorant",
+      "players": [
+        {
+          "active": true,
+          "id": 20576,
+          "name": "d4v41",
+          "role": null,
+          "slug": "d4v41",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "age": 27,
+          "birthday": "1998-10-14",
+          "first_name": "Khalish",
+          "last_name": "Rusyaidee",
+          "nationality": "MY",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/20576/800px_paper_rex___d4v41.png"
+        },
+        {
+          "active": true,
+          "id": 24466,
+          "name": "f0rsakeN",
+          "role": null,
+          "slug": "f0rsaken",
+          "modified_at": "2026-09-09T07:34:40Z",
+          "age": 22,
+          "birthday": "2004-03-25",
+          "first_name": "Jason",
+          "last_name": "Susanto",
+          "nationality": "ID",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/24466/800px_paper_rex___f0rsake_n.png"
+        },
+        {
+          "active": true,
+          "id": 35982,
+          "name": "something",
+          "role": null,
+          "slug": "smth",
+          "modified_at": "2026-09-09T07:34:41Z",
+          "age": 24,
+          "birthday": "2002-02-11",
+          "first_name": "Ilya",
+          "last_name": "Petrov",
+          "nationality": "RU",
+          "image_url": null
+        },
+        {
+          "active": true,
+          "id": 37229,
+          "name": "Jinggg",
+          "role": null,
+          "slug": "jinggg",
+          "modified_at": "2026-09-09T07:34:40Z",
+          "age": 23,
+          "birthday": "2003-07-29",
+          "first_name": "Jing Jie",
+          "last_name": "Wang",
+          "nationality": "SG",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/37229/valorant_paper_rex_jinggg_1024x576_removebg_preview.png"
+        },
+        {
+          "active": true,
+          "id": 39220,
+          "name": "invy",
+          "role": null,
+          "slug": "invy",
+          "modified_at": "2026-09-09T07:34:40Z",
+          "age": 22,
+          "birthday": "2004-07-08",
+          "first_name": "Jiggs",
+          "last_name": "Adrian Reyes",
+          "nationality": "PH",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/39220/ezgif_7_babb0c3fa6.png"
+        }
+      ],
+      "modified_at": "2026-09-09T07:34:41Z",
+      "acronym": "PR",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/128917/712px_paper_rex_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128917/712px_paper_rex_darkmode.png",
+      "current_videogame": {
+        "id": 26,
+        "name": "Valorant",
+        "slug": "valorant"
+      }
+    },
+    {
+      "id": 128541,
+      "name": "Team Liquid",
+      "location": "NL",
+      "slug": "team-liquid-valorant",
+      "players": [
+        {
+          "active": true,
+          "id": 32845,
+          "name": "nAts",
+          "role": null,
+          "slug": "nats",
+          "modified_at": "2026-09-09T07:34:37Z",
+          "age": 24,
+          "birthday": "2002-07-01",
+          "first_name": "Ayaz",
+          "last_name": "Akhmetshin",
+          "nationality": "RU",
+          "image_url": null
+        },
+        {
+          "active": true,
+          "id": 33980,
+          "name": "trexx",
+          "role": null,
+          "slug": "trexx",
+          "modified_at": "2026-09-09T07:34:38Z",
+          "age": 22,
+          "birthday": "2004-04-24",
+          "first_name": "Nikita",
+          "last_name": "Cherednichenko",
+          "nationality": "RU",
+          "image_url": null
+        },
+        {
+          "active": true,
+          "id": 40087,
+          "name": "kamo",
+          "role": null,
+          "slug": "kamo",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "age": 21,
+          "birthday": "2005-04-11",
+          "first_name": "Kamil",
+          "last_name": "Frąckowiak",
+          "nationality": "PL",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/40087/ezgif_6_7b7d48a8a0.png"
+        },
+        {
+          "active": true,
+          "id": 40102,
+          "name": "Kicks",
+          "role": null,
+          "slug": "kicks",
+          "modified_at": "2026-09-09T07:34:37Z",
+          "age": 21,
+          "birthday": "2005-09-18",
+          "first_name": "Kimmie",
+          "last_name": "Laasner",
+          "nationality": "EE",
+          "image_url": null
+        },
+        {
+          "active": true,
+          "id": 58620,
+          "name": "GSR",
+          "role": null,
+          "slug": "gsr-7b1ce8f5-9674-4422-91f3-fed0ad1ba0fc",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "age": 18,
+          "birthday": "2008-08-09",
+          "first_name": "Ognjen",
+          "last_name": "Bondžić",
+          "nationality": "RS",
+          "image_url": null
+        }
+      ],
+      "modified_at": "2026-09-10T10:18:28Z",
+      "acronym": "TL",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png",
+      "current_videogame": {
+        "id": 26,
+        "name": "Valorant",
+        "slug": "valorant"
+      }
+    },
+    {
+      "id": 128538,
+      "name": "G2 Esports",
+      "location": "DE",
+      "slug": "g2-esports-valorant",
+      "players": [
+        {
+          "active": true,
+          "id": 8539,
+          "name": "babybay",
+          "role": null,
+          "slug": "babybay",
+          "modified_at": "2026-09-09T07:34:38Z",
+          "age": 31,
+          "birthday": "1995-06-23",
+          "first_name": "Andrej",
+          "last_name": "Francisty",
+          "nationality": "US",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/8539/reign_baby_bay.png"
+        },
+        {
+          "active": true,
+          "id": 33761,
+          "name": "leaf",
+          "role": null,
+          "slug": "leaf-nathan-orf",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "age": 22,
+          "birthday": "2003-11-24",
+          "first_name": "Nathan",
+          "last_name": "Orf",
+          "nationality": "US",
+          "image_url": null
+        },
+        {
+          "active": true,
+          "id": 34520,
+          "name": "valyn",
+          "role": null,
+          "slug": "valyn",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "age": 23,
+          "birthday": "2003-01-04",
+          "first_name": "Jacob",
+          "last_name": "Batio",
+          "nationality": "US",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/34520/ezgif_6_b58d0294e0.png"
+        },
+        {
+          "active": true,
+          "id": 36092,
+          "name": "jawgemo",
+          "role": null,
+          "slug": "jawgemo",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "age": 27,
+          "birthday": "1999-06-24",
+          "first_name": "Alexander",
+          "last_name": "Mor",
+          "nationality": "US",
+          "image_url": null
+        },
+        {
+          "active": true,
+          "id": 38787,
+          "name": "trent",
+          "role": null,
+          "slug": "habib-68856582-61a1-49e1-8cbc-31123f588c8f",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "age": 21,
+          "birthday": "2004-12-09",
+          "first_name": "Trent",
+          "last_name": "Cairns",
+          "nationality": "US",
+          "image_url": "https://cdn-api.pandascore.co/images/player/image/38787/ezgif_6_f2911e407c.png"
+        }
+      ],
+      "modified_at": "2026-09-09T07:34:39Z",
+      "acronym": "G2",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/128538/900px_g2_esports_2019.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128538/189px_g2_esports_2019_darkmode.png",
+      "current_videogame": {
+        "id": 26,
+        "name": "Valorant",
+        "slug": "valorant"
+      }
+    }
+  ]
+}

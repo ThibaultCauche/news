@@ -1,0 +1,1334 @@
+[
+  {
+    "id": 21883,
+    "name": "Group C",
+    "type": "offline",
+    "matches": [
+      {
+        "id": 1682152,
+        "name": "TL vs PR",
+        "status": "finished",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-09-24T09:21:57Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T11:58:31Z",
+        "forfeit": false,
+        "winner_id": 128917,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "team-liquid-vs-paper-rex-2026-09-24",
+        "tournament_id": 21883,
+        "modified_at": "2026-09-24T12:01:00Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-09-24T09:00:00Z",
+        "original_scheduled_at": "2026-09-24T09:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": false,
+            "language": "ko",
+            "embed_url": "https://www.youtube.com/embed/EsjNn-mRnMs",
+            "official": false,
+            "raw_url": "https://www.youtube.com/watch?v=EsjNn-mRnMs"
+          },
+          {
+            "main": false,
+            "language": "ja",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_jpn"
+          },
+          {
+            "main": false,
+            "language": "zh",
+            "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorantesports_cn"
+          },
+          {
+            "main": false,
+            "language": "tr",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_tur"
+          },
+          {
+            "main": false,
+            "language": "fr",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_fr"
+          },
+          {
+            "main": false,
+            "language": "es",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_la",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_la"
+          },
+          {
+            "main": false,
+            "language": "pt",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_br",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_br"
+          },
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      },
+      {
+        "id": 1682153,
+        "name": "TYLOO vs G2",
+        "status": "finished",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-09-24T12:27:16Z",
+        "detailed_stats": true,
+        "end_at": "2026-09-24T13:56:04Z",
+        "forfeit": false,
+        "winner_id": 128538,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "tyloo-vs-g2-esports-2026-09-24",
+        "tournament_id": 21883,
+        "modified_at": "2026-09-24T14:06:32Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-09-24T12:30:00Z",
+        "original_scheduled_at": "2026-09-24T12:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": false,
+            "language": "zh",
+            "embed_url": "https://player.twitch.tv/?channel=valorantesports_cn",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorantesports_cn"
+          },
+          {
+            "main": false,
+            "language": "ja",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_jpn"
+          },
+          {
+            "main": false,
+            "language": "tr",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_tur"
+          },
+          {
+            "main": false,
+            "language": "fr",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_fr"
+          },
+          {
+            "main": false,
+            "language": "es",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_es"
+          },
+          {
+            "main": false,
+            "language": "ko",
+            "embed_url": "https://www.youtube.com/embed/EsjNn-mRnMs",
+            "official": false,
+            "raw_url": "https://www.youtube.com/watch?v=EsjNn-mRnMs"
+          },
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": true
+      },
+      {
+        "id": 1685230,
+        "name": "Winners Match: G2 vs PR",
+        "status": "not_started",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-09-29T09:00:00Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_id": null,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "paper-rex-2026-09-29",
+        "tournament_id": 21883,
+        "modified_at": "2026-09-24T14:51:11Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-09-29T09:00:00Z",
+        "original_scheduled_at": "2026-09-29T09:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      },
+      {
+        "id": 1685231,
+        "name": "Elimination Match: TYLOO vs TL",
+        "status": "not_started",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-10-01T09:00:00Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_id": null,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "team-liquid-2026-10-01",
+        "tournament_id": 21883,
+        "modified_at": "2026-09-24T14:51:13Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-10-01T09:00:00Z",
+        "original_scheduled_at": "2026-10-01T09:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      },
+      {
+        "id": 1685232,
+        "name": "Decider Match: TBD vs TBD",
+        "status": "not_started",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-10-03T09:00:00Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_id": null,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "2026-10-03-5c5cb51e-2cb4-41d7-8a50-6af031de2b27",
+        "tournament_id": 21883,
+        "modified_at": "2026-09-11T18:27:57Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-10-03T09:00:00Z",
+        "original_scheduled_at": "2026-10-03T09:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      }
+    ],
+    "country": "CN",
+    "begin_at": "2026-09-24T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": "2026-10-03T12:00:00Z",
+    "winner_id": null,
+    "winner_type": "Team",
+    "teams": [
+      {
+        "id": 128538,
+        "name": "G2 Esports",
+        "location": "DE",
+        "slug": "g2-esports-valorant",
+        "modified_at": "2026-09-09T07:34:39Z",
+        "acronym": "G2",
+        "image_url": "https://cdn-api.pandascore.co/images/team/image/128538/900px_g2_esports_2019.png",
+        "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128538/189px_g2_esports_2019_darkmode.png"
+      },
+      {
+        "id": 128541,
+        "name": "Team Liquid",
+        "location": "NL",
+        "slug": "team-liquid-valorant",
+        "modified_at": "2026-09-10T10:18:28Z",
+        "acronym": "TL",
+        "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+        "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+      },
+      {
+        "id": 128917,
+        "name": "Paper Rex",
+        "location": "SG",
+        "slug": "paper-rex-valorant",
+        "modified_at": "2026-09-09T07:34:41Z",
+        "acronym": "PR",
+        "image_url": "https://cdn-api.pandascore.co/images/team/image/128917/712px_paper_rex_lightmode.png",
+        "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128917/712px_paper_rex_darkmode.png"
+      },
+      {
+        "id": 133288,
+        "name": "TYLOO",
+        "location": "CN",
+        "slug": "tyloo-valorant",
+        "modified_at": "2026-09-09T07:34:36Z",
+        "acronym": "TYLOO",
+        "image_url": "https://cdn-api.pandascore.co/images/team/image/133288/600px_ty_loo_2016_allmode.png",
+        "dark_mode_image_url": null
+      }
+    ],
+    "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026-group-c",
+    "serie_id": 10953,
+    "serie": {
+      "id": 10953,
+      "name": "Champions",
+      "year": 2026,
+      "begin_at": "2026-09-24T09:00:00Z",
+      "end_at": "2026-10-18T21:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026",
+      "modified_at": "2026-09-10T10:05:24Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Champions 2026"
+    },
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "modified_at": "2026-09-11T18:12:49Z",
+    "league_id": 4531,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "prizepool": null,
+    "tier": "s",
+    "videogame_title": null,
+    "has_bracket": true,
+    "region": "ASIA",
+    "live_supported": false,
+    "expected_roster": [
+      {
+        "team": {
+          "id": 128538,
+          "name": "G2 Esports",
+          "location": "DE",
+          "slug": "g2-esports-valorant",
+          "modified_at": "2026-09-09T07:34:39Z",
+          "acronym": "G2",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128538/900px_g2_esports_2019.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128538/189px_g2_esports_2019_darkmode.png"
+        },
+        "players": [
+          {
+            "active": true,
+            "id": 8539,
+            "name": "babybay",
+            "role": null,
+            "slug": "babybay",
+            "modified_at": "2026-09-09T07:34:38Z",
+            "birthday": "1995-06-23",
+            "first_name": "Andrej",
+            "last_name": "Francisty",
+            "nationality": "US",
+            "age": 31,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/8539/reign_baby_bay.png"
+          },
+          {
+            "active": true,
+            "id": 33761,
+            "name": "leaf",
+            "role": null,
+            "slug": "leaf-nathan-orf",
+            "modified_at": "2026-09-09T07:34:39Z",
+            "birthday": "2003-11-24",
+            "first_name": "Nathan",
+            "last_name": "Orf",
+            "nationality": "US",
+            "age": 22,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 34520,
+            "name": "valyn",
+            "role": null,
+            "slug": "valyn",
+            "modified_at": "2026-09-09T07:34:39Z",
+            "birthday": "2003-01-04",
+            "first_name": "Jacob",
+            "last_name": "Batio",
+            "nationality": "US",
+            "age": 23,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/34520/ezgif_6_b58d0294e0.png"
+          },
+          {
+            "active": true,
+            "id": 36092,
+            "name": "jawgemo",
+            "role": null,
+            "slug": "jawgemo",
+            "modified_at": "2026-09-09T07:34:39Z",
+            "birthday": "1999-06-24",
+            "first_name": "Alexander",
+            "last_name": "Mor",
+            "nationality": "US",
+            "age": 27,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 38787,
+            "name": "trent",
+            "role": null,
+            "slug": "habib-68856582-61a1-49e1-8cbc-31123f588c8f",
+            "modified_at": "2026-09-09T07:34:39Z",
+            "birthday": "2004-12-09",
+            "first_name": "Trent",
+            "last_name": "Cairns",
+            "nationality": "US",
+            "age": 21,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/38787/ezgif_6_f2911e407c.png"
+          }
+        ]
+      },
+      {
+        "team": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        },
+        "players": [
+          {
+            "active": true,
+            "id": 32845,
+            "name": "nAts",
+            "role": null,
+            "slug": "nats",
+            "modified_at": "2026-09-09T07:34:37Z",
+            "birthday": "2002-07-01",
+            "first_name": "Ayaz",
+            "last_name": "Akhmetshin",
+            "nationality": "RU",
+            "age": 24,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 33980,
+            "name": "trexx",
+            "role": null,
+            "slug": "trexx",
+            "modified_at": "2026-09-09T07:34:38Z",
+            "birthday": "2004-04-24",
+            "first_name": "Nikita",
+            "last_name": "Cherednichenko",
+            "nationality": "RU",
+            "age": 22,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 40087,
+            "name": "kamo",
+            "role": null,
+            "slug": "kamo",
+            "modified_at": "2026-09-09T07:34:36Z",
+            "birthday": "2005-04-11",
+            "first_name": "Kamil",
+            "last_name": "Frąckowiak",
+            "nationality": "PL",
+            "age": 21,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/40087/ezgif_6_7b7d48a8a0.png"
+          },
+          {
+            "active": true,
+            "id": 40102,
+            "name": "Kicks",
+            "role": null,
+            "slug": "kicks",
+            "modified_at": "2026-09-09T07:34:37Z",
+            "birthday": "2005-09-18",
+            "first_name": "Kimmie",
+            "last_name": "Laasner",
+            "nationality": "EE",
+            "age": 21,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 58620,
+            "name": "GSR",
+            "role": null,
+            "slug": "gsr-7b1ce8f5-9674-4422-91f3-fed0ad1ba0fc",
+            "modified_at": "2026-09-10T10:18:28Z",
+            "birthday": "2008-08-09",
+            "first_name": "Ognjen",
+            "last_name": "Bondžić",
+            "nationality": "RS",
+            "age": 18,
+            "image_url": null
+          }
+        ]
+      },
+      {
+        "team": {
+          "id": 128917,
+          "name": "Paper Rex",
+          "location": "SG",
+          "slug": "paper-rex-valorant",
+          "modified_at": "2026-09-09T07:34:41Z",
+          "acronym": "PR",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128917/712px_paper_rex_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128917/712px_paper_rex_darkmode.png"
+        },
+        "players": [
+          {
+            "active": true,
+            "id": 20576,
+            "name": "d4v41",
+            "role": null,
+            "slug": "d4v41",
+            "modified_at": "2026-09-09T07:34:39Z",
+            "birthday": "1998-10-14",
+            "first_name": "Khalish",
+            "last_name": "Rusyaidee",
+            "nationality": "MY",
+            "age": 27,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/20576/800px_paper_rex___d4v41.png"
+          },
+          {
+            "active": true,
+            "id": 24466,
+            "name": "f0rsakeN",
+            "role": null,
+            "slug": "f0rsaken",
+            "modified_at": "2026-09-09T07:34:40Z",
+            "birthday": "2004-03-25",
+            "first_name": "Jason",
+            "last_name": "Susanto",
+            "nationality": "ID",
+            "age": 22,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/24466/800px_paper_rex___f0rsake_n.png"
+          },
+          {
+            "active": true,
+            "id": 35982,
+            "name": "something",
+            "role": null,
+            "slug": "smth",
+            "modified_at": "2026-09-09T07:34:41Z",
+            "birthday": "2002-02-11",
+            "first_name": "Ilya",
+            "last_name": "Petrov",
+            "nationality": "RU",
+            "age": 24,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 37229,
+            "name": "Jinggg",
+            "role": null,
+            "slug": "jinggg",
+            "modified_at": "2026-09-09T07:34:40Z",
+            "birthday": "2003-07-29",
+            "first_name": "Jing Jie",
+            "last_name": "Wang",
+            "nationality": "SG",
+            "age": 23,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/37229/valorant_paper_rex_jinggg_1024x576_removebg_preview.png"
+          },
+          {
+            "active": true,
+            "id": 39220,
+            "name": "invy",
+            "role": null,
+            "slug": "invy",
+            "modified_at": "2026-09-09T07:34:40Z",
+            "birthday": "2004-07-08",
+            "first_name": "Jiggs",
+            "last_name": "Adrian Reyes",
+            "nationality": "PH",
+            "age": 22,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/39220/ezgif_7_babb0c3fa6.png"
+          }
+        ]
+      },
+      {
+        "team": {
+          "id": 133288,
+          "name": "TYLOO",
+          "location": "CN",
+          "slug": "tyloo-valorant",
+          "modified_at": "2026-09-09T07:34:36Z",
+          "acronym": "TYLOO",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133288/600px_ty_loo_2016_allmode.png",
+          "dark_mode_image_url": null
+        },
+        "players": [
+          {
+            "active": true,
+            "id": 24088,
+            "name": "SLOWLY",
+            "role": null,
+            "slug": "slowly",
+            "modified_at": "2026-09-09T07:34:36Z",
+            "birthday": "2001-09-23",
+            "first_name": "Kelun",
+            "last_name": "Sun",
+            "nationality": "CN",
+            "age": 25,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/24088/600px_slowly_at_pro_house_2021.png"
+          },
+          {
+            "active": true,
+            "id": 41760,
+            "name": "SiuFatBB",
+            "role": null,
+            "slug": "siufanbb",
+            "modified_at": "2026-09-09T07:34:36Z",
+            "birthday": "1999-06-19",
+            "first_name": "Hei",
+            "last_name": "Ka Pong",
+            "nationality": "HK",
+            "age": 27,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/41760/gfn_siu_fat_bb_2022.png"
+          },
+          {
+            "active": true,
+            "id": 49272,
+            "name": "Scales",
+            "role": null,
+            "slug": "scales",
+            "modified_at": "2026-09-09T07:34:36Z",
+            "birthday": "2004-10-20",
+            "first_name": "Zhang ",
+            "last_name": "Zhen ",
+            "nationality": "CN",
+            "age": 21,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 51840,
+            "name": "splash",
+            "role": null,
+            "slug": "splash-moses-christophe-jonathan",
+            "modified_at": "2026-09-09T07:34:36Z",
+            "birthday": "2007-08-14",
+            "first_name": "Moses Christophe",
+            "last_name": "Jonathan",
+            "nationality": "ID",
+            "age": 19,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/51840/6583cc067d94b.png"
+          },
+          {
+            "active": true,
+            "id": 63756,
+            "name": "Erv",
+            "role": null,
+            "slug": "erv",
+            "modified_at": "2026-09-09T07:34:35Z",
+            "birthday": "2004-02-16",
+            "first_name": "Shen",
+            "last_name": "Zhiwei",
+            "nationality": "CN",
+            "age": 22,
+            "image_url": null
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 21884,
+    "name": "Group D",
+    "type": "offline",
+    "matches": [
+      {
+        "id": 1682154,
+        "name": "NS vs NRG",
+        "status": "running",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-09-25T09:09:56Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_id": null,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "nongshim-redforce-vs-nrg-2026-09-25",
+        "tournament_id": 21884,
+        "modified_at": "2026-09-25T10:14:18Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-09-25T09:00:00Z",
+        "original_scheduled_at": "2026-09-25T09:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": false,
+            "language": "de",
+            "embed_url": "https://player.twitch.tv/?channel=harmii",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/harmii"
+          },
+          {
+            "main": false,
+            "language": "fr",
+            "embed_url": "https://www.youtube.com/embed/FZLZk15DJhw",
+            "official": false,
+            "raw_url": "https://www.youtube.com/watch?v=FZLZk15DJhw"
+          },
+          {
+            "main": false,
+            "language": "ja",
+            "embed_url": "https://player.twitch.tv/?channel=valorant_jpn",
+            "official": false,
+            "raw_url": "https://www.twitch.tv/valorant_jpn"
+          },
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      },
+      {
+        "id": 1682155,
+        "name": "KC vs XLG",
+        "status": "not_started",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-09-25T12:00:00Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_id": null,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "karmine-corp-vs-xlg-gaming-2026-09-25",
+        "tournament_id": 21884,
+        "modified_at": "2026-09-25T07:41:58Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-09-25T12:00:00Z",
+        "original_scheduled_at": "2026-09-25T12:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      },
+      {
+        "id": 1685233,
+        "name": "Winners Match: TBD vs TBD",
+        "status": "not_started",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-09-29T12:00:00Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_id": null,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "2026-09-29-b6897aec-7df2-4fd0-b147-ca6e160a5077",
+        "tournament_id": 21884,
+        "modified_at": "2026-09-11T18:27:43Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-09-29T12:00:00Z",
+        "original_scheduled_at": "2026-09-29T12:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      },
+      {
+        "id": 1685234,
+        "name": "Elimination Match: TBD vs TBD",
+        "status": "not_started",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-10-01T12:00:00Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_id": null,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "2026-10-01-b3ad4be2-4568-48a8-b1ce-ff983516beeb",
+        "tournament_id": 21884,
+        "modified_at": "2026-09-11T18:27:51Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-10-01T12:00:00Z",
+        "original_scheduled_at": "2026-10-01T12:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      },
+      {
+        "id": 1685235,
+        "name": "Decider Match: TBD vs TBD",
+        "status": "not_started",
+        "live": {
+          "supported": false,
+          "url": null,
+          "opens_at": null
+        },
+        "begin_at": "2026-10-03T12:00:00Z",
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_id": null,
+        "winner_type": "Team",
+        "draw": false,
+        "slug": "2026-10-03-26b23002-2ebe-46e1-9ba8-ba5e249cb9e8",
+        "tournament_id": 21884,
+        "modified_at": "2026-09-11T18:28:00Z",
+        "match_type": "best_of",
+        "number_of_games": 3,
+        "scheduled_at": "2026-10-03T12:00:00Z",
+        "original_scheduled_at": "2026-10-03T12:00:00Z",
+        "game_advantage": null,
+        "low_latency_feed": false,
+        "streams_list": [
+          {
+            "main": true,
+            "language": "en",
+            "embed_url": "https://player.twitch.tv/?channel=valorant",
+            "official": true,
+            "raw_url": "https://www.twitch.tv/valorant"
+          }
+        ],
+        "rescheduled": false
+      }
+    ],
+    "country": "CN",
+    "begin_at": "2026-09-25T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": "2026-10-03T15:00:00Z",
+    "winner_id": null,
+    "winner_type": "Team",
+    "teams": [
+      {
+        "id": 128471,
+        "name": "NRG",
+        "location": "US",
+        "slug": "nrg-valorant",
+        "modified_at": "2026-09-09T07:36:48Z",
+        "acronym": "NRG",
+        "image_url": "https://cdn-api.pandascore.co/images/team/image/128471/nrg_2020.png",
+        "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128471/799px_nrg_2024_allmode.png"
+      },
+      {
+        "id": 130922,
+        "name": "Karmine Corp",
+        "location": "FR",
+        "slug": "karmine-corp-valorant",
+        "modified_at": "2026-09-09T07:36:46Z",
+        "acronym": "KC",
+        "image_url": "https://cdn-api.pandascore.co/images/team/image/130922/600px_karmine_corp_lightmode_full.png",
+        "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/130922/632px_karmine_corp_allmode.png"
+      },
+      {
+        "id": 132692,
+        "name": "Nongshim RedForce",
+        "location": "KR",
+        "slug": "nongshim-redforce",
+        "modified_at": "2026-09-09T07:36:47Z",
+        "acronym": "NS",
+        "image_url": "https://cdn-api.pandascore.co/images/team/image/132692/nongshim_red_forcelogo_square.png",
+        "dark_mode_image_url": null
+      },
+      {
+        "id": 135470,
+        "name": "XLG Gaming",
+        "location": "CN",
+        "slug": "zy-gaming",
+        "modified_at": "2026-09-09T07:36:49Z",
+        "acronym": "XLG",
+        "image_url": "https://cdn-api.pandascore.co/images/team/image/135470/800px_xlg_china_2024_allmode.png",
+        "dark_mode_image_url": null
+      }
+    ],
+    "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026-group-d",
+    "serie_id": 10953,
+    "serie": {
+      "id": 10953,
+      "name": "Champions",
+      "year": 2026,
+      "begin_at": "2026-09-24T09:00:00Z",
+      "end_at": "2026-10-18T21:00:00Z",
+      "winner_id": null,
+      "winner_type": "Team",
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1-champions-2026",
+      "modified_at": "2026-09-10T10:05:24Z",
+      "league_id": 4531,
+      "season": null,
+      "full_name": "Champions 2026"
+    },
+    "videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "modified_at": "2026-09-11T18:14:01Z",
+    "league_id": 4531,
+    "league": {
+      "id": 4531,
+      "name": "VCT",
+      "url": null,
+      "slug": "valorant-vct-2021-north-america-stage-1-challengers-1",
+      "modified_at": "2023-02-13T19:07:55Z",
+      "image_url": "https://cdn-api.pandascore.co/images/league/image/4531/800px-vct_2023_logo_lightmode-png"
+    },
+    "prizepool": null,
+    "tier": "s",
+    "videogame_title": null,
+    "has_bracket": true,
+    "region": "ASIA",
+    "live_supported": false,
+    "expected_roster": [
+      {
+        "team": {
+          "id": 128471,
+          "name": "NRG",
+          "location": "US",
+          "slug": "nrg-valorant",
+          "modified_at": "2026-09-09T07:36:48Z",
+          "acronym": "NRG",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128471/nrg_2020.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128471/799px_nrg_2024_allmode.png"
+        },
+        "players": [
+          {
+            "active": true,
+            "id": 17733,
+            "name": "Ethan",
+            "role": null,
+            "slug": "nahte",
+            "modified_at": "2026-09-09T07:36:47Z",
+            "birthday": "2000-03-02",
+            "first_name": "Ethan",
+            "last_name": "Arnold",
+            "nationality": "US",
+            "age": 26,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/17733/900px_ethan_epicenter_2019.png"
+          },
+          {
+            "active": true,
+            "id": 33752,
+            "name": "mada",
+            "role": null,
+            "slug": "mada-fa367815-0ed7-4d7d-a362-27859b566c19",
+            "modified_at": "2026-09-09T07:36:48Z",
+            "birthday": "2003-12-16",
+            "first_name": "Adam",
+            "last_name": "Pampuch",
+            "nationality": "CA",
+            "age": 22,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 35621,
+            "name": "skuba",
+            "role": null,
+            "slug": "skuba",
+            "modified_at": "2026-09-09T07:36:48Z",
+            "birthday": "2002-12-03",
+            "first_name": "Logan",
+            "last_name": "Jenkins",
+            "nationality": "US",
+            "age": 23,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 36074,
+            "name": "brawk",
+            "role": null,
+            "slug": "brawk",
+            "modified_at": "2026-09-09T07:36:47Z",
+            "birthday": "2000-05-06",
+            "first_name": "Brock ",
+            "last_name": "Somerhalder",
+            "nationality": "US",
+            "age": 26,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 41613,
+            "name": "Keiko",
+            "role": null,
+            "slug": "keiko-4f195478-a22e-4087-b4d0-d4d3ebec2260",
+            "modified_at": "2026-09-09T07:36:47Z",
+            "birthday": "2003-09-12",
+            "first_name": "Georgio",
+            "last_name": "Sanassy",
+            "nationality": "GB",
+            "age": 23,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/41613/keiko_2048x2048.png"
+          }
+        ]
+      },
+      {
+        "team": {
+          "id": 130922,
+          "name": "Karmine Corp",
+          "location": "FR",
+          "slug": "karmine-corp-valorant",
+          "modified_at": "2026-09-09T07:36:46Z",
+          "acronym": "KC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/130922/600px_karmine_corp_lightmode_full.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/130922/632px_karmine_corp_allmode.png"
+        },
+        "players": [
+          {
+            "active": true,
+            "id": 33112,
+            "name": "SUYGETSU",
+            "role": null,
+            "slug": "suygetsu",
+            "modified_at": "2026-09-09T07:36:46Z",
+            "birthday": "2002-07-16",
+            "first_name": "Dmitry",
+            "last_name": "Ilyushin",
+            "nationality": "RU",
+            "age": 24,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 36020,
+            "name": "Avez",
+            "role": null,
+            "slug": "avez",
+            "modified_at": "2026-09-09T07:36:45Z",
+            "birthday": "2004-10-05",
+            "first_name": "Hazem",
+            "last_name": "Khaled",
+            "nationality": "EG",
+            "age": 21,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/36020/605f9846e03ee.png"
+          },
+          {
+            "active": true,
+            "id": 46621,
+            "name": "LewN",
+            "role": null,
+            "slug": "lewn",
+            "modified_at": "2026-09-09T07:36:45Z",
+            "birthday": "2006-11-05",
+            "first_name": "Burak",
+            "last_name": "Alkan",
+            "nationality": "TR",
+            "age": 19,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 48129,
+            "name": "N4RRATE",
+            "role": null,
+            "slug": "n4rrate",
+            "modified_at": "2026-09-09T07:36:46Z",
+            "birthday": "2002-11-25",
+            "first_name": "Marshall",
+            "last_name": "Massey",
+            "nationality": "US",
+            "age": 23,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/48129/900px_sen_n4_rrate_at_masters_torronto.png"
+          },
+          {
+            "active": true,
+            "id": 48955,
+            "name": "dos9",
+            "role": null,
+            "slug": "aex-dos9",
+            "modified_at": "2026-09-09T07:36:45Z",
+            "birthday": "2004-06-03",
+            "first_name": "Zhumagali",
+            "last_name": "Dastan",
+            "nationality": "KZ",
+            "age": 22,
+            "image_url": null
+          }
+        ]
+      },
+      {
+        "team": {
+          "id": 132692,
+          "name": "Nongshim RedForce",
+          "location": "KR",
+          "slug": "nongshim-redforce",
+          "modified_at": "2026-09-09T07:36:47Z",
+          "acronym": "NS",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/132692/nongshim_red_forcelogo_square.png",
+          "dark_mode_image_url": null
+        },
+        "players": [
+          {
+            "active": true,
+            "id": 32454,
+            "name": "Rb",
+            "role": null,
+            "slug": "rb-goo-sang-min",
+            "modified_at": "2026-09-09T07:36:47Z",
+            "birthday": "2001-12-07",
+            "first_name": "Sang-Min",
+            "last_name": "Goo",
+            "nationality": "KR",
+            "age": 24,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/32454/600px_rb_at_first_strike_korea.png"
+          },
+          {
+            "active": true,
+            "id": 48798,
+            "name": "Francis",
+            "role": null,
+            "slug": "francis",
+            "modified_at": "2026-09-09T07:36:46Z",
+            "birthday": "2006-07-31",
+            "first_name": "Kim",
+            "last_name": "Mu-bin",
+            "nationality": "KR",
+            "age": 20,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/48798/ezgif_54a0412cc338e0.png"
+          },
+          {
+            "active": true,
+            "id": 48799,
+            "name": "Dambi",
+            "role": null,
+            "slug": "dambi",
+            "modified_at": "2026-09-09T07:36:46Z",
+            "birthday": "2006-06-22",
+            "first_name": "Lee ",
+            "last_name": "Hyuk-kyu",
+            "nationality": "KR",
+            "age": 20,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/48799/ezgif_3_eb4f1f127c.png"
+          },
+          {
+            "active": true,
+            "id": 50124,
+            "name": "Ivy",
+            "role": null,
+            "slug": "ivy-7b0a20c7-c071-4114-800b-eb7c83dd2d5a",
+            "modified_at": "2026-09-09T07:36:46Z",
+            "birthday": "2006-05-20",
+            "first_name": "Park",
+            "last_name": "Sung-hyeon",
+            "nationality": "KR",
+            "age": 20,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/50124/ezgif_5385cacbdae458.png"
+          },
+          {
+            "active": true,
+            "id": 53023,
+            "name": "Xross",
+            "role": null,
+            "slug": "xross",
+            "modified_at": "2026-09-09T07:36:47Z",
+            "birthday": "2007-11-20",
+            "first_name": "Jung",
+            "last_name": "Hwan",
+            "nationality": "KR",
+            "age": 18,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/53023/600px_vck24_s1_ns_xross.png"
+          }
+        ]
+      },
+      {
+        "team": {
+          "id": 135470,
+          "name": "XLG Gaming",
+          "location": "CN",
+          "slug": "zy-gaming",
+          "modified_at": "2026-09-09T07:36:49Z",
+          "acronym": "XLG",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/135470/800px_xlg_china_2024_allmode.png",
+          "dark_mode_image_url": null
+        },
+        "players": [
+          {
+            "active": true,
+            "id": 39980,
+            "name": "Rarga",
+            "role": null,
+            "slug": "rarga",
+            "modified_at": "2026-09-09T07:36:48Z",
+            "birthday": "2001-11-20",
+            "first_name": "Arthur",
+            "last_name": "Churyumov",
+            "nationality": "RU",
+            "age": 24,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/39980/280px_rarga_at_valorant_masters_toronto_2025.png"
+          },
+          {
+            "active": true,
+            "id": 40745,
+            "name": "NoMan",
+            "role": null,
+            "slug": "noman",
+            "modified_at": "2026-09-09T07:36:49Z",
+            "birthday": "2004-09-13",
+            "first_name": "James",
+            "last_name": "Man",
+            "nationality": "HK",
+            "age": 22,
+            "image_url": null
+          },
+          {
+            "active": true,
+            "id": 49240,
+            "name": "happywei",
+            "role": null,
+            "slug": "happywei",
+            "modified_at": "2026-09-09T07:36:48Z",
+            "birthday": "2004-04-13",
+            "first_name": "Minwei",
+            "last_name": "Deng",
+            "nationality": "TW",
+            "age": 22,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/49240/280px_happywei_at_valorant_masters_toronto_2025.png"
+          },
+          {
+            "active": true,
+            "id": 49643,
+            "name": "Lysoar",
+            "role": null,
+            "slug": "lysoar",
+            "modified_at": "2026-09-09T07:36:48Z",
+            "birthday": "2005-02-22",
+            "first_name": "You Hao",
+            "last_name": "Liang",
+            "nationality": "CN",
+            "age": 21,
+            "image_url": "https://cdn-api.pandascore.co/images/player/image/49643/600px_lysoar_at_the_valorant_champions_2023.png"
+          },
+          {
+            "active": true,
+            "id": 51190,
+            "name": "WsLeo",
+            "role": null,
+            "slug": "wsleo",
+            "modified_at": "2026-09-09T07:36:48Z",
+            "birthday": "2001-03-18",
+            "first_name": "Huang",
+            "last_name": "Ping-Wei",
+            "nationality": "TW",
+            "age": 25,
+            "image_url": null
+          }
+        ]
+      }
+    ]
+  }
+]

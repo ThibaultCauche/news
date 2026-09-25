@@ -1,0 +1,147 @@
+[
+  {
+    "active": true,
+    "id": 68013,
+    "name": "SRG Sarah1",
+    "role": null,
+    "slug": "srg-sarah1",
+    "modified_at": "2026-09-17T22:07:29Z",
+    "birthday": null,
+    "first_name": null,
+    "last_name": null,
+    "nationality": null,
+    "age": null,
+    "image_url": null,
+    "current_videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "current_team": {
+      "id": 131274,
+      "name": "Shopify Rebellion Gold",
+      "location": "US",
+      "slug": "shopify-rebellion-gc",
+      "modified_at": "2026-09-17T22:07:29Z",
+      "acronym": "SRG",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/131274/406px_shopify_rebellion_gold_lightmode.png",
+      "dark_mode_image_url": null
+    }
+  },
+  {
+    "active": true,
+    "id": 67953,
+    "name": "xyro",
+    "role": null,
+    "slug": "xyro-valorant",
+    "modified_at": "2026-09-17T14:37:41Z",
+    "birthday": null,
+    "first_name": null,
+    "last_name": null,
+    "nationality": null,
+    "age": null,
+    "image_url": null,
+    "current_videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "current_team": {
+      "id": 135541,
+      "name": "swaglord9000",
+      "location": "AU",
+      "slug": "swaglord9000",
+      "modified_at": "2026-09-15T08:21:12Z",
+      "acronym": "SL9",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/135541/66c3c4cdc06d6.png",
+      "dark_mode_image_url": null
+    }
+  },
+  {
+    "active": true,
+    "id": 67952,
+    "name": "Becca",
+    "role": null,
+    "slug": "becca",
+    "modified_at": "2026-09-17T14:37:37Z",
+    "birthday": null,
+    "first_name": null,
+    "last_name": null,
+    "nationality": "SG",
+    "age": null,
+    "image_url": null,
+    "current_videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "current_team": {
+      "id": 139242,
+      "name": "FULL SENSE SISU",
+      "location": "TH",
+      "slug": "full-sense-sisu",
+      "modified_at": "2026-09-15T08:19:51Z",
+      "acronym": "FSF",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139242/600px_full_sense_2025_full_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139242/600px_full_sense_2025_full_darkmode.png"
+    }
+  },
+  {
+    "active": true,
+    "id": 67928,
+    "name": "Yyni",
+    "role": null,
+    "slug": "yyni",
+    "modified_at": "2026-09-13T19:31:27Z",
+    "birthday": "2005-09-20",
+    "first_name": null,
+    "last_name": null,
+    "nationality": "TW",
+    "age": 21,
+    "image_url": null,
+    "current_videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "current_team": {
+      "id": 136774,
+      "name": "Nova Esports GC",
+      "location": "",
+      "slug": "nova-esports-gc",
+      "modified_at": "2026-09-13T19:31:27Z",
+      "acronym": "NE.GC",
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/136774/nova_esports_lightmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136774/190px_nova_esports_latam_allmode.png"
+    }
+  },
+  {
+    "active": true,
+    "id": 67927,
+    "name": "JuanJ",
+    "role": null,
+    "slug": "juanj",
+    "modified_at": "2026-09-13T19:30:24Z",
+    "birthday": null,
+    "first_name": null,
+    "last_name": null,
+    "nationality": "CN",
+    "age": null,
+    "image_url": null,
+    "current_videogame": {
+      "id": 26,
+      "name": "Valorant",
+      "slug": "valorant"
+    },
+    "current_team": {
+      "id": 139261,
+      "name": "Yew Reign Gaming",
+      "location": "CN",
+      "slug": "yew-reign-gaming",
+      "modified_at": "2026-09-13T19:30:24Z",
+      "acronym": null,
+      "image_url": "https://cdn-api.pandascore.co/images/team/image/139261/yew_reign_gaming_logo_allmode.png",
+      "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/139261/yew_reign_gaming_logo_allmode.png"
+    }
+  }
+]
