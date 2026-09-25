@@ -18,15 +18,16 @@ Ne lis que ce dont la tâche a besoin.
 
 ## État actuel
 
-- **Jalon en cours : J1** (rien n'est encore codé). Mettre à jour cette ligne à chaque fin de jalon.
+- **Jalon en cours : J2** (J1 fait le 2026-09-25). Mettre à jour cette ligne à chaque fin de jalon.
+- **J1 fait** : monorepo pnpm (`apps/api`, `apps/worker`, `packages/domain`, `packages/db`, `packages/providers`), schéma Prisma, adaptateur PandaScore (ligues → séries → tournois → matchs), jobs BullMQ (catalogue/calendrier/live), upsert idempotent, quota et latence loggés. Vérifié en conditions réelles sur Champions 2026. **Brackets et classements (`event_link`/`standing`) pas encore alimentés, reportés au J5.**
 - Déjà présent dans le dépôt :
-  - `tests-pandascore/` : scripts de test de l'API PandaScore et **réponses réelles** dans `samples/` et `samples-multijeux/`. À réutiliser comme **fixtures de tests** des adaptateurs.
+  - `tests-pandascore/` : scripts de test de l'API PandaScore et **réponses réelles** dans `samples/` et `samples-multijeux/`. Réutilisées comme **fixtures de tests** de l'adaptateur PandaScore.
   - `politique-quiz/` : extraction de l'open data de l'Assemblée (scrutins, députés) pour le prototype du jeu « Qui a voté ? ». `data/` est ignoré par Git (≈ 250 Mo, retéléchargeable).
 
 ## Stack
 
 - **Backend** : NestJS (TypeScript strict), monorepo **pnpm**, deux points d'entrée `api` et `worker`.
-- **Données** : PostgreSQL 16 + Redis 7, **Prisma** (proposé ; Drizzle possible, à trancher au J1), **BullMQ** pour les jobs.
+- **Données** : PostgreSQL 16 + Redis 7, **Prisma** (tranché au J1), **BullMQ** pour les jobs.
 - **API** : REST `/v1` pensée par écran, spec **OpenAPI** générée par NestJS → **client Dart généré**.
 - **Mobile** : Flutter, Riverpod, cache local **drift**, `CustomPainter` pour l'arbre radial, `firebase_messaging`.
 - **Push** : Firebase Cloud Messaging (APNs pour iOS).
@@ -76,7 +77,30 @@ politique-quiz/     prototype open data Assemblée
 
 ## Commandes
 
-À compléter au J1 (installation, `docker compose up`, lancer l'API et le worker, migrations, tests, génération du client Dart).
+```bash
+# Installation
+pnpm install
+
+# Base et cache (dev)
+docker compose -f infra/docker-compose.dev.yml up -d
+
+# Migrations Prisma (lit .env à la racine)
+pnpm db:migrate       # migration dev + génère le client
+pnpm db:generate      # régénère juste le client Prisma
+
+# Lancer l'API / le worker (chacun charge .env à la racine)
+pnpm api:dev
+pnpm worker:dev
+
+# Tests et vérification de types, tous packages
+pnpm -r test
+pnpm -r lint
+
+# Inspecter la base pendant le dev
+pnpm --filter @news/db exec prisma studio
+```
+
+`.env` doit contenir `PANDASCORE_TOKEN` (voir `.env.example`) pour que le worker ingère de vraies données. Génération du client Dart : à ajouter au J2.
 
 ## Maquettes (Figma)
 

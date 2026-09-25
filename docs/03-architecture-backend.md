@@ -278,7 +278,7 @@ Détaillé, avec critères d'acceptation, dans **`04-jalons.md`** (J1 → J7).
 ## Points ouverts
 
 - Brackets et standings PandaScore accessibles en gratuit : **confirmé** (2026-09-25).
-- Prisma ou Drizzle pour l'accès aux données. Prisma est proposé pour sa prise en main ; à trancher au J1.
+- ~~Prisma ou Drizzle pour l'accès aux données.~~ **Prisma retenu (2026-09-25, J1)** pour sa prise en main et ses migrations.
 - Nom de domaine de l'appli (nécessaire pour le tunnel et les liens).
 - Création du compte Apple Developer (99 $/an) avant les tests de push iOS.
 - Nom de l'appli (« News » est un nom de travail).

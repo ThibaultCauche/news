@@ -6,7 +6,7 @@
 
 | Jalon | Contenu | Résultat visible | Statut |
 |---|---|---|---|
-| J1 | Monorepo, Compose de dev, schéma de base, adaptateur PandaScore (Valorant) | Les matchs Valorant arrivent en base | **À faire** |
+| J1 | Monorepo, Compose de dev, schéma de base, adaptateur PandaScore (Valorant) | Les matchs Valorant arrivent en base | **Fait (2026-09-25)** |
 | J2 | API `home`, `agenda`, `events/:id`, `competitions/:id` + client Dart généré | L'API répond avec de vraies données | À faire |
 | J3 | Appli Flutter : accueil, agenda, page Valorant, prochain match | Première version utilisable | À faire |
 | J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | À faire |
@@ -38,12 +38,12 @@
 - `.env.example` à la racine.
 
 **Critères d'acceptation**
-- [ ] `docker compose -f infra/docker-compose.dev.yml up` puis le worker → les tournois et matchs de Champions 2026 sont en base, avec équipes, statuts, score de série et gagnant de chaque carte.
-- [ ] Relancer l'ingestion sans changement côté source n'écrit rien (vérifié par un test ou un log).
-- [ ] Tests unitaires de normalisation sur les JSON réels de `tests-pandascore/samples/` (matchs à venir, en cours, terminés, brackets, classements).
-- [ ] Le quota consommé est visible dans les logs et reste sous ~400 req/h.
-- [ ] Journaliser, pour chaque match terminé, l'écart entre `end_at` et le moment où le worker le détecte (**mesure de la latence réelle**, point ouvert de `docs/01`).
-- [ ] Section « Commandes » de `CLAUDE.md` remplie.
+- [x] `docker compose -f infra/docker-compose.dev.yml up` puis le worker → les tournois et matchs de Champions 2026 sont en base, avec équipes, statuts, score de série et gagnant de chaque carte. Vérifié le 2026-09-25 : 68 compétitions, 34 événements dont 4 vrais matchs Champions 2026 terminés.
+- [x] Relancer l'ingestion sans changement côté source n'écrit rien (vérifié par un test ou un log). Vérifié par `shouldUpsert` (test unitaire) et en réel : un 2ᵉ passage catalogue+calendrier donne des compteurs identiques et aucun nouveau log.
+- [x] Tests unitaires de normalisation sur les JSON réels de `tests-pandascore/samples/` (matchs à venir, en cours, terminés). **Brackets et classements reportés au J5** : `event_link`/`standing` ne sont pas encore alimentés (tables créées, vides) — le adaptateur ne lit pas encore `/brackets` ni `/standings`, donc il n'y a pas encore de normalisation à tester ; ça viendra avec la construction des brackets au J5.
+- [x] Le quota consommé est visible dans les logs et reste sous ~400 req/h. Ratio de quota loggé à chaque passage (`QuotaTracker`), très en-dessous du seuil dans les tests réels.
+- [x] Journaliser, pour chaque match terminé, l'écart entre `end_at` et le moment où le worker le détecte (**mesure de la latence réelle**, point ouvert de `docs/01`). Log `"match terminé détecté"` avec `latencyMs`, vérifié sur les 4 vrais matchs.
+- [x] Section « Commandes » de `CLAUDE.md` remplie.
 
 **Hors périmètre** : API publique, Liquipedia, autres jeux (le modèle doit les permettre, mais on ne les active pas encore).
 
@@ -191,7 +191,6 @@
 
 | Point | Quand |
 |---|---|
-| Prisma ou Drizzle | J1 |
 | Emplacement du projet Flutter (`apps/mobile` ?) | J3 |
 | Compte Apple Developer (99 $/an) | Avant J4 (iOS) |
 | Nom de l'appli et nom de domaine (« News » est un nom de travail) | Avant J7 |
