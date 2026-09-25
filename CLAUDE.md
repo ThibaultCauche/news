@@ -18,8 +18,9 @@ Ne lis que ce dont la tâche a besoin.
 
 ## État actuel
 
-- **Jalon en cours : J2** (J1 fait le 2026-09-25). Mettre à jour cette ligne à chaque fin de jalon.
+- **Jalon en cours : J3** (J2 fait le 2026-09-25). Mettre à jour cette ligne à chaque fin de jalon.
 - **J1 fait** : monorepo pnpm (`apps/api`, `apps/worker`, `packages/domain`, `packages/db`, `packages/providers`), schéma Prisma, adaptateur PandaScore (ligues → séries → tournois → matchs), jobs BullMQ (catalogue/calendrier/live), upsert idempotent, quota et latence loggés. Vérifié en conditions réelles sur Champions 2026. **Brackets et classements (`event_link`/`standing`) pas encore alimentés, reportés au J5.**
+- **J2 fait** : API `/v1` (`home`, `agenda`, `events/:id`, `competitions/:id`) + `/health`, cache Redis (15-60s) avec invalidation par Pub/Sub depuis le worker (`EventScheduled`/`EventStarted`/`EventFinished`/`ScoreChanged`), `ETag`/`304`, validation des entrées (`class-validator`), rate limiting (`@nestjs/throttler`), spec OpenAPI générée et client Dart généré dans `packages/api_client_dart` (gitignoré, régénéré par `pnpm generate:client`). Vérifié en conditions réelles sur Champions 2026 (7 tests e2e Supertest). **`event_moment`/`context_snippet` pas encore créées** (moments du direct, « pourquoi ce match compte ») : reportées après le J1, viendront au J6.
 - Déjà présent dans le dépôt :
   - `tests-pandascore/` : scripts de test de l'API PandaScore et **réponses réelles** dans `samples/` et `samples-multijeux/`. Réutilisées comme **fixtures de tests** de l'adaptateur PandaScore.
   - `politique-quiz/` : extraction de l'open data de l'Assemblée (scrutins, députés) pour le prototype du jeu « Qui a voté ? ». `data/` est ignoré par Git (≈ 250 Mo, retéléchargeable).
@@ -98,9 +99,13 @@ pnpm -r lint
 
 # Inspecter la base pendant le dev
 pnpm --filter @news/db exec prisma studio
+
+# Spec OpenAPI + client Dart généré (packages/api_client_dart, gitignoré)
+pnpm generate:client       # openapi.json + client Dart + build_runner en un coup
+pnpm generate:openapi      # juste la spec, dans openapi.json à la racine
 ```
 
-`.env` doit contenir `PANDASCORE_TOKEN` (voir `.env.example`) pour que le worker ingère de vraies données. Génération du client Dart : à ajouter au J2.
+`.env` doit contenir `PANDASCORE_TOKEN` (voir `.env.example`) pour que le worker ingère de vraies données. `pnpm generate:client` a besoin de Java (openapi-generator) et du SDK Dart.
 
 ## Maquettes (Figma)
 

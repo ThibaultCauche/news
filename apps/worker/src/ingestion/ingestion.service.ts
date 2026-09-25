@@ -1,9 +1,20 @@
 import { randomUUID } from "node:crypto";
 import { Inject, Injectable } from "@nestjs/common";
 import { Prisma, PrismaClient } from "@news/db";
-import { CompetitionDTO, computeIngestionLatencyMs, computePayloadHash, createLogger, EntityDTO, EventDTO, shouldUpsert } from "@news/domain";
+import {
+  CompetitionDTO,
+  computeIngestionLatencyMs,
+  computePayloadHash,
+  createLogger,
+  diffEventStatus,
+  EntityDTO,
+  EventDTO,
+  EventStateSnapshot,
+  shouldUpsert,
+} from "@news/domain";
 import { PandaScoreProvider } from "@news/providers";
 import { PRISMA } from "../db/db.module";
+import { EventBusService } from "../events/event-bus.service";
 import { PANDASCORE_PROVIDER } from "../pandascore/pandascore.module";
 import { commitProviderRef, findProviderRef, upsertByProviderRef } from "./provider-ref.repository";
 
@@ -21,6 +32,7 @@ export class IngestionService {
   constructor(
     @Inject(PRISMA) private readonly prisma: PrismaClient,
     @Inject(PANDASCORE_PROVIDER) private readonly provider: PandaScoreProvider,
+    private readonly eventBus: EventBusService,
   ) {}
 
   private async getCategoryId(): Promise<string> {
@@ -109,8 +121,11 @@ export class IngestionService {
       return;
     }
 
-    const previousStatus = existingRef
-      ? (await this.prisma.event.findUnique({ where: { id: existingRef.objectId }, select: { status: true } }))?.status ?? null
+    const existingEvent = existingRef
+      ? await this.prisma.event.findUnique({ where: { id: existingRef.objectId }, select: { status: true, result: true } })
+      : null;
+    const previousSnapshot: EventStateSnapshot | null = existingEvent
+      ? { status: existingEvent.status as EventDTO["status"], resultHash: existingEvent.result ? computePayloadHash(existingEvent.result) : null }
       : null;
 
     const data = {
@@ -148,9 +163,15 @@ export class IngestionService {
     }
 
     // Mesure de la latence réelle début/fin (point ouvert de docs/01, J1).
-    if (dto.status === "finished" && previousStatus !== "finished" && dto.endsAt) {
+    if (dto.status === "finished" && previousSnapshot?.status !== "finished" && dto.endsAt) {
       const latencyMs = computeIngestionLatencyMs(dto.endsAt, new Date());
       logger.info({ externalId: dto.externalId, name: dto.name, latencyMs }, "match terminé détecté");
+    }
+
+    // Événements métier : l'API s'y abonne pour invalider son cache (docs/03 §3).
+    const nextSnapshot: EventStateSnapshot = { status: dto.status, resultHash: dto.result ? computePayloadHash(dto.result) : null };
+    for (const type of diffEventStatus(previousSnapshot, nextSnapshot)) {
+      await this.eventBus.publish({ type, eventId, competitionId: competitionRef.objectId });
     }
   }
 

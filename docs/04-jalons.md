@@ -7,7 +7,7 @@
 | Jalon | Contenu | Résultat visible | Statut |
 |---|---|---|---|
 | J1 | Monorepo, Compose de dev, schéma de base, adaptateur PandaScore (Valorant) | Les matchs Valorant arrivent en base | **Fait (2026-09-25)** |
-| J2 | API `home`, `agenda`, `events/:id`, `competitions/:id` + client Dart généré | L'API répond avec de vraies données | À faire |
+| J2 | API `home`, `agenda`, `events/:id`, `competitions/:id` + client Dart généré | L'API répond avec de vraies données | **Fait (2026-09-25)** |
 | J3 | Appli Flutter : accueil, agenda, page Valorant, prochain match | Première version utilisable | À faire |
 | J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | À faire |
 | J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | À faire |
@@ -62,11 +62,11 @@
 - Validation des entrées (DTO + `class-validator`), limitation de débit.
 
 **Critères d'acceptation**
-- [ ] Les 4 endpoints renvoient des données réelles de Champions 2026.
-- [ ] Un deuxième appel identique renvoie `304` grâce à l'`ETag`.
-- [ ] Un changement de score côté worker invalide le cache (la réponse suivante est à jour).
-- [ ] Le client Dart se régénère avec une seule commande et compile.
-- [ ] Tests e2e des endpoints (Supertest).
+- [x] Les 4 endpoints renvoient des données réelles de Champions 2026. Vérifié le 2026-09-25 avec l'API branchée sur le Postgres de dev réel : `/v1/home` (20 matchs à venir, 10 grands rendez-vous), `/v1/agenda` (32 événements), `/v1/events/:id` (GE vs VIT), `/v1/competitions/:id` (Playoffs). Un bug a été trouvé et corrigé au passage : `highlights` filtrait sur `event.importance` (jamais renseigné par l'ingestion du J1) au lieu de `competition.importance` (le seul alimenté, via le tier PandaScore).
+- [x] Un deuxième appel identique renvoie `304` grâce à l'`ETag`. Vérifié en direct sur un vrai événement (200 puis 304).
+- [x] Un changement de score côté worker invalide le cache (la réponse suivante est à jour). Vérifié par un test e2e qui reproduit l'action du worker (écriture Prisma + publication Redis sur le vrai canal) contre le Postgres/Redis de dev. Aucun match Champions 2026 n'était en direct au moment de la vérification pour un scénario avec un vrai changement de score ; le worker démarre et se câble sans erreur sur ce canal (smoke-test de démarrage au 2026-09-25).
+- [x] Le client Dart se régénère avec une seule commande et compile. `pnpm generate:client` régénère `openapi.json` + `packages/api_client_dart` (openapi-generator + `build_runner`) ; `dart analyze` : 0 erreur.
+- [x] Tests e2e des endpoints (Supertest). 7/7 verts contre le vrai Postgres/Redis de dev.
 
 ---
 

@@ -12,7 +12,10 @@
     "db:migrate": "dotenv -e .env -- pnpm --filter @news/db exec prisma migrate dev",
     "db:generate": "dotenv -e .env -- pnpm --filter @news/db exec prisma generate",
     "worker:dev": "dotenv -e .env -- pnpm --filter @news/worker dev",
-    "api:dev": "dotenv -e .env -- pnpm --filter @news/api dev"
+    "api:dev": "dotenv -e .env -- pnpm --filter @news/api dev",
+    "generate:openapi": "dotenv -e .env -- pnpm --filter @news/api generate:openapi",
+    "generate:dart-client": "pnpm dlx @openapitools/openapi-generator-cli generate -i openapi.json -g dart-dio -o packages/api_client_dart --additional-properties=pubName=news_api_client,pubAuthor=News && dart pub get -C packages/api_client_dart && cd packages/api_client_dart && dart run build_runner build",
+    "generate:client": "pnpm generate:openapi && pnpm generate:dart-client"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",

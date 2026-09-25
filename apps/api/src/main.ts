@@ -1,5 +1,8 @@
 import "reflect-metadata";
+import { writeFileSync } from "node:fs";
+import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
+import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { createLogger } from "@news/domain";
 import { AppModule } from "./app.module";
 
@@ -7,6 +10,24 @@ const logger = createLogger("api");
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix("v1", { exclude: ["health"] });
+  app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
+
+  const document = SwaggerModule.createDocument(
+    app,
+    new DocumentBuilder().setTitle("News API").setDescription("API consommée par l'appli Flutter (docs/03 §4)").setVersion("1").build(),
+  );
+
+  // `pnpm generate:openapi` : écrit la spec et sort, sans écouter de port
+  // (docs/04 J2 : "client Dart généré depuis OpenAPI").
+  const writeSpecPath = process.argv.find((arg) => arg.startsWith("--write-openapi="))?.split("=")[1];
+  if (writeSpecPath) {
+    writeFileSync(writeSpecPath, JSON.stringify(document, null, 2));
+    logger.info({ path: writeSpecPath }, "spec OpenAPI écrite");
+    await app.close();
+    return;
+  }
+
   const port = process.env.PORT ?? 3000;
   await app.listen(port);
   logger.info({ port }, "api démarrée");

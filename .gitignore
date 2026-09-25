@@ -19,6 +19,11 @@ coverage/
 **/ios/Pods/
 **/android/.gradle/
 
+# Client Dart généré depuis OpenAPI (pnpm generate:client) : régénéré, non commité,
+# comme le client Prisma.
+/openapi.json
+packages/api_client_dart/
+
 # Données volumineuses retéléchargeables
 politique-quiz/data/
 *.zip
