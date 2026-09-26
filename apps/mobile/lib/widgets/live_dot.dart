@@ -5,9 +5,10 @@ import "../theme/tokens.dart";
 /// (opacité 1 → 0,4 sur 1,2 s, `docs/maquettes/motion-specs`), retiré si
 /// mouvement réduit.
 class LiveDot extends StatefulWidget {
-  const LiveDot({super.key, this.size = 8});
+  const LiveDot({super.key, this.size = 8, this.color = AppColors.live});
 
   final double size;
+  final Color color;
 
   @override
   State<LiveDot> createState() => _LiveDotState();
@@ -28,7 +29,7 @@ class _LiveDotState extends State<LiveDot> with SingleTickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     final dot = DecoratedBox(
-      decoration: const BoxDecoration(color: AppColors.live, shape: BoxShape.circle),
+      decoration: BoxDecoration(color: widget.color, shape: BoxShape.circle),
       child: SizedBox(width: widget.size, height: widget.size),
     );
     if (MediaQuery.maybeOf(context)?.disableAnimations ?? false) return dot;

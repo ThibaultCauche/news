@@ -3,6 +3,7 @@ import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../core/date_x.dart";
 import "../domain/event_status.dart";
+import "../theme/app_theme.dart";
 import "../theme/tokens.dart";
 import "live_dot.dart";
 
@@ -11,16 +12,35 @@ import "live_dot.dart";
 /// mêmes règles d'affichage quel que soit l'écran (règle 12 — la couleur
 /// porte toujours le même sens).
 class EventCard extends StatelessWidget {
-  const EventCard({super.key, required this.event, this.onTap});
+  const EventCard({super.key, required this.event, this.onTap, this.followedEntityIds = const {}});
 
   final EventSummaryDto event;
   final VoidCallback? onTap;
 
-  String get _title {
-    if (event.participants.length == 2) {
-      return "${event.participants[0].name} – ${event.participants[1].name}";
+  /// `entityId` des équipes/joueurs suivis : affichés en or
+  /// (`docs/maquettes/specs/01-valorant-saison.md`, `06-groupes.md`), comme
+  /// `highlightedEventIds` dans `bracket_screen.dart`.
+  final Set<String> followedEntityIds;
+
+  Widget _buildTitle(TextStyle? style) {
+    if (event.participants.length != 2) {
+      return Text(event.name, style: style, overflow: TextOverflow.ellipsis);
     }
-    return event.name;
+    final a = event.participants[0];
+    final b = event.participants[1];
+    TextStyle? colorFor(EventParticipantDto p) =>
+        followedEntityIds.contains(p.entityId) ? const TextStyle(color: AppColors.gold) : null;
+    return Text.rich(
+      TextSpan(
+        style: style,
+        children: [
+          TextSpan(text: a.name, style: colorFor(a)),
+          const TextSpan(text: " – "),
+          TextSpan(text: b.name, style: colorFor(b)),
+        ],
+      ),
+      overflow: TextOverflow.ellipsis,
+    );
   }
 
   String? get _scoreLine {
@@ -41,8 +61,7 @@ class EventCard extends StatelessWidget {
     if (status == EventStatusKind.live || status == EventStatusKind.finished) {
       trailing = Text(
         score ?? status.label,
-        style: textTheme.titleLarge?.copyWith(
-          fontSize: 16,
+        style: AppTextStyles.bodyLargeStrong.copyWith(
           color: status == EventStatusKind.live ? AppColors.live : AppColors.textPrimary,
         ),
       );
@@ -61,7 +80,7 @@ class EventCard extends StatelessWidget {
             SizedBox(
               width: 44,
               child: event.startsAt.toDateTime != null
-                  ? Text(DateFormat.Hm("fr_FR").format(event.startsAt.toDateTime!.toLocal()), style: textTheme.bodyMedium)
+                  ? Text(DateFormat.Hm("fr_FR").format(event.startsAt.toDateTime!.toLocal()), style: AppTextStyles.bodyLargeStrong)
                   : null,
             ),
             if (status == EventStatusKind.live) ...[const LiveDot(), const SizedBox(width: AppSpacing.sm)],
@@ -69,7 +88,7 @@ class EventCard extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(_title, style: textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                  _buildTitle(AppTextStyles.bodyLargeStrong),
                   Text(
                     [event.competition.name, if (event.bestOf != null) "BO${event.bestOf}"].join(" · "),
                     style: textTheme.bodySmall,

@@ -6,9 +6,12 @@ import "package:flutter/widgets.dart";
 abstract final class AppColors {
   static const background = Color(0xFF08090B);
   static const surface = Color(0xFF16171B);
-  static const surfaceBorder = Color(0x14FFFFFF); // blanc 8 %
+  static const surfaceBorder = Color(0x14FFFFFF); // blanc 8 %, carte standard
+  static const surfaceBorderHighlight = Color(0x1AFFFFFF); // blanc 10 %, carte à dégradé / mise en avant
   static const surfaceHighlight = Color(0x12FFFFFF); // reflet blanc 7 %
   static const glass = Color(0xFF1C1C21);
+  static const glassOpacity = 0.72; // mesuré sur 01/03/06/09/17 (docs/maquettes/specs/commun.md)
+  static const glassBorder = Color(0x1FFFFFFF); // blanc 12 %
 
   static const textPrimary = Color(0xFFF5F5F7);
   static const textSecondary = Color(0x8CF5F5F7); // blanc 55 %
@@ -37,7 +40,9 @@ abstract final class AppGradients {
 }
 
 abstract final class AppRadii {
-  static const card = 20.0;
+  /// Rayon dominant, mesuré 21 fois sur les cartes pleine largeur (358 px)
+  /// des écrans 01/03/06/09/17 (docs/maquettes/specs/commun.md).
+  static const card = 22.0;
   static const chip = 14.0;
   static const pill = 999.0;
 }
@@ -48,6 +53,43 @@ abstract final class AppSpacing {
   static const md = 16.0;
   static const lg = 24.0;
   static const xl = 32.0;
+
+  /// Écart entre cartes d'une même rangée (grille de stats, grille 2×2),
+  /// mesuré identique sur plusieurs écrans — distinct de `sm` (8).
+  static const cardGap = 10.0;
+}
+
+/// Échelle typographique mesurée sur les `<text>` réels des SVG de
+/// `docs/maquettes/svg/` (police Inter partout) — voir
+/// `docs/maquettes/specs/commun.md`. Tailles en px, tracking en em (à
+/// multiplier par la taille pour obtenir un `letterSpacing` Flutter en px).
+/// `app_theme.dart` construit les `TextStyle` à partir de ces valeurs.
+abstract final class AppTypography {
+  static const display = 34.0;
+  static const heroScore = 26.0;
+  static const title = 20.0;
+  static const cardTitle = 19.0;
+  static const bodyLarge = 15.0;
+  static const body = 14.0;
+  static const caption = 13.0;
+  static const label = 12.0;
+  static const eyebrow = 12.0;
+  static const tabLabel = 10.0;
+
+  static const trackingDisplay = -0.025;
+  static const trackingHeroScore = -0.02;
+  static const trackingTitle = -0.015;
+  static const trackingCardTitle = -0.012;
+  static const trackingBodyLarge = -0.006;
+  static const trackingBody = 0.0;
+  static const trackingCaption = 0.0;
+  static const trackingLabel = 0.0;
+  static const trackingEyebrow = 0.04;
+  static const trackingTabLabel = 0.01;
+
+  /// Ratio hauteur de ligne / taille de police, mesuré identique (×1,2) sur
+  /// les 3 blocs multi-lignes trouvés dans les maquettes (14, 19 et 12 px).
+  static const lineHeight = 1.2;
 }
 
 /// Entrées ease-out, jamais plus de 300 ms, `transform`/`opacity` uniquement
