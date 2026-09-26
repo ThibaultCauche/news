@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:mobile/theme/app_theme.dart";
 
@@ -23,12 +24,14 @@ Future<void> pumpGolden(WidgetTester tester, Widget child) async {
   addTearDown(tester.view.resetDevicePixelRatio);
 
   await tester.pumpWidget(
-    MediaQuery(
-      // `disableAnimations` : un golden doit être une image stable, et des
-      // bricks comme `LiveDot` pulsent en continu (`repeat(reverse: true)`)
-      // — sans ça `pumpAndSettle` ne se stabiliserait jamais.
-      data: const MediaQueryData(size: Size(390, 844), textScaler: TextScaler.linear(1), disableAnimations: true),
-      child: MaterialApp(theme: buildAppTheme(), debugShowCheckedModeBanner: false, home: child),
+    ProviderScope(
+      child: MediaQuery(
+        // `disableAnimations` : un golden doit être une image stable, et des
+        // bricks comme `LiveDot` pulsent en continu (`repeat(reverse: true)`)
+        // — sans ça `pumpAndSettle` ne se stabiliserait jamais.
+        data: const MediaQueryData(size: Size(390, 844), textScaler: TextScaler.linear(1), disableAnimations: true),
+        child: MaterialApp(theme: buildAppTheme(), debugShowCheckedModeBanner: false, home: child),
+      ),
     ),
   );
   await tester.pump();

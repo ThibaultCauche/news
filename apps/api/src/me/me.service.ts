@@ -1,7 +1,16 @@
 import { Inject, Injectable } from "@nestjs/common";
-import { PrismaClient } from "@news/db";
+import { PrismaClient, UserSetting } from "@news/db";
 import { PRISMA } from "../db/db.module";
 import { UpdateUserSettingDto, UserSettingDto } from "./user-setting.dto";
+
+function toUserSettingDto(setting: UserSetting): UserSettingDto {
+  return {
+    spoilerFree: setting.spoilerFree,
+    morningDigest: setting.morningDigest,
+    quietHoursStart: setting.quietHoursStart,
+    quietHoursEnd: setting.quietHoursEnd,
+  };
+}
 
 // `UserSetting` est créé en même temps que le compte (`AuthService.createAnonymousUser`) :
 // pas d'upsert défensif ici, la ligne existe toujours.
@@ -11,12 +20,12 @@ export class MeService {
 
   async getSettings(userId: string): Promise<UserSettingDto> {
     const setting = await this.prisma.userSetting.findUniqueOrThrow({ where: { userId } });
-    return { spoilerFree: setting.spoilerFree, quietHoursStart: setting.quietHoursStart, quietHoursEnd: setting.quietHoursEnd };
+    return toUserSettingDto(setting);
   }
 
   async updateSettings(userId: string, dto: UpdateUserSettingDto): Promise<UserSettingDto> {
     const setting = await this.prisma.userSetting.update({ where: { userId }, data: dto });
-    return { spoilerFree: setting.spoilerFree, quietHoursStart: setting.quietHoursStart, quietHoursEnd: setting.quietHoursEnd };
+    return toUserSettingDto(setting);
   }
 
   // RGPD (`DELETE /v1/me`, règle 9 de CLAUDE.md) : suppression en cascade des

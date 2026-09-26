@@ -7,13 +7,15 @@
   "scripts": {
     "build": "prisma generate && tsc -p tsconfig.json",
     "test": "echo \"pas de test dédié : voir prisma validate\" && exit 0",
-    "lint": "tsc -p tsconfig.json --noEmit"
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0"
   },
   "devDependencies": {
     "prisma": "^5.22.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.7.2"
   }
 }

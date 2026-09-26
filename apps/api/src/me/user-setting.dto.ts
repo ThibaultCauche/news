@@ -3,6 +3,9 @@ import { IsBoolean, IsInt, IsOptional, Max, Min } from "class-validator";
 
 export class UserSettingDto {
   @ApiProperty() spoilerFree!: boolean;
+  // Réglage seul (J6) : l'envoi réel du résumé du matin n'est pas encore construit
+  // (pas de contenu "l'essentiel en 3 points" à générer).
+  @ApiProperty() morningDigest!: boolean;
   @ApiProperty({ nullable: true, type: Number }) quietHoursStart!: number | null;
   @ApiProperty({ nullable: true, type: Number }) quietHoursEnd!: number | null;
 }
@@ -14,6 +17,11 @@ export class UpdateUserSettingDto {
   @IsOptional()
   @IsBoolean()
   spoilerFree?: boolean;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  morningDigest?: boolean;
 
   @ApiPropertyOptional({ nullable: true, type: Number })
   @IsOptional()

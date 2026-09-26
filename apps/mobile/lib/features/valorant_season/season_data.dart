@@ -24,6 +24,7 @@ class SeasonOverview {
     required this.progress,
     required this.currentMatches,
     required this.playedSteps,
+    required this.liquipediaContext,
   });
 
   /// Ligue racine (ex. "VCT") : cible du bouton "Suivre" de l'écran (docs/04 J4)
@@ -34,6 +35,10 @@ class SeasonOverview {
   final double progress;
   final List<EventSummaryDto> currentMatches;
   final List<SeasonStep> playedSteps;
+
+  /// Contexte Liquipedia de l'étape en cours (ex. "Champions 2026"), `null` tant
+  /// que le job worker ne l'a pas encore trouvé (docs/03 §7, J6).
+  final CompetitionContextDto? liquipediaContext;
 }
 
 /// Écran 01 (`docs/02`). L'API ne fournit ni recherche ni id de saison tout
@@ -100,6 +105,7 @@ final valorantSeasonProvider = FutureProvider.autoDispose<SeasonOverview?>((ref)
     progress: _seasonProgress(steps, now),
     currentMatches: currentMatches,
     playedSteps: playedSteps,
+    liquipediaContext: currentStepDetail.context,
   );
 });
 

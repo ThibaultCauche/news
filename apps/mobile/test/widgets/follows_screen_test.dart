@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
+import "package:mobile/core/settings_provider.dart";
 import "package:mobile/features/follows/follows_provider.dart";
 import "package:mobile/features/follows/follows_screen.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -39,7 +40,12 @@ EventSummaryDto _liveEvent() {
 Future<void> _pump(WidgetTester tester, List<FollowStateDto> follows) {
   return tester.pumpWidget(
     ProviderScope(
-      overrides: [followsProvider.overrideWith((ref) async => follows)],
+      overrides: [
+        followsProvider.overrideWith((ref) async => follows),
+        userSettingProvider.overrideWith((ref) async => UserSettingDto((b) => b
+          ..spoilerFree = false
+          ..morningDigest = false)),
+      ],
       child: MaterialApp(theme: ThemeData.dark(), home: const Scaffold(body: FollowsScreen())),
     ),
   );

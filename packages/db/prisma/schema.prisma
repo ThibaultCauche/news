@@ -137,6 +137,25 @@ model Standing {
   @@map("standing")
 }
 
+// "Pourquoi ce match compte", glossaire, textes de contexte (docs/03 §2/§7, J6).
+// `text` peut contenir des mots repérés `[[terme]]` que l'appli transforme en lien
+// vers la feuille glossaire (écran 04). Clé naturelle pour l'upsert idempotent
+// (règle 4 de CLAUDE.md) : un seul texte par cible et par genre de contenu.
+model ContextSnippet {
+  id          String   @id @default(uuid())
+  targetType  String   @map("target_type")
+  targetId    String   @map("target_id")
+  kind        String
+  text        String
+  source      String?
+  license     String?
+  generatedBy String   @map("generated_by")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@unique([targetType, targetId, kind])
+  @@map("context_snippet")
+}
+
 // Lien avec les objets externes, clé de l'ingestion idempotente (règle 4 de CLAUDE.md).
 model ProviderRef {
   id           String   @id @default(uuid())
@@ -220,13 +239,16 @@ model Subscription {
 
 // Réglages appliqués côté serveur (règle 10 de CLAUDE.md : les notifications
 // masquent le score sans spoil, contrairement à l'affichage qui est démasquable
-// côté appli). Granularité par suivi/catégorie et résumé du matin reportés au J6
-// (écran 22 Réglages pas encore construit).
+// côté appli). `spoilerFree` reste global (une seule vraie catégorie avec des
+// données pour l'instant, J6) : la granularité par catégorie de l'écran 22
+// attendra une 2e catégorie. `morningDigest` est le réglage seul (J6) ; l'envoi
+// réel du résumé n'est pas encore construit (pas de contenu "3 points" à envoyer).
 model UserSetting {
   id              String   @id @default(uuid())
   userId          String   @unique @map("user_id")
   user            AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
   spoilerFree     Boolean  @default(true) @map("spoiler_free")
+  morningDigest   Boolean  @default(false) @map("morning_digest")
   quietHoursStart Int?     @map("quiet_hours_start")
   quietHoursEnd   Int?     @map("quiet_hours_end")
   updatedAt       DateTime @updatedAt @map("updated_at")

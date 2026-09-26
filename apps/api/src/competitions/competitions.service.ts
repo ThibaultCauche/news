@@ -27,6 +27,16 @@ export class CompetitionStandingDto {
   @ApiProperty({ nullable: true, type: Boolean }) qualified!: boolean | null;
 }
 
+// Contexte Liquipedia (docs/03 §7, J6) : `null` tant que le job worker ne l'a pas
+// encore trouvé/rafraîchi (recherche + infobox, jusqu'à 24h de décalage) — pas
+// d'attente bloquante côté API. Attribution obligatoire (CC-BY-SA, règle 8 de
+// CLAUDE.md) : `source`/`license` toujours affichés avec le texte.
+export class CompetitionContextDto {
+  @ApiProperty() text!: string;
+  @ApiProperty() source!: string;
+  @ApiProperty() license!: string;
+}
+
 // `event_link`/`standing` alimentés au J5 (docs/04) : `standings` est vide et
 // `structure` reste `null` jusque-là.
 export class CompetitionResponseDto {
@@ -42,6 +52,7 @@ export class CompetitionResponseDto {
   @ApiProperty() sourceUpdatedAt!: string;
   @ApiProperty({ type: [CompetitionChildDto] }) children!: CompetitionChildDto[];
   @ApiProperty({ type: [CompetitionStandingDto] }) standings!: CompetitionStandingDto[];
+  @ApiProperty({ nullable: true, type: CompetitionContextDto }) context!: CompetitionContextDto | null;
 }
 
 export class BracketParticipantDto {
@@ -97,6 +108,10 @@ export class CompetitionsService {
     });
     if (!competition) throw new NotFoundException("Compétition introuvable");
 
+    const liquipedia = await this.prisma.contextSnippet.findUnique({
+      where: { targetType_targetId_kind: { targetType: "competition", targetId: id, kind: "liquipedia_intro" } },
+    });
+
     const response: CompetitionResponseDto = {
       id: competition.id,
       parentId: competition.parentId,
@@ -125,6 +140,7 @@ export class CompetitionsService {
         livesLeft: s.livesLeft,
         qualified: s.qualified,
       })),
+      context: liquipedia ? { text: liquipedia.text, source: liquipedia.source ?? "Liquipedia", license: liquipedia.license ?? "CC-BY-SA" } : null,
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);
     return response;

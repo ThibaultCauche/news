@@ -17,6 +17,11 @@ describe("API v1 (e2e)", () => {
   let redis: Redis;
 
   const categorySlug = `test-esport-${randomUUID().slice(0, 8)}`;
+  // `shortName` n'était jamais interrogé par sa valeur avant `by-short-name`
+  // (J6) : un run précédent laissé en plan par un crash (nettoyage `afterAll`
+  // jamais exécuté) peut laisser une entité "TA"/"TB" orpheline en base et
+  // fausser `findFirst`. Un suffixe aléatoire, comme `categorySlug`, l'évite.
+  const shortNameSuffix = randomUUID().slice(0, 4).toUpperCase();
   let categoryId: string;
   let competitionId: string;
   let teamAId: string;
@@ -40,8 +45,8 @@ describe("API v1 (e2e)", () => {
       data: { id: randomUUID(), categoryId, kind: "tournament", name: "Test Champions", format: "double_elim", status: "live", importance: 3 },
     });
     competitionId = competition.id;
-    const teamA = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test Alpha", shortName: "TA" } });
-    const teamB = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test Bravo", shortName: "TB" } });
+    const teamA = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test Alpha", shortName: `TA${shortNameSuffix}` } });
+    const teamB = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test Bravo", shortName: `TB${shortNameSuffix}` } });
     teamAId = teamA.id;
     teamBId = teamB.id;
 
@@ -173,5 +178,155 @@ describe("API v1 (e2e)", () => {
 
     const after = await request(app.getHttpServer()).get(`/v1/events/${liveEventId}`).expect(200);
     expect(after.body.result.seriesScore[0].score).toBe(2);
+  });
+
+  it("GET /v1/events/:id renvoie un contexte (enjeu, forme récente, face-à-face) — J6", async () => {
+    // Un match déjà terminé (Alpha bat Bravo) pour nourrir forme récente/face-à-face.
+    const finishedEvent = await prisma.event.create({
+      data: {
+        id: randomUUID(),
+        competitionId,
+        kind: "match",
+        name: "Test Alpha vs Test Bravo (aller)",
+        status: "finished",
+        startsAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+        bestOf: 3,
+        importance: 1,
+        participants: {
+          create: [
+            { id: randomUUID(), entityId: teamAId, score: 2, isWinner: true },
+            { id: randomUUID(), entityId: teamBId, score: 0, isWinner: false },
+          ],
+        },
+      },
+    });
+
+    // `GET /v1/events/:id` a déjà été appelé par des tests précédents : sans purge,
+    // la réponse mise en cache (TTL 20s) ne verrait pas `finishedEvent`.
+    await redis.del(CacheKeys.event(liveEventId));
+    const withoutLink = await request(app.getHttpServer()).get(`/v1/events/${liveEventId}`).expect(200);
+    expect(withoutLink.body.context.stakes).toBeNull(); // pas de lien de bracket : pas de phrase d'enjeu
+    const formA = withoutLink.body.context.recentForm.find((f: { entityId: string }) => f.entityId === teamAId);
+    const formB = withoutLink.body.context.recentForm.find((f: { entityId: string }) => f.entityId === teamBId);
+    expect(formA.results).toEqual(["V"]);
+    expect(formB.results).toEqual(["D"]);
+    expect(withoutLink.body.context.headToHead).toEqual({ entityAId: teamAId, entityAWins: 1, entityBId: teamBId, entityBWins: 0 });
+
+    // Un lien de bracket sortant : la phrase d'enjeu doit apparaître (contenu exact testé
+    // dans packages/domain/context.spec.ts sur de vraies données de bracket).
+    const finalEvent = await prisma.event.create({
+      data: { id: randomUUID(), competitionId, kind: "match", name: "Grand Final: TBD vs TBD", status: "scheduled", bestOf: 5, importance: 3 },
+    });
+    await prisma.eventLink.create({ data: { id: randomUUID(), fromEventId: liveEventId, toEventId: finalEvent.id, outcome: "winner", slot: 0 } });
+
+    await redis.del(CacheKeys.event(liveEventId));
+    const withLink = await request(app.getHttpServer()).get(`/v1/events/${liveEventId}`).expect(200);
+    expect(withLink.body.context.stakes).toContain("grande finale");
+
+    await prisma.eventLink.deleteMany({ where: { toEventId: finalEvent.id } });
+    await prisma.event.delete({ where: { id: finalEvent.id } });
+    await prisma.eventParticipant.deleteMany({ where: { eventId: finishedEvent.id } });
+    await prisma.event.delete({ where: { id: finishedEvent.id } });
+  });
+
+  it("GET /v1/events/:id : pas de phrase d'enjeu pour une poule GSL (lien « loser » seul, pas une grande finale)", async () => {
+    const gslCategory = await prisma.category.create({ data: { id: randomUUID(), slug: `${categorySlug}-gsl`, name: "Test GSL" } });
+    const gslCompetition = await prisma.competition.create({
+      data: { id: randomUUID(), categoryId: gslCategory.id, kind: "tournament", name: "Test Groupe C", format: "groups_gsl", status: "live", importance: 1 },
+    });
+    const winnersMatch = await prisma.event.create({
+      data: { id: randomUUID(), competitionId: gslCompetition.id, kind: "match", name: "Winners Match: TA vs TB", status: "scheduled", bestOf: 3, importance: 1 },
+    });
+    const deciderMatch = await prisma.event.create({
+      data: { id: randomUUID(), competitionId: gslCompetition.id, kind: "match", name: "Decider Match: TBD vs TBD", status: "scheduled", bestOf: 3, importance: 1 },
+    });
+    // Le vainqueur du "Winners Match" qualifie directement (pas de lien "winner" sortant :
+    // ce n'est pas pour autant une grande finale) ; seul le perdant a un lien, vers le "Decider Match".
+    await prisma.eventLink.create({ data: { id: randomUUID(), fromEventId: winnersMatch.id, toEventId: deciderMatch.id, outcome: "loser", slot: 0 } });
+
+    const res = await request(app.getHttpServer()).get(`/v1/events/${winnersMatch.id}`).expect(200);
+    expect(res.body.context.stakes).toBeNull();
+
+    await prisma.eventLink.deleteMany({ where: { toEventId: deciderMatch.id } });
+    await prisma.event.deleteMany({ where: { competitionId: gslCompetition.id } });
+    await prisma.competition.delete({ where: { id: gslCompetition.id } });
+    await prisma.category.delete({ where: { id: gslCategory.id } });
+  });
+
+  it("GET /v1/entities/:id renvoie le bilan, la série de victoires et le prochain/dernier match — J6", async () => {
+    const finishedEvent = await prisma.event.create({
+      data: {
+        id: randomUUID(),
+        competitionId,
+        kind: "match",
+        name: "Test Alpha vs Test Bravo (aller)",
+        status: "finished",
+        startsAt: new Date(Date.now() - 24 * 60 * 60 * 1000),
+        bestOf: 3,
+        importance: 1,
+        participants: {
+          create: [
+            { id: randomUUID(), entityId: teamAId, score: 2, isWinner: true },
+            { id: randomUUID(), entityId: teamBId, score: 0, isWinner: false },
+          ],
+        },
+      },
+    });
+
+    const res = await request(app.getHttpServer()).get(`/v1/entities/${teamAId}`).expect(200);
+    expect(res.body.wins).toBe(1);
+    expect(res.body.losses).toBe(0);
+    expect(res.body.winStreak).toBe(1);
+    expect(res.body.lastEvent.id).toBe(finishedEvent.id);
+    expect(res.body.nextEvent.id).toBe(liveEventId); // le match en direct est le plus proche à venir/en cours
+
+    await request(app.getHttpServer()).get(`/v1/entities/${randomUUID()}`).expect(404);
+
+    const byShortName = await request(app.getHttpServer()).get(`/v1/entities/by-short-name/TA${shortNameSuffix}`).expect(200);
+    expect(byShortName.body.id).toBe(teamAId);
+    await request(app.getHttpServer()).get("/v1/entities/by-short-name/inconnu").expect(404);
+
+    await prisma.eventParticipant.deleteMany({ where: { eventId: finishedEvent.id } });
+    await prisma.event.delete({ where: { id: finishedEvent.id } });
+  });
+
+  it("GET /v1/glossary/:term renvoie la définition, insensible à la casse, 404 si absent — J6", async () => {
+    await prisma.contextSnippet.create({
+      data: { targetType: "glossary", targetId: "test-terme", kind: "definition", text: "Un terme de test.", generatedBy: "editorial" },
+    });
+
+    const res = await request(app.getHttpServer()).get("/v1/glossary/Test-Terme").expect(200);
+    expect(res.body).toEqual({ term: "test-terme", text: "Un terme de test." });
+
+    await request(app.getHttpServer()).get("/v1/glossary/inconnu").expect(404);
+
+    await prisma.contextSnippet.deleteMany({ where: { targetType: "glossary", targetId: "test-terme" } });
+  });
+
+  it("GET /v1/competitions/:id renvoie le contexte Liquipedia s'il existe, `null` sinon — J6", async () => {
+    const withoutContext = await request(app.getHttpServer()).get(`/v1/competitions/${competitionId}`).expect(200);
+    expect(withoutContext.body.context).toBeNull();
+
+    await prisma.contextSnippet.create({
+      data: {
+        targetType: "competition",
+        targetId: competitionId,
+        kind: "liquipedia_intro",
+        text: "Compétition organisée par Riot Games, à Shanghai.",
+        source: "Liquipedia",
+        license: "CC-BY-SA",
+        generatedBy: "liquipedia",
+      },
+    });
+    await redis.del(CacheKeys.competition(competitionId));
+
+    const withContext = await request(app.getHttpServer()).get(`/v1/competitions/${competitionId}`).expect(200);
+    expect(withContext.body.context).toEqual({
+      text: "Compétition organisée par Riot Games, à Shanghai.",
+      source: "Liquipedia",
+      license: "CC-BY-SA",
+    });
+
+    await prisma.contextSnippet.deleteMany({ where: { targetType: "competition", targetId: competitionId } });
   });
 });

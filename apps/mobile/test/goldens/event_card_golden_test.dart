@@ -46,7 +46,7 @@ void main() {
         backgroundColor: AppColors.background,
         body: Padding(
           padding: const EdgeInsets.all(AppSpacing.md),
-          child: EventCard(event: _event(), followedEntityIds: const {"team-a"}),
+          child: EventCard(event: _event(), scoresHidden: false, followedEntityIds: const {"team-a"}),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
 import "../../core/date_x.dart";
+import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
 import "../next_match/next_match_screen.dart";
@@ -41,6 +42,7 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
     final weekStart = _selectedDay.subtract(Duration(days: _selectedDay.weekday - 1));
     final query = (from: _selectedDay, to: _selectedDay.add(const Duration(days: 14)), category: _category);
     final agenda = ref.watch(agendaProvider(query));
+    final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
 
     return SafeArea(
       child: Column(
@@ -92,8 +94,8 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
           ),
           Expanded(
             child: switch (agenda) {
-              AsyncData(:final value) => _AgendaList(response: value),
-              AsyncError() when agenda.hasValue => _AgendaList(response: agenda.value!),
+              AsyncData(:final value) => _AgendaList(response: value, scoresHidden: scoresHidden),
+              AsyncError() when agenda.hasValue => _AgendaList(response: agenda.value!, scoresHidden: scoresHidden),
               AsyncError() => const Center(child: Text("Impossible de charger l'agenda.")),
               _ => const Center(child: CircularProgressIndicator()),
             },
@@ -222,9 +224,10 @@ class _WeekDay extends StatelessWidget {
 }
 
 class _AgendaList extends StatelessWidget {
-  const _AgendaList({required this.response});
+  const _AgendaList({required this.response, required this.scoresHidden});
 
   final AgendaResponseDto response;
+  final bool scoresHidden;
 
   @override
   Widget build(BuildContext context) {
@@ -258,6 +261,7 @@ class _AgendaList extends StatelessWidget {
                   for (final event in byDay[day]!)
                     EventCard(
                       event: event,
+                      scoresHidden: scoresHidden,
                       onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
                     ),
                 ],

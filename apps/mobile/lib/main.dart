@@ -8,6 +8,7 @@ import "core/api_providers.dart";
 import "core/auth/auth_bootstrap.dart";
 import "core/auth/auth_store.dart";
 import "core/notifications/notification_tap_handler.dart";
+import "features/onboarding/onboarding_flow.dart";
 import "theme/app_theme.dart";
 
 void main() async {
@@ -55,7 +56,30 @@ class NewsRoot extends StatelessWidget {
           child: child!,
         );
       },
-      home: const NewsApp(),
+      home: const _AppRoot(),
     );
+  }
+}
+
+/// Onboarding (écrans 11-12, J6) montré une fois au premier lancement, avant
+/// la tab bar principale — "Passer" a le même effet que d'aller au bout.
+class _AppRoot extends ConsumerStatefulWidget {
+  const _AppRoot();
+
+  @override
+  ConsumerState<_AppRoot> createState() => _AppRootState();
+}
+
+class _AppRootState extends ConsumerState<_AppRoot> {
+  late bool _onboardingDone = ref.read(authStoreProvider).hasSeenOnboarding;
+
+  void _finishOnboarding() {
+    ref.read(authStoreProvider).markOnboardingSeen();
+    setState(() => _onboardingDone = true);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return _onboardingDone ? const NewsApp() : OnboardingFlow(onDone: _finishOnboarding);
   }
 }

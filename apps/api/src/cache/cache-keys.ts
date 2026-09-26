@@ -7,4 +7,6 @@ export const CacheKeys = {
   competition: (id: string) => `cache:v1:competition:${id}`,
   bracket: (id: string) => `cache:v1:bracket:${id}`,
   event: (id: string) => `cache:v1:event:${id}`,
+  glossary: (term: string) => `cache:v1:glossary:${term}`,
+  entity: (id: string) => `cache:v1:entity:${id}`,
 };

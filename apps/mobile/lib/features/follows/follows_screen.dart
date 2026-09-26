@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
 import "../next_match/next_match_screen.dart";
@@ -70,6 +71,7 @@ class _FollowCard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = follow.currentEvent;
+    final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
     return Card(
       margin: EdgeInsets.zero,
       child: Padding(
@@ -91,7 +93,11 @@ class _FollowCard extends ConsumerWidget {
               ),
             ),
             if (event != null)
-              EventCard(event: event, onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))))
+              EventCard(
+                event: event,
+                scoresHidden: scoresHidden,
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
+              )
             else
               const Padding(
                 padding: EdgeInsets.fromLTRB(AppSpacing.xs, 0, AppSpacing.xs, AppSpacing.sm),

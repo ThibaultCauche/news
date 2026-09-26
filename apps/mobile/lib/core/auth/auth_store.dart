@@ -5,6 +5,7 @@ import "package:shared_preferences/shared_preferences.dart";
 const _accessTokenKey = "auth.accessToken";
 const _refreshTokenKey = "auth.refreshToken";
 const _installIdKey = "device.installId";
+const _onboardingSeenKey = "onboarding.seen";
 
 /// Jetons du compte anonyme et identifiant d'installation, en clair dans
 /// `shared_preferences` (docs/04 J4) : le compte est anonyme, sans donnée
@@ -39,4 +40,11 @@ class AuthStore {
     _prefs.setString(_installIdKey, generated);
     return generated;
   }
+
+  // Onboarding (écrans 11-12, J6) : montré une seule fois, "Passer" a le même
+  // effet que "C'est parti" (docs/02 — le choix des sujets n'est pas encore
+  // bloquant tant qu'une seule catégorie a de vraies données).
+  bool get hasSeenOnboarding => _prefs.getBool(_onboardingSeenKey) ?? false;
+
+  Future<void> markOnboardingSeen() => _prefs.setBool(_onboardingSeenKey, true);
 }

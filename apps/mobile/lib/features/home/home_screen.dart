@@ -5,11 +5,13 @@ import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
 import "../../core/date_x.dart";
 import "../../core/iterable_x.dart";
+import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
 import "../../widgets/live_dot.dart";
 import "../follows/follows_provider.dart";
 import "../next_match/next_match_screen.dart";
+import "../settings/settings_screen.dart";
 import "../valorant_season/valorant_season_screen.dart";
 
 final homeProvider = FutureProvider.autoDispose<HomeResponseDto>((ref) async {
@@ -26,14 +28,15 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final home = ref.watch(homeProvider);
+    final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
     return RefreshIndicator(
       onRefresh: () => ref.refresh(homeProvider.future),
       child: CustomScrollView(
         slivers: [
           const SliverToBoxAdapter(child: _HomeHeader()),
           switch (home) {
-            AsyncData(:final value) => _HomeBody(home: value),
-            AsyncError() when home.hasValue => _HomeBody(home: home.value!),
+            AsyncData(:final value) => _HomeBody(home: value, scoresHidden: scoresHidden),
+            AsyncError() when home.hasValue => _HomeBody(home: home.value!, scoresHidden: scoresHidden),
             AsyncError() => const SliverFillRemaining(child: Center(child: Text("Impossible de charger l'accueil."))),
             _ => const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
           },
@@ -69,7 +72,7 @@ class _HomeHeader extends StatelessWidget {
             icon: const Icon(Icons.search_rounded),
           ),
           GestureDetector(
-            onTap: () => _comingSoon(context, "Réglages"),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
             child: const CircleAvatar(
               backgroundColor: AppColors.surface,
               child: Text("T"),
@@ -86,9 +89,10 @@ class _HomeHeader extends StatelessWidget {
 }
 
 class _HomeBody extends StatelessWidget {
-  const _HomeBody({required this.home});
+  const _HomeBody({required this.home, required this.scoresHidden});
 
   final HomeResponseDto home;
+  final bool scoresHidden;
 
   @override
   Widget build(BuildContext context) {
@@ -108,7 +112,7 @@ class _HomeBody extends StatelessWidget {
         const _ValorantEntryPoint(),
         if (liveEvent != null) _MatchBanner(event: liveEvent, next: upcoming.firstOrNull, isLive: true),
         if (liveEvent == null && upNextEvent != null) _MatchBanner(event: upNextEvent, isLive: false),
-        if (follows.isNotEmpty) _FollowsSection(follows: follows),
+        if (follows.isNotEmpty) _FollowsSection(follows: follows, scoresHidden: scoresHidden),
         if (highlights.isNotEmpty) _HighlightsSection(events: highlights.take(5).toList()),
         const SizedBox(height: AppSpacing.xl),
       ]),
@@ -232,9 +236,10 @@ class _MatchBanner extends StatelessWidget {
 /// "Tes suivis" (docs/02, écran 17) : une carte par suivi qui a un match en
 /// cours ou à venir. Ceux sans rien de prévu restent réservés à l'écran Suivis.
 class _FollowsSection extends StatelessWidget {
-  const _FollowsSection({required this.follows});
+  const _FollowsSection({required this.follows, required this.scoresHidden});
 
   final List<FollowStateDto> follows;
+  final bool scoresHidden;
 
   @override
   Widget build(BuildContext context) {
@@ -255,6 +260,7 @@ class _FollowsSection extends StatelessWidget {
                 for (final follow in follows)
                   EventCard(
                     event: follow.currentEvent!,
+                    scoresHidden: scoresHidden,
                     onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: follow.currentEvent!.id))),
                   ),
               ],

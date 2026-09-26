@@ -11,7 +11,7 @@
 | J3 | Appli Flutter : accueil, agenda, page Valorant, prochain match | Première version utilisable | **Fait (2026-09-26)** |
 | J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | **Fait (2026-09-26)** |
 | J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | **Fait (2026-09-26)** |
-| J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | À faire |
+| J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | **Fait (2026-09-27)** |
 | J7 | Mise en ligne : NAS, Cloudflare Tunnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | À faire (ajouté) |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
@@ -158,9 +158,11 @@
 - Fiche équipe (écran **10**).
 
 **Critères d'acceptation**
-- [ ] Chaque match de phase finale a sa phrase d'enjeu, juste et à jour.
-- [ ] L'attribution Liquipedia apparaît partout où son contenu est utilisé.
-- [ ] Test utilisateur avec 2–3 personnes qui ne suivent pas Valorant : elles savent dire qui est encore en course et ce que signifie le prochain match.
+- [x] Chaque match de phase finale a sa phrase d'enjeu, juste et à jour. Calculée par des règles à partir du bracket (`packages/domain/context.ts`), un lien de bracket ne suffit pas à lui seul : un `event_link` de type "loser" existe aussi pour une poule GSL (vers le "Decider Match"), sans en faire une grande finale — un bug trouvé en vérifiant sur les vraies données (le "Winners Match" de Group C se voyait attribuer la phrase "vainqueur sacré champion") et corrigé en filtrant sur `competition.format` (formats à élimination seulement). Vérifié en direct sur un vrai quart de finale des playoffs Champions 2026.
+- [x] L'attribution Liquipedia apparaît partout où son contenu est utilisé. Seul usage actuel : le texte de contexte sous la frise de la page Saison (écran 01), avec « Source : Liquipedia (CC-BY-SA) » toujours affiché en dessous. Un deuxième bug trouvé en vérifiant en conditions réelles : le job worker cherchait la page Liquipedia à partir du nom de l'étape à bracket ("Group C", bien trop générique — tombait sur un tournoi 2021 sans rapport) plutôt que du tournoi parent ("Champions 2026", un nom spécifique) ; corrigé en remontant à la compétition parente avant la recherche.
+- [ ] Test utilisateur avec 2–3 personnes qui ne suivent pas Valorant. **Reporté** : seul le compte du projet a testé en conditions réelles sur téléphone (onboarding, glossaire, forme récente, sans spoil, fiche équipe, réglages, attribution Liquipedia — tout fonctionne, un bug de session expirée trouvé et corrigé au passage, voir `docs/00` §7). Pas de test formel avec 2–3 personnes externes qui ne suivent pas Valorant à ce stade.
+
+**Reporté** : granularité du sans spoil par catégorie (écran 22 en montre une par catégorie — Valorant, Top 14 — resté un seul réglage global tant qu'une 2e catégorie n'a pas de vraies données, `docs/00` §7) ; envoi réel du résumé du matin (le réglage existe, pas encore de job worker pour l'envoyer, faute de contenu "l'essentiel en 3 points" à générer) ; "Transferts et effectif" de la fiche équipe et détail par carte ("Carte 1 · Ascent") du dernier match (aucune source de roster branchée, et le nom/gagnant de chaque carte n'est pas résolu vers notre `entityId` à l'ingestion) ; logos des équipes dans Sources et crédits (pas encore de logo ingéré). Comme pour la fidélité visuelle des J3/J5, la structure et le fonctionnement priment sur l'exhaustivité de la maquette.
 
 ---
 

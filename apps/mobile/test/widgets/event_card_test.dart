@@ -39,11 +39,11 @@ EventSummaryDto _event({
   );
 }
 
-Future<void> _pump(WidgetTester tester, EventSummaryDto event) {
+Future<void> _pump(WidgetTester tester, EventSummaryDto event, {bool scoresHidden = false}) {
   return tester.pumpWidget(
     MaterialApp(
       theme: ThemeData.dark(),
-      home: Scaffold(body: EventCard(event: event)),
+      home: Scaffold(body: EventCard(event: event, scoresHidden: scoresHidden)),
     ),
   );
 }
@@ -67,6 +67,12 @@ void main() {
   testWidgets("terminé : affiche le score final", (tester) async {
     await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0));
     expect(find.text("2-0"), findsOneWidget);
+  });
+
+  testWidgets("terminé, sans spoil activé : masque le score (écran 15, J6)", (tester) async {
+    await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0), scoresHidden: true);
+    expect(find.text("2-0"), findsNothing);
+    expect(find.text("Terminé"), findsOneWidget);
   });
 
   testWidgets("reporté : affiche le statut, pas d'heure ni de score", (tester) async {

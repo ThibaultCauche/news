@@ -8,7 +8,9 @@ import { CacheModule } from "./cache/cache.module";
 import { CompetitionsModule } from "./competitions/competitions.module";
 import { DbModule } from "./db/db.module";
 import { DevicesModule } from "./devices/devices.module";
+import { EntitiesModule } from "./entities/entities.module";
 import { EventsModule } from "./events/events.module";
+import { GlossaryModule } from "./glossary/glossary.module";
 import { HealthController } from "./health/health.controller";
 import { HomeModule } from "./home/home.module";
 import { MeModule } from "./me/me.module";
@@ -30,6 +32,8 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     AgendaModule,
     EventsModule,
     CompetitionsModule,
+    EntitiesModule,
+    GlossaryModule,
   ],
   controllers: [HealthController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],

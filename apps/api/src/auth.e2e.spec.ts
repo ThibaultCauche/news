@@ -67,7 +67,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   it("crée un compte anonyme avec des réglages par défaut (sans spoil activé)", async () => {
     const { accessToken } = await createAnonymousAccount();
     const res = await request(app.getHttpServer()).get("/v1/me/settings").set("Authorization", `Bearer ${accessToken}`).expect(200);
-    expect(res.body).toEqual({ spoilerFree: true, quietHoursStart: null, quietHoursEnd: null });
+    expect(res.body).toEqual({ spoilerFree: true, morningDigest: false, quietHoursStart: null, quietHoursEnd: null });
   });
 
   it("refuse l'accès sans jeton et avec un jeton invalide", async () => {
@@ -143,7 +143,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
       .set(auth)
       .send({ spoilerFree: false, quietHoursStart: 22, quietHoursEnd: 7 })
       .expect(200);
-    expect(res.body).toEqual({ spoilerFree: false, quietHoursStart: 22, quietHoursEnd: 7 });
+    expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: 22, quietHoursEnd: 7 });
   });
 
   it("supprime le compte (DELETE /v1/me) : le jeton n'autorise plus rien ensuite", async () => {

@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "../../core/settings_provider.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
@@ -41,6 +42,7 @@ class _ValorantSeasonScreenState extends ConsumerState<ValorantSeasonScreen> {
   @override
   Widget build(BuildContext context) {
     final overview = ref.watch(valorantSeasonProvider);
+    final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
     return Scaffold(
       appBar: AppBar(title: const Text("Valorant"), actions: [_FollowSeasonPill(competitionId: overview.value?.rootCompetitionId)]),
       body: Column(
@@ -61,7 +63,7 @@ class _ValorantSeasonScreenState extends ConsumerState<ValorantSeasonScreen> {
                 : switch (overview) {
                     AsyncData(:final value) => value == null
                         ? const Center(child: Text("Aucune compétition Valorant en cours.", style: TextStyle(color: AppColors.textSecondary)))
-                        : _SeasonBody(overview: value),
+                        : _SeasonBody(overview: value, scoresHidden: scoresHidden),
                     AsyncError() => const Center(child: Text("Impossible de charger la saison.")),
                     _ => const Center(child: CircularProgressIndicator()),
                   },
@@ -172,9 +174,10 @@ class _FollowSeasonPill extends ConsumerWidget {
 }
 
 class _SeasonBody extends StatelessWidget {
-  const _SeasonBody({required this.overview});
+  const _SeasonBody({required this.overview, required this.scoresHidden});
 
   final SeasonOverview overview;
+  final bool scoresHidden;
 
   @override
   Widget build(BuildContext context) {
@@ -183,7 +186,7 @@ class _SeasonBody extends StatelessWidget {
       children: [
         _SeasonCard(overview: overview),
         const SizedBox(height: AppSpacing.md),
-        _NowCard(overview: overview),
+        _NowCard(overview: overview, scoresHidden: scoresHidden),
         if (overview.playedSteps.isNotEmpty) ...[
           const SizedBox(height: AppSpacing.md),
           Text("DÉJÀ JOUÉ", style: Theme.of(context).textTheme.labelSmall),
@@ -236,6 +239,15 @@ class _SeasonCard extends StatelessWidget {
             _SeasonTimeline(overview: overview),
             const SizedBox(height: AppSpacing.sm),
             Text(_caption(overview), style: const TextStyle(color: AppColors.textSecondary)),
+            if (overview.liquipediaContext != null) ...[
+              const SizedBox(height: AppSpacing.sm),
+              Text(overview.liquipediaContext!.text, style: const TextStyle(color: AppColors.textSecondary)),
+              const SizedBox(height: AppSpacing.xs),
+              Text(
+                "Source : ${overview.liquipediaContext!.source_} (${overview.liquipediaContext!.license})",
+                style: const TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption),
+              ),
+            ],
           ],
         ),
       ),
@@ -366,9 +378,10 @@ class _StepDot extends StatelessWidget {
 }
 
 class _NowCard extends StatelessWidget {
-  const _NowCard({required this.overview});
+  const _NowCard({required this.overview, required this.scoresHidden});
 
   final SeasonOverview overview;
+  final bool scoresHidden;
 
   @override
   Widget build(BuildContext context) {
@@ -401,6 +414,7 @@ class _NowCard extends StatelessWidget {
               for (final event in overview.currentMatches.take(5))
                 EventCard(
                   event: event,
+                  scoresHidden: scoresHidden,
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
                 ),
           ],

@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import Redis from "ioredis";
 import { IngestionModule } from "./ingestion/ingestion.module";
+import { LiquipediaModule } from "./liquipedia/liquipedia.module";
 import { NotificationsModule } from "./notifications/notifications.module";
 
 @Module({
@@ -16,6 +17,7 @@ import { NotificationsModule } from "./notifications/notifications.module";
     }),
     IngestionModule,
     NotificationsModule,
+    LiquipediaModule,
   ],
 })
 export class AppModule {}

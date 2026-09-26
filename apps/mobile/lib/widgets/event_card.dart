@@ -10,9 +10,15 @@ import "live_dot.dart";
 /// Ligne de match réutilisée par l'agenda, la saison et l'accueil — heure à
 /// gauche, score/statut à droite, comme l'écran 09 des maquettes (`docs/02`) :
 /// mêmes règles d'affichage quel que soit l'écran (règle 12 — la couleur
-/// porte toujours le même sens).
+/// porte toujours le même sens). Sans spoil (écran 15, J6) : [scoresHidden]
+/// masque le score d'un match terminé, lu une seule fois par l'écran appelant
+/// (`userSettingProvider`) plutôt que par chaque carte — pas d'appui long ici,
+/// seulement sur l'écran du match (`NextMatchScreen`).
 class EventCard extends StatelessWidget {
-  const EventCard({super.key, required this.event, this.onTap, this.followedEntityIds = const {}});
+  const EventCard({super.key, required this.event, required this.scoresHidden, this.onTap, this.followedEntityIds = const {}});
+
+  /// Score d'un match terminé masqué (réglage sans spoil du compte).
+  final bool scoresHidden;
 
   final EventSummaryDto event;
   final VoidCallback? onTap;
@@ -55,7 +61,7 @@ class EventCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final status = event.status.statusKind;
     final textTheme = Theme.of(context).textTheme;
-    final score = _scoreLine;
+    final score = status == EventStatusKind.finished && scoresHidden ? null : _scoreLine;
 
     Widget? trailing;
     if (status == EventStatusKind.live || status == EventStatusKind.finished) {
