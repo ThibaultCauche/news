@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
+import "../follows/follows_provider.dart";
 import "../next_match/next_match_screen.dart";
 import "season_data.dart";
 
@@ -23,7 +24,7 @@ class _ValorantSeasonScreenState extends ConsumerState<ValorantSeasonScreen> {
   Widget build(BuildContext context) {
     final overview = ref.watch(valorantSeasonProvider);
     return Scaffold(
-      appBar: AppBar(title: const Text("Valorant"), actions: const [_FollowSeasonPill()]),
+      appBar: AppBar(title: const Text("Valorant"), actions: [_FollowSeasonPill(competitionId: overview.value?.rootCompetitionId)]),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -106,42 +107,42 @@ class _SeasonTabs extends StatelessWidget {
   }
 }
 
-/// Visuel uniquement, comme le bouton "M'alerter" de l'écran 03 : les
-/// abonnements par catégorie arrivent au J4, ceci ne mémorise rien.
-class _FollowSeasonPill extends StatefulWidget {
-  const _FollowSeasonPill();
+/// Suit la ligue racine (ex. "VCT") plutôt qu'une seule étape (docs/04 J4) :
+/// couvre toutes les compétitions filles (abonnement hiérarchique, docs/03 §6).
+class _FollowSeasonPill extends ConsumerWidget {
+  const _FollowSeasonPill({required this.competitionId});
+
+  final String? competitionId;
 
   @override
-  State<_FollowSeasonPill> createState() => _FollowSeasonPillState();
-}
-
-class _FollowSeasonPillState extends State<_FollowSeasonPill> {
-  bool _following = false;
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final id = competitionId;
+    if (id == null) return const SizedBox.shrink();
+    final following = isFollowing(ref.watch(followsProvider).value, FollowTargetType.competition, id);
     return Padding(
       padding: const EdgeInsets.only(right: AppSpacing.md),
       child: GestureDetector(
-        onTap: () => setState(() => _following = !_following),
+        onTap: () => following
+            ? ref.read(followsControllerProvider).unfollow(FollowTargetType.competition, id)
+            : ref.read(followsControllerProvider).follow(FollowTargetType.competition, id),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 6),
           decoration: BoxDecoration(
-            color: _following ? AppColors.gold.withValues(alpha: 0.15) : AppColors.textPrimary,
+            color: following ? AppColors.gold.withValues(alpha: 0.15) : AppColors.textPrimary,
             borderRadius: BorderRadius.circular(AppRadii.pill),
-            border: _following ? Border.all(color: AppColors.gold) : null,
+            border: following ? Border.all(color: AppColors.gold) : null,
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              if (_following) const Icon(Icons.check_rounded, size: 14, color: AppColors.gold),
-              if (_following) const SizedBox(width: 4),
+              if (following) const Icon(Icons.check_rounded, size: 14, color: AppColors.gold),
+              if (following) const SizedBox(width: 4),
               Text(
-                _following ? "Suivi" : "Suivre",
+                following ? "Suivi" : "Suivre",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 13,
-                  color: _following ? AppColors.gold : AppColors.background,
+                  color: following ? AppColors.gold : AppColors.background,
                 ),
               ),
             ],

@@ -10,6 +10,7 @@ import "../../core/date_x.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/live_dot.dart";
+import "../follows/follows_provider.dart";
 
 final eventProvider = FutureProvider.autoDispose.family<EventDetailResponseDto, String>((ref, id) async {
   final response = await ref.watch(apiClientProvider).getEventsApi().eventsControllerGetById(id: id);
@@ -118,7 +119,7 @@ class _NextMatchBody extends StatelessWidget {
         Center(child: _StatusDisplay(event: event, scoresHidden: scoresHidden)),
         const SizedBox(height: AppSpacing.lg),
         if (status == EventStatusKind.scheduled) ...[
-          const _AlertButton(),
+          _AlertButton(eventId: event.id),
           const SizedBox(height: AppSpacing.sm),
           Center(
             child: TextButton(
@@ -329,31 +330,33 @@ class _CountdownState extends State<_Countdown> {
 }
 
 /// scale(0,97) à l'appui, devient "Alerte activée" au tap (`docs/maquettes/motion-specs`).
-/// Purement visuel pour l'instant : les abonnements/push arrivent au J4.
-class _AlertButton extends StatefulWidget {
-  const _AlertButton();
+/// "M'alerter" suit l'événement (docs/04 J4) : rappel T-15, début, résultat.
+class _AlertButton extends ConsumerStatefulWidget {
+  const _AlertButton({required this.eventId});
+
+  final String eventId;
 
   @override
-  State<_AlertButton> createState() => _AlertButtonState();
+  ConsumerState<_AlertButton> createState() => _AlertButtonState();
 }
 
-class _AlertButtonState extends State<_AlertButton> {
+class _AlertButtonState extends ConsumerState<_AlertButton> {
   bool _pressed = false;
-  bool _activated = false;
 
   @override
   Widget build(BuildContext context) {
+    final activated = isFollowing(ref.watch(followsProvider).value, FollowTargetType.event, widget.eventId);
     // Un seul détecteur de tap : imbriquer un vrai `FilledButton` dans ce
     // `GestureDetector` ferait gagner son propre reconnaisseur dans l'arène
     // de gestes, et les callbacks ci-dessous ne se déclencheraient jamais.
     return GestureDetector(
-      onTap: _activated
+      onTap: activated
           ? null
           : () {
               HapticFeedback.lightImpact();
-              setState(() => _activated = true);
+              ref.read(followsControllerProvider).follow(FollowTargetType.event, widget.eventId);
             },
-      onTapDown: _activated ? null : (_) => setState(() => _pressed = true),
+      onTapDown: activated ? null : (_) => setState(() => _pressed = true),
       onTapCancel: () => setState(() => _pressed = false),
       onTapUp: (_) => setState(() => _pressed = false),
       child: AnimatedScale(
@@ -365,7 +368,7 @@ class _AlertButtonState extends State<_AlertButton> {
           child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             child: Container(
-              key: ValueKey(_activated),
+              key: ValueKey(activated),
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
               decoration: BoxDecoration(
                 color: AppColors.textPrimary,
@@ -373,7 +376,7 @@ class _AlertButtonState extends State<_AlertButton> {
               ),
               alignment: Alignment.center,
               child: Text(
-                _activated ? "Alerte activée ✓" : "M'alerter au début du match",
+                activated ? "Alerte activée ✓" : "M'alerter au début du match",
                 style: const TextStyle(color: AppColors.background, fontWeight: FontWeight.w600),
               ),
             ),

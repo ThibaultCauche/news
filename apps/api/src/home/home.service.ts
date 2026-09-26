@@ -5,6 +5,8 @@ import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { eventSummaryInclude, EventSummaryDto, toEventSummary } from "../common/event-summary.mapper";
 import { PRISMA } from "../db/db.module";
+import { FollowStateDto } from "../subscriptions/subscription.dto";
+import { SubscriptionsService } from "../subscriptions/subscriptions.service";
 
 const HIGHLIGHT_MIN_IMPORTANCE = 2;
 const UPCOMING_LIMIT = 20;
@@ -16,20 +18,31 @@ export class HomeResponseDto {
   @ApiProperty({ type: [EventSummaryDto] }) liveNow!: EventSummaryDto[];
   @ApiProperty({ type: [EventSummaryDto] }) upcoming!: EventSummaryDto[];
   @ApiProperty({ type: [EventSummaryDto] }) highlights!: EventSummaryDto[];
+  @ApiProperty({ nullable: true, type: EventSummaryDto }) nowForYou!: EventSummaryDto | null;
+  @ApiProperty({ type: [FollowStateDto] }) follows!: FollowStateDto[];
 }
 
-// Version sans utilisateur du J2 (docs/04 J2) : grands rendez-vous + en direct +
-// à venir. La personnalisation ("tes suivis", "maintenant pour toi") viendra
-// avec les comptes au J4.
+// Les blocs partagés (en direct, à venir, grands rendez-vous) restent en cache
+// Redis, communs à tout le monde ; la personnalisation ("maintenant pour toi",
+// "tes suivis", docs/02 écran 17) se calcule à chaque appel à partir des
+// abonnements, sans utilisateur si aucun jeton n'est fourni (docs/04 J2 → J4).
 @Injectable()
 export class HomeService {
   constructor(
     @Inject(PRISMA) private readonly prisma: PrismaClient,
     private readonly cache: CacheService,
+    private readonly subscriptions: SubscriptionsService,
   ) {}
 
-  async getHome(): Promise<HomeResponseDto> {
-    const cached = await this.cache.get<HomeResponseDto>(CacheKeys.home());
+  async getHome(userId: string | null): Promise<HomeResponseDto> {
+    const shared = await this.getSharedBlocks();
+    const follows = userId ? await this.subscriptions.listWithState(userId) : [];
+    const nowForYou = follows.find((f) => f.currentEvent?.status === "live")?.currentEvent ?? follows.find((f) => f.currentEvent)?.currentEvent ?? null;
+    return { ...shared, nowForYou, follows };
+  }
+
+  private async getSharedBlocks(): Promise<Omit<HomeResponseDto, "nowForYou" | "follows">> {
+    const cached = await this.cache.get<Omit<HomeResponseDto, "nowForYou" | "follows">>(CacheKeys.home());
     if (cached) return cached;
 
     const now = new Date();
@@ -51,7 +64,7 @@ export class HomeService {
       }),
     ]);
 
-    const response: HomeResponseDto = {
+    const response = {
       sourceUpdatedAt: now.toISOString(),
       liveNow: live.map(toEventSummary),
       upcoming: upcoming.map(toEventSummary),

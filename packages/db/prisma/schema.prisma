@@ -78,6 +78,7 @@ model Event {
   participants     EventParticipant[]
   linksFrom        EventLink[]        @relation("EventLinkFrom")
   linksTo          EventLink[]        @relation("EventLinkTo")
+  notificationLogs NotificationLog[]
   createdAt        DateTime           @default(now()) @map("created_at")
   updatedAt        DateTime           @updatedAt @map("updated_at")
 
@@ -153,4 +154,90 @@ model ProviderPayload {
   fetchedAt  DateTime @default(now()) @map("fetched_at")
 
   @@map("provider_payload")
+}
+
+// Compte anonyme créé au premier lancement (J4, docs/03 §2/§4). Pas d'inscription ;
+// un lien Apple/Google pour synchroniser plusieurs appareils viendra plus tard.
+model AppUser {
+  id               String            @id @default(uuid())
+  devices          Device[]
+  subscriptions    Subscription[]
+  setting          UserSetting?
+  notificationLogs NotificationLog[]
+  createdAt        DateTime          @default(now()) @map("created_at")
+
+  @@map("app_user")
+}
+
+// Un appareil par installation (`installId` généré une fois côté client). `liveActivityToken`
+// réservé pour la V2 (Live Activities iOS, docs/03 §5), pas encore utilisé.
+model Device {
+  id                String   @id @default(uuid())
+  userId            String   @map("user_id")
+  user              AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  installId         String   @map("install_id")
+  pushToken         String?  @map("push_token")
+  platform          String
+  locale            String?
+  // Décalage UTC en minutes (ex. 120 = UTC+2), pas un nom de fuseau IANA :
+  // seul consommateur au J4 est le calcul des heures calmes (arithmétique pure,
+  // pas de base de données de fuseaux côté appli).
+  utcOffsetMinutes  Int?     @map("utc_offset_minutes")
+  liveActivityToken String?  @map("live_activity_token")
+  createdAt         DateTime @default(now()) @map("created_at")
+  updatedAt         DateTime @updatedAt @map("updated_at")
+
+  @@unique([userId, installId])
+  @@map("device")
+}
+
+// Suivi d'une catégorie, compétition, entité ou événement (docs/03 §2/§6).
+// `level` distingue "tout" (ex. G2 : chaque match) de "key_moments" (ex. Valorant :
+// seulement les grands moments), les résolutions hiérarchiques (catégorie/compétition
+// parente) se font au moment de la notification, pas ici.
+model Subscription {
+  id             String   @id @default(uuid())
+  userId         String   @map("user_id")
+  user           AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  targetType     String   @map("target_type")
+  targetId       String   @map("target_id")
+  level          String   @default("all")
+  notifyReminder Boolean  @default(true) @map("notify_reminder")
+  notifyStart    Boolean  @default(true) @map("notify_start")
+  notifyResult   Boolean  @default(true) @map("notify_result")
+  createdAt      DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, targetType, targetId])
+  @@map("subscription")
+}
+
+// Réglages appliqués côté serveur (règle 10 de CLAUDE.md : les notifications
+// masquent le score sans spoil, contrairement à l'affichage qui est démasquable
+// côté appli). Granularité par suivi/catégorie et résumé du matin reportés au J6
+// (écran 22 Réglages pas encore construit).
+model UserSetting {
+  id              String   @id @default(uuid())
+  userId          String   @unique @map("user_id")
+  user            AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  spoilerFree     Boolean  @default(true) @map("spoiler_free")
+  quietHoursStart Int?     @map("quiet_hours_start")
+  quietHoursEnd   Int?     @map("quiet_hours_end")
+  updatedAt       DateTime @updatedAt @map("updated_at")
+
+  @@map("user_setting")
+}
+
+// Journal des notifications envoyées, clé de déduplication (userId, eventId, type) —
+// règle 4 de CLAUDE.md appliquée aux notifications : on n'envoie jamais deux fois.
+model NotificationLog {
+  id     String   @id @default(uuid())
+  userId String   @map("user_id")
+  user   AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId String  @map("event_id")
+  event   Event   @relation(fields: [eventId], references: [id])
+  type   String
+  sentAt DateTime @default(now()) @map("sent_at")
+
+  @@unique([userId, eventId, type])
+  @@map("notification_log")
 }

@@ -1,0 +1,31 @@
+import { ApiProperty, ApiPropertyOptional } from "@nestjs/swagger";
+import { IsBoolean, IsInt, IsOptional, Max, Min } from "class-validator";
+
+export class UserSettingDto {
+  @ApiProperty() spoilerFree!: boolean;
+  @ApiProperty({ nullable: true, type: Number }) quietHoursStart!: number | null;
+  @ApiProperty({ nullable: true, type: Number }) quietHoursEnd!: number | null;
+}
+
+// `null` explicite pour effacer des heures calmes déjà réglées : `undefined` (champ
+// absent) laisse la valeur actuelle inchangée, `null` la remet à "pas d'heures calmes".
+export class UpdateUserSettingDto {
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  spoilerFree?: boolean;
+
+  @ApiPropertyOptional({ nullable: true, type: Number })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(23)
+  quietHoursStart?: number | null;
+
+  @ApiPropertyOptional({ nullable: true, type: Number })
+  @IsOptional()
+  @IsInt()
+  @Min(0)
+  @Max(23)
+  quietHoursEnd?: number | null;
+}

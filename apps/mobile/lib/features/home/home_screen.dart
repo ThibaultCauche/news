@@ -6,7 +6,9 @@ import "../../core/api_providers.dart";
 import "../../core/date_x.dart";
 import "../../core/iterable_x.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/event_card.dart";
 import "../../widgets/live_dot.dart";
+import "../follows/follows_provider.dart";
 import "../next_match/next_match_screen.dart";
 
 final homeProvider = FutureProvider.autoDispose<HomeResponseDto>((ref) async {
@@ -92,10 +94,19 @@ class _HomeBody extends StatelessWidget {
     final live = home.liveNow.toList();
     final upcoming = home.upcoming.toList();
     final highlights = home.highlights.toList();
+    // "Maintenant pour toi" (docs/02, écran 17) : d'abord ce qui est suivi et
+    // en direct, sinon le premier direct générique ; si rien n'est en direct,
+    // le bandeau retombe sur le prochain match à venir ("à suivre") plutôt que
+    // de disparaître.
+    final liveEvent = home.nowForYou?.status == "live" ? home.nowForYou : live.firstOrNull;
+    final upNextEvent = liveEvent == null ? (home.nowForYou ?? upcoming.firstOrNull) : null;
+    final follows = home.follows.where((f) => f.currentEvent != null).toList();
 
     return SliverList(
       delegate: SliverChildListDelegate([
-        if (live.isNotEmpty) _LiveBanner(event: live.first, next: upcoming.firstOrNull),
+        if (liveEvent != null) _MatchBanner(event: liveEvent, next: upcoming.firstOrNull, isLive: true),
+        if (liveEvent == null && upNextEvent != null) _MatchBanner(event: upNextEvent, isLive: false),
+        if (follows.isNotEmpty) _FollowsSection(follows: follows),
         if (highlights.isNotEmpty) _HighlightsSection(events: highlights.take(5).toList()),
         const SizedBox(height: AppSpacing.xl),
       ]),
@@ -103,18 +114,39 @@ class _HomeBody extends StatelessWidget {
   }
 }
 
-class _LiveBanner extends StatelessWidget {
-  const _LiveBanner({required this.event, this.next});
+/// "Maintenant pour toi" (docs/02, écran 17) : en direct (rouge, `docs/02`
+/// règle des couleurs) si quelque chose l'est, sinon le prochain match à venir
+/// ("à suivre", ton neutre — ce n'est pas forcément un suivi).
+class _MatchBanner extends StatelessWidget {
+  const _MatchBanner({required this.event, required this.isLive, this.next});
 
   final EventSummaryDto event;
+  final bool isLive;
   final EventSummaryDto? next;
+
+  String _scheduleLabel(DateTime start) {
+    final local = start.toLocal();
+    final now = DateTime.now();
+    final days = DateTime(local.year, local.month, local.day).difference(DateTime(now.year, now.month, now.day)).inDays;
+    final day = switch (days) {
+      0 => "Aujourd'hui",
+      1 => "Demain",
+      _ => DateFormat("d MMMM", "fr_FR").format(local),
+    };
+    return "$day à ${DateFormat.Hm("fr_FR").format(local)}";
+  }
 
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
-    final title = event.participants.length == 2
+    final accent = isLive ? AppColors.live : AppColors.textSecondary;
+    final title = isLive && event.participants.length == 2
         ? "${event.participants[0].name} ${event.participants[0].score ?? 0}-${event.participants[1].score ?? 0} ${event.participants[1].name}"
+        : event.participants.length == 2
+        ? "${event.participants[0].name} – ${event.participants[1].name}"
         : event.name;
+    final start = event.startsAt.toDateTime;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
       child: InkWell(
@@ -123,28 +155,28 @@ class _LiveBanner extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(AppSpacing.md),
           decoration: BoxDecoration(
-            color: AppColors.live.withValues(alpha: 0.12),
+            color: isLive ? AppColors.live.withValues(alpha: 0.12) : AppColors.surface,
             borderRadius: BorderRadius.circular(AppRadii.card),
-            border: Border.all(color: AppColors.live.withValues(alpha: 0.4)),
+            border: Border.all(color: isLive ? AppColors.live.withValues(alpha: 0.4) : AppColors.surfaceBorder),
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
                 children: [
-                  const LiveDot(),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text(
-                    "EN DIRECT",
-                    style: textTheme.labelSmall?.copyWith(color: AppColors.live),
-                  ),
+                  if (isLive) ...[const LiveDot(), const SizedBox(width: AppSpacing.xs)],
+                  Text(isLive ? "EN DIRECT" : "À SUIVRE", style: textTheme.labelSmall?.copyWith(color: accent)),
                   const SizedBox(width: AppSpacing.xs),
                   Expanded(child: Text(event.competition.name, style: textTheme.bodySmall, overflow: TextOverflow.ellipsis)),
                 ],
               ),
               const SizedBox(height: AppSpacing.xs),
               Text(title, style: textTheme.titleLarge),
-              if (next != null) ...[
+              if (!isLive && start != null) ...[
+                const SizedBox(height: 2),
+                Text(_scheduleLabel(start), style: textTheme.bodySmall?.copyWith(color: AppColors.textSecondary)),
+              ],
+              if (isLive && next != null) ...[
                 const Divider(height: AppSpacing.lg),
                 Row(
                   children: [
@@ -162,6 +194,44 @@ class _LiveBanner extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+/// "Tes suivis" (docs/02, écran 17) : une carte par suivi qui a un match en
+/// cours ou à venir. Ceux sans rien de prévu restent réservés à l'écran Suivis.
+class _FollowsSection extends StatelessWidget {
+  const _FollowsSection({required this.follows});
+
+  final List<FollowStateDto> follows;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+          child: Text("Tes suivis", style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.gold)),
+        ),
+        const SizedBox(height: AppSpacing.sm),
+        Card(
+          margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 4),
+            child: Column(
+              children: [
+                for (final follow in follows)
+                  EventCard(
+                    event: follow.currentEvent!,
+                    onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: follow.currentEvent!.id))),
+                  ),
+              ],
+            ),
+          ),
+        ),
+        const SizedBox(height: AppSpacing.md),
+      ],
     );
   }
 }
@@ -196,25 +266,17 @@ class _HighlightsSection extends StatelessWidget {
   }
 }
 
-class _HighlightCard extends StatefulWidget {
+class _HighlightCard extends ConsumerWidget {
   const _HighlightCard({required this.event});
 
   final EventSummaryDto event;
 
-  @override
-  State<_HighlightCard> createState() => _HighlightCardState();
-}
-
-class _HighlightCardState extends State<_HighlightCard> {
-  bool _following = false;
-
-  String get _title => widget.event.participants.length == 2
-      ? "${widget.event.participants[0].name} – ${widget.event.participants[1].name}"
-      : widget.event.name;
+  String get _title =>
+      event.participants.length == 2 ? "${event.participants[0].name} – ${event.participants[1].name}" : event.name;
 
   String get _timing {
-    final start = widget.event.startsAt.toDateTime;
-    if (start == null) return widget.event.competition.name;
+    final start = event.startsAt.toDateTime;
+    if (start == null) return event.competition.name;
     final days = start.toLocal().difference(DateTime.now()).inDays;
     return switch (days) {
       <= 0 => "Aujourd'hui",
@@ -224,13 +286,14 @@ class _HighlightCardState extends State<_HighlightCard> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final gradient = AppGradients.highlights[widget.event.id.hashCode.abs() % AppGradients.highlights.length];
+  Widget build(BuildContext context, WidgetRef ref) {
+    final gradient = AppGradients.highlights[event.id.hashCode.abs() % AppGradients.highlights.length];
     final textTheme = Theme.of(context).textTheme;
+    final following = isFollowing(ref.watch(followsProvider).value, FollowTargetType.event, event.id);
     return InkWell(
       borderRadius: BorderRadius.circular(AppRadii.card),
       onTap: () => Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: widget.event.id)),
+        MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id)),
       ),
       child: Container(
         width: 240,
@@ -252,7 +315,12 @@ class _HighlightCardState extends State<_HighlightCard> {
                   child: Text(_timing, style: textTheme.bodySmall, overflow: TextOverflow.ellipsis),
                 ),
                 const SizedBox(width: AppSpacing.xs),
-                _FollowPill(following: _following, onTap: () => setState(() => _following = !_following)),
+                _FollowPill(
+                  following: following,
+                  onTap: () => following
+                      ? ref.read(followsControllerProvider).unfollow(FollowTargetType.event, event.id)
+                      : ref.read(followsControllerProvider).follow(FollowTargetType.event, event.id),
+                ),
               ],
             ),
           ],
@@ -262,8 +330,8 @@ class _HighlightCardState extends State<_HighlightCard> {
   }
 }
 
-/// Visuel uniquement : les abonnements arrivent au J4, ce bouton ne mémorise
-/// rien au-delà de l'écran (pas d'appel réseau, pas de persistance).
+/// Bouton "Suivre" partout (docs/04 J4) : `POST`/`DELETE /v1/subscriptions`
+/// via `followsControllerProvider`, l'état vient de `followsProvider`.
 class _FollowPill extends StatelessWidget {
   const _FollowPill({required this.following, required this.onTap});
 

@@ -9,7 +9,7 @@
 | J1 | Monorepo, Compose de dev, schéma de base, adaptateur PandaScore (Valorant) | Les matchs Valorant arrivent en base | **Fait (2026-09-25)** |
 | J2 | API `home`, `agenda`, `events/:id`, `competitions/:id` + client Dart généré | L'API répond avec de vraies données | **Fait (2026-09-25)** |
 | J3 | Appli Flutter : accueil, agenda, page Valorant, prochain match | Première version utilisable | **Fait (2026-09-26)** |
-| J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | À faire |
+| J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | **Fait (2026-09-26)** |
 | J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | À faire |
 | J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | À faire |
 | J7 | Mise en ligne : NAS, Cloudflare Tunnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | À faire (ajouté) |
@@ -109,10 +109,16 @@
 - Côté appli : bouton « Suivre » partout, écran Suivis, permission de notification demandée au bon moment.
 
 **Critères d'acceptation**
-- [ ] Suivre G2 depuis l'appli → rappel, début et résultat reçus sur un vrai téléphone.
-- [ ] Une même notification n'est jamais envoyée deux fois (test).
-- [ ] Sans spoil activé → la notification de fin ne contient pas le score.
-- [ ] Désinstaller/réinstaller ne casse rien (jeton invalide nettoyé).
+- [x] Suivre G2 depuis l'appli → rappel, début et résultat reçus sur un vrai téléphone. Vérifié le 2026-09-26 sur un téléphone Android physique, projet Firebase réel : « début » et « résultat » reçus en conditions réelles sur un vrai match Champions 2026 (LOUD vs EDG) suivi depuis l'appli ; « rappel T-15 » vérifié par un test contrôlé (départ d'un match existant avancé à +15-20 min le temps du test, remis à sa vraie valeur ensuite) faute de vrai match dans la fenêtre T-15 au moment du test. Le tap sur la notification ouvre directement l'écran du match (`eventId` dans le payload `data`).
+- [x] Une même notification n'est jamais envoyée deux fois (test). `notification-dispatch.service.spec.ts` : deux appels du même événement métier ne créent qu'une ligne `notification_log` et n'appellent `FcmService.send` qu'une fois.
+- [x] Sans spoil activé → la notification de fin ne contient pas le score. Vérifié par un test unitaire (`packages/domain`) et en conditions réelles sur le téléphone : « Terminé LOUD vs EDG est terminé. », sans score ni gagnant (réglage par défaut).
+- [x] Désinstaller/réinstaller ne casse rien (jeton invalide nettoyé). Vérifié par un test d'intégration qui simule un jeton FCM invalide et confirme la suppression de l'appareil correspondant (pas de vraie désinstallation faite en conditions réelles).
+
+**Ajouts par rapport au périmètre initial** : `GET /v1/subscriptions` (non listé dans `docs/03` §4, nécessaire à l'écran Suivis) ; bandeau "à suivre" sur l'accueil quand rien n'est en direct (repli sur `home.upcoming`, docs/02 point 1 "en direct ou imminente") ; `Device.timezone` remplacé par `Device.utcOffsetMinutes` (décalage UTC en minutes plutôt qu'un fuseau IANA, pour éviter une dépendance Flutter supplémentaire côté calcul des heures calmes).
+
+**Reporté au J5** : le type de notification « qualification/élimination » (dépend du bracket, `event_link`, pas encore alimenté).
+
+**iOS** : reporté après la sortie de l'appli (décision produit), Android seul pour l'instant — le compte Apple Developer et la clé APNs restent un point ouvert pour plus tard.
 
 ---
 

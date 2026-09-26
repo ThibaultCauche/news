@@ -18,6 +18,7 @@ class SeasonStep {
 
 class SeasonOverview {
   const SeasonOverview({
+    required this.rootCompetitionId,
     required this.steps,
     required this.currentStep,
     required this.progress,
@@ -25,6 +26,9 @@ class SeasonOverview {
     required this.playedSteps,
   });
 
+  /// Ligue racine (ex. "VCT") : cible du bouton "Suivre" de l'écran (docs/04 J4)
+  /// — suivre la saison entière plutôt qu'une seule étape.
+  final String rootCompetitionId;
   final List<SeasonStep> steps;
   final SeasonStep currentStep;
   final double progress;
@@ -90,6 +94,7 @@ final valorantSeasonProvider = FutureProvider.autoDispose<SeasonOverview?>((ref)
       .toList();
 
   return SeasonOverview(
+    rootCompetitionId: root.id,
     steps: steps,
     currentStep: currentStep,
     progress: _seasonProgress(steps, now),

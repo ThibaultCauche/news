@@ -5,10 +5,10 @@ import { EventStatus } from "./status";
 // le cache a de toute façon un TTL court (15-60s) qui sert de filet.
 export const DOMAIN_EVENTS_CHANNEL = "news:domain-events";
 
-// Seuls les types que le worker peut réellement détecter au J2 (statut et score
-// d'un événement). BracketAdvanced/StandingChanged/CompetitionFinished viendront
-// avec les brackets et classements au J5, EventStartingSoon avec les notifications au J4.
-export type DomainEventType = "EventScheduled" | "EventStarted" | "EventFinished" | "ScoreChanged";
+// BracketAdvanced/StandingChanged/CompetitionFinished viendront avec les brackets
+// et classements au J5. EventStartingSoon (T-15 min, docs/03 §3/§6) est publié par
+// un job dédié plutôt que par l'ingestion (voir `starting-soon` dans apps/worker).
+export type DomainEventType = "EventScheduled" | "EventStarted" | "EventFinished" | "ScoreChanged" | "EventStartingSoon";
 
 export interface DomainEventMessage {
   type: DomainEventType;
