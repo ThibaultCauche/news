@@ -7,8 +7,10 @@ import {
   DomainEventMessage,
   DOMAIN_EVENT_NOTIFICATION_TYPES,
   isQuietHour,
+  KEY_MOMENT_MIN_IMPORTANCE,
   localHourFromOffsetMinutes,
   MAX_NOTIFICATIONS_PER_HOUR,
+  NotificationType,
   shouldNotify,
   SubscriptionLevel,
 } from "@news/domain";
@@ -28,7 +30,14 @@ export class NotificationDispatchService {
 
   async handle(message: DomainEventMessage): Promise<void> {
     const type = DOMAIN_EVENT_NOTIFICATION_TYPES[message.type];
-    if (!type) return; // EventScheduled/ScoreChanged : pas de type de notif au J4
+    // EventScheduled/ScoreChanged/BracketAdvanced/StandingChanged : pas de type de
+    // notif direct (J4/J5).
+    if (!type) return;
+
+    if (type === "qualification" || type === "elimination") {
+      return this.handleEntityNotification(message.entityId, type);
+    }
+    if (!message.eventId) return;
 
     const event = await this.prisma.event.findUnique({
       where: { id: message.eventId },
@@ -96,6 +105,53 @@ export class NotificationDispatchService {
         if (tokenInvalid) await this.prisma.device.delete({ where: { id: device.id } }).catch(() => undefined);
       }
       logger.info({ userId: sub.userId, eventId: event.id, type }, "notification traitée");
+    }
+  }
+
+  // Qualification/élimination (J5, reporté du J4) : pas de match derrière, donc
+  // pas d'abonnement hiérarchique (catégorie/compétition) — seuls les abonnés
+  // directs à cette équipe sont concernés (règle 5 de CLAUDE.md, même esprit).
+  // Toujours traité comme un "grand moment" et jamais plafonné, comme les autres
+  // abonnements directs.
+  private async handleEntityNotification(entityId: string | undefined, type: NotificationType): Promise<void> {
+    if (!entityId) return;
+    const entity = await this.prisma.entity.findUnique({ where: { id: entityId }, select: { name: true } });
+    if (!entity) return;
+
+    const subscriptions = await this.prisma.subscription.findMany({
+      where: { targetType: "entity", targetId: entityId },
+      include: { user: { include: { setting: true, devices: true } } },
+    });
+
+    for (const sub of subscriptions) {
+      // Pas de réglage dédié qualification/élimination au J5 : réutilise "résultat".
+      const notifyEnabled = sub.notifyResult;
+      if (!shouldNotify({ notifyEnabled, subscriptionLevel: sub.level as SubscriptionLevel, eventImportance: KEY_MOMENT_MIN_IMPORTANCE })) continue;
+
+      try {
+        await this.prisma.notificationLog.create({ data: { id: randomUUID(), userId: sub.userId, entityId, type } });
+      } catch (err) {
+        if ((err as { code?: string }).code === "P2002") continue; // déjà notifié
+        throw err;
+      }
+
+      const { title, body } = buildNotificationText(type, entity.name, sub.user.setting?.spoilerFree ?? true, null);
+      for (const device of sub.user.devices) {
+        if (
+          device.utcOffsetMinutes !== null &&
+          isQuietHour(
+            localHourFromOffsetMinutes(new Date(), device.utcOffsetMinutes),
+            sub.user.setting?.quietHoursStart ?? null,
+            sub.user.setting?.quietHoursEnd ?? null,
+          )
+        ) {
+          continue;
+        }
+        if (!device.pushToken) continue;
+        const { tokenInvalid } = await this.fcm.send(device.pushToken, title, body, { entityId });
+        if (tokenInvalid) await this.prisma.device.delete({ where: { id: device.id } }).catch(() => undefined);
+      }
+      logger.info({ userId: sub.userId, entityId, type }, "notification traitée");
     }
   }
 

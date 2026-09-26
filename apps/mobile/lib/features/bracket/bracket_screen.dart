@@ -1,0 +1,470 @@
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:news_api_client/news_api_client.dart";
+import "../../core/iterable_x.dart";
+import "../../domain/event_status.dart";
+import "../../theme/tokens.dart";
+import "../follows/follows_provider.dart";
+import "bracket_painter.dart";
+import "bracket_provider.dart";
+
+bool _isLowerBracket(String name) => name.toLowerCase().contains("lower bracket");
+
+/// Nœuds dont un participant est suivi : le « chemin en or » de l'arbre
+/// radial (écran 02/07, règle 12 de `CLAUDE.md`). Fonction pure, testée
+/// indépendamment du widget (`bracket_logic_test.dart`).
+Set<String> highlightedEventIds(List<BracketNodeDto> nodes, Set<String> followedEntityIds) {
+  return nodes.where((n) => n.participants.any((p) => followedEntityIds.contains(p.entityId))).map((n) => n.eventId).toSet();
+}
+
+/// Une ligne par participant si le match est résolu, sinon un placeholder
+/// « Perdant de … »/« Gagnant de … » par lien entrant (écran 05).
+List<(String label, String? score, bool isWinner)> bracketMatchRows(
+  BracketNodeDto node,
+  List<BracketLinkDto> incoming,
+  Map<String, BracketNodeDto> byId,
+) {
+  if (node.participants.isNotEmpty) {
+    return [for (final p in node.participants) (p.shortName ?? p.name, p.score?.toString(), p.isWinner == true)];
+  }
+  return [for (final l in incoming) (_placeholderLabel(l, byId), null, false)];
+}
+
+String _placeholderLabel(BracketLinkDto link, Map<String, BracketNodeDto> byId) {
+  final from = byId[link.fromEventId];
+  final verb = link.outcome == "winner" ? "Gagnant de" : "Perdant de";
+  if (from == null) return "$verb un match à venir";
+  final fromLabel = from.participants.isEmpty ? from.name : from.participants.map((p) => p.shortName ?? p.name).join(" vs ");
+  return "$verb $fromLabel";
+}
+
+/// Écrans 02 (arbre radial), 05 (repêchage) et 07 (arbre terminé) — `docs/02`.
+/// `competitionId` est le niveau "Champions 2026" (la série) : ses enfants
+/// (`competitions/:id`) donnent les poules (« Group … ») et le tournoi à
+/// élimination (« Playoffs »), chacun avec son propre bracket/classement.
+class BracketScreen extends ConsumerStatefulWidget {
+  const BracketScreen({super.key, required this.competitionId, required this.title, required this.subtitle});
+
+  final String competitionId;
+  final String title;
+  final String subtitle;
+
+  @override
+  ConsumerState<BracketScreen> createState() => _BracketScreenState();
+}
+
+class _BracketScreenState extends ConsumerState<BracketScreen> {
+  int _tabIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final detail = ref.watch(competitionDetailProvider(widget.competitionId));
+
+    return Scaffold(
+      appBar: AppBar(
+        leadingWidth: 160,
+        leading: TextButton.icon(
+          onPressed: () => Navigator.of(context).maybePop(),
+          icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
+          label: const Text("Valorant", style: TextStyle(color: AppColors.textSecondary)),
+        ),
+      ),
+      body: switch (detail) {
+        AsyncData(:final value) => _BracketBody(
+            title: widget.title,
+            subtitle: widget.subtitle,
+            children: value.children.toList(),
+            tabIndex: _tabIndex,
+            onTabSelected: (i) => setState(() => _tabIndex = i),
+          ),
+        AsyncError() => const Center(child: Text("Impossible de charger cette compétition.")),
+        _ => const Center(child: CircularProgressIndicator()),
+      },
+    );
+  }
+}
+
+class _BracketBody extends ConsumerWidget {
+  const _BracketBody({
+    required this.title,
+    required this.subtitle,
+    required this.children,
+    required this.tabIndex,
+    required this.onTabSelected,
+  });
+
+  final String title;
+  final String subtitle;
+  final List<CompetitionChildDto> children;
+  final int tabIndex;
+  final ValueChanged<int> onTabSelected;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final groupIds = children.where((c) => c.name.toLowerCase().contains("group")).map((c) => c.id).toList();
+    final playoffs = children.firstWhereOrNull((c) => c.name.toLowerCase().contains("playoff"));
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(title, style: Theme.of(context).textTheme.headlineMedium),
+              Text(subtitle, style: const TextStyle(color: AppColors.textSecondary)),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+          child: _BracketTabs(selectedIndex: tabIndex, onSelected: onTabSelected),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Expanded(
+          child: switch (tabIndex) {
+            0 => _GroupsTab(groupIds: groupIds),
+            1 => playoffs == null
+                ? const _EmptyMessage("Phase finale pas encore commencée.")
+                : _FinalsTab(competitionId: playoffs.id),
+            _ => playoffs == null
+                ? const _EmptyMessage("Repêchage pas encore commencé.")
+                : _RepechageTab(competitionId: playoffs.id),
+          },
+        ),
+      ],
+    );
+  }
+}
+
+class _BracketTabs extends StatelessWidget {
+  const _BracketTabs({required this.selectedIndex, required this.onSelected});
+
+  final int selectedIndex;
+  final ValueChanged<int> onSelected;
+  static const _labels = ["Groupes", "Phase finale", "Repêchage"];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.pill)),
+      child: Row(
+        children: [
+          for (var i = 0; i < _labels.length; i++)
+            Expanded(
+              child: GestureDetector(
+                onTap: () => onSelected(i),
+                child: AnimatedContainer(
+                  duration: AppMotion.microDuration,
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+                  decoration: BoxDecoration(
+                    color: selectedIndex == i ? AppColors.glass : Colors.transparent,
+                    borderRadius: BorderRadius.circular(AppRadii.pill),
+                  ),
+                  alignment: Alignment.center,
+                  child: FittedBox(
+                    child: Text(
+                      _labels[i],
+                      style: TextStyle(
+                        color: selectedIndex == i ? AppColors.textPrimary : AppColors.textSecondary,
+                        fontWeight: selectedIndex == i ? FontWeight.w600 : FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class _EmptyMessage extends StatelessWidget {
+  const _EmptyMessage(this.text);
+  final String text;
+
+  @override
+  Widget build(BuildContext context) => Center(child: Text(text, style: const TextStyle(color: AppColors.textSecondary)));
+}
+
+/// Écran 06 : mini-grilles 2×2, trait entre qualifiés et éliminés.
+class _GroupsTab extends ConsumerWidget {
+  const _GroupsTab({required this.groupIds});
+  final List<String> groupIds;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (groupIds.isEmpty) return const _EmptyMessage("Pas de phase de groupes pour cette compétition.");
+    return GridView.count(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      crossAxisCount: 2,
+      mainAxisSpacing: AppSpacing.md,
+      crossAxisSpacing: AppSpacing.md,
+      childAspectRatio: 0.85,
+      children: [for (final id in groupIds) _GroupCard(competitionId: id)],
+    );
+  }
+}
+
+class _GroupCard extends ConsumerWidget {
+  const _GroupCard({required this.competitionId});
+  final String competitionId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final detail = ref.watch(competitionDetailProvider(competitionId));
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.sm),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadii.chip),
+        border: Border.all(color: AppColors.surfaceBorder),
+      ),
+      child: switch (detail) {
+        AsyncData(:final value) => value.standings.isEmpty
+            ? _EmptyGroup(name: value.name)
+            : _GroupStandings(name: value.name, standings: value.standings.toList()),
+        AsyncError() => const Center(child: Text("—", style: TextStyle(color: AppColors.textTertiary))),
+        _ => const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))),
+      },
+    );
+  }
+}
+
+// Groupe pas encore commencé : le classement n'existe pas tant qu'aucun match
+// n'est terminé (`computeStandings`, `packages/domain`) — un message plutôt
+// qu'une carte vide.
+class _EmptyGroup extends StatelessWidget {
+  const _EmptyGroup({required this.name});
+  final String name;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(name.toUpperCase(), style: Theme.of(context).textTheme.labelSmall),
+        const Expanded(
+          child: Center(child: Text("Pas encore commencé", style: TextStyle(color: AppColors.textTertiary, fontSize: 12))),
+        ),
+      ],
+    );
+  }
+}
+
+class _GroupStandings extends StatelessWidget {
+  const _GroupStandings({required this.name, required this.standings});
+  final String name;
+  final List<CompetitionStandingDto> standings;
+
+  @override
+  Widget build(BuildContext context) {
+    final sorted = [...standings]..sort((a, b) => (a.rank ?? 99).compareTo(b.rank ?? 99));
+    // `SingleChildScrollView` plutôt qu'un `Column` nu : la carte a une hauteur
+    // fixe (grille 2×2) et un texte agrandi (accessibilité) ne doit pas déborder.
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(name.toUpperCase(), style: Theme.of(context).textTheme.labelSmall),
+          const SizedBox(height: AppSpacing.xs),
+          for (var i = 0; i < sorted.length; i++) ...[
+            if (i > 0 && sorted[i - 1].qualified == true && sorted[i].qualified != true)
+              const Divider(height: AppSpacing.sm, color: AppColors.surfaceBorder),
+            _GroupRow(standing: sorted[i]),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _GroupRow extends StatelessWidget {
+  const _GroupRow({required this.standing});
+  final CompetitionStandingDto standing;
+
+  @override
+  Widget build(BuildContext context) {
+    final qualified = standing.qualified == true;
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              standing.entityName,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: qualified ? AppColors.textPrimary : AppColors.textSecondary, fontWeight: qualified ? FontWeight.w600 : FontWeight.w400),
+            ),
+          ),
+          Text("${standing.wins ?? 0}-${standing.losses ?? 0}", style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+        ],
+      ),
+    );
+  }
+}
+
+/// Écran 02/07 : arbre radial du tableau haut + finale (le tableau bas vit
+/// dans l'onglet Repêchage).
+class _FinalsTab extends ConsumerWidget {
+  const _FinalsTab({required this.competitionId});
+  final String competitionId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bracket = ref.watch(bracketProvider(competitionId));
+    final follows = ref.watch(followsProvider).value;
+
+    return switch (bracket) {
+      AsyncData(:final value) => _RadialTree(bracket: value, follows: follows),
+      AsyncError() => const _EmptyMessage("Impossible de charger l'arbre."),
+      _ => const Center(child: CircularProgressIndicator()),
+    };
+  }
+}
+
+class _RadialTree extends StatelessWidget {
+  const _RadialTree({required this.bracket, required this.follows});
+  final BracketResponseDto bracket;
+  final List<FollowStateDto>? follows;
+
+  @override
+  Widget build(BuildContext context) {
+    final upperNodes = bracket.nodes.where((n) => !_isLowerBracket(n.name)).toList();
+    final upperEventIds = upperNodes.map((n) => n.eventId).toSet();
+    final upperLinks = bracket.links.where((l) => upperEventIds.contains(l.fromEventId) && upperEventIds.contains(l.toEventId)).toList();
+
+    final followedEntityIds = (follows ?? const []).where((f) => f.targetType == "entity").map((f) => f.targetId).toSet();
+    final highlighted = highlightedEventIds(upperNodes, followedEntityIds);
+
+    return Column(
+      children: [
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            // Carré plutôt que `Size.infinite` : un cercle a besoin d'un
+            // repère de taille unique, sans quoi les anneaux débordent du
+            // côté le plus court (l'écran est bien plus haut que large).
+            child: Center(
+              child: AspectRatio(
+                aspectRatio: 1,
+                child: CustomPaint(
+                  painter: BracketPainter(nodes: upperNodes, links: upperLinks, highlightedEventIds: highlighted),
+                  size: Size.infinite,
+                ),
+              ),
+            ),
+          ),
+        ),
+        const Padding(
+          padding: EdgeInsets.only(bottom: AppSpacing.md),
+          child: Text("En or, le chemin suivi. En rouge, le match en direct.", style: TextStyle(color: AppColors.textSecondary, fontSize: 12)),
+        ),
+      ],
+    );
+  }
+}
+
+/// Écran 05 : tours du repêchage, "perdant de …" tant que le match précédent
+/// n'est pas terminé.
+class _RepechageTab extends ConsumerWidget {
+  const _RepechageTab({required this.competitionId});
+  final String competitionId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final bracket = ref.watch(bracketProvider(competitionId));
+    return switch (bracket) {
+      AsyncData(:final value) => _RepechageList(bracket: value),
+      AsyncError() => const _EmptyMessage("Impossible de charger le repêchage."),
+      _ => const Center(child: CircularProgressIndicator()),
+    };
+  }
+}
+
+class _RepechageList extends StatelessWidget {
+  const _RepechageList({required this.bracket});
+  final BracketResponseDto bracket;
+
+  @override
+  Widget build(BuildContext context) {
+    final lowerNodes = bracket.nodes.where((n) => _isLowerBracket(n.name)).toList();
+    if (lowerNodes.isEmpty) return const _EmptyMessage("Pas de repêchage pour cette compétition.");
+
+    final byId = {for (final n in bracket.nodes) n.eventId: n};
+    final incomingByTarget = <String, List<BracketLinkDto>>{};
+    for (final l in bracket.links) {
+      incomingByTarget.putIfAbsent(l.toEventId, () => []).add(l);
+    }
+    final byRound = <int, List<BracketNodeDto>>{};
+    for (final n in lowerNodes) {
+      byRound.putIfAbsent(n.round.toInt(), () => []).add(n);
+    }
+    final rounds = byRound.keys.toList()..sort((a, b) => b.compareTo(a)); // le plus profond = tour 1
+
+    return ListView(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      children: [
+        for (final round in rounds) ...[
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
+            child: Text("TOUR ${rounds.indexOf(round) + 1}", style: Theme.of(context).textTheme.labelSmall),
+          ),
+          for (final node in byRound[round]!)
+            Padding(
+              padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+              child: _BracketMatchCard(node: node, incoming: incomingByTarget[node.eventId] ?? const [], byId: byId),
+            ),
+        ],
+      ],
+    );
+  }
+}
+
+class _BracketMatchCard extends StatelessWidget {
+  const _BracketMatchCard({required this.node, required this.incoming, required this.byId});
+  final BracketNodeDto node;
+  final List<BracketLinkDto> incoming;
+  final Map<String, BracketNodeDto> byId;
+
+  @override
+  Widget build(BuildContext context) {
+    final rows = bracketMatchRows(node, incoming, byId);
+
+    return Container(
+      padding: const EdgeInsets.all(AppSpacing.sm),
+      decoration: BoxDecoration(
+        color: AppColors.surface,
+        borderRadius: BorderRadius.circular(AppRadii.chip),
+        border: Border.all(color: node.status.statusKind == EventStatusKind.live ? AppColors.live : AppColors.surfaceBorder),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          for (final (label, score, isWinner) in rows)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      label,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isWinner ? AppColors.textPrimary : AppColors.textSecondary,
+                        fontWeight: isWinner ? FontWeight.w600 : FontWeight.w400,
+                      ),
+                    ),
+                  ),
+                  if (score != null) Text(score, style: const TextStyle(color: AppColors.textPrimary)),
+                ],
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}

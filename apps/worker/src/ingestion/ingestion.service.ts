@@ -2,15 +2,20 @@ import { randomUUID } from "node:crypto";
 import { Inject, Injectable } from "@nestjs/common";
 import { Prisma, PrismaClient } from "@news/db";
 import {
+  BracketFormat,
   CompetitionDTO,
   computeIngestionLatencyMs,
   computePayloadHash,
+  computeStandings,
   createLogger,
   diffEventStatus,
+  diffStandings,
   EntityDTO,
   EventDTO,
   EventStateSnapshot,
+  EventStatus,
   shouldUpsert,
+  StandingMatchInput,
 } from "@news/domain";
 import { PandaScoreProvider } from "@news/providers";
 import { PRISMA } from "../db/db.module";
@@ -76,11 +81,12 @@ export class IngestionService {
           endsAt: dto.endsAt,
           importance: dto.importance,
         };
+        const dataWithBracket = { ...data, hasBracket: dto.hasBracket };
         if (existingId) {
-          await this.prisma.competition.update({ where: { id: existingId }, data });
+          await this.prisma.competition.update({ where: { id: existingId }, data: dataWithBracket });
           return existingId;
         }
-        const created = await this.prisma.competition.create({ data: { id: randomUUID(), ...data } });
+        const created = await this.prisma.competition.create({ data: { id: randomUUID(), ...dataWithBracket } });
         return created.id;
       },
     });
@@ -163,9 +169,17 @@ export class IngestionService {
     }
 
     // Mesure de la latence réelle début/fin (point ouvert de docs/01, J1).
-    if (dto.status === "finished" && previousSnapshot?.status !== "finished" && dto.endsAt) {
-      const latencyMs = computeIngestionLatencyMs(dto.endsAt, new Date());
-      logger.info({ externalId: dto.externalId, name: dto.name, latencyMs }, "match terminé détecté");
+    if (dto.status === "finished" && previousSnapshot?.status !== "finished") {
+      if (dto.endsAt) {
+        const latencyMs = computeIngestionLatencyMs(dto.endsAt, new Date());
+        logger.info({ externalId: dto.externalId, name: dto.name, latencyMs }, "match terminé détecté");
+      }
+      // Structure (bracket/classement) : pas d'attente du prochain passage du job
+      // "structure" (5 min) pour un match qui vient de se terminer (docs/03 §3).
+      const competition = await this.prisma.competition.findUnique({ where: { id: competitionRef.objectId }, select: { hasBracket: true } });
+      if (competition?.hasBracket) {
+        await this.syncStructure(competitionRef.objectId).catch((err) => logger.error(err, "échec de la synchro structure après fin de match"));
+      }
     }
 
     // Événements métier : l'API s'y abonne pour invalider son cache (docs/03 §3).
@@ -205,5 +219,109 @@ export class IngestionService {
       await this.upsertEvent(dto);
     }
     logger.info({ count: events.length, quota: this.provider.quota.getUsageRatio() }, "matchs en direct ingérés");
+  }
+
+  // Brackets et classements (J5) : seuls les tournois avec bracket, actifs ou
+  // terminés récemment (le temps que la poule/le tableau se stabilise en base).
+  async runStructure(): Promise<void> {
+    if (this.provider.quota.shouldThrottle()) {
+      logger.warn({ quota: this.provider.quota.getUsageRatio() }, "quota au-delà de 70%, structure reportée");
+      return;
+    }
+    const recentCutoff = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+    const targets = await this.prisma.competition.findMany({
+      where: { kind: "tournament", hasBracket: true, OR: [{ status: { in: ["scheduled", "live"] } }, { endsAt: { gte: recentCutoff } }] },
+      select: { id: true },
+    });
+    for (const competition of targets) {
+      await this.syncStructure(competition.id).catch((err) => logger.error({ err, competitionId: competition.id }, "échec de la synchro structure"));
+    }
+    logger.info({ count: targets.length, quota: this.provider.quota.getUsageRatio() }, "structure ingérée");
+  }
+
+  // Liens de bracket : upsert par match (une source a un unique lien "winner" et un
+  // unique lien "loser" sortants, règle 4). `changed` (hash du provider_ref) décide
+  // si l'événement métier BracketAdvanced est publié.
+  private async syncStructure(competitionId: string): Promise<void> {
+    const ref = await this.prisma.providerRef.findFirst({ where: { objectType: "competition", objectId: competitionId } });
+    if (!ref) return;
+    const structure = await this.provider.getStructure(ref.externalId);
+
+    const { changed } = await upsertByProviderRef(this.prisma, {
+      provider: ref.provider,
+      objectType: "bracket",
+      externalId: ref.externalId,
+      raw: structure,
+      write: async () => {
+        for (const link of structure.links) {
+          const [fromRef, toRef] = await Promise.all([
+            findProviderRef(this.prisma, ref.provider, "event", link.fromExternalId),
+            findProviderRef(this.prisma, ref.provider, "event", link.toExternalId),
+          ]);
+          if (!fromRef || !toRef) {
+            logger.warn({ link, competitionId }, "match introuvable pour ce lien de bracket, ignoré pour ce passage");
+            continue;
+          }
+          await this.prisma.eventLink.upsert({
+            where: { fromEventId_outcome: { fromEventId: fromRef.objectId, outcome: link.outcome } },
+            create: { id: randomUUID(), fromEventId: fromRef.objectId, toEventId: toRef.objectId, outcome: link.outcome, slot: link.slot },
+            update: { toEventId: toRef.objectId, slot: link.slot },
+          });
+        }
+        await this.prisma.competition.update({ where: { id: competitionId }, data: { format: structure.format } });
+        return competitionId;
+      },
+    });
+    if (changed) await this.eventBus.publish({ type: "BracketAdvanced", competitionId });
+
+    await this.syncStandings(competitionId, structure.format);
+  }
+
+  // Classements recalculés depuis nos event/event_participant (règle : le standings
+  // gratuit de PandaScore ne donne que le rang, docs/01). `maxLives` généralise le
+  // nombre de défaites tolérées selon le format (docs/03 §2).
+  private async syncStandings(competitionId: string, format: BracketFormat): Promise<void> {
+    const events = await this.prisma.event.findMany({
+      where: { competitionId },
+      select: { status: true, participants: { select: { entityId: true, score: true, isWinner: true } } },
+    });
+    const matches: StandingMatchInput[] = events.map((e) => ({
+      status: e.status as EventStatus,
+      participants: e.participants.map((p) => ({ entityExternalId: p.entityId, score: p.score, isWinner: p.isWinner })),
+    }));
+    const maxLives = format === "triple_elim" ? 3 : format === "single_elim" ? 1 : 2;
+    const qualifiedCount = format === "groups_gsl" ? 2 : undefined;
+    const standings = computeStandings(matches, { maxLives, qualifiedCount });
+
+    // Avant d'écrire : l'ancien classement sert à détecter qui vient de passer
+    // qualifié ou d'être éliminé (notifications "qualification"/"élimination",
+    // docs/03 §6, reportées du J4 au J5).
+    const previousRows = await this.prisma.standing.findMany({ where: { competitionId }, select: { entityId: true, qualified: true, livesLeft: true } });
+    const { qualifiedEntityIds, eliminatedEntityIds } = diffStandings(
+      previousRows,
+      standings.map((s) => ({ entityId: s.entityExternalId, qualified: s.qualified, livesLeft: s.livesLeft })),
+    );
+
+    const { changed } = await upsertByProviderRef(this.prisma, {
+      provider: "pandascore",
+      objectType: "standing",
+      externalId: competitionId,
+      raw: standings,
+      write: async () => {
+        for (const s of standings) {
+          await this.prisma.standing.upsert({
+            where: { competitionId_entityId: { competitionId, entityId: s.entityExternalId } },
+            create: { id: randomUUID(), competitionId, entityId: s.entityExternalId, rank: s.rank, wins: s.wins, losses: s.losses, livesLeft: s.livesLeft, qualified: s.qualified },
+            update: { rank: s.rank, wins: s.wins, losses: s.losses, livesLeft: s.livesLeft, qualified: s.qualified },
+          });
+        }
+        return competitionId;
+      },
+    });
+    if (changed) {
+      await this.eventBus.publish({ type: "StandingChanged", competitionId });
+      for (const entityId of qualifiedEntityIds) await this.eventBus.publish({ type: "EntityQualified", competitionId, entityId });
+      for (const entityId of eliminatedEntityIds) await this.eventBus.publish({ type: "EntityEliminated", competitionId, entityId });
+    }
   }
 }

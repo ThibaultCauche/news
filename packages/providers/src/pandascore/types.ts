@@ -35,6 +35,7 @@ export interface RawTournament {
   league_id: number;
   league: RawLeague;
   teams?: RawTeam[];
+  has_bracket?: boolean;
 }
 
 export interface RawGame {
@@ -54,6 +55,11 @@ export interface RawMatchResult {
   score: number;
 }
 
+export interface RawPreviousMatch {
+  type: "winner" | "loser";
+  match_id: number;
+}
+
 export interface RawMatch {
   id: number;
   name: string;
@@ -67,4 +73,5 @@ export interface RawMatch {
   opponents?: RawMatchOpponent[];
   results?: RawMatchResult[];
   games?: RawGame[];
+  previous_matches?: RawPreviousMatch[];
 }

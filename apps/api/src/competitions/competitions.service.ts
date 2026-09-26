@@ -1,6 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
+import { BracketMatchInput, computeBracketRounds } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { PRISMA } from "../db/db.module";
@@ -41,6 +42,38 @@ export class CompetitionResponseDto {
   @ApiProperty() sourceUpdatedAt!: string;
   @ApiProperty({ type: [CompetitionChildDto] }) children!: CompetitionChildDto[];
   @ApiProperty({ type: [CompetitionStandingDto] }) standings!: CompetitionStandingDto[];
+}
+
+export class BracketParticipantDto {
+  @ApiProperty() entityId!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty({ nullable: true, type: String }) shortName!: string | null;
+  @ApiProperty({ nullable: true, type: Number }) score!: number | null;
+  @ApiProperty({ nullable: true, type: Boolean }) isWinner!: boolean | null;
+}
+
+export class BracketNodeDto {
+  @ApiProperty() eventId!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty() status!: string;
+  // Anneau de l'arbre radial (écran 02) : 0 = finale au centre, croissant vers l'extérieur.
+  @ApiProperty() round!: number;
+  @ApiProperty({ nullable: true, type: String }) startsAt!: string | null;
+  @ApiProperty({ type: [BracketParticipantDto] }) participants!: BracketParticipantDto[];
+}
+
+export class BracketLinkDto {
+  @ApiProperty() fromEventId!: string;
+  @ApiProperty() toEventId!: string;
+  @ApiProperty() outcome!: string;
+  @ApiProperty({ nullable: true, type: Number }) slot!: number | null;
+}
+
+export class BracketResponseDto {
+  @ApiProperty({ nullable: true, type: String }) format!: string | null;
+  @ApiProperty({ type: [BracketNodeDto] }) nodes!: BracketNodeDto[];
+  @ApiProperty({ type: [BracketLinkDto] }) links!: BracketLinkDto[];
+  @ApiProperty() sourceUpdatedAt!: string;
 }
 
 @Injectable()
@@ -92,6 +125,51 @@ export class CompetitionsService {
         livesLeft: s.livesLeft,
         qualified: s.qualified,
       })),
+    };
+    await this.cache.set(cacheKey, response, TTL_SECONDS);
+    return response;
+  }
+
+  // Nœuds (événements) et liens gagnant/perdant pour l'arbre radial (02), le
+  // repêchage (05) et l'arbre terminé (07) — docs/03 §4.
+  async getBracket(id: string): Promise<BracketResponseDto> {
+    const cacheKey = CacheKeys.bracket(id);
+    const cached = await this.cache.get<BracketResponseDto>(cacheKey);
+    if (cached) return cached;
+
+    const competition = await this.prisma.competition.findUnique({ where: { id }, select: { format: true, updatedAt: true } });
+    if (!competition) throw new NotFoundException("Compétition introuvable");
+
+    const events = await this.prisma.event.findMany({
+      where: { competitionId: id },
+      include: { participants: { include: { entity: { select: { id: true, name: true, shortName: true } } } }, linksTo: true },
+    });
+
+    const matchInputs: BracketMatchInput[] = events.map((e) => ({
+      externalId: e.id,
+      name: e.name,
+      previousMatches: e.linksTo.map((l) => ({ type: l.outcome as "winner" | "loser", matchExternalId: l.fromEventId })),
+    }));
+    const rounds = computeBracketRounds(matchInputs);
+
+    const response: BracketResponseDto = {
+      format: competition.format,
+      nodes: events.map((e) => ({
+        eventId: e.id,
+        name: e.name,
+        status: e.status,
+        round: rounds[e.id] ?? 0,
+        startsAt: e.startsAt?.toISOString() ?? null,
+        participants: e.participants.map((p) => ({
+          entityId: p.entityId,
+          name: p.entity.name,
+          shortName: p.entity.shortName,
+          score: p.score,
+          isWinner: p.isWinner,
+        })),
+      })),
+      links: events.flatMap((e) => e.linksTo.map((l) => ({ fromEventId: l.fromEventId, toEventId: l.toEventId, outcome: l.outcome, slot: l.slot }))),
+      sourceUpdatedAt: competition.updatedAt.toISOString(),
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);
     return response;

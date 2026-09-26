@@ -6,9 +6,7 @@ export type SubscriptionTargetType = "category" | "competition" | "entity" | "ev
 export type SubscriptionLevel = "all" | "key_moments";
 export type DevicePlatform = "android" | "ios";
 
-// "qualification/élimination" reporté au J5 : dépend du bracket (`event_link`),
-// pas encore alimenté (docs/04 J4/J5).
-export type NotificationType = "reminder" | "start" | "result";
+export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination";
 
 export const SUBSCRIPTION_TARGET_TYPES: SubscriptionTargetType[] = ["category", "competition", "entity", "event"];
 export const SUBSCRIPTION_LEVELS: SubscriptionLevel[] = ["all", "key_moments"];
@@ -27,6 +25,8 @@ export const DOMAIN_EVENT_NOTIFICATION_TYPES: Partial<Record<DomainEventType, No
   EventStartingSoon: "reminder",
   EventStarted: "start",
   EventFinished: "result",
+  EntityQualified: "qualification",
+  EntityEliminated: "elimination",
 };
 
 export interface NotificationCandidate {
@@ -64,15 +64,20 @@ export interface NotificationText {
 
 // Sans spoil : le texte ne contient jamais le score ni le gagnant (règle 10 de
 // CLAUDE.md) — appliqué ici côté serveur, contrairement au masquage côté appli
-// pour l'affichage, qui reste réversible.
-export function buildNotificationText(type: NotificationType, eventName: string, spoilerFree: boolean, winnerName: string | null): NotificationText {
+// pour l'affichage, qui reste réversible. `subjectName` est le nom du match pour
+// reminder/start/result, celui de l'entité pour qualification/elimination (J5).
+export function buildNotificationText(type: NotificationType, subjectName: string, spoilerFree: boolean, winnerName: string | null): NotificationText {
   switch (type) {
     case "reminder":
-      return { title: "Bientôt", body: `${eventName} commence dans 15 minutes.` };
+      return { title: "Bientôt", body: `${subjectName} commence dans 15 minutes.` };
     case "start":
-      return { title: "Ça commence", body: `${eventName} vient de commencer.` };
+      return { title: "Ça commence", body: `${subjectName} vient de commencer.` };
     case "result":
-      if (spoilerFree || !winnerName) return { title: "Terminé", body: `${eventName} est terminé.` };
-      return { title: "Résultat", body: `${winnerName} a gagné : ${eventName}.` };
+      if (spoilerFree || !winnerName) return { title: "Terminé", body: `${subjectName} est terminé.` };
+      return { title: "Résultat", body: `${winnerName} a gagné : ${subjectName}.` };
+    case "qualification":
+      return { title: "Qualifiée !", body: `${subjectName} est qualifiée pour la suite.` };
+    case "elimination":
+      return { title: "Éliminée", body: `${subjectName} est éliminée.` };
   }
 }

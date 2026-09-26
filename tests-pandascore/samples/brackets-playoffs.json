@@ -1,0 +1,1466 @@
+[
+  {
+    "id": 1685249,
+    "name": "Grand Final: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-18T06:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-18-695bbd1c-c17f-4fad-b5af-4c1622016487",
+    "games": [
+      {
+        "complete": false,
+        "id": 52207,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685249,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52208,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685249,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52209,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685249,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52210,
+        "position": 4,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685249,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52211,
+        "position": 5,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685249,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:31Z",
+    "match_type": "best_of",
+    "number_of_games": 5,
+    "scheduled_at": "2026-10-18T06:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1685242
+      },
+      {
+        "type": "winner",
+        "match_id": 1685248
+      }
+    ],
+    "original_scheduled_at": "2026-10-18T06:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685248,
+    "name": "Lower Bracket Final: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-17T07:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-17-f9609a4d-ff7f-492c-a91e-8c387eaa049a",
+    "games": [
+      {
+        "complete": false,
+        "id": 52202,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685248,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52203,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685248,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52204,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685248,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52205,
+        "position": 4,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685248,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52206,
+        "position": 5,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685248,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:29Z",
+    "match_type": "best_of",
+    "number_of_games": 5,
+    "scheduled_at": "2026-10-17T07:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1685242
+      },
+      {
+        "type": "winner",
+        "match_id": 1685247
+      }
+    ],
+    "original_scheduled_at": "2026-10-17T07:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685247,
+    "name": "Lower Bracket Semifinal: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-16T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-16-9057b633-9f57-44a6-9417-842be75ef888",
+    "games": [
+      {
+        "complete": false,
+        "id": 52199,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685247,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52200,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685247,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52201,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685247,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:27Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-16T09:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1685246
+      },
+      {
+        "type": "winner",
+        "match_id": 1685245
+      }
+    ],
+    "original_scheduled_at": "2026-10-16T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685246,
+    "name": "Lower Bracket Quarterfinal 2: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-11T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-11-c8678e94-a997-4221-99a7-bc590e6651f9",
+    "games": [
+      {
+        "complete": false,
+        "id": 52196,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685246,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52197,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685246,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52198,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685246,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:22Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-11T09:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1685240
+      },
+      {
+        "type": "winner",
+        "match_id": 1685244
+      }
+    ],
+    "original_scheduled_at": "2026-10-11T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685245,
+    "name": "Lower Bracket Quarterfinal 1: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-11T12:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-11-b0848ee7-8309-4e17-a8ae-860cc0657892",
+    "games": [
+      {
+        "complete": false,
+        "id": 52193,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685245,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52194,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685245,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52195,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685245,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:24Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-11T12:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1685241
+      },
+      {
+        "type": "winner",
+        "match_id": 1685243
+      }
+    ],
+    "original_scheduled_at": "2026-10-11T12:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685244,
+    "name": "Lower Bracket Round 1 Match 2: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-09T12:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-09-5b89074f-cbfe-45b5-ad3d-470cd039a896",
+    "games": [
+      {
+        "complete": false,
+        "id": 52190,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685244,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52191,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685244,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52192,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685244,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:16Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-09T12:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1685239
+      },
+      {
+        "type": "loser",
+        "match_id": 1685238
+      }
+    ],
+    "original_scheduled_at": "2026-10-09T12:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685243,
+    "name": "Lower Bracket Round 1 Match 1: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-09T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-09-07248c9f-b7fc-4b8d-8c58-3f769a10ccc7",
+    "games": [
+      {
+        "complete": false,
+        "id": 52187,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685243,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52188,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685243,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52189,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685243,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:14Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-09T09:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1685237
+      },
+      {
+        "type": "loser",
+        "match_id": 1685236
+      }
+    ],
+    "original_scheduled_at": "2026-10-09T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685242,
+    "name": "Upper Bracket Final: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-16T06:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-16-edc3d059-dcfa-4ebb-ba8b-41c8cdd8bc5e",
+    "games": [
+      {
+        "complete": false,
+        "id": 52184,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685242,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52185,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685242,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52186,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685242,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:26Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-16T06:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1685241
+      },
+      {
+        "type": "winner",
+        "match_id": 1685240
+      }
+    ],
+    "original_scheduled_at": "2026-10-16T06:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685241,
+    "name": "Upper Bracket Semifinal 2: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-10T12:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-10-9464693b-1f47-40c5-98c3-8245164647a6",
+    "games": [
+      {
+        "complete": false,
+        "id": 52181,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685241,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52182,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685241,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52183,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685241,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:20Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-10T12:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1685238
+      },
+      {
+        "type": "winner",
+        "match_id": 1685239
+      }
+    ],
+    "original_scheduled_at": "2026-10-10T12:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685240,
+    "name": "Upper Bracket Semifinal 1: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-10T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-10-9f9b3943-5116-439a-9b8e-515fc56a8819",
+    "games": [
+      {
+        "complete": false,
+        "id": 52178,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685240,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52179,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685240,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52180,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685240,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:18Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-10T09:00:00Z",
+    "opponents": [],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1685237
+      },
+      {
+        "type": "winner",
+        "match_id": 1685236
+      }
+    ],
+    "original_scheduled_at": "2026-10-10T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685239,
+    "name": "Upper Bracket Quarterfinal 4: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-08T12:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-08-c1d1adab-fa97-4354-8f6a-71ebd4f401b0",
+    "games": [
+      {
+        "complete": false,
+        "id": 52175,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685239,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52176,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685239,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52177,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685239,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:12Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-08T12:00:00Z",
+    "opponents": [],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-10-08T12:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685238,
+    "name": "Upper Bracket Quarterfinal 3: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-08T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-08-74fc9a92-5d0c-4ce2-9445-7760a5a7c37f",
+    "games": [
+      {
+        "complete": false,
+        "id": 52172,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685238,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52173,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685238,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52174,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685238,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:10Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-08T09:00:00Z",
+    "opponents": [],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-10-08T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685237,
+    "name": "Upper Bracket Quarterfinal 2: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-07T12:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-07-b71a3d54-3b58-4ace-b069-cc5dfc381562",
+    "games": [
+      {
+        "complete": false,
+        "id": 52169,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685237,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52170,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685237,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52171,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685237,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:08Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-07T12:00:00Z",
+    "opponents": [],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-10-07T12:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  },
+  {
+    "id": 1685236,
+    "name": "Upper Bracket Quarterfinal 1: TBD vs TBD",
+    "status": "not_started",
+    "results": [],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-10-07T09:00:00Z",
+    "detailed_stats": true,
+    "end_at": null,
+    "forfeit": false,
+    "winner_id": null,
+    "winner_type": "Team",
+    "draw": false,
+    "slug": "2026-10-07",
+    "games": [
+      {
+        "complete": false,
+        "id": 52166,
+        "position": 1,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685236,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52167,
+        "position": 2,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685236,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": false,
+        "id": 52168,
+        "position": 3,
+        "status": "not_started",
+        "length": null,
+        "finished": false,
+        "match_id": 1685236,
+        "begin_at": null,
+        "detailed_stats": true,
+        "end_at": null,
+        "forfeit": false,
+        "winner_type": "Team",
+        "winner": {
+          "id": null,
+          "type": "Team"
+        }
+      }
+    ],
+    "tournament_id": 21917,
+    "modified_at": "2026-09-11T18:28:06Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-10-07T09:00:00Z",
+    "opponents": [],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-10-07T09:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant"
+      }
+    ]
+  }
+]

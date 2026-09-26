@@ -1,4 +1,4 @@
-import { CompetitionDTO, EntityDTO, EventDTO, EventStatus } from "@news/domain";
+import { buildEventLinks, CompetitionDTO, detectBracketFormat, EntityDTO, EventDTO, EventStatus, StructureDTO } from "@news/domain";
 import { RawLeague, RawMatch, RawSerie, RawTeam, RawTournament } from "./types";
 
 const PROVIDER = "pandascore";
@@ -65,6 +65,7 @@ export function normalizeLeague(league: RawLeague): CompetitionDTO {
     startsAt: null,
     endsAt: null,
     importance: 0,
+    hasBracket: false,
     raw: league,
   };
 }
@@ -80,6 +81,7 @@ export function normalizeSerie(serie: RawSerie): CompetitionDTO {
     startsAt: serie.begin_at ? new Date(serie.begin_at) : null,
     endsAt: serie.end_at ? new Date(serie.end_at) : null,
     importance: 0,
+    hasBracket: false,
     raw: serie,
   };
 }
@@ -97,6 +99,7 @@ export function normalizeTournament(tournament: RawTournament, now: Date = new D
     startsAt,
     endsAt,
     importance: tierToImportance(tournament.tier),
+    hasBracket: tournament.has_bracket ?? false,
     raw: tournament,
   };
 }
@@ -143,4 +146,15 @@ export function normalizeMatch(match: RawMatch): EventDTO {
     participants,
     raw: match,
   };
+}
+
+// Bracket d'un tournoi (`/tournaments/:id/brackets`, docs/01) : liens gagnant/perdant
+// à partir de `previous_matches`, format détecté depuis les noms de match (J5).
+export function normalizeStructure(matches: RawMatch[]): StructureDTO {
+  const inputs = matches.map((m) => ({
+    externalId: String(m.id),
+    name: m.name,
+    previousMatches: (m.previous_matches ?? []).map((p) => ({ type: p.type, matchExternalId: String(p.match_id) })),
+  }));
+  return { format: detectBracketFormat(inputs), links: buildEventLinks(inputs) };
 }

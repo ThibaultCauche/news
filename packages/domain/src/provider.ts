@@ -1,3 +1,4 @@
+import { BracketFormat, EventLinkDTO } from "./bracket";
 import { EventStatus } from "./status";
 
 // Fenêtre de temps pour une requête d'ingestion (bornes optionnelles).
@@ -20,6 +21,8 @@ export interface CompetitionDTO {
   startsAt: Date | null;
   endsAt: Date | null;
   importance: number;
+  // Vrai si le fournisseur expose un bracket pour ce tournoi (cible le job "structure", J5).
+  hasBracket: boolean;
   raw: unknown;
 }
 
@@ -56,8 +59,13 @@ export interface EventDTO {
   raw: unknown;
 }
 
-// Structure d'une compétition (brackets, standings) — précisé au J5.
-export type StructureDTO = unknown;
+// Structure d'une compétition (brackets — docs/03 §2/§4, J5). Les classements ne
+// sont pas demandés au fournisseur : recalculés depuis nos propres event/event_participant
+// (règle : le standings gratuit de PandaScore ne donne que le rang, docs/01).
+export interface StructureDTO {
+  format: BracketFormat;
+  links: EventLinkDTO[];
+}
 
 // Interface commune à tous les adaptateurs de fournisseur (docs/03 §3).
 export interface Provider {

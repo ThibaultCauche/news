@@ -1,12 +1,30 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
+import "../bracket/bracket_screen.dart";
+import "../bracket/kickoff_lives_screen.dart";
 import "../follows/follows_provider.dart";
 import "../next_match/next_match_screen.dart";
 import "season_data.dart";
 
 const _tabs = ["Saison", "Tournoi", "Équipes", "Agenda"];
+
+/// Kickoff se raconte en « 3 vies » (écran 14), les autres étapes à élimination
+/// double en arbre radial + groupes + repêchage (écrans 02/05/06/07) — `docs/02`.
+void _openStep(BuildContext context, SeasonStep step) {
+  final subtitle = step.status?.statusKind.label ?? "";
+  if (step.name.toLowerCase().contains("kickoff")) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => KickoffLivesScreen(competitionId: step.id, title: step.name, subtitle: subtitle)),
+    );
+    return;
+  }
+  Navigator.of(context).push(
+    MaterialPageRoute(builder: (_) => BracketScreen(competitionId: step.id, title: step.name, subtitle: subtitle)),
+  );
+}
 
 /// Écran 01 (`docs/02`). Seul l'onglet "Saison" est actif au J3 (`docs/04`) ;
 /// les autres restent en placeholder, comme la tab bar principale.
@@ -181,6 +199,7 @@ class _SeasonBody extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                       title: Text(step.name),
                       trailing: const Icon(Icons.chevron_right, color: AppColors.textTertiary),
+                      onTap: () => _openStep(context, step),
                     ),
                 ],
               ),
@@ -302,7 +321,9 @@ class _StepDot extends StatelessWidget {
     final hasEnded = (step.endsAt ?? step.startsAt)?.isBefore(DateTime.now()) ?? false;
     final done = hasEnded && !isCurrent;
     final color = isCurrent ? AppColors.live : (done ? AppColors.textSecondary : AppColors.textTertiary);
-    return Column(
+    return GestureDetector(
+      onTap: () => _openStep(context, step),
+      child: Column(
       children: [
         SizedBox(
           height: 16,
@@ -339,6 +360,7 @@ class _StepDot extends StatelessWidget {
           ),
         ),
       ],
+      ),
     );
   }
 }
@@ -366,7 +388,12 @@ class _NowCard extends StatelessWidget {
               style: Theme.of(context).textTheme.labelSmall?.copyWith(color: isLive ? AppColors.live : null),
             ),
             const SizedBox(height: AppSpacing.xs),
-            Text(step.name, style: Theme.of(context).textTheme.titleLarge),
+            Row(
+              children: [
+                Expanded(child: Text(step.name, style: Theme.of(context).textTheme.titleLarge)),
+                TextButton(onPressed: () => _openStep(context, step), child: const Text("Voir le tableau")),
+              ],
+            ),
             const SizedBox(height: AppSpacing.sm),
             if (overview.currentMatches.isEmpty)
               const Text("Aucun match programmé pour l'instant.", style: TextStyle(color: AppColors.textSecondary))

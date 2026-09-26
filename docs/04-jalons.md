@@ -10,7 +10,7 @@
 | J2 | API `home`, `agenda`, `events/:id`, `competitions/:id` + client Dart généré | L'API répond avec de vraies données | **Fait (2026-09-25)** |
 | J3 | Appli Flutter : accueil, agenda, page Valorant, prochain match | Première version utilisable | **Fait (2026-09-26)** |
 | J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | **Fait (2026-09-26)** |
-| J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | À faire |
+| J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | **Fait (2026-09-26)** |
 | J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | À faire |
 | J7 | Mise en ligne : NAS, Cloudflare Tunnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | À faire (ajouté) |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
@@ -134,11 +134,13 @@
 - Appli : **02 arbre radial** (`CustomPainter`, chemin de l'équipe suivie en or, compte à rebours au centre), **05 repêchage** en liste par tours, **06 groupes** (mini-grilles, trait de qualification), **07 arbre terminé**. **14 « 3 vies »** (triple élimination du Kickoff) sur des données historiques.
 
 **Critères d'acceptation**
-- [ ] Les playoffs de Champions 2026 s'affichent en arbre radial, matchs « TBD » compris, et se remplissent quand les matchs se terminent.
-- [ ] Le repêchage indique « perdant de… » et se met à jour.
-- [ ] Les groupes GSL de Champions s'affichent avec le bon bilan recalculé.
-- [ ] Tests unitaires des calculs de bracket (double élimination, GSL) sur les JSON de `tests-pandascore/samples/`.
-- [ ] L'arbre reste fluide (60 i/s) sur un téléphone moyen.
+- [x] Les playoffs de Champions 2026 s'affichent en arbre radial, matchs « TBD » compris. Vérifié en conditions réelles le 2026-09-26 sur téléphone Android physique : 14 nœuds/20 liens, rounds corrects, tout en TBD (les playoffs n'ont pas encore commencé, encore en phase de groupes). **Le remplissage à la fin d'un vrai match n'a pas pu être observé** (mécanisme `BracketAdvanced` + resynchro à chaque fin de match vérifié architecturalement, mais aucun match de playoffs ne s'est encore terminé) : **à revérifier en conditions réelles** à partir du 18 octobre.
+- [x] Le repêchage indique « perdant de… » et se met à jour. Vérifié en réel : « Perdant de Upper Bracket Quarterfinal 1... » etc. sur le vrai bracket des playoffs.
+- [x] Les groupes GSL de Champions s'affichent avec le bon bilan recalculé. Vérifié en réel sur les 4 groupes (ex. Groupe C : G2/Paper Rex 1-0 qualifiés, Team Liquid/TYLOO 0-1) ; un groupe pas encore commencé affiche « Pas encore commencé » plutôt qu'une carte vide.
+- [x] Tests unitaires des calculs de bracket (double élimination, GSL) sur les JSON de `tests-pandascore/samples/`. 37 tests dans `packages/domain`, sur 3 vrais brackets récupérés depuis PandaScore (poule GSL, playoffs Champions 2026 en double élim, Kickoff EMEA 2026 en triple élim).
+- [ ] L'arbre reste fluide (60 i/s) sur un téléphone moyen. **Non mesuré formellement** (pas de profilage DevTools) : le `CustomPaint` ne redessine que sur changement de données (pas d'animation continue), risque de saccade jugé faible. **À revérifier en conditions réelles** avec un profilage dédié.
+
+**Reporté** : la fidélité visuelle exacte à la maquette (symétrie gauche/droite de l'arbre, trophée au centre, labels d'anneau, lignes en coude, panneaux sous l'arbre) — la structure (rounds, TBD, liens, mise à jour) est correcte et testée, l'habillage pixel-perfect attend une passe dédiée, comme au J3. Type de notification « qualification/élimination » (reporté du J4) finalement câblé pendant ce jalon, voir `docs/00` §7.
 
 ---
 

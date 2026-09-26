@@ -1,0 +1,4144 @@
+[
+  {
+    "id": 1290814,
+    "name": "Lower bracket final: FNC vs TL",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128537,
+        "score": 0
+      },
+      {
+        "team_id": 128541,
+        "score": 3
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-15T17:11:56Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-15T20:13:26Z",
+    "forfeit": false,
+    "winner_id": 128541,
+    "winner_type": "Team",
+    "slug": "team-liquid-2026-02-15",
+    "games": [
+      {
+        "complete": true,
+        "id": 43875,
+        "position": 1,
+        "status": "finished",
+        "length": 2251,
+        "finished": true,
+        "begin_at": "2026-02-15T17:11:57Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-15T17:49:29Z",
+        "forfeit": false,
+        "match_id": 1290814,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43876,
+        "position": 2,
+        "status": "finished",
+        "length": 2700,
+        "finished": true,
+        "begin_at": "2026-02-15T18:04:45Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-15T18:49:46Z",
+        "forfeit": false,
+        "match_id": 1290814,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43877,
+        "position": 3,
+        "status": "finished",
+        "length": 4241,
+        "finished": true,
+        "begin_at": "2026-02-15T19:02:45Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-15T20:13:26Z",
+        "forfeit": false,
+        "match_id": 1290814,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-15T20:24:54Z",
+    "match_type": "best_of",
+    "number_of_games": 5,
+    "scheduled_at": "2026-02-15T17:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128537,
+          "name": "Fnatic",
+          "location": "GB",
+          "slug": "fnatic-valorant",
+          "modified_at": "2026-08-03T02:56:26Z",
+          "acronym": "FNC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128537/900px_fnatic_2020.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290805
+      },
+      {
+        "type": "winner",
+        "match_id": 1290813
+      }
+    ],
+    "original_scheduled_at": "2026-02-15T17:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/MYRNf6V87Mk",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=MYRNf6V87Mk"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290813,
+    "name": "Lower bracket semifinal: VIT vs TL",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128796,
+        "score": 1
+      },
+      {
+        "team_id": 128541,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-14T13:07:08Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-14T15:39:44Z",
+    "forfeit": false,
+    "winner_id": 128541,
+    "winner_type": "Team",
+    "slug": "team-liquid-2026-02-14",
+    "games": [
+      {
+        "complete": true,
+        "id": 43872,
+        "position": 1,
+        "status": "finished",
+        "length": 2936,
+        "finished": true,
+        "begin_at": "2026-02-14T13:07:10Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-14T13:56:06Z",
+        "forfeit": false,
+        "match_id": 1290813,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128796,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43873,
+        "position": 2,
+        "status": "finished",
+        "length": 2009,
+        "finished": true,
+        "begin_at": "2026-02-14T14:08:07Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-14T14:41:36Z",
+        "forfeit": false,
+        "match_id": 1290813,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43874,
+        "position": 3,
+        "status": "finished",
+        "length": 2797,
+        "finished": true,
+        "begin_at": "2026-02-14T14:53:07Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-14T15:39:44Z",
+        "forfeit": false,
+        "match_id": 1290813,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-14T15:41:47Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-14T13:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128796,
+          "name": "Team Vitality",
+          "location": "FR",
+          "slug": "team-vitality-valorant",
+          "modified_at": "2026-09-09T07:32:55Z",
+          "acronym": "VIT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128796/600px_team_vitality_2023_darkmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128796/600px_team_vitality_2023_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290812
+      },
+      {
+        "type": "loser",
+        "match_id": 1290804
+      }
+    ],
+    "original_scheduled_at": "2026-02-14T13:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/9w5BPn9P8jo",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=9w5BPn9P8jo"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290812,
+    "name": "Lower bracket quarterfinal: TH vs TL",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128541,
+        "score": 2
+      },
+      {
+        "team_id": 128622,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-12T17:16:42Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-12T18:52:13Z",
+    "forfeit": false,
+    "winner_id": 128541,
+    "winner_type": "Team",
+    "slug": "team-heretics-vs-team-liquid-2026-02-12",
+    "games": [
+      {
+        "complete": true,
+        "id": 43869,
+        "position": 1,
+        "status": "finished",
+        "length": 3102,
+        "finished": true,
+        "begin_at": "2026-02-12T17:16:44Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-12T18:08:27Z",
+        "forfeit": false,
+        "match_id": 1290812,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43870,
+        "position": 2,
+        "status": "finished",
+        "length": 1832,
+        "finished": true,
+        "begin_at": "2026-02-12T18:21:41Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-12T18:52:14Z",
+        "forfeit": false,
+        "match_id": 1290812,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-12T19:08:47Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-12T17:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128622,
+          "name": "Team Heretics",
+          "location": "ES",
+          "slug": "team-heretic",
+          "modified_at": "2026-09-24T19:09:17Z",
+          "acronym": "TH",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128622/600px_team_heretics_2020_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128622/172px_team_heretics_2022_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290811
+      },
+      {
+        "type": "winner",
+        "match_id": 1290810
+      }
+    ],
+    "original_scheduled_at": "2026-02-12T17:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290811,
+    "name": "Lower bracket round 3 match 2: GX vs TL",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 134423,
+        "score": 1
+      },
+      {
+        "team_id": 128541,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-06T18:08:49Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-06T20:50:44Z",
+    "forfeit": false,
+    "winner_id": 128541,
+    "winner_type": "Team",
+    "slug": "team-liquid-2026-02-06",
+    "games": [
+      {
+        "complete": true,
+        "id": 43866,
+        "position": 1,
+        "status": "finished",
+        "length": 1948,
+        "finished": true,
+        "begin_at": "2026-02-06T18:08:51Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-06T18:41:19Z",
+        "forfeit": false,
+        "match_id": 1290811,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43867,
+        "position": 2,
+        "status": "finished",
+        "length": 2284,
+        "finished": true,
+        "begin_at": "2026-02-06T18:54:55Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-06T19:33:00Z",
+        "forfeit": false,
+        "match_id": 1290811,
+        "winner_type": "Team",
+        "winner": {
+          "id": 134423,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43868,
+        "position": 3,
+        "status": "finished",
+        "length": 3975,
+        "finished": true,
+        "begin_at": "2026-02-06T19:44:29Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-06T20:50:45Z",
+        "forfeit": false,
+        "match_id": 1290811,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-06T21:08:05Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-06T18:10:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 134423,
+          "name": "GIANTX",
+          "location": "GB",
+          "slug": "giantx-valorant",
+          "modified_at": "2026-09-09T15:44:00Z",
+          "acronym": "GX",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/134423/giant_x_logo.svg.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/134423/147px_giantx_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290809
+      },
+      {
+        "type": "loser",
+        "match_id": 1290803
+      }
+    ],
+    "original_scheduled_at": "2026-02-06T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/vu-cPs-4O1Q",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=vu-cPs-4O1Q"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290810,
+    "name": "Lower bracket round 3 match 1: NAVI vs TH",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 129355,
+        "score": 0
+      },
+      {
+        "team_id": 128622,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-06T16:08:42Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-06T17:38:43Z",
+    "forfeit": false,
+    "winner_id": 128622,
+    "winner_type": "Team",
+    "slug": "team-heretics-2026-02-06",
+    "games": [
+      {
+        "complete": true,
+        "id": 43863,
+        "position": 1,
+        "status": "finished",
+        "length": 2257,
+        "finished": true,
+        "begin_at": "2026-02-06T16:08:43Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-06T16:46:21Z",
+        "forfeit": false,
+        "match_id": 1290810,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128622,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43864,
+        "position": 2,
+        "status": "finished",
+        "length": 2437,
+        "finished": true,
+        "begin_at": "2026-02-06T16:58:06Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-06T17:38:44Z",
+        "forfeit": false,
+        "match_id": 1290810,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128622,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-06T17:46:36Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-06T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 129355,
+          "name": "Natus Vincere",
+          "location": "UA",
+          "slug": "natus-vincere-valorant",
+          "modified_at": "2026-09-03T12:29:02Z",
+          "acronym": "NAVI",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/129355/1022px_natus_vincere_2021_lightmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128622,
+          "name": "Team Heretics",
+          "location": "ES",
+          "slug": "team-heretic",
+          "modified_at": "2026-09-24T19:09:17Z",
+          "acronym": "TH",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128622/600px_team_heretics_2020_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128622/172px_team_heretics_2022_allmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290808
+      },
+      {
+        "type": "loser",
+        "match_id": 1290802
+      }
+    ],
+    "original_scheduled_at": "2026-02-06T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290809,
+    "name": "Lower bracket round 2 match 2: TL vs ULF",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 136660,
+        "score": 1
+      },
+      {
+        "team_id": 128541,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-05T19:11:10Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-05T21:59:39Z",
+    "forfeit": false,
+    "winner_id": 128541,
+    "winner_type": "Team",
+    "slug": "team-liquid-2026-02-05",
+    "games": [
+      {
+        "complete": true,
+        "id": 43860,
+        "position": 1,
+        "status": "finished",
+        "length": 2899,
+        "finished": true,
+        "begin_at": "2026-02-05T19:11:13Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-05T19:59:32Z",
+        "forfeit": false,
+        "match_id": 1290809,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136660,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43861,
+        "position": 2,
+        "status": "finished",
+        "length": 2066,
+        "finished": true,
+        "begin_at": "2026-02-05T20:12:01Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-05T20:46:27Z",
+        "forfeit": false,
+        "match_id": 1290809,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43862,
+        "position": 3,
+        "status": "finished",
+        "length": 3530,
+        "finished": true,
+        "begin_at": "2026-02-05T21:00:49Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-05T21:59:40Z",
+        "forfeit": false,
+        "match_id": 1290809,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-05T22:01:02Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-05T19:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136660,
+          "name": "ULF Esports",
+          "location": "TR",
+          "slug": "ulf-esports-valorant",
+          "modified_at": "2026-03-20T12:28:18Z",
+          "acronym": "ULF",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136660/190px_ulf_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136660/ulf_esports_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290807
+      },
+      {
+        "type": "loser",
+        "match_id": 1290800
+      }
+    ],
+    "original_scheduled_at": "2026-02-05T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/b8PzntnoZ2s",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=b8PzntnoZ2s"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290808,
+    "name": "Lower bracket round 2 match 1 : TH vs KC",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 130922,
+        "score": 1
+      },
+      {
+        "team_id": 128622,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-05T16:06:19Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-05T18:39:52Z",
+    "forfeit": false,
+    "winner_id": 128622,
+    "winner_type": "Team",
+    "slug": "team-heretics-vs-karmine-corp-2026-02-05",
+    "games": [
+      {
+        "complete": true,
+        "id": 43857,
+        "position": 1,
+        "status": "finished",
+        "length": 1864,
+        "finished": true,
+        "begin_at": "2026-02-05T16:06:21Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-05T16:37:26Z",
+        "forfeit": false,
+        "match_id": 1290808,
+        "winner_type": "Team",
+        "winner": {
+          "id": 130922,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43858,
+        "position": 2,
+        "status": "finished",
+        "length": 2759,
+        "finished": true,
+        "begin_at": "2026-02-05T16:48:52Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-05T17:34:52Z",
+        "forfeit": false,
+        "match_id": 1290808,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128622,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43859,
+        "position": 3,
+        "status": "finished",
+        "length": 3223,
+        "finished": true,
+        "begin_at": "2026-02-05T17:46:09Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-05T18:39:52Z",
+        "forfeit": false,
+        "match_id": 1290808,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128622,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-05T18:45:10Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-05T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128622,
+          "name": "Team Heretics",
+          "location": "ES",
+          "slug": "team-heretic",
+          "modified_at": "2026-09-24T19:09:17Z",
+          "acronym": "TH",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128622/600px_team_heretics_2020_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128622/172px_team_heretics_2022_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 130922,
+          "name": "Karmine Corp",
+          "location": "FR",
+          "slug": "karmine-corp-valorant",
+          "modified_at": "2026-09-09T07:36:46Z",
+          "acronym": "KC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/130922/600px_karmine_corp_lightmode_full.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/130922/632px_karmine_corp_allmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290801
+      },
+      {
+        "type": "winner",
+        "match_id": 1290806
+      }
+    ],
+    "original_scheduled_at": "2026-02-05T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/b8PzntnoZ2s",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=b8PzntnoZ2s"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290807,
+    "name": "Lower bracket round 1 match 2: PCFIC vs ULF",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 136660,
+        "score": 2
+      },
+      {
+        "team_id": 134104,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-03T19:38:01Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-03T21:28:15Z",
+    "forfeit": false,
+    "winner_id": 136660,
+    "winner_type": "Team",
+    "slug": "pcific-esports-2026-02-03",
+    "games": [
+      {
+        "complete": true,
+        "id": 43854,
+        "position": 1,
+        "status": "finished",
+        "length": 3472,
+        "finished": true,
+        "begin_at": "2026-02-03T19:38:02Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-03T20:35:55Z",
+        "forfeit": false,
+        "match_id": 1290807,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136660,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43855,
+        "position": 2,
+        "status": "finished",
+        "length": 2389,
+        "finished": true,
+        "begin_at": "2026-02-03T20:48:26Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-03T21:28:15Z",
+        "forfeit": false,
+        "match_id": 1290807,
+        "winner_type": "Team",
+        "winner": {
+          "id": 136660,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-03T21:35:12Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-03T19:30:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 134104,
+          "name": "Pcific Esports",
+          "location": "TR",
+          "slug": "pcific-esports",
+          "modified_at": "2026-07-31T08:12:31Z",
+          "acronym": "PCFIC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/134104/190px_pcific_esports_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136660,
+          "name": "ULF Esports",
+          "location": "TR",
+          "slug": "ulf-esports-valorant",
+          "modified_at": "2026-03-20T12:28:18Z",
+          "acronym": "ULF",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136660/190px_ulf_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136660/ulf_esports_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290799
+      },
+      {
+        "type": "loser",
+        "match_id": 1290798
+      }
+    ],
+    "original_scheduled_at": "2026-02-03T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290806,
+    "name": "Lower bracket round 1 match 1: KC vs FUT",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128578,
+        "score": 1
+      },
+      {
+        "team_id": 130922,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-03T16:03:48Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-03T19:06:10Z",
+    "forfeit": false,
+    "winner_id": 130922,
+    "winner_type": "Team",
+    "slug": "2026-02-03",
+    "games": [
+      {
+        "complete": true,
+        "id": 43851,
+        "position": 1,
+        "status": "finished",
+        "length": 3671,
+        "finished": true,
+        "begin_at": "2026-02-03T16:03:49Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-03T17:05:01Z",
+        "forfeit": false,
+        "match_id": 1290806,
+        "winner_type": "Team",
+        "winner": {
+          "id": 130922,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43852,
+        "position": 2,
+        "status": "finished",
+        "length": 3004,
+        "finished": true,
+        "begin_at": "2026-02-03T17:19:39Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-03T18:09:44Z",
+        "forfeit": false,
+        "match_id": 1290806,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128578,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43853,
+        "position": 3,
+        "status": "finished",
+        "length": 2590,
+        "finished": true,
+        "begin_at": "2026-02-03T18:23:00Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-03T19:06:10Z",
+        "forfeit": false,
+        "match_id": 1290806,
+        "winner_type": "Team",
+        "winner": {
+          "id": 130922,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-03T19:12:18Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-03T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 130922,
+          "name": "Karmine Corp",
+          "location": "FR",
+          "slug": "karmine-corp-valorant",
+          "modified_at": "2026-09-09T07:36:46Z",
+          "acronym": "KC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/130922/600px_karmine_corp_lightmode_full.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/130922/632px_karmine_corp_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128578,
+          "name": "FUT Esports",
+          "location": "TR",
+          "slug": "futbolist",
+          "modified_at": "2026-09-09T07:32:00Z",
+          "acronym": "FUT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128578/600px_futbolist_new_logo_2021_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128578/600px_futbolist_2021_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290796
+      },
+      {
+        "type": "loser",
+        "match_id": 1290797
+      }
+    ],
+    "original_scheduled_at": "2026-02-03T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://www.youtube.com/embed/dfKiJJEZqRs",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=dfKiJJEZqRs"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290805,
+    "name": "Mid bracket final: GM vs FNC",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 133115,
+        "score": 3
+      },
+      {
+        "team_id": 128537,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-14T16:15:20Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-14T21:53:07Z",
+    "forfeit": false,
+    "winner_id": 133115,
+    "winner_type": "Team",
+    "slug": "fnatic-vs-gentle-mates-2026-02-14",
+    "games": [
+      {
+        "complete": true,
+        "id": 43846,
+        "position": 1,
+        "status": "finished",
+        "length": 3010,
+        "finished": true,
+        "begin_at": "2026-02-14T16:15:21Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-14T17:05:31Z",
+        "forfeit": false,
+        "match_id": 1290805,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43847,
+        "position": 2,
+        "status": "finished",
+        "length": 4211,
+        "finished": true,
+        "begin_at": "2026-02-14T17:20:02Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-14T18:30:13Z",
+        "forfeit": false,
+        "match_id": 1290805,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43848,
+        "position": 3,
+        "status": "finished",
+        "length": 2596,
+        "finished": true,
+        "begin_at": "2026-02-14T18:42:59Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-14T19:26:15Z",
+        "forfeit": false,
+        "match_id": 1290805,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43849,
+        "position": 4,
+        "status": "finished",
+        "length": 3675,
+        "finished": true,
+        "begin_at": "2026-02-14T19:40:33Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-14T20:41:49Z",
+        "forfeit": false,
+        "match_id": 1290805,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43850,
+        "position": 5,
+        "status": "finished",
+        "length": 3476,
+        "finished": true,
+        "begin_at": "2026-02-14T20:55:11Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-14T21:53:08Z",
+        "forfeit": false,
+        "match_id": 1290805,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-14T21:55:19Z",
+    "match_type": "best_of",
+    "number_of_games": 5,
+    "scheduled_at": "2026-02-14T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133115,
+          "name": "Gentle Mates",
+          "location": "FR",
+          "slug": "gentle-mates",
+          "modified_at": "2026-09-14T11:01:01Z",
+          "acronym": "M8",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133115/621px_gentle_mates_2024_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/133115/621px_gentle_mates_2024_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128537,
+          "name": "Fnatic",
+          "location": "GB",
+          "slug": "fnatic-valorant",
+          "modified_at": "2026-08-03T02:56:26Z",
+          "acronym": "FNC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128537/900px_fnatic_2020.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290795
+      },
+      {
+        "type": "winner",
+        "match_id": 1290804
+      }
+    ],
+    "original_scheduled_at": "2026-02-14T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/9w5BPn9P8jo",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=9w5BPn9P8jo"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290804,
+    "name": "Mid bracket semifinal: FNC vs VIT",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128796,
+        "score": 0
+      },
+      {
+        "team_id": 128537,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-13T13:06:54Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-13T14:44:32Z",
+    "forfeit": false,
+    "winner_id": 128537,
+    "winner_type": "Team",
+    "slug": "fnatic-vs-team-vitality-2026-02-13",
+    "games": [
+      {
+        "complete": true,
+        "id": 43843,
+        "position": 1,
+        "status": "finished",
+        "length": 2393,
+        "finished": true,
+        "begin_at": "2026-02-13T13:06:55Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-13T13:46:49Z",
+        "forfeit": false,
+        "match_id": 1290804,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43844,
+        "position": 2,
+        "status": "finished",
+        "length": 2707,
+        "finished": true,
+        "begin_at": "2026-02-13T13:59:25Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-13T14:44:32Z",
+        "forfeit": false,
+        "match_id": 1290804,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-13T15:17:14Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-13T13:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128537,
+          "name": "Fnatic",
+          "location": "GB",
+          "slug": "fnatic-valorant",
+          "modified_at": "2026-08-03T02:56:26Z",
+          "acronym": "FNC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128537/900px_fnatic_2020.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128796,
+          "name": "Team Vitality",
+          "location": "FR",
+          "slug": "team-vitality-valorant",
+          "modified_at": "2026-09-09T07:32:55Z",
+          "acronym": "VIT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128796/600px_team_vitality_2023_darkmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128796/600px_team_vitality_2023_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290802
+      },
+      {
+        "type": "winner",
+        "match_id": 1290803
+      }
+    ],
+    "original_scheduled_at": "2026-02-13T13:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290803,
+    "name": "Mid bracket quarterfinal 2: VIT vs GX",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 134423,
+        "score": 0
+      },
+      {
+        "team_id": 128796,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-04T19:55:07Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-04T21:30:04Z",
+    "forfeit": false,
+    "winner_id": 128796,
+    "winner_type": "Team",
+    "slug": "giantx-2026-02-04",
+    "games": [
+      {
+        "complete": true,
+        "id": 43840,
+        "position": 1,
+        "status": "finished",
+        "length": 1939,
+        "finished": true,
+        "begin_at": "2026-02-04T19:55:08Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-04T20:27:28Z",
+        "forfeit": false,
+        "match_id": 1290803,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128796,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43841,
+        "position": 2,
+        "status": "finished",
+        "length": 2972,
+        "finished": true,
+        "begin_at": "2026-02-04T20:40:32Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-04T21:30:05Z",
+        "forfeit": false,
+        "match_id": 1290803,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128796,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-04T21:41:01Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-04T20:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128796,
+          "name": "Team Vitality",
+          "location": "FR",
+          "slug": "team-vitality-valorant",
+          "modified_at": "2026-09-09T07:32:55Z",
+          "acronym": "VIT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128796/600px_team_vitality_2023_darkmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128796/600px_team_vitality_2023_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 134423,
+          "name": "GIANTX",
+          "location": "GB",
+          "slug": "giantx-valorant",
+          "modified_at": "2026-09-09T15:44:00Z",
+          "acronym": "GX",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/134423/giant_x_logo.svg.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/134423/147px_giantx_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290801
+      },
+      {
+        "type": "loser",
+        "match_id": 1290794
+      }
+    ],
+    "original_scheduled_at": "2026-02-04T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/XOsMqx1nYYA",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=XOsMqx1nYYA"
+      },
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290802,
+    "name": "Mid bracket quarterfinal 1: NAVI vs FNC",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 129355,
+        "score": 1
+      },
+      {
+        "team_id": 128537,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-04T16:05:05Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-04T19:24:38Z",
+    "forfeit": false,
+    "winner_id": 128537,
+    "winner_type": "Team",
+    "slug": "2026-02-04",
+    "games": [
+      {
+        "complete": true,
+        "id": 43837,
+        "position": 1,
+        "status": "finished",
+        "length": 3497,
+        "finished": true,
+        "begin_at": "2026-02-04T16:05:07Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-04T17:03:24Z",
+        "forfeit": false,
+        "match_id": 1290802,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43838,
+        "position": 2,
+        "status": "finished",
+        "length": 2384,
+        "finished": true,
+        "begin_at": "2026-02-04T17:18:06Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-04T17:57:50Z",
+        "forfeit": false,
+        "match_id": 1290802,
+        "winner_type": "Team",
+        "winner": {
+          "id": 129355,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43839,
+        "position": 3,
+        "status": "finished",
+        "length": 4531,
+        "finished": true,
+        "begin_at": "2026-02-04T18:09:07Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-04T19:24:39Z",
+        "forfeit": false,
+        "match_id": 1290802,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-04T20:02:53Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-02-04T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 129355,
+          "name": "Natus Vincere",
+          "location": "UA",
+          "slug": "natus-vincere-valorant",
+          "modified_at": "2026-09-03T12:29:02Z",
+          "acronym": "NAVI",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/129355/1022px_natus_vincere_2021_lightmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128537,
+          "name": "Fnatic",
+          "location": "GB",
+          "slug": "fnatic-valorant",
+          "modified_at": "2026-08-03T02:56:26Z",
+          "acronym": "FNC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128537/900px_fnatic_2020.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290793
+      },
+      {
+        "type": "winner",
+        "match_id": 1290800
+      }
+    ],
+    "original_scheduled_at": "2026-02-04T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290801,
+    "name": "Mid bracket round 2 match 2: GX vs TH",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128622,
+        "score": 0
+      },
+      {
+        "team_id": 134423,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-30T18:25:25Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-30T20:10:32Z",
+    "forfeit": false,
+    "winner_id": 134423,
+    "winner_type": "Team",
+    "slug": "giantx-vs-team-heretics-2026-01-30",
+    "games": [
+      {
+        "complete": true,
+        "id": 43834,
+        "position": 1,
+        "status": "finished",
+        "length": 2950,
+        "finished": true,
+        "begin_at": "2026-01-30T18:25:27Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-30T19:14:38Z",
+        "forfeit": false,
+        "match_id": 1290801,
+        "winner_type": "Team",
+        "winner": {
+          "id": 134423,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43835,
+        "position": 2,
+        "status": "finished",
+        "length": 2648,
+        "finished": true,
+        "begin_at": "2026-01-30T19:26:24Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-30T20:10:32Z",
+        "forfeit": false,
+        "match_id": 1290801,
+        "winner_type": "Team",
+        "winner": {
+          "id": 134423,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-30T20:19:52Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-30T18:30:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 134423,
+          "name": "GIANTX",
+          "location": "GB",
+          "slug": "giantx-valorant",
+          "modified_at": "2026-09-09T15:44:00Z",
+          "acronym": "GX",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/134423/giant_x_logo.svg.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/134423/147px_giantx_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128622,
+          "name": "Team Heretics",
+          "location": "ES",
+          "slug": "team-heretic",
+          "modified_at": "2026-09-24T19:09:17Z",
+          "acronym": "TH",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128622/600px_team_heretics_2020_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128622/172px_team_heretics_2022_allmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290799
+      },
+      {
+        "type": "winner",
+        "match_id": 1290798
+      }
+    ],
+    "original_scheduled_at": "2026-01-30T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/SjV52Rt-uLQ",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=SjV52Rt-uLQ"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290800,
+    "name": "Mid bracket round 2 match 1: TL vs FNC",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128537,
+        "score": 2
+      },
+      {
+        "team_id": 128541,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-30T16:10:51Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-30T17:53:17Z",
+    "forfeit": false,
+    "winner_id": 128537,
+    "winner_type": "Team",
+    "slug": "team-liquid-2026-01-30",
+    "games": [
+      {
+        "complete": true,
+        "id": 43831,
+        "position": 1,
+        "status": "finished",
+        "length": 2256,
+        "finished": true,
+        "begin_at": "2026-01-30T16:10:54Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-30T16:48:31Z",
+        "forfeit": false,
+        "match_id": 1290800,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43832,
+        "position": 2,
+        "status": "finished",
+        "length": 3157,
+        "finished": true,
+        "begin_at": "2026-01-30T17:00:40Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-30T17:53:18Z",
+        "forfeit": false,
+        "match_id": 1290800,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-30T18:00:10Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-30T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128537,
+          "name": "Fnatic",
+          "location": "GB",
+          "slug": "fnatic-valorant",
+          "modified_at": "2026-08-03T02:56:26Z",
+          "acronym": "FNC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128537/900px_fnatic_2020.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290797
+      },
+      {
+        "type": "winner",
+        "match_id": 1290796
+      }
+    ],
+    "original_scheduled_at": "2026-01-30T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290799,
+    "name": "Mid bracket round 1 match 4: TH vs ULF",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 136660,
+        "score": 0
+      },
+      {
+        "team_id": 128622,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-28T19:38:56Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-28T21:22:24Z",
+    "forfeit": false,
+    "winner_id": 128622,
+    "winner_type": "Team",
+    "slug": "2026-01-28-8ced09cb-41f2-4184-b705-a6fe51b2654f",
+    "games": [
+      {
+        "complete": true,
+        "id": 43828,
+        "position": 1,
+        "status": "finished",
+        "length": 2663,
+        "finished": true,
+        "begin_at": "2026-01-28T19:38:57Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-28T20:23:21Z",
+        "forfeit": false,
+        "match_id": 1290799,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128622,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43829,
+        "position": 2,
+        "status": "finished",
+        "length": 2774,
+        "finished": true,
+        "begin_at": "2026-01-28T20:36:10Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-28T21:22:24Z",
+        "forfeit": false,
+        "match_id": 1290799,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128622,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-28T21:30:40Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-28T19:30:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128622,
+          "name": "Team Heretics",
+          "location": "ES",
+          "slug": "team-heretic",
+          "modified_at": "2026-09-24T19:09:17Z",
+          "acronym": "TH",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128622/600px_team_heretics_2020_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128622/172px_team_heretics_2022_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136660,
+          "name": "ULF Esports",
+          "location": "TR",
+          "slug": "ulf-esports-valorant",
+          "modified_at": "2026-03-20T12:28:18Z",
+          "acronym": "ULF",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136660/190px_ulf_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136660/ulf_esports_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290788
+      },
+      {
+        "type": "loser",
+        "match_id": 1290789
+      }
+    ],
+    "original_scheduled_at": "2026-01-28T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290798,
+    "name": "Mid bracket round 1 match 3: GX vs PCFIC",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 134104,
+        "score": 1
+      },
+      {
+        "team_id": 134423,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-28T16:06:26Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-28T19:05:41Z",
+    "forfeit": false,
+    "winner_id": 134423,
+    "winner_type": "Team",
+    "slug": "2026-01-28",
+    "games": [
+      {
+        "complete": true,
+        "id": 43825,
+        "position": 1,
+        "status": "finished",
+        "length": 2775,
+        "finished": true,
+        "begin_at": "2026-01-28T16:06:28Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-28T16:52:44Z",
+        "forfeit": false,
+        "match_id": 1290798,
+        "winner_type": "Team",
+        "winner": {
+          "id": 134423,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43826,
+        "position": 2,
+        "status": "finished",
+        "length": 3442,
+        "finished": true,
+        "begin_at": "2026-01-28T17:04:03Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-28T18:01:25Z",
+        "forfeit": false,
+        "match_id": 1290798,
+        "winner_type": "Team",
+        "winner": {
+          "id": 134104,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43827,
+        "position": 3,
+        "status": "finished",
+        "length": 3170,
+        "finished": true,
+        "begin_at": "2026-01-28T18:12:51Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-28T19:05:42Z",
+        "forfeit": false,
+        "match_id": 1290798,
+        "winner_type": "Team",
+        "winner": {
+          "id": 134423,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-28T19:19:57Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-28T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 134423,
+          "name": "GIANTX",
+          "location": "GB",
+          "slug": "giantx-valorant",
+          "modified_at": "2026-09-09T15:44:00Z",
+          "acronym": "GX",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/134423/giant_x_logo.svg.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/134423/147px_giantx_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 134104,
+          "name": "Pcific Esports",
+          "location": "TR",
+          "slug": "pcific-esports",
+          "modified_at": "2026-07-31T08:12:31Z",
+          "acronym": "PCFIC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/134104/190px_pcific_esports_allmode.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290790
+      },
+      {
+        "type": "loser",
+        "match_id": 1290787
+      }
+    ],
+    "original_scheduled_at": "2026-01-28T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290797,
+    "name": "Mid bracket round 1 match 2: FNC vs FUT",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128578,
+        "score": 1
+      },
+      {
+        "team_id": 128537,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-27T19:22:05Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-27T22:44:52Z",
+    "forfeit": false,
+    "winner_id": 128537,
+    "winner_type": "Team",
+    "slug": "2026-01-27-123b3bb9-2626-4621-a046-e3bda08ff68d",
+    "games": [
+      {
+        "complete": true,
+        "id": 43822,
+        "position": 1,
+        "status": "finished",
+        "length": 2248,
+        "finished": true,
+        "begin_at": "2026-01-27T19:22:08Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-27T19:59:37Z",
+        "forfeit": false,
+        "match_id": 1290797,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43823,
+        "position": 2,
+        "status": "finished",
+        "length": 4303,
+        "finished": true,
+        "begin_at": "2026-01-27T20:13:08Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-27T21:24:52Z",
+        "forfeit": false,
+        "match_id": 1290797,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128578,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43824,
+        "position": 3,
+        "status": "finished",
+        "length": 4123,
+        "finished": true,
+        "begin_at": "2026-01-27T21:36:09Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-27T22:44:52Z",
+        "forfeit": false,
+        "match_id": 1290797,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128537,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-27T22:48:28Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-27T19:30:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128537,
+          "name": "Fnatic",
+          "location": "GB",
+          "slug": "fnatic-valorant",
+          "modified_at": "2026-08-03T02:56:26Z",
+          "acronym": "FNC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128537/900px_fnatic_2020.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128578,
+          "name": "FUT Esports",
+          "location": "TR",
+          "slug": "futbolist",
+          "modified_at": "2026-09-09T07:32:00Z",
+          "acronym": "FUT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128578/600px_futbolist_new_logo_2021_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128578/600px_futbolist_2021_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290786
+      },
+      {
+        "type": "loser",
+        "match_id": 1290791
+      }
+    ],
+    "original_scheduled_at": "2026-01-27T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290796,
+    "name": "Mid bracket round 1 match 1: TL vs KC",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 130922,
+        "score": 1
+      },
+      {
+        "team_id": 128541,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-27T16:07:15Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-27T18:49:55Z",
+    "forfeit": false,
+    "winner_id": 128541,
+    "winner_type": "Team",
+    "slug": "2026-01-27",
+    "games": [
+      {
+        "complete": true,
+        "id": 43819,
+        "position": 1,
+        "status": "finished",
+        "length": 2070,
+        "finished": true,
+        "begin_at": "2026-01-27T16:07:16Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-27T16:41:47Z",
+        "forfeit": false,
+        "match_id": 1290796,
+        "winner_type": "Team",
+        "winner": {
+          "id": 130922,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43820,
+        "position": 2,
+        "status": "finished",
+        "length": 2811,
+        "finished": true,
+        "begin_at": "2026-01-27T16:53:59Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-27T17:40:50Z",
+        "forfeit": false,
+        "match_id": 1290796,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43821,
+        "position": 3,
+        "status": "finished",
+        "length": 3466,
+        "finished": true,
+        "begin_at": "2026-01-27T17:52:09Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-27T18:49:55Z",
+        "forfeit": false,
+        "match_id": 1290796,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-27T18:57:33Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-27T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 130922,
+          "name": "Karmine Corp",
+          "location": "FR",
+          "slug": "karmine-corp-valorant",
+          "modified_at": "2026-09-09T07:36:46Z",
+          "acronym": "KC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/130922/600px_karmine_corp_lightmode_full.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/130922/632px_karmine_corp_allmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "loser",
+        "match_id": 1290785
+      },
+      {
+        "type": "loser",
+        "match_id": 1290792
+      }
+    ],
+    "original_scheduled_at": "2026-01-27T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/qeHyaaI9vSo",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=qeHyaaI9vSo"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290795,
+    "name": "Upper bracket final: GM vs BBL",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128577,
+        "score": 3
+      },
+      {
+        "team_id": 133115,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-02-13T15:20:21Z",
+    "detailed_stats": true,
+    "end_at": "2026-02-13T20:44:34Z",
+    "forfeit": false,
+    "winner_id": 128577,
+    "winner_type": "Team",
+    "slug": "gentle-mates-vs-bbl-esports-2026-02-13",
+    "games": [
+      {
+        "complete": true,
+        "id": 43814,
+        "position": 1,
+        "status": "finished",
+        "length": 3267,
+        "finished": true,
+        "begin_at": "2026-02-13T15:20:24Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-13T16:14:52Z",
+        "forfeit": false,
+        "match_id": 1290795,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43815,
+        "position": 2,
+        "status": "finished",
+        "length": 3891,
+        "finished": true,
+        "begin_at": "2026-02-13T16:32:04Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-13T17:36:56Z",
+        "forfeit": false,
+        "match_id": 1290795,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43816,
+        "position": 3,
+        "status": "finished",
+        "length": 4256,
+        "finished": true,
+        "begin_at": "2026-02-13T17:49:55Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-13T19:00:52Z",
+        "forfeit": false,
+        "match_id": 1290795,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43817,
+        "position": 4,
+        "status": "finished",
+        "length": 2191,
+        "finished": true,
+        "begin_at": "2026-02-13T19:14:06Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-13T19:50:38Z",
+        "forfeit": false,
+        "match_id": 1290795,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43818,
+        "position": 5,
+        "status": "finished",
+        "length": 2444,
+        "finished": true,
+        "begin_at": "2026-02-13T20:03:50Z",
+        "detailed_stats": true,
+        "end_at": "2026-02-13T20:44:35Z",
+        "forfeit": false,
+        "match_id": 1290795,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-02-13T20:46:08Z",
+    "match_type": "best_of",
+    "number_of_games": 5,
+    "scheduled_at": "2026-02-13T15:15:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133115,
+          "name": "Gentle Mates",
+          "location": "FR",
+          "slug": "gentle-mates",
+          "modified_at": "2026-09-14T11:01:01Z",
+          "acronym": "M8",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133115/621px_gentle_mates_2024_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/133115/621px_gentle_mates_2024_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128577,
+          "name": "BBL Esports",
+          "location": "TR",
+          "slug": "bbl-esports",
+          "modified_at": "2026-08-05T18:18:43Z",
+          "acronym": "BBL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128577/600px_bbl_esports_2022_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128577/190px_bbl_esports_2022_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290794
+      },
+      {
+        "type": "winner",
+        "match_id": 1290793
+      }
+    ],
+    "original_scheduled_at": "2026-02-13T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/EYzap5mJaRU",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=EYzap5mJaRU"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290794,
+    "name": "Upper bracket semifinal 2: BBL vs VIT",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128577,
+        "score": 2
+      },
+      {
+        "team_id": 128796,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-29T18:21:45Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-29T20:15:45Z",
+    "forfeit": false,
+    "winner_id": 128577,
+    "winner_type": "Team",
+    "slug": "bbl-esports-2026-01-29",
+    "games": [
+      {
+        "complete": true,
+        "id": 43811,
+        "position": 1,
+        "status": "finished",
+        "length": 3002,
+        "finished": true,
+        "begin_at": "2026-01-29T18:21:47Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-29T19:11:50Z",
+        "forfeit": false,
+        "match_id": 1290794,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43812,
+        "position": 2,
+        "status": "finished",
+        "length": 2915,
+        "finished": true,
+        "begin_at": "2026-01-29T19:27:10Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-29T20:15:46Z",
+        "forfeit": false,
+        "match_id": 1290794,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-29T20:26:10Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-29T18:20:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128577,
+          "name": "BBL Esports",
+          "location": "TR",
+          "slug": "bbl-esports",
+          "modified_at": "2026-08-05T18:18:43Z",
+          "acronym": "BBL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128577/600px_bbl_esports_2022_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128577/190px_bbl_esports_2022_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128796,
+          "name": "Team Vitality",
+          "location": "FR",
+          "slug": "team-vitality-valorant",
+          "modified_at": "2026-09-09T07:32:55Z",
+          "acronym": "VIT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128796/600px_team_vitality_2023_darkmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128796/600px_team_vitality_2023_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290791
+      },
+      {
+        "type": "winner",
+        "match_id": 1290792
+      }
+    ],
+    "original_scheduled_at": "2026-01-29T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "fr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_fr",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_fr"
+      },
+      {
+        "main": false,
+        "language": "tr",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_tur",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_tur"
+      },
+      {
+        "main": false,
+        "language": "es",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_es",
+        "official": false,
+        "raw_url": "https://www.twitch.tv/valorant_es"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290793,
+    "name": "Upper bracket semifinal 1: NAVI vs GM",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 133115,
+        "score": 2
+      },
+      {
+        "team_id": 129355,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-29T16:06:46Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-29T17:48:02Z",
+    "forfeit": false,
+    "winner_id": 133115,
+    "winner_type": "Team",
+    "slug": "natus-vincere-vs-gentle-mates-2026-01-29",
+    "games": [
+      {
+        "complete": true,
+        "id": 43808,
+        "position": 1,
+        "status": "finished",
+        "length": 2357,
+        "finished": true,
+        "begin_at": "2026-01-29T16:06:50Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-29T16:46:07Z",
+        "forfeit": false,
+        "match_id": 1290793,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43809,
+        "position": 2,
+        "status": "finished",
+        "length": 2940,
+        "finished": true,
+        "begin_at": "2026-01-29T16:59:02Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-29T17:48:03Z",
+        "forfeit": false,
+        "match_id": 1290793,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-29T18:09:29Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-29T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 129355,
+          "name": "Natus Vincere",
+          "location": "UA",
+          "slug": "natus-vincere-valorant",
+          "modified_at": "2026-09-03T12:29:02Z",
+          "acronym": "NAVI",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/129355/1022px_natus_vincere_2021_lightmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133115,
+          "name": "Gentle Mates",
+          "location": "FR",
+          "slug": "gentle-mates",
+          "modified_at": "2026-09-14T11:01:01Z",
+          "acronym": "M8",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133115/621px_gentle_mates_2024_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/133115/621px_gentle_mates_2024_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290790
+      },
+      {
+        "type": "winner",
+        "match_id": 1290789
+      }
+    ],
+    "original_scheduled_at": "2026-01-29T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290792,
+    "name": "Upper bracket quarterfinal 4: TL vs VIT",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128796,
+        "score": 2
+      },
+      {
+        "team_id": 128541,
+        "score": 1
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-23T18:31:43Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-23T21:41:57Z",
+    "forfeit": false,
+    "winner_id": 128796,
+    "winner_type": "Team",
+    "slug": "team-liquid-vs-team-vitality-2026-01-23",
+    "games": [
+      {
+        "complete": true,
+        "id": 43805,
+        "position": 1,
+        "status": "finished",
+        "length": 3245,
+        "finished": true,
+        "begin_at": "2026-01-23T18:31:44Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-23T19:25:50Z",
+        "forfeit": false,
+        "match_id": 1290792,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128796,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43806,
+        "position": 2,
+        "status": "finished",
+        "length": 3594,
+        "finished": true,
+        "begin_at": "2026-01-23T19:37:31Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-23T20:37:25Z",
+        "forfeit": false,
+        "match_id": 1290792,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128541,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43807,
+        "position": 3,
+        "status": "finished",
+        "length": 3179,
+        "finished": true,
+        "begin_at": "2026-01-23T20:48:58Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-23T21:41:58Z",
+        "forfeit": false,
+        "match_id": 1290792,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128796,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-23T21:47:52Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-23T18:30:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128541,
+          "name": "Team Liquid",
+          "location": "NL",
+          "slug": "team-liquid-valorant",
+          "modified_at": "2026-09-10T10:18:28Z",
+          "acronym": "TL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128541/463px_team_liquid_2024_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128541/463px_team_liquid_2024_full_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128796,
+          "name": "Team Vitality",
+          "location": "FR",
+          "slug": "team-vitality-valorant",
+          "modified_at": "2026-09-09T07:32:55Z",
+          "acronym": "VIT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128796/600px_team_vitality_2023_darkmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128796/600px_team_vitality_2023_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290788
+      }
+    ],
+    "original_scheduled_at": "2026-01-23T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290791,
+    "name": "Upper bracket quarterfinal 3: FNC vs BBL",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128577,
+        "score": 2
+      },
+      {
+        "team_id": 128537,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-23T16:07:42Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-23T18:00:09Z",
+    "forfeit": false,
+    "winner_id": 128577,
+    "winner_type": "Team",
+    "slug": "fnatic-vs-bbl-esports-2026-01-23",
+    "games": [
+      {
+        "complete": true,
+        "id": 43802,
+        "position": 1,
+        "status": "finished",
+        "length": 3172,
+        "finished": true,
+        "begin_at": "2026-01-23T16:07:44Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-23T17:00:36Z",
+        "forfeit": false,
+        "match_id": 1290791,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43803,
+        "position": 2,
+        "status": "finished",
+        "length": 2850,
+        "finished": true,
+        "begin_at": "2026-01-23T17:12:39Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-23T18:00:10Z",
+        "forfeit": false,
+        "match_id": 1290791,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-23T18:06:22Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-23T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128537,
+          "name": "Fnatic",
+          "location": "GB",
+          "slug": "fnatic-valorant",
+          "modified_at": "2026-08-03T02:56:26Z",
+          "acronym": "FNC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128537/900px_fnatic_2020.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128577,
+          "name": "BBL Esports",
+          "location": "TR",
+          "slug": "bbl-esports",
+          "modified_at": "2026-08-05T18:18:43Z",
+          "acronym": "BBL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128577/600px_bbl_esports_2022_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128577/190px_bbl_esports_2022_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290787
+      }
+    ],
+    "original_scheduled_at": "2026-01-23T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290790,
+    "name": "Upper bracket quarterfinal 2: GX vs GM",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 133115,
+        "score": 2
+      },
+      {
+        "team_id": 134423,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-22T19:37:23Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-22T21:30:16Z",
+    "forfeit": false,
+    "winner_id": 133115,
+    "winner_type": "Team",
+    "slug": "giantx-vs-gentle-mates-2026-01-22",
+    "games": [
+      {
+        "complete": true,
+        "id": 43799,
+        "position": 1,
+        "status": "finished",
+        "length": 3001,
+        "finished": true,
+        "begin_at": "2026-01-22T19:37:24Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-22T20:27:26Z",
+        "forfeit": false,
+        "match_id": 1290790,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43800,
+        "position": 2,
+        "status": "finished",
+        "length": 3041,
+        "finished": true,
+        "begin_at": "2026-01-22T20:39:35Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-22T21:30:17Z",
+        "forfeit": false,
+        "match_id": 1290790,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-22T22:34:51Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-22T19:30:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 134423,
+          "name": "GIANTX",
+          "location": "GB",
+          "slug": "giantx-valorant",
+          "modified_at": "2026-09-09T15:44:00Z",
+          "acronym": "GX",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/134423/giant_x_logo.svg.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/134423/147px_giantx_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133115,
+          "name": "Gentle Mates",
+          "location": "FR",
+          "slug": "gentle-mates",
+          "modified_at": "2026-09-14T11:01:01Z",
+          "acronym": "M8",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133115/621px_gentle_mates_2024_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/133115/621px_gentle_mates_2024_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290786
+      }
+    ],
+    "original_scheduled_at": "2026-01-22T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290789,
+    "name": "Upper bracket quarterfinal 1: TH vs NAVI",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128622,
+        "score": 1
+      },
+      {
+        "team_id": 129355,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-22T16:12:28Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-22T19:05:49Z",
+    "forfeit": false,
+    "winner_id": 129355,
+    "winner_type": "Team",
+    "slug": "team-heretics-vs-natus-vincere-2026-01-22",
+    "games": [
+      {
+        "complete": true,
+        "id": 43796,
+        "position": 1,
+        "status": "finished",
+        "length": 3084,
+        "finished": true,
+        "begin_at": "2026-01-22T16:12:30Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-22T17:03:54Z",
+        "forfeit": false,
+        "match_id": 1290789,
+        "winner_type": "Team",
+        "winner": {
+          "id": 129355,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43797,
+        "position": 2,
+        "status": "finished",
+        "length": 3288,
+        "finished": true,
+        "begin_at": "2026-01-22T17:17:03Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-22T18:11:51Z",
+        "forfeit": false,
+        "match_id": 1290789,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128622,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43798,
+        "position": 3,
+        "status": "finished",
+        "length": 2567,
+        "finished": true,
+        "begin_at": "2026-01-22T18:23:02Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-22T19:05:49Z",
+        "forfeit": false,
+        "match_id": 1290789,
+        "winner_type": "Team",
+        "winner": {
+          "id": 129355,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-22T19:35:24Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-22T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128622,
+          "name": "Team Heretics",
+          "location": "ES",
+          "slug": "team-heretic",
+          "modified_at": "2026-09-24T19:09:17Z",
+          "acronym": "TH",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128622/600px_team_heretics_2020_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128622/172px_team_heretics_2022_allmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 129355,
+          "name": "Natus Vincere",
+          "location": "UA",
+          "slug": "natus-vincere-valorant",
+          "modified_at": "2026-09-03T12:29:02Z",
+          "acronym": "NAVI",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/129355/1022px_natus_vincere_2021_lightmode.png",
+          "dark_mode_image_url": null
+        }
+      }
+    ],
+    "previous_matches": [
+      {
+        "type": "winner",
+        "match_id": 1290785
+      }
+    ],
+    "original_scheduled_at": "2026-01-22T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290788,
+    "name": "Upper bracket round 1 match 4: ULF vs VIT",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128796,
+        "score": 2
+      },
+      {
+        "team_id": 136660,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-21T19:22:14Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-21T20:30:52Z",
+    "forfeit": false,
+    "winner_id": 128796,
+    "winner_type": "Team",
+    "slug": "ulf-esports-vs-team-vitality-2026-01-21",
+    "games": [
+      {
+        "complete": true,
+        "id": 43793,
+        "position": 1,
+        "status": "finished",
+        "length": 1819,
+        "finished": true,
+        "begin_at": "2026-01-21T19:22:15Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-21T19:52:35Z",
+        "forfeit": false,
+        "match_id": 1290788,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128796,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43794,
+        "position": 2,
+        "status": "finished",
+        "length": 1572,
+        "finished": true,
+        "begin_at": "2026-01-21T20:04:40Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-21T20:30:52Z",
+        "forfeit": false,
+        "match_id": 1290788,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128796,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-21T20:49:58Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-21T19:30:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 136660,
+          "name": "ULF Esports",
+          "location": "TR",
+          "slug": "ulf-esports-valorant",
+          "modified_at": "2026-03-20T12:28:18Z",
+          "acronym": "ULF",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/136660/190px_ulf_esports_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136660/ulf_esports_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128796,
+          "name": "Team Vitality",
+          "location": "FR",
+          "slug": "team-vitality-valorant",
+          "modified_at": "2026-09-09T07:32:55Z",
+          "acronym": "VIT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128796/600px_team_vitality_2023_darkmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128796/600px_team_vitality_2023_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-01-21T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290787,
+    "name": "Upper bracket round 1 match 3: PCFIC vs BBL",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 128577,
+        "score": 2
+      },
+      {
+        "team_id": 134104,
+        "score": 1
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-21T16:10:16Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-21T18:49:32Z",
+    "forfeit": false,
+    "winner_id": 128577,
+    "winner_type": "Team",
+    "slug": "pcific-esports-vs-bbl-esports-2026-01-21",
+    "games": [
+      {
+        "complete": true,
+        "id": 43790,
+        "position": 1,
+        "status": "finished",
+        "length": 3086,
+        "finished": true,
+        "begin_at": "2026-01-21T16:10:18Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-21T17:01:44Z",
+        "forfeit": false,
+        "match_id": 1290787,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43791,
+        "position": 2,
+        "status": "finished",
+        "length": 2676,
+        "finished": true,
+        "begin_at": "2026-01-21T17:14:52Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-21T17:59:29Z",
+        "forfeit": false,
+        "match_id": 1290787,
+        "winner_type": "Team",
+        "winner": {
+          "id": 134104,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43792,
+        "position": 3,
+        "status": "finished",
+        "length": 2311,
+        "finished": true,
+        "begin_at": "2026-01-21T18:11:01Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-21T18:49:33Z",
+        "forfeit": false,
+        "match_id": 1290787,
+        "winner_type": "Team",
+        "winner": {
+          "id": 128577,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-21T18:54:44Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-21T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 134104,
+          "name": "Pcific Esports",
+          "location": "TR",
+          "slug": "pcific-esports",
+          "modified_at": "2026-07-31T08:12:31Z",
+          "acronym": "PCFIC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/134104/190px_pcific_esports_allmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128577,
+          "name": "BBL Esports",
+          "location": "TR",
+          "slug": "bbl-esports",
+          "modified_at": "2026-08-05T18:18:43Z",
+          "acronym": "BBL",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128577/600px_bbl_esports_2022_full_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128577/190px_bbl_esports_2022_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-01-21T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290786,
+    "name": "Upper bracket round 1 match 2: FUT vs GM",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 133115,
+        "score": 2
+      },
+      {
+        "team_id": 128578,
+        "score": 0
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-20T18:39:21Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-20T20:14:11Z",
+    "forfeit": false,
+    "winner_id": 133115,
+    "winner_type": "Team",
+    "slug": "fut-esports-vs-gentle-mates-2026-01-20",
+    "games": [
+      {
+        "complete": true,
+        "id": 43787,
+        "position": 1,
+        "status": "finished",
+        "length": 2656,
+        "finished": true,
+        "begin_at": "2026-01-20T18:39:23Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-20T19:23:39Z",
+        "forfeit": false,
+        "match_id": 1290786,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43788,
+        "position": 2,
+        "status": "finished",
+        "length": 2260,
+        "finished": true,
+        "begin_at": "2026-01-20T19:36:31Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-20T20:14:11Z",
+        "forfeit": false,
+        "match_id": 1290786,
+        "winner_type": "Team",
+        "winner": {
+          "id": 133115,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-20T20:46:38Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-20T18:40:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 128578,
+          "name": "FUT Esports",
+          "location": "TR",
+          "slug": "futbolist",
+          "modified_at": "2026-09-09T07:32:00Z",
+          "acronym": "FUT",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/128578/600px_futbolist_new_logo_2021_infobox.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/128578/600px_futbolist_2021_darkmode.png"
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 133115,
+          "name": "Gentle Mates",
+          "location": "FR",
+          "slug": "gentle-mates",
+          "modified_at": "2026-09-14T11:01:01Z",
+          "acronym": "M8",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/133115/621px_gentle_mates_2024_lightmode.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/133115/621px_gentle_mates_2024_darkmode.png"
+        }
+      }
+    ],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-01-20T19:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  },
+  {
+    "id": 1290785,
+    "name": "Upper bracket round 1 match 1: NAVI vs KC",
+    "status": "finished",
+    "results": [
+      {
+        "team_id": 130922,
+        "score": 0
+      },
+      {
+        "team_id": 129355,
+        "score": 2
+      }
+    ],
+    "live": {
+      "supported": false,
+      "url": null,
+      "opens_at": null
+    },
+    "begin_at": "2026-01-20T16:08:20Z",
+    "detailed_stats": true,
+    "end_at": "2026-01-20T18:07:23Z",
+    "forfeit": false,
+    "winner_id": 129355,
+    "winner_type": "Team",
+    "slug": "natus-vincere-vs-karmine-corp-2026-01-20",
+    "games": [
+      {
+        "complete": true,
+        "id": 43784,
+        "position": 1,
+        "status": "finished",
+        "length": 3593,
+        "finished": true,
+        "begin_at": "2026-01-20T16:08:22Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-20T17:08:16Z",
+        "forfeit": false,
+        "match_id": 1290785,
+        "winner_type": "Team",
+        "winner": {
+          "id": 129355,
+          "type": "Team"
+        }
+      },
+      {
+        "complete": true,
+        "id": 43785,
+        "position": 2,
+        "status": "finished",
+        "length": 2401,
+        "finished": true,
+        "begin_at": "2026-01-20T17:27:22Z",
+        "detailed_stats": true,
+        "end_at": "2026-01-20T18:07:23Z",
+        "forfeit": false,
+        "match_id": 1290785,
+        "winner_type": "Team",
+        "winner": {
+          "id": 129355,
+          "type": "Team"
+        }
+      }
+    ],
+    "draw": false,
+    "tournament_id": 18719,
+    "modified_at": "2026-01-20T18:20:14Z",
+    "match_type": "best_of",
+    "number_of_games": 3,
+    "scheduled_at": "2026-01-20T16:00:00Z",
+    "opponents": [
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 129355,
+          "name": "Natus Vincere",
+          "location": "UA",
+          "slug": "natus-vincere-valorant",
+          "modified_at": "2026-09-03T12:29:02Z",
+          "acronym": "NAVI",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/129355/1022px_natus_vincere_2021_lightmode.png",
+          "dark_mode_image_url": null
+        }
+      },
+      {
+        "type": "Team",
+        "opponent": {
+          "id": 130922,
+          "name": "Karmine Corp",
+          "location": "FR",
+          "slug": "karmine-corp-valorant",
+          "modified_at": "2026-09-09T07:36:46Z",
+          "acronym": "KC",
+          "image_url": "https://cdn-api.pandascore.co/images/team/image/130922/600px_karmine_corp_lightmode_full.png",
+          "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/130922/632px_karmine_corp_allmode.png"
+        }
+      }
+    ],
+    "previous_matches": [],
+    "original_scheduled_at": "2026-01-20T16:00:00Z",
+    "game_advantage": null,
+    "streams_list": [
+      {
+        "main": false,
+        "language": "en",
+        "embed_url": "https://www.youtube.com/embed/c-uy60zfAZM",
+        "official": false,
+        "raw_url": "https://www.youtube.com/watch?v=c-uy60zfAZM"
+      },
+      {
+        "main": true,
+        "language": "en",
+        "embed_url": "https://player.twitch.tv/?channel=valorant_emea",
+        "official": true,
+        "raw_url": "https://www.twitch.tv/valorant_emea"
+      }
+    ]
+  }
+]

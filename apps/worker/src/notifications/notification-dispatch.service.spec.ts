@@ -87,6 +87,17 @@ describe("NotificationDispatchService (intégration)", () => {
     expect(await prisma.notificationLog.count({ where: { userId } })).toBe(before);
   });
 
+  it("qualification/élimination (J5) : notifie l'abonné direct à l'équipe, jamais deux fois", async () => {
+    await prisma.device.create({ data: { id: randomUUID(), userId, installId: randomUUID(), platform: "android", pushToken: "token-quali" } });
+
+    await dispatch.handle({ type: "EntityQualified", entityId, competitionId });
+    await dispatch.handle({ type: "EntityQualified", entityId, competitionId });
+
+    const logs = await prisma.notificationLog.findMany({ where: { userId, entityId, type: "qualification" } });
+    expect(logs).toHaveLength(1);
+    expect(logs[0].eventId).toBeNull();
+  });
+
   it("supprime l'appareil quand FCM signale un jeton invalide (désinstallation/réinstallation, docs/04 J4)", async () => {
     const device = await prisma.device.create({
       data: { id: randomUUID(), userId, installId: randomUUID(), platform: "android", pushToken: "dead-token" },

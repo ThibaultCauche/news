@@ -5,5 +5,6 @@ export const CacheKeys = {
   home: () => "cache:v1:home",
   agenda: (from: string, to: string, category?: string) => `cache:v1:agenda:${from}:${to}:${category ?? "all"}`,
   competition: (id: string) => `cache:v1:competition:${id}`,
+  bracket: (id: string) => `cache:v1:bracket:${id}`,
   event: (id: string) => `cache:v1:event:${id}`,
 };

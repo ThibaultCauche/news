@@ -139,6 +139,24 @@ describe("API v1 (e2e)", () => {
     expect(res.body.standings).toEqual([]);
   });
 
+  it("GET /v1/competitions/:id/bracket renvoie les nœuds (avec leur round) et les liens de bracket (J5)", async () => {
+    const finalEvent = await prisma.event.create({
+      data: { id: randomUUID(), competitionId, kind: "match", name: "Grande finale", status: "scheduled", bestOf: 5, importance: 3 },
+    });
+    await prisma.eventLink.create({ data: { id: randomUUID(), fromEventId: liveEventId, toEventId: finalEvent.id, outcome: "winner", slot: 0 } });
+
+    const res = await request(app.getHttpServer()).get(`/v1/competitions/${competitionId}/bracket`).expect(200);
+    expect(res.body.format).toBe("double_elim");
+    const finalNode = res.body.nodes.find((n: { eventId: string }) => n.eventId === finalEvent.id);
+    const liveNode = res.body.nodes.find((n: { eventId: string }) => n.eventId === liveEventId);
+    expect(finalNode.round).toBe(0); // la finale n'alimente aucun autre match : centre de l'arbre
+    expect(liveNode.round).toBe(1);
+    expect(res.body.links).toContainEqual({ fromEventId: liveEventId, toEventId: finalEvent.id, outcome: "winner", slot: 0 });
+
+    await prisma.eventLink.deleteMany({ where: { toEventId: finalEvent.id } });
+    await prisma.event.delete({ where: { id: finalEvent.id } });
+  });
+
   it("un changement de score côté worker invalide le cache de l'événement", async () => {
     const before = await request(app.getHttpServer()).get(`/v1/events/${liveEventId}`).expect(200);
     expect(before.body.result.seriesScore[0].score).toBe(1);

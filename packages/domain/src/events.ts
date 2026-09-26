@@ -5,14 +5,28 @@ import { EventStatus } from "./status";
 // le cache a de toute façon un TTL court (15-60s) qui sert de filet.
 export const DOMAIN_EVENTS_CHANNEL = "news:domain-events";
 
-// BracketAdvanced/StandingChanged/CompetitionFinished viendront avec les brackets
-// et classements au J5. EventStartingSoon (T-15 min, docs/03 §3/§6) est publié par
-// un job dédié plutôt que par l'ingestion (voir `starting-soon` dans apps/worker).
-export type DomainEventType = "EventScheduled" | "EventStarted" | "EventFinished" | "ScoreChanged" | "EventStartingSoon";
+// EventStartingSoon (T-15 min, docs/03 §3/§6) est publié par un job dédié plutôt que
+// par l'ingestion (voir `starting-soon` dans apps/worker). BracketAdvanced et
+// StandingChanged sont publiés par le job "structure" du J5 quand `event_link`/
+// `standing` changent réellement (même logique d'upsert idempotent que le reste).
+// EntityQualified/EntityEliminated (J5, reporté du J4) : une entité précise d'une
+// compétition passe qualifiée ou est éliminée (`standing.qualified`/`lives_left`) —
+// pas de match unique derrière, donc `entityId` plutôt que `eventId`.
+export type DomainEventType =
+  | "EventScheduled"
+  | "EventStarted"
+  | "EventFinished"
+  | "ScoreChanged"
+  | "EventStartingSoon"
+  | "BracketAdvanced"
+  | "StandingChanged"
+  | "EntityQualified"
+  | "EntityEliminated";
 
 export interface DomainEventMessage {
   type: DomainEventType;
-  eventId: string;
+  eventId?: string;
+  entityId?: string;
   competitionId: string;
 }
 

@@ -28,7 +28,9 @@ export class DomainEventsSubscriber implements OnModuleInit, OnModuleDestroy {
   }
 
   private async handle(message: DomainEventMessage): Promise<void> {
-    await this.cache.del(CacheKeys.home(), CacheKeys.event(message.eventId), CacheKeys.competition(message.competitionId));
+    const keys = [CacheKeys.home(), CacheKeys.competition(message.competitionId), CacheKeys.bracket(message.competitionId)];
+    if (message.eventId) keys.push(CacheKeys.event(message.eventId));
+    await this.cache.del(...keys);
     logger.info({ message }, "cache invalidé");
   }
 

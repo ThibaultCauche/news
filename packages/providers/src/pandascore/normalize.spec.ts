@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { normalizeCompetitionsFromTournament, normalizeMatch } from "./normalize";
+import { normalizeCompetitionsFromTournament, normalizeMatch, normalizeStructure } from "./normalize";
 import { RawMatch, RawTournament } from "./types";
 
 // Fixtures = vraies réponses PandaScore, gardées dans tests-pandascore/samples/
@@ -74,5 +74,23 @@ describe("normalizeCompetitionsFromTournament", () => {
     expect(t.externalId).toBe(String(tournament.id));
     expect(t.parentExternalId).toBe(String(tournament.serie_id));
     expect(t.importance).toBe(3); // tier "s"
+    expect(t.hasBracket).toBe(tournament.has_bracket ?? false);
+  });
+});
+
+describe("normalizeStructure", () => {
+  it("détecte une poule GSL et construit les liens gagnant/perdant", () => {
+    const matches = load<RawMatch[]>("brackets-du-tournoi.json");
+    const structure = normalizeStructure(matches);
+
+    expect(structure.format).toBe("groups_gsl");
+    expect(structure.links).toContainEqual({ fromExternalId: "1685231", toExternalId: "1685232", outcome: "winner", slot: 1 });
+  });
+
+  it("détecte une double élimination sur le bracket des playoffs Champions", () => {
+    const matches = load<RawMatch[]>("brackets-playoffs.json");
+    const structure = normalizeStructure(matches);
+    expect(structure.format).toBe("double_elim");
+    expect(structure.links.length).toBeGreaterThan(0);
   });
 });

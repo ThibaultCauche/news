@@ -61,4 +61,9 @@ describe("buildNotificationText", () => {
     expect(buildNotificationText("reminder", "G2 vs PRX", true, null).body).toContain("15 minutes");
     expect(buildNotificationText("start", "G2 vs PRX", false, null).body).toContain("commence");
   });
+
+  it("qualification et élimination portent le nom de l'entité, pas d'un match (J5)", () => {
+    expect(buildNotificationText("qualification", "G2 Esports", true, null).body).toContain("G2 Esports");
+    expect(buildNotificationText("elimination", "TYLOO", true, null).body).toContain("TYLOO");
+  });
 });

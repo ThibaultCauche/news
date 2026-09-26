@@ -1,6 +1,6 @@
-import { CompetitionDTO, DateWindow, EventDTO, Provider } from "@news/domain";
+import { CompetitionDTO, DateWindow, EventDTO, Provider, StructureDTO } from "@news/domain";
 import { PandaScoreClient } from "./client";
-import { normalizeCompetitionsFromTournament, normalizeMatch } from "./normalize";
+import { normalizeCompetitionsFromTournament, normalizeMatch, normalizeStructure } from "./normalize";
 import { RawMatch, RawTournament } from "./types";
 
 function dedupeById<T extends { id: number }>(items: T[]): T[] {
@@ -48,5 +48,12 @@ export class PandaScoreProvider implements Provider {
   async getEvent(externalId: string): Promise<EventDTO> {
     const match = await this.client.get<RawMatch>(`/valorant/matches/${externalId}`);
     return normalizeMatch(match);
+  }
+
+  // Bracket d'un tournoi (docs/01 : gratuit, clé pour l'arbre — job "structure" du J5).
+  // Les classements ne sont pas demandés ici : recalculés depuis nos propres matchs.
+  async getStructure(competitionExternalId: string): Promise<StructureDTO> {
+    const matches = await this.client.get<RawMatch[]>(`/tournaments/${competitionExternalId}/brackets`);
+    return normalizeStructure(matches);
   }
 }

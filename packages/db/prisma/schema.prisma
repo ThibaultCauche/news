@@ -36,6 +36,9 @@ model Competition {
   endsAt     DateTime?     @map("ends_at")
   structure  Json?
   importance Int           @default(0)
+  // Vrai si le fournisseur expose un bracket pour ce tournoi (has_bracket PandaScore) :
+  // sert à cibler le job "structure" (J5) sans appeler /brackets sur tout le catalogue.
+  hasBracket Boolean       @default(false) @map("has_bracket")
   events     Event[]
   standings  Standing[]
   createdAt  DateTime      @default(now()) @map("created_at")
@@ -54,10 +57,11 @@ model Entity {
   children     Entity[]           @relation("EntityHierarchy")
   region       String?
   imageUrl     String?            @map("image_url")
-  participants EventParticipant[]
-  standings    Standing[]
-  createdAt    DateTime           @default(now()) @map("created_at")
-  updatedAt    DateTime           @updatedAt @map("updated_at")
+  participants     EventParticipant[]
+  standings        Standing[]
+  notificationLogs NotificationLog[]
+  createdAt        DateTime           @default(now()) @map("created_at")
+  updatedAt        DateTime           @updatedAt @map("updated_at")
 
   @@map("entity")
 }
@@ -110,6 +114,9 @@ model EventLink {
   outcome     String
   slot        Int?
 
+  // Un match a au plus un lien "winner" et un lien "loser" sortants : clé naturelle
+  // pour l'upsert idempotent (règle 4 de CLAUDE.md).
+  @@unique([fromEventId, outcome])
   @@map("event_link")
 }
 
@@ -229,15 +236,22 @@ model UserSetting {
 
 // Journal des notifications envoyées, clé de déduplication (userId, eventId, type) —
 // règle 4 de CLAUDE.md appliquée aux notifications : on n'envoie jamais deux fois.
+// Deux chemins de déduplication (règle 4 de CLAUDE.md) : par match (rappel/début/
+// résultat) ou par entité (qualification/élimination, J5 — pas de match unique
+// derrière un changement de classement). `eventId`/`entityId` sont donc tous les
+// deux optionnels, mais toujours l'un ou l'autre en pratique.
 model NotificationLog {
-  id     String   @id @default(uuid())
-  userId String   @map("user_id")
-  user   AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  eventId String  @map("event_id")
-  event   Event   @relation(fields: [eventId], references: [id])
-  type   String
-  sentAt DateTime @default(now()) @map("sent_at")
+  id       String   @id @default(uuid())
+  userId   String   @map("user_id")
+  user     AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId  String?  @map("event_id")
+  event    Event?   @relation(fields: [eventId], references: [id])
+  entityId String?  @map("entity_id")
+  entity   Entity?  @relation(fields: [entityId], references: [id])
+  type     String
+  sentAt   DateTime @default(now()) @map("sent_at")
 
   @@unique([userId, eventId, type])
+  @@unique([userId, entityId, type])
   @@map("notification_log")
 }

@@ -17,6 +17,8 @@ export class IngestionProcessor extends WorkerHost {
         return this.ingestion.runCalendar();
       case "live":
         return this.ingestion.runLive();
+      case "structure":
+        return this.ingestion.runStructure();
       default:
         throw new Error(`Job d'ingestion inconnu : ${job.name}`);
     }
