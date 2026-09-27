@@ -21,13 +21,17 @@ Par défaut, l'image publiée est **privée**. Pour que le NAS puisse la tirer (
 
 Décision du J7 (`docs/00` §7) : le NAS expose déjà d'autres applis via Tailscale, donc l'API suit la même voie plutôt que Cloudflare Tunnel envisagé dans `docs/03` au départ. Contrepartie acceptée : l'URL publique est `https://<machine>.<tailnet>.ts.net`, pas un nom de domaine personnalisé (`api.thibaultcauche.com` n'est pas utilisable ici — Funnel ne prend pas de domaine externe).
 
-Sur l'hôte du NAS (pas dans Docker Compose) :
+**Cas réel de ce déploiement** : les 3 ports Funnel possibles (443, 8443, 10000) sont déjà pris par d'autres services du NAS. Le port 443 sert déjà plusieurs applis sous des chemins différents (`/jam`, `/shares`, `/avatars`, `/download-worker`) — l'API News suit le même principe, montée sous `/news` plutôt que sur un port dédié. Le conteneur Tailscale (`ix-tailscale-tailscale-1`) tourne en réseau `host`, donc il voit directement `127.0.0.1:3000` publié par le service `api`.
+
+Sur l'hôte du NAS (dans le conteneur Tailscale, pas dans Docker Compose du dépôt) :
 
 ```bash
-tailscale funnel --bg 3000
+docker exec ix-tailscale-tailscale-1 tailscale serve --bg --set-path=/news http://127.0.0.1:3000
 ```
 
-Le service `api` de `infra/docker-compose.yml` publie déjà `127.0.0.1:3000` (jamais exposé sur le LAN) ; Funnel relaie ce port vers Internet via le tunnel Tailscale. Vérifier l'URL attribuée avec `tailscale funnel status`.
+Tailscale ne retire pas le préfixe `/news` avant de relayer vers `127.0.0.1:3000` (comportement observé sur les chemins déjà en place, `/jam` proxie vers `.../jam`) : l'API doit donc répondre elle-même sous `/news/...`. C'est le rôle de `PUBLIC_PATH_PREFIX=news` dans `.env` (étape 4) — sans lui, l'API répondrait à la racine et 404 sur tout ce qui arrive préfixé.
+
+**Vérifier après coup** (étape 5) : `curl https://truenas-scale.tailc07204.ts.net/news/health`. Si ça 404 malgré tout, c'est que Tailscale a en fait retiré le préfixe avant de relayer (comportement inverse à celui observé sur `/jam`/`/shares`) — retirer `PUBLIC_PATH_PREFIX` du `.env` et redémarrer `api` réglerait ça.
 
 **Si un vrai domaine devient nécessaire plus tard** (par exemple pour un usage plus large que la bêta entre amis) : ajouter Cloudflare (ou tout reverse proxy) devant l'URL `.ts.net`, ou repasser à Cloudflare Tunnel — l'un ou l'autre n'exige de changer que cette étape, le reste (Compose, appli) ne bouge pas.
 
@@ -38,6 +42,7 @@ Copier `.env.example` en `.env` sur le NAS et remplir, en plus des secrets déj�
 - `IMAGE=ghcr.io/<compte-github>/news` (sinon l'image est reconstruite localement plutôt que tirée de GHCR).
 - `SENTRY_DSN` si un projet Sentry a été créé (un pour l'API/le worker Node, un pour l'appli Flutter).
 - `ALERT_WEBHOOK_URL` : une URL `https://ntfy.sh/<sujet-privé-choisi>` suffit (aucune inscription), ou un webhook Discord/Slack.
+- `PUBLIC_PATH_PREFIX=news` si l'API est montée sous un chemin plutôt qu'un port dédié (cas réel de ce déploiement, voir étape 3) ; laisser vide sinon.
 
 **Ne jamais commiter ce fichier.**
 
@@ -49,10 +54,11 @@ Depuis la racine du dépôt, sur le NAS :
 docker compose -f infra/docker-compose.yml pull   # si IMAGE pointe vers GHCR
 docker compose -f infra/docker-compose.yml up -d
 docker compose -f infra/docker-compose.yml logs -f api worker
-tailscale funnel --bg 3000                        # une fois, voir étape 3
 ```
 
-Les migrations Prisma tournent automatiquement au démarrage du service `api` (`infra/docker-entrypoint-api.sh`). Vérifier `https://<machine>.<tailnet>.ts.net/health` → `{"status":"ok"}`.
+(la commande `tailscale serve` de l'étape 3 est à lancer une fois, séparément — elle ne dépend pas de Compose.)
+
+Les migrations Prisma tournent automatiquement au démarrage du service `api` (`infra/docker-entrypoint-api.sh`). Vérifier `https://<machine>.<tailnet>.ts.net/news/health` (ou `/health` si `PUBLIC_PATH_PREFIX` est vide) → `{"status":"ok"}`.
 
 ## 6. Sauvegardes
 
@@ -71,7 +77,7 @@ docker compose -f infra/docker-compose.yml exec backup restore.sh /backups/news-
 
 1. Retrouver/ouvrir le compte développeur Google Play (étape 1) et créer l'application.
 2. Piste de test **interne** (jusqu'à 100 testeurs, pas de revue longue) : Release → Testing → Internal testing.
-3. `flutter build appbundle --dart-define=API_BASE_URL=https://<machine>.<tailnet>.ts.net` dans `apps/mobile` (sans `--dart-define`, l'appli pointe vers `localhost`, inutilisable pour un·e testeur·se externe) — uploader le `.aab`.
+3. `flutter build appbundle --dart-define=API_BASE_URL=https://<machine>.<tailnet>.ts.net/news` dans `apps/mobile` (inclure `/news` si `PUBLIC_PATH_PREFIX` est utilisé, étape 3 ; sans `--dart-define`, l'appli pointe vers `localhost`, inutilisable pour un·e testeur·se externe) — uploader le `.aab`.
 4. Ajouter les e-mails des testeurs, partager le lien d'inscription.
 
 iOS reste reporté après la sortie de l'appli (décision du J4, `docs/00` §7).

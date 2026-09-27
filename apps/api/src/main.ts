@@ -5,6 +5,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import * as Sentry from "@sentry/nestjs";
+import express from "express";
 import { createLogger } from "@news/domain";
 import { AppModule } from "./app.module";
 
@@ -35,8 +36,23 @@ async function bootstrap() {
   }
 
   const port = process.env.PORT ?? 3000;
-  await app.listen(port);
-  logger.info({ port }, "api démarrée");
+
+  // Derrière Tailscale Funnel, l'API cohabite avec d'autres services sur le
+  // même port public : montée sous un chemin (ex. "news"), non un port dédié
+  // (docs/05-deploiement.md §3). Express ne retire pas ce préfixe lui-même,
+  // donc on le fait ici en montant l'appli Nest sous une appli Express externe
+  // (`GET /v1/home` en local devient `GET /news/v1/home` en prod).
+  const pathPrefix = process.env.PUBLIC_PATH_PREFIX;
+  if (pathPrefix) {
+    const outer = express();
+    outer.use(`/${pathPrefix}`, app.getHttpAdapter().getInstance());
+    await app.init();
+    outer.listen(port);
+    logger.info({ port, pathPrefix }, "api démarrée");
+  } else {
+    await app.listen(port);
+    logger.info({ port }, "api démarrée");
+  }
 }
 
 bootstrap().catch((err) => {
