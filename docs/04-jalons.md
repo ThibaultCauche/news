@@ -12,7 +12,7 @@
 | J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | **Fait (2026-09-26)** |
 | J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | **Fait (2026-09-26)** |
 | J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | **Fait (2026-09-27)** |
-| J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | À faire (ajouté) |
+| J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | **Fait (2026-09-27)** |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -180,9 +180,13 @@
 - Politique de confidentialité, licence open source du dépôt.
 
 **Critères d'acceptation**
-- [ ] L'appli d'un testeur fonctionne hors du réseau de la maison.
-- [ ] Une coupure simulée du NAS : l'appli reste utilisable en hors ligne, l'alerte arrive.
-- [ ] Restauration d'une sauvegarde réussie.
+- [x] L'appli d'un testeur fonctionne hors du réseau de la maison. Vérifié le 2026-09-27.
+- [x] Une coupure simulée du NAS : l'appli reste utilisable en hors ligne, l'alerte arrive. Vérifié le 2026-09-27 en coupant réellement le NAS : deux bugs trouvés et corrigés au passage (Dio sans délai, spinner bloqué indéfiniment plutôt que de basculer sur le cache ; puis, une fois le délai ajouté, `ETagCacheInterceptor` ne traitait pas un 502 renvoyé par Tailscale Funnel — reachable, backend mort — comme une coupure). L'alerte `ALERT_WEBHOOK_URL` tourne **dans le worker** : elle ne peut détecter qu'un problème d'ingestion pendant que le worker tourne encore, pas une coupure totale du NAS (le worker s'arrête aussi) — un moniteur externe (UptimeRobot) couvre ce dernier cas, vérifié en coupant réellement le NAS.
+- [x] Restauration d'une sauvegarde réussie. Vérifiée le 2026-09-27 sur le vrai NAS : restauration d'un dump réel dans une base jetable (`news_restore_test`), nombre de lignes identique à la base de prod (44 = 44) avant de la supprimer.
+
+**Vérifié en conditions réelles** sur le NAS (TrueNAS SCALE) : image construite et publiée sur GHCR par CI, `docker compose` de prod démarré avec Postgres/Redis/api/worker/backup, migrations Prisma automatiques au démarrage, exposition via Tailscale Funnel (l'API cohabite avec d'autres applis sous `/news` sur le port 443 déjà partagé, `PUBLIC_PATH_PREFIX` reste vide car Tailscale retire lui-même le préfixe avant de relayer). Deux bugs supplémentaires trouvés en le faisant : une fausse alerte "ingestion arrêtée" se déclenchait dès que PandaScore n'avait simplement rien de nouveau à rapporter (`provider_ref.last_synced_at` ne bouge que sur un vrai changement, règle 4 de `CLAUDE.md`) — corrigé par un battement dédié dans Redis, mis à jour à chaque poll réussi ; et le healthcheck Postgres (10 tentatives, ~50s) abandonnait trop tôt après un arrêt interrompu (~72s de rejeu du WAL constaté en vrai), faisant échouer le démarrage de `api`/`worker`. Un troisième bug, plus ancien (J2), trouvé en revérifiant les tests après 18h d'ingestion continue : `home.highlights` ("les grands rendez-vous") ne triait que par date croissante sans exclure les matchs déjà `finished`, qui finissaient par remplir les 10 places à mesure que l'historique s'accumule — corrigé.
+
+**Reporté** : distribution bêta Google Play (compte retrouvé, application pas encore publiée sur la piste de test interne) ; copie de sauvegarde hors site (règle 3-2-1, aucune destination choisie) ; licence open source du dépôt ; nom de domaine dédié (pas nécessaire avec Tailscale Funnel pour l'instant, contrepartie acceptée) ; nom de l'appli et logo/icône définitifs ; écrire à PandaScore pour l'attribution exigée.
 
 ---
 
