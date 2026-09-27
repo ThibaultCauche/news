@@ -1,5 +1,7 @@
 # Déploiement de prod sur le NAS (docs/03 §8, docs/04 J7).
-# Lancer depuis la racine du dépôt : docker compose -f infra/docker-compose.yml up -d
+# Lancer depuis la racine du dépôt : docker compose -f infra/docker-compose.yml --env-file .env up -d
+# (--env-file .env nécessaire : sans lui, Compose cherche .env dans infra/ —
+# le dossier du fichier -f — pas à la racine où il se trouve réellement.)
 # `.env` (racine, copié sur le NAS) doit définir POSTGRES_PASSWORD en plus des
 # secrets déjà listés dans .env.example, et IMAGE=ghcr.io/<compte-github>/news
 # (sinon l'image est reconstruite localement plutôt que tirée de GHCR).

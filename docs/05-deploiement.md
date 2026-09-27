@@ -26,10 +26,14 @@ Décision du J7 (`docs/00` §7) : le NAS expose déjà d'autres applis via Tails
 Sur l'hôte du NAS (dans le conteneur Tailscale, pas dans Docker Compose du dépôt) :
 
 ```bash
-docker exec ix-tailscale-tailscale-1 tailscale serve --bg --set-path=/news http://127.0.0.1:3000
+docker exec ix-tailscale-tailscale-1 tailscale funnel --bg --set-path=/news http://127.0.0.1:3000
 ```
 
+⚠️ Utiliser `tailscale funnel`, pas `tailscale serve` : sur les versions récentes du client (CLI unifiée, testé en v1.102.5) `serve` seul expose uniquement **dans le tailnet**, et l'utiliser sur un port déjà en Funnel **désactive le Funnel existant sur tout ce port** (vécu en le faisant : `/`, `/jam`, `/shares`, `/avatars`, `/download-worker` sont repassés en "tailnet only"). Si ça arrive, `tailscale funnel --bg --set-path=/news http://127.0.0.1:3000` (avec `funnel`, donc) restaure tout d'un coup, chemins existants inclus.
+
 Tailscale ne retire pas le préfixe `/news` avant de relayer vers `127.0.0.1:3000` (comportement observé sur les chemins déjà en place, `/jam` proxie vers `.../jam`) : l'API doit donc répondre elle-même sous `/news/...`. C'est le rôle de `PUBLIC_PATH_PREFIX=news` dans `.env` (étape 4) — sans lui, l'API répondrait à la racine et 404 sur tout ce qui arrive préfixé.
+
+Vérifier la config à tout moment : `docker exec ix-tailscale-tailscale-1 tailscale funnel status`.
 
 **Vérifier après coup** (étape 5) : `curl https://truenas-scale.tailc07204.ts.net/news/health`. Si ça 404 malgré tout, c'est que Tailscale a en fait retiré le préfixe avant de relayer (comportement inverse à celui observé sur `/jam`/`/shares`) — retirer `PUBLIC_PATH_PREFIX` du `.env` et redémarrer `api` réglerait ça.
 
@@ -51,12 +55,14 @@ Copier `.env.example` en `.env` sur le NAS et remplir, en plus des secrets déj�
 Depuis la racine du dépôt, sur le NAS :
 
 ```bash
-docker compose -f infra/docker-compose.yml pull   # si IMAGE pointe vers GHCR
-docker compose -f infra/docker-compose.yml up -d
-docker compose -f infra/docker-compose.yml logs -f api worker
+docker compose -f infra/docker-compose.yml --env-file .env pull   # si IMAGE pointe vers GHCR
+docker compose -f infra/docker-compose.yml --env-file .env up -d
+docker compose -f infra/docker-compose.yml --env-file .env logs -f api worker
 ```
 
-(la commande `tailscale serve` de l'étape 3 est à lancer une fois, séparément — elle ne dépend pas de Compose.)
+`--env-file .env` est nécessaire : sans lui, Compose cherche `.env` dans `infra/` (le dossier du fichier `-f`), pas à la racine où il se trouve réellement — les variables comme `POSTGRES_PASSWORD` sinon "manquantes" alors que `.env` existe bien.
+
+(la commande `tailscale funnel` de l'étape 3 est à lancer une fois, séparément — elle ne dépend pas de Compose.)
 
 Les migrations Prisma tournent automatiquement au démarrage du service `api` (`infra/docker-entrypoint-api.sh`). Vérifier `https://<machine>.<tailnet>.ts.net/news/health` (ou `/health` si `PUBLIC_PATH_PREFIX` est vide) → `{"status":"ok"}`.
 
