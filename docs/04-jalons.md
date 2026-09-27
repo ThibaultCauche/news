@@ -171,7 +171,7 @@
 **Objectif** : l'appli tourne 24 h/24 et de premiers testeurs l'utilisent.
 
 **Périmètre** (`docs/03` §8–10)
-- `infra/docker-compose.yml` de production : `api`, `worker`, `postgres`, `redis`, `cloudflared`, `backup` (+ `uptime-kuma` en option), avec limites CPU/RAM.
+- `infra/docker-compose.yml` de production : `api`, `worker`, `postgres`, `redis`, `backup` (+ `uptime-kuma` en option), avec limites CPU/RAM.
 - **Exposition** via Tailscale Funnel (décision du J7, `docs/00` §7), aucun port ouvert.
 - GitHub Actions : tests, build de l'image, publication sur GHCR.
 - Sauvegardes : `pg_dump` nocturne, 7 jours sur le NAS + copie chiffrée hors site ; **une restauration testée**.

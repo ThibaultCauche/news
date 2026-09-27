@@ -57,7 +57,10 @@ export class HomeService {
       this.prisma.event.findMany({
         // L'ingestion (J1) ne renseigne l'importance qu'au niveau de la compétition
         // (tier PandaScore) : `event.importance` reste toujours à 0 pour l'instant.
-        where: { competition: { importance: { gte: HIGHLIGHT_MIN_IMPORTANCE } }, status: { not: "cancelled" } },
+        // "les énormes événements du moment" (docs/02) : `finished` exclu aussi,
+        // sinon les grands matchs déjà joués envahissent la liste (triée par
+        // `startsAt` croissant) à mesure que l'historique s'accumule.
+        where: { competition: { importance: { gte: HIGHLIGHT_MIN_IMPORTANCE } }, status: { notIn: ["cancelled", "finished"] } },
         include: eventSummaryInclude,
         orderBy: { startsAt: "asc" },
         take: HIGHLIGHT_LIMIT,

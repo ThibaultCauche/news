@@ -83,7 +83,7 @@ docker compose -f infra/docker-compose.yml exec backup restore.sh /backups/news-
 
 1. Retrouver/ouvrir le compte développeur Google Play (étape 1) et créer l'application.
 2. Piste de test **interne** (jusqu'à 100 testeurs, pas de revue longue) : Release → Testing → Internal testing.
-3. `flutter build appbundle --dart-define=API_BASE_URL=https://<machine>.<tailnet>.ts.net/news` dans `apps/mobile` (inclure `/news` si `PUBLIC_PATH_PREFIX` est utilisé, étape 3 ; sans `--dart-define`, l'appli pointe vers `localhost`, inutilisable pour un·e testeur·se externe) — uploader le `.aab`.
+3. `flutter build appbundle --dart-define=API_BASE_URL=https://<machine>.<tailnet>.ts.net/news` dans `apps/mobile` (le `/news` vient du chemin Tailscale de l'étape 3, indépendant de `PUBLIC_PATH_PREFIX` qui reste vide ; sans `--dart-define`, l'appli pointe vers `localhost`, inutilisable pour un·e testeur·se externe) — uploader le `.aab`.
 4. Ajouter les e-mails des testeurs, partager le lien d'inscription.
 
 iOS reste reporté après la sortie de l'appli (décision du J4, `docs/00` §7).
