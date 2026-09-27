@@ -1,9 +1,8 @@
 import { ConfigService } from "@nestjs/config";
 import { Inject, Injectable } from "@nestjs/common";
-import { PrismaClient } from "@news/db";
 import { createLogger } from "@news/domain";
 import { PandaScoreProvider } from "@news/providers";
-import { PRISMA } from "../db/db.module";
+import { IngestionHeartbeatService } from "../ingestion/heartbeat.service";
 import { FcmService } from "../notifications/fcm.service";
 import { PANDASCORE_PROVIDER } from "../pandascore/pandascore.module";
 import { INGESTION_STALE_THRESHOLD_MS, PUSH_FAILURE_ALERT_THRESHOLD, QUOTA_ALERT_THRESHOLD } from "./constants";
@@ -15,7 +14,7 @@ const logger = createLogger("worker:alerts");
 @Injectable()
 export class AlertsService {
   constructor(
-    @Inject(PRISMA) private readonly prisma: PrismaClient,
+    private readonly heartbeat: IngestionHeartbeatService,
     @Inject(PANDASCORE_PROVIDER) private readonly provider: PandaScoreProvider,
     private readonly fcm: FcmService,
     private readonly config: ConfigService,
@@ -24,9 +23,9 @@ export class AlertsService {
   async check(): Promise<void> {
     const problems: string[] = [];
 
-    const { _max } = await this.prisma.providerRef.aggregate({ _max: { lastSyncedAt: true } });
-    if (_max.lastSyncedAt) {
-      const staleMs = Date.now() - _max.lastSyncedAt.getTime();
+    const lastSeenAt = await this.heartbeat.getLastSeenAt();
+    if (lastSeenAt) {
+      const staleMs = Date.now() - lastSeenAt.getTime();
       if (staleMs > INGESTION_STALE_THRESHOLD_MS) problems.push(`ingestion arrêtée depuis ${Math.round(staleMs / 60_000)} min`);
     }
 

@@ -1,6 +1,6 @@
 import { BullModule } from "@nestjs/bullmq";
 import { Module } from "@nestjs/common";
-import { DbModule } from "../db/db.module";
+import { IngestionModule } from "../ingestion/ingestion.module";
 import { NotificationsModule } from "../notifications/notifications.module";
 import { PandaScoreModule } from "../pandascore/pandascore.module";
 import { AlertsProcessor } from "./alerts.processor";
@@ -9,7 +9,7 @@ import { AlertsService } from "./alerts.service";
 import { ALERTS_QUEUE_NAME } from "./constants";
 
 @Module({
-  imports: [DbModule, PandaScoreModule, NotificationsModule, BullModule.registerQueue({ name: ALERTS_QUEUE_NAME })],
+  imports: [IngestionModule, PandaScoreModule, NotificationsModule, BullModule.registerQueue({ name: ALERTS_QUEUE_NAME })],
   providers: [AlertsService, AlertsScheduler, AlertsProcessor],
 })
 export class AlertsModule {}
