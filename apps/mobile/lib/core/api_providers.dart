@@ -34,7 +34,10 @@ final apiClientProvider = Provider<NewsApiClient>((ref) {
   final store = ref.watch(cacheStoreProvider);
   final auth = ref.watch(authStoreProvider);
   final baseUrl = resolveApiBaseUrl();
-  final dio = Dio(BaseOptions(baseUrl: baseUrl));
+  // Sans délai explicite, Dio attend indéfiniment une connexion morte (vécu
+  // en vrai : NAS coupé, spinner bloqué au lieu du repli hors ligne, faute
+  // d'erreur pour déclencher ETagCacheInterceptor.onError, docs/03 §11).
+  final dio = Dio(BaseOptions(baseUrl: baseUrl, connectTimeout: const Duration(seconds: 8), receiveTimeout: const Duration(seconds: 8)));
   // Ordre important : la phase requête va du 1er au dernier intercepteur
   // ajouté, la phase erreur en sens inverse — l'ETag doit d'abord laisser
   // passer un 401 (ce n'est ni un 304 ni une coupure réseau) avant que l'auth

@@ -69,8 +69,12 @@ class ETagCacheInterceptor extends Interceptor {
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final key = err.requestOptions.extra[_cacheKeyExtra] as String?;
     final isNotModified = err.response?.statusCode == 304;
-    final isConnectivityFailure = err.response == null;
-    if (key != null && (isNotModified || isConnectivityFailure)) {
+    // err.response == null : coupure réseau pure (avion, DNS...). 502/503/504 :
+    // un reverse proxy devant l'API (Tailscale Funnel en prod) répond lui-même
+    // alors que le backend est mort — vécu en vrai, aucun des deux cas ne se
+    // recoupe (err.response existe, juste pas avec le statut 304 attendu).
+    final isServerUnreachable = err.response == null || [502, 503, 504].contains(err.response?.statusCode);
+    if (key != null && (isNotModified || isServerUnreachable)) {
       final cached = await _readSafe(key);
       if (cached != null) {
         return handler.resolve(

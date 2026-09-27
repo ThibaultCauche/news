@@ -91,8 +91,10 @@ iOS reste reporté après la sortie de l'appli (décision du J4, `docs/00` §7).
 ## 8. Vérifier les critères d'acceptation J7
 
 - [ ] Couper le Wi-Fi du téléphone d'un·e testeur·se (hors réseau de la maison) → l'appli fonctionne normalement.
-- [ ] Simuler une coupure du NAS (`docker compose -f infra/docker-compose.yml stop`) → l'appli reste utilisable hors ligne (cache local) et l'alerte `ALERT_WEBHOOK_URL` arrive après 15 min (ingestion arrêtée).
+- [ ] Simuler une coupure du NAS (`docker compose -f infra/docker-compose.yml stop`) → l'appli reste utilisable hors ligne (cache local) et une alerte arrive.
 - [ ] Restauration testée (étape 6).
+
+**Sur l'alerte de coupure, vécu en le faisant** : `ALERT_WEBHOOK_URL` (`AlertsService`, `apps/worker/src/alerts/`) tourne **dans le conteneur `worker`** — une coupure totale du NAS (`docker compose stop`, tous les services) l'arrête aussi, donc elle ne peut alerter que sur une ingestion qui échoue pendant que le worker, lui, tourne encore (bug PandaScore, quota épuisé), jamais sur une panne complète. Pour ça, un moniteur **externe au NAS** est nécessaire : [UptimeRobot](https://uptimerobot.com) (gratuit, compte créé pour ce déploiement) ping `https://<machine>.<tailnet>.ts.net/news/health` toutes les 5 min et alerte par e-mail si ça ne répond plus — vérifié en coupant réellement le NAS (passe bien à "Down" puis "Up" au redémarrage).
 
 ## Licence
 
