@@ -57,14 +57,45 @@ jobs:
       # a produit des faux échecs (contention) en vérifiant ce jalon en local.
       - run: pnpm -r --workspace-concurrency=1 test
 
+      # apps/mobile dépend de packages/api_client_dart (gitignored, généré
+      # depuis l'OpenAPI, cf. CLAUDE.md) : on écrit la spec ici, où Postgres/
+      # Redis/les secrets factices sont déjà en place pour démarrer l'API.
+      - run: pnpm --filter @news/api generate:openapi
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: openapi-spec
+          path: openapi.json
+
   mobile:
+    needs: backend
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
+      - uses: actions/download-artifact@v4
+        with:
+          name: openapi-spec
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+
       - uses: subosito/flutter-action@v2
         with:
           channel: stable
+
+      # Client Dart généré depuis openapi.json (règle 11 de CLAUDE.md : jamais
+      # écrit à la main), même pipeline que `pnpm generate:dart-client` en local.
+      - run: pnpm generate:dart-client
 
       - run: flutter pub get
         working-directory: apps/mobile
