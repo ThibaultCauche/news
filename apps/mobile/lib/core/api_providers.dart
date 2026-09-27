@@ -10,7 +10,9 @@ import "cache/etag_cache_interceptor.dart";
 /// En dev, l'API tourne sur la machine hôte : sur Android, `adb reverse
 /// tcp:3000 tcp:3000` fait pointer `localhost` de l'appareil (émulateur ou
 /// téléphone en USB) vers `localhost` de l'hôte, comme sur les autres cibles.
-String resolveApiBaseUrl() => "http://localhost:3000";
+/// Pour un build bêta/prod (J7) : `flutter build appbundle
+/// --dart-define=API_BASE_URL=https://machine.tailnet.ts.net`.
+String resolveApiBaseUrl() => const String.fromEnvironment("API_BASE_URL", defaultValue: "http://localhost:3000");
 
 // Fourni par `main()` via `ProviderScope(overrides: ...)`, une fois
 // `SharedPreferences` chargé (docs/04 J4) — jamais construit avec sa valeur

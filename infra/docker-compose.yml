@@ -1,0 +1,100 @@
+# Déploiement de prod sur le NAS (docs/03 §8, docs/04 J7).
+# Lancer depuis la racine du dépôt : docker compose -f infra/docker-compose.yml up -d
+# `.env` (racine, copié sur le NAS) doit définir POSTGRES_PASSWORD en plus des
+# secrets déjà listés dans .env.example, et IMAGE=ghcr.io/<compte-github>/news
+# (sinon l'image est reconstruite localement plutôt que tirée de GHCR).
+#
+# Exposition : `tailscale funnel 3000` sur l'hôte du NAS (hors Compose, décision
+# du J7 — voir docs/05-deploiement.md) relaie vers le port publié par `api`
+# ci-dessous, lié à 127.0.0.1 seul (jamais exposé sur le LAN).
+#
+# `name:` évite que ce fichier partage les conteneurs de infra/docker-compose.dev.yml :
+# les deux vivent dans infra/, donc Compose leur donnerait sinon le même nom de
+# projet par défaut ("infra") et les mêmes noms de service (postgres, redis) —
+# lancer celui-ci pendant que le dev tourne écraserait alors le Postgres de dev.
+name: news-prod
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    image: ${IMAGE:-ghcr.io/change-me/news}:${TAG:-latest}
+    command: ["/usr/local/bin/docker-entrypoint-api.sh"]
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-news}:${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}@postgres:5432/${POSTGRES_DB:-news}
+      REDIS_URL: redis://redis:6379
+      PORT: 3000
+    ports:
+      - "127.0.0.1:3000:3000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    mem_limit: 300m
+    cpus: 0.5
+
+  worker:
+    build:
+      context: ..
+      dockerfile: infra/Dockerfile
+    image: ${IMAGE:-ghcr.io/change-me/news}:${TAG:-latest}
+    restart: unless-stopped
+    env_file: ../.env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-news}:${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}@postgres:5432/${POSTGRES_DB:-news}
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      postgres:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    mem_limit: 300m
+    cpus: 0.5
+
+  postgres:
+    image: postgres:16
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-news}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}
+      POSTGRES_DB: ${POSTGRES_DB:-news}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U news"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    mem_limit: 400m
+    cpus: 0.5
+
+  redis:
+    image: redis:7
+    restart: unless-stopped
+    command: redis-server --appendonly yes
+    volumes:
+      - redis-data:/data
+    mem_limit: 100m
+    cpus: 0.3
+
+  backup:
+    build:
+      context: backup
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-news}:${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}@postgres:5432/${POSTGRES_DB:-news}
+    volumes:
+      - backup-data:/backups
+    depends_on:
+      postgres:
+        condition: service_healthy
+    mem_limit: 200m
+    cpus: 0.2
+
+volumes:
+  postgres-data:
+  redis-data:
+  backup-data:

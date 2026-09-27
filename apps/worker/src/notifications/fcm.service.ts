@@ -18,6 +18,11 @@ export interface SendResult {
 @Injectable()
 export class FcmService implements OnModuleDestroy {
   private app: App | null = null;
+  // Fenêtre glissante pour l'alerte "échecs d'envoi push > 5%" (docs/03 §10) ;
+  // un jeton invalide (désinstallation) n'est pas une panne, seule une vraie
+  // erreur d'envoi compte.
+  private windowSent = 0;
+  private windowFailed = 0;
 
   constructor(private readonly config: ConfigService) {}
 
@@ -40,6 +45,7 @@ export class FcmService implements OnModuleDestroy {
     }
     try {
       await messaging.send({ token: pushToken, notification: { title, body }, data });
+      this.windowSent++;
       return { tokenInvalid: false };
     } catch (err) {
       const code = (err as { code?: string }).code;
@@ -48,9 +54,20 @@ export class FcmService implements OnModuleDestroy {
       }
       // ponytail: pas de nouvelle tentative sur échec transitoire (réseau, quota
       // FCM) ; à ajouter si on observe des pertes en conditions réelles.
+      this.windowFailed++;
       logger.error(err, "échec d'envoi FCM");
       return { tokenInvalid: false };
     }
+  }
+
+  // Ratio d'échec depuis le dernier appel, remis à zéro à chaque lecture
+  // (AlertsService, toutes les 5 min). `null` si aucun envoi dans la fenêtre.
+  getAndResetFailureRatio(): number | null {
+    const total = this.windowSent + this.windowFailed;
+    const ratio = total === 0 ? null : this.windowFailed / total;
+    this.windowSent = 0;
+    this.windowFailed = 0;
+    return ratio;
   }
 
   async onModuleDestroy(): Promise<void> {

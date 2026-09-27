@@ -23,6 +23,8 @@ Flutter · NestJS (TypeScript) · PostgreSQL · Redis · BullMQ · Firebase Clou
 | [Maquettes](docs/02-design-maquettes-mobiles.md) | 26 écrans, tokens, mouvement |
 | [Architecture](docs/03-architecture-backend.md) | Modèle de données, ingestion, API, notifications, hébergement |
 | [Jalons](docs/04-jalons.md) | Plan de développement J1 → J7 |
+| [Déploiement](docs/05-deploiement.md) | Mise en ligne : NAS, Tailscale Funnel, CI/CD, sauvegardes |
+| [Politique de confidentialité](docs/politique-confidentialite.md) | Données collectées, sous-traitants, droits RGPD |
 
 ## Sources de données et crédits
 

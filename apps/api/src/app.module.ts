@@ -1,7 +1,8 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from "@nestjs/config";
-import { APP_GUARD } from "@nestjs/core";
+import { APP_FILTER, APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
+import { SentryGlobalFilter } from "@sentry/nestjs/setup";
 import { AgendaModule } from "./agenda/agenda.module";
 import { AuthModule } from "./auth/auth.module";
 import { CacheModule } from "./cache/cache.module";
@@ -36,6 +37,10 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     GlossaryModule,
   ],
   controllers: [HealthController],
-  providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
+  providers: [
+    // Doit être déclaré avant tout autre filtre d'exception (docs Sentry/NestJS).
+    { provide: APP_FILTER, useClass: SentryGlobalFilter },
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+  ],
 })
 export class AppModule {}

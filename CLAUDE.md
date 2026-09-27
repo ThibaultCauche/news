@@ -13,6 +13,7 @@ Appli **mobile (Flutter) + backend (NestJS)** pour suivre les événements qui c
 | `docs/01b-donnees-elargissement-esport-sport.md` | Autres jeux e-sport, sport |
 | `docs/01c-donnees-politique.md` | Open data Assemblée / Sénat / Légifrance / élections |
 | `docs/00-vision-feuille-de-route.md` | Vision, principes produit, **journal des décisions** |
+| `docs/05-deploiement.md` | Mise en ligne : actions manuelles sur le NAS (J7 et après) |
 
 Ne lis que ce dont la tâche a besoin.
 
@@ -36,7 +37,7 @@ Ne lis que ce dont la tâche a besoin.
 - **API** : REST `/v1` pensée par écran, spec **OpenAPI** générée par NestJS → **client Dart généré**.
 - **Mobile** : Flutter, Riverpod, cache local **drift**, `CustomPainter` pour l'arbre radial, `firebase_messaging`.
 - **Push** : Firebase Cloud Messaging (APNs pour iOS).
-- **Hébergement** : Docker Compose sur un NAS, exposé par Cloudflare Tunnel. GitHub Actions → GHCR.
+- **Hébergement** : Docker Compose sur un NAS, exposé par Tailscale Funnel (décision du J7 ; Cloudflare Tunnel envisagé au départ dans `docs/03`). GitHub Actions → GHCR.
 - **Web (plus tard)** : Next.js.
 
 ## Structure cible

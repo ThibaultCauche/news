@@ -1,8 +1,10 @@
+import "./instrument";
 import "reflect-metadata";
 import { writeFileSync } from "node:fs";
 import { ValidationPipe } from "@nestjs/common";
 import { NestFactory } from "@nestjs/core";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import * as Sentry from "@sentry/nestjs";
 import { createLogger } from "@news/domain";
 import { AppModule } from "./app.module";
 
@@ -39,5 +41,6 @@ async function bootstrap() {
 
 bootstrap().catch((err) => {
   logger.error(err, "échec au démarrage de l'api");
+  Sentry.captureException(err);
   process.exit(1);
 });

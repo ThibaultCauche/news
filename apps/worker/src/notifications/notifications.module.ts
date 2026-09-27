@@ -13,5 +13,6 @@ import { StartingSoonService } from "./starting-soon.service";
 @Module({
   imports: [DbModule, EventBusModule, BullModule.registerQueue({ name: STARTING_SOON_QUEUE_NAME })],
   providers: [FcmService, NotificationDispatchService, NotificationsSubscriber, StartingSoonService, StartingSoonScheduler, StartingSoonProcessor],
+  exports: [FcmService],
 })
 export class NotificationsModule {}

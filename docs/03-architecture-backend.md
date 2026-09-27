@@ -8,18 +8,18 @@
 - **Modèle générique** : tout ce que l'appli montre est un *Événement* (match, vote, lancement, sortie, stream, keynote) rattaché à une *Compétition* (tournoi, saison, loi, programme) et à des *Entités* (équipe, joueur, parti, fusée…). Les liens vers les sources passent par une table `provider_ref`, ce qui permettra de changer de fournisseur sans toucher à l'appli.
 - **Ingestion par adaptateurs** (PandaScore d'abord, Liquipedia en enrichissement), avec un rythme adapté : lent pour le catalogue, rapide seulement pour les matchs en cours **qui ont des abonnés**. Budget PandaScore estimé à moins de 400 requêtes par heure sur les 1 000 permises.
 - **Temps réel en 2 temps** : pour le MVP, l'appli rafraîchit toutes les 15 à 30 s sur les écrans en direct, plus des notifications push. Plus tard : un flux SSE et des Live Activities.
-- **Hébergement** : Docker Compose sur le NAS (API, worker, PostgreSQL, Redis, `cloudflared`), exposé par **Cloudflare Tunnel** sans ouvrir de port. Coût ≈ 0 €. Il y a un plan de sortie vers un VPS à ~5 €/mois, avec le même fichier Compose.
+- **Hébergement** : Docker Compose sur le NAS (API, worker, PostgreSQL, Redis), exposé par **Tailscale Funnel** sans ouvrir de port (décision du J7, `docs/00` §7 — le NAS fait déjà tourner d'autres applis derrière Tailscale). Coût ≈ 0 €. Il y a un plan de sortie vers un VPS à ~5 €/mois, avec le même fichier Compose.
 - **Seul coût obligatoire à prévoir** : le compte Apple Developer (99 $/an) pour publier sur iOS et envoyer des push.
 
 ## 1. Vue d'ensemble
 
 ```
-                         ┌──────────────── Cloudflare ────────────────┐
-  App Flutter  ──HTTPS──▶│ DNS api.<domaine> · cache court · Tunnel   │
+                         ┌──────────────── Tailscale ──────────────────┐
+  App Flutter  ──HTTPS──▶│ Funnel : <machine>.<tailnet>.ts.net         │
   (iOS/Android)          └──────────────────────┬─────────────────────┘
-      ▲                                         │ (aucun port ouvert)
+      ▲                                         │ (aucun port ouvert, relais Tailscale)
       │ push                          ┌─────────▼──────── NAS (Docker Compose) ─────────────┐
-      │                               │  cloudflared ──▶ api (NestJS, /v1, OpenAPI)          │
+      │                               │  api (NestJS, /v1, OpenAPI) sur 127.0.0.1:3000       │
   FCM / APNs ◀──── envoi push ────────│                    │  lit                           │
                                       │                    ▼                                │
                                       │   PostgreSQL 16 ◀── worker (NestJS + BullMQ) ──────┼──▶ PandaScore
@@ -27,6 +27,8 @@
                                       │   sauvegardes (pg_dump + copie hors site)           │──▶ (autres sources)
                                       └─────────────────────────────────────────────────────┘
 ```
+
+`tailscale funnel` tourne sur l'hôte du NAS (hors Docker Compose, comme pour les autres applis déjà exposées ainsi) et relaie vers le port local publié par le service `api`.
 
 **Principes**
 - L'appli ne parle **jamais** aux fournisseurs de données, seulement à notre API.
@@ -42,7 +44,7 @@
 | `packages/domain` | Types et règles métier partagés (statuts, formats de compétition, calculs de bracket) |
 | `packages/db` | Schéma, migrations et client base de données (Prisma) |
 | `packages/providers` | Adaptateurs : `pandascore`, `liquipedia`, puis un par nouvelle source |
-| `infra/` | `docker-compose.yml`, config `cloudflared`, scripts de sauvegarde |
+| `infra/` | `docker-compose.yml`, scripts de sauvegarde (exposition par Tailscale Funnel, hors Compose) |
 
 ## 2. Modèle de données
 
@@ -155,7 +157,7 @@ Les endpoints suivent les écrans, pour que l'appli fasse un seul appel par écr
 **Sans spoil** : l'API renvoie les scores, et c'est l'appli qui les masque selon les réglages (le masquage est instantané, on peut révéler hors ligne). En revanche, **les notifications appliquent le réglage côté serveur** : sans spoil, la notification dit « G2 – PRX est terminé » sans le score.
 
 **Cache**
-- Les données publiques (compétitions, brackets, événements) sont mises en cache 15 à 60 s dans Redis, plus un en-tête `Cache-Control` court pour que Cloudflare absorbe les pics.
+- Les données publiques (compétitions, brackets, événements) sont mises en cache 15 à 60 s dans Redis, plus un en-tête `Cache-Control` court (utile si un CDN est ajouté devant l'API plus tard ; pour l'instant Tailscale Funnel ne fait pas de cache, seul Redis absorbe les pics).
 - `/v1/home` est personnalisé : on l'assemble à partir de blocs partagés en cache (événements du jour, grands rendez-vous) filtrés par les abonnements de l'utilisateur.
 - `ETag` partout : pendant un direct, l'appli redemande souvent, et si rien n'a changé l'API répond `304` presque sans coût.
 
@@ -169,7 +171,7 @@ Les endpoints suivent les écrans, pour que l'appli fasse un seul appel par écr
 | Phase | Mécanisme | Pourquoi |
 |---|---|---|
 | **MVP** | Rafraîchissement toutes les 15 à 30 s **uniquement sur les écrans en direct**, avec `ETag`, plus les notifications push | Simple, robuste derrière le tunnel, presque gratuit grâce aux `304` |
-| **V2** | Flux **SSE** `GET /v1/live/events/:id` (le serveur pousse les changements) | Traverse Cloudflare Tunnel sans difficulté, plus simple que WebSocket pour un flux dans un seul sens |
+| **V2** | Flux **SSE** `GET /v1/live/events/:id` (le serveur pousse les changements) | Traverse Tailscale Funnel sans difficulté (simple HTTP long), plus simple que WebSocket pour un flux dans un seul sens |
 | **V2** | **Live Activities** iOS (écran 13) mises à jour par push via FCM | FCM gère l'envoi aux Live Activities. On limite à ~1 mise à jour par minute, sauf moments clés, pour respecter le budget d'iOS |
 
 ## 6. Notifications
@@ -210,13 +212,12 @@ Les endpoints suivent les écrans, pour que l'appli fasse un seul appel par écr
 | `worker` | même image, autre commande | ~150–250 Mo |
 | `postgres` | `postgres:16` | ~200–400 Mo |
 | `redis` | `redis:7` (persistance AOF) | ~50–100 Mo |
-| `cloudflared` | `cloudflare/cloudflared` | ~30 Mo |
-| `backup` | cron `pg_dump` + `restic` | faible |
+| `backup` | cron `pg_dump` (copie hors site pas encore branchée, J7) | faible |
 | (option) `uptime-kuma` | supervision | ~100 Mo |
 
-**Total ≈ 0,7 à 1,2 Go de RAM.**
+**Total ≈ 0,6 à 1,1 Go de RAM.**
 
-**Exposition** : Cloudflare Tunnel, gratuit, sans aucun port ouvert sur la box. Il gère WebSocket et SSE. Seul `api.<domaine>` est exposé. Une éventuelle interface d'administration passe derrière Cloudflare Access (connexion obligatoire).
+**Exposition** : `tailscale funnel`, gratuit, tourne sur l'hôte (hors Compose) et relaie vers le port local publié par `api` — aucun port ouvert sur la box. Le NAS fait déjà tourner d'autres applis de cette façon (décision du J7). URL fixe en `<machine>.<tailnet>.ts.net` : Funnel ne prend pas de nom de domaine personnalisé, contrairement à Cloudflare Tunnel envisagé initialement (`docs/00` §7).
 
 **Déploiement** : GitHub Actions construit l'image à chaque push sur `main` et la publie sur GitHub Container Registry. Sur le NAS, `docker compose pull && docker compose up -d` (à la main au début, automatisable ensuite). Les migrations de base tournent au démarrage de l'API.
 
@@ -228,7 +229,7 @@ Les endpoints suivent les écrans, pour que l'appli fasse un seul appel par écr
 |---|---|---|
 | Coupure de courant ou d'internet à la maison | API injoignable, push non envoyés | L'appli garde un **cache local** (elle reste utilisable hors ligne avec les dernières données) + alerte de supervision externe |
 | NAS saturé par d'autres usages | Lenteurs pendant un direct | Limites CPU/RAM par conteneur dans Compose |
-| Croissance (> quelques milliers d'utilisateurs actifs) ou exigence de disponibilité | — | **Plan de sortie** : même Compose sur un VPS (~5 €/mois), restauration du dump, on repointe le tunnel. Environ 1 h de bascule |
+| Croissance (> quelques milliers d'utilisateurs actifs) ou exigence de disponibilité | — | **Plan de sortie** : même Compose sur un VPS (~5 €/mois), restauration du dump, on repointe Funnel (ou on passe à un vrai domaine + reverse proxy). Environ 1 h de bascule |
 
 ## 9. Sécurité et vie privée
 
@@ -272,21 +273,19 @@ Détaillé, avec critères d'acceptation, dans **`04-jalons.md`** (J1 → J7).
 - Modèle générique Événement / Compétition / Entité, `provider_ref` pour les sources, `format` + `structure` pour les vues.
 - REST `/v1` pensé par écran, client Dart généré depuis OpenAPI.
 - Temps réel : rafraîchissement avec `ETag` pour le MVP, SSE et Live Activities ensuite.
-- Hébergement sur le NAS via Docker Compose + Cloudflare Tunnel, avec un plan de sortie vers un VPS.
+- Hébergement sur le NAS via Docker Compose + Tailscale Funnel (décision du J7, `docs/00` §7 ; Cloudflare Tunnel envisagé au départ), avec un plan de sortie vers un VPS.
 - Compte anonyme par défaut, connexion Apple/Google optionnelle.
 
 ## Points ouverts
 
 - Brackets et standings PandaScore accessibles en gratuit : **confirmé** (2026-09-25).
 - ~~Prisma ou Drizzle pour l'accès aux données.~~ **Prisma retenu (2026-09-25, J1)** pour sa prise en main et ses migrations.
-- Nom de domaine de l'appli (nécessaire pour le tunnel et les liens).
+- ~~Nom de domaine de l'appli (nécessaire pour le tunnel et les liens).~~ **Réglé au J7** : Tailscale Funnel donne une URL `.ts.net`, pas besoin de domaine pour l'instant.
 - Création du compte Apple Developer (99 $/an) avant les tests de push iOS.
 - Nom de l'appli (« News » est un nom de travail).
 
 ## Sources
 
 - [Firebase — Live Activity avec FCM](https://firebase.google.com/docs/cloud-messaging/customize-messages/live-activity)
-- [Cloudflare Tunnel — documentation](https://developers.cloudflare.com/tunnel/)
-- [Cloudflare — WebSockets](https://developers.cloudflare.com/network/websockets/)
-- [Cloudflare Community — limite d'upload de 100 Mo via le tunnel](https://community.cloudflare.com/t/100mb-tunnel-limit/901339)
+- [Tailscale Funnel — documentation](https://tailscale.com/kb/1223/funnel)
 - Sources de données : voir `01-donnees-sources-valorant.md`

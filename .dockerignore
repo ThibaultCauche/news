@@ -1,0 +1,27 @@
+# Image de prod (infra/Dockerfile) : seuls apps/api, apps/worker et les
+# packages partagés dont ils dépendent doivent entrer dans le contexte de build.
+.git
+node_modules
+**/node_modules
+dist
+build
+coverage
+.turbo
+*.tsbuildinfo
+
+# Appli Flutter et client généré : jamais dans l'image serveur.
+apps/mobile
+packages/api_client_dart
+
+# Prototypes et gros fichiers de fixtures, inutiles à l'exécution.
+tests-pandascore
+politique-quiz
+
+docs
+Claude outputs
+*.md
+
+.dart_tool
+.env
+.env.*
+!.env.example

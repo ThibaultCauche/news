@@ -12,7 +12,7 @@
 | J4 | Compte anonyme, abonnements, notifications push | « Suivre G2 » fonctionne de bout en bout | **Fait (2026-09-26)** |
 | J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | **Fait (2026-09-26)** |
 | J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | **Fait (2026-09-27)** |
-| J7 | Mise en ligne : NAS, Cloudflare Tunnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | À faire (ajouté) |
+| J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | À faire (ajouté) |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -172,7 +172,7 @@
 
 **Périmètre** (`docs/03` §8–10)
 - `infra/docker-compose.yml` de production : `api`, `worker`, `postgres`, `redis`, `cloudflared`, `backup` (+ `uptime-kuma` en option), avec limites CPU/RAM.
-- **Nom de domaine** choisi et Cloudflare Tunnel (`api.<domaine>`), aucun port ouvert.
+- **Exposition** via Tailscale Funnel (décision du J7, `docs/00` §7), aucun port ouvert.
 - GitHub Actions : tests, build de l'image, publication sur GHCR.
 - Sauvegardes : `pg_dump` nocturne, 7 jours sur le NAS + copie chiffrée hors site ; **une restauration testée**.
 - Supervision : `/health`, tableau de bord fournisseurs, alertes (ingestion arrêtée > 15 min, quota > 80 %, push en échec > 5 %), Sentry côté API et appli.
@@ -202,7 +202,7 @@
 | Point | Quand |
 |---|---|
 | Compte Apple Developer (99 $/an) | Avant J4 (iOS) |
-| Nom de l'appli et nom de domaine (« News » est un nom de travail) | Avant J7 |
+| Nom de l'appli (« News » est un nom de travail) — nom de domaine réglé au J7 (Tailscale Funnel, pas de domaine nécessaire pour l'instant) | Avant J7 |
 | Logo et icône d'app définitifs | Avant J7 |
 | Écrire à PandaScore : usage du plan gratuit et attribution exigée | Avant J7 |
 | Licence open source du code (MIT, AGPL…) | Avant J7 |

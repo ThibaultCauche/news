@@ -1,5 +1,7 @@
+import "./instrument";
 import "reflect-metadata";
 import { NestFactory } from "@nestjs/core";
+import * as Sentry from "@sentry/node";
 import { createLogger } from "@news/domain";
 import { AppModule } from "./app.module";
 
@@ -12,5 +14,6 @@ async function bootstrap() {
 
 bootstrap().catch((err) => {
   logger.error(err, "échec au démarrage du worker");
+  Sentry.captureException(err);
   process.exit(1);
 });

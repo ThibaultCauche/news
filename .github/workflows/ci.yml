@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    # Secrets factices : suffisent pour migrer le schéma et faire tourner les
+    # tests (contre le vrai Postgres/Redis du job) ; aucun appel réseau réel
+    # aux fournisseurs n'est fait dans les tests.
+    env:
+      DATABASE_URL: postgresql://news:news@localhost:5432/news
+      REDIS_URL: redis://localhost:6379
+      PANDASCORE_TOKEN: ci
+      LIQUIPEDIA_USER_AGENT: "News/CI (contact: ci@example.com)"
+      JWT_SECRET: ci-secret
+      JWT_REFRESH_SECRET: ci-refresh-secret
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: news
+          POSTGRES_PASSWORD: news
+          POSTGRES_DB: news
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U news"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+      redis:
+        image: redis:7
+        ports: ["6379:6379"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @news/db exec prisma migrate deploy
+
+      - run: pnpm -r lint
+
+      # --workspace-concurrency=1 : les tests d'intégration de apps/api et
+      # apps/worker partagent le même Postgres de CI, les lancer en parallèle
+      # a produit des faux échecs (contention) en vérifiant ce jalon en local.
+      - run: pnpm -r --workspace-concurrency=1 test
+
+  mobile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - run: flutter pub get
+        working-directory: apps/mobile
+
+      - run: flutter analyze
+        working-directory: apps/mobile
+
+      - run: flutter test
+        working-directory: apps/mobile

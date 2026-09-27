@@ -2,8 +2,8 @@
   "name": "@news/db",
   "version": "0.1.0",
   "private": true,
-  "main": "src/index.ts",
-  "types": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "prisma generate && tsc -p tsconfig.json",
     "test": "echo \"pas de test dédié : voir prisma validate\" && exit 0",
