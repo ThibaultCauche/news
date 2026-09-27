@@ -103,5 +103,10 @@ jobs:
       - run: flutter analyze
         working-directory: apps/mobile
 
-      - run: flutter test
+      - run: flutter test --update-goldens
         working-directory: apps/mobile
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: golden-files-TEMP
+          path: apps/mobile/test/goldens/golden_files
