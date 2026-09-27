@@ -48,6 +48,8 @@ jobs:
 
       - run: pnpm --filter @news/db exec prisma migrate deploy
 
+      - run: pnpm --filter @news/db exec prisma generate
+
       - run: pnpm -r lint
 
       # --workspace-concurrency=1 : les tests d'intégration de apps/api et
