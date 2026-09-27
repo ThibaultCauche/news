@@ -31,11 +31,11 @@ docker exec ix-tailscale-tailscale-1 tailscale funnel --bg --set-path=/news http
 
 ⚠️ Utiliser `tailscale funnel`, pas `tailscale serve` : sur les versions récentes du client (CLI unifiée, testé en v1.102.5) `serve` seul expose uniquement **dans le tailnet**, et l'utiliser sur un port déjà en Funnel **désactive le Funnel existant sur tout ce port** (vécu en le faisant : `/`, `/jam`, `/shares`, `/avatars`, `/download-worker` sont repassés en "tailnet only"). Si ça arrive, `tailscale funnel --bg --set-path=/news http://127.0.0.1:3000` (avec `funnel`, donc) restaure tout d'un coup, chemins existants inclus.
 
-Tailscale ne retire pas le préfixe `/news` avant de relayer vers `127.0.0.1:3000` (comportement observé sur les chemins déjà en place, `/jam` proxie vers `.../jam`) : l'API doit donc répondre elle-même sous `/news/...`. C'est le rôle de `PUBLIC_PATH_PREFIX=news` dans `.env` (étape 4) — sans lui, l'API répondrait à la racine et 404 sur tout ce qui arrive préfixé.
+**Tranché en le testant en vrai** : Tailscale **retire** le préfixe `/news` avant de relayer vers `http://127.0.0.1:3000` (sur `/jam` et `/shares`, c'est le chemin donné dans le target — `.../jam` ou rien — qui compense ce retrait, pas le contraire). L'API répond donc en interne exactement comme en dev (`/v1/...`, `/health`), sans rien savoir du `/news` public : **laisser `PUBLIC_PATH_PREFIX` vide dans `.env`** (étape 4). La variable existe côté code (`apps/api/src/main.ts`) pour le cas inverse (un reverse proxy qui, lui, ne retire pas le préfixe), au cas où — inutile ici.
 
 Vérifier la config à tout moment : `docker exec ix-tailscale-tailscale-1 tailscale funnel status`.
 
-**Vérifier après coup** (étape 5) : `curl https://truenas-scale.tailc07204.ts.net/news/health`. Si ça 404 malgré tout, c'est que Tailscale a en fait retiré le préfixe avant de relayer (comportement inverse à celui observé sur `/jam`/`/shares`) — retirer `PUBLIC_PATH_PREFIX` du `.env` et redémarrer `api` réglerait ça.
+**Vérifier après coup** (étape 5) : `curl https://truenas-scale.tailc07204.ts.net/news/health` → `{"status":"ok"}`. Si ça donne "Cannot GET /health" malgré une API qui répond bien en local (`curl http://127.0.0.1:3000/news/health`), c'est que `PUBLIC_PATH_PREFIX` est activé alors qu'il ne devrait pas l'être — le vider et `docker compose ... up -d --force-recreate api`.
 
 **Si un vrai domaine devient nécessaire plus tard** (par exemple pour un usage plus large que la bêta entre amis) : ajouter Cloudflare (ou tout reverse proxy) devant l'URL `.ts.net`, ou repasser à Cloudflare Tunnel — l'un ou l'autre n'exige de changer que cette étape, le reste (Compose, appli) ne bouge pas.
 
@@ -46,7 +46,7 @@ Copier `.env.example` en `.env` sur le NAS et remplir, en plus des secrets déj�
 - `IMAGE=ghcr.io/<compte-github>/news` (sinon l'image est reconstruite localement plutôt que tirée de GHCR).
 - `SENTRY_DSN` si un projet Sentry a été créé (un pour l'API/le worker Node, un pour l'appli Flutter).
 - `ALERT_WEBHOOK_URL` : une URL `https://ntfy.sh/<sujet-privé-choisi>` suffit (aucune inscription), ou un webhook Discord/Slack.
-- `PUBLIC_PATH_PREFIX=news` si l'API est montée sous un chemin plutôt qu'un port dédié (cas réel de ce déploiement, voir étape 3) ; laisser vide sinon.
+- `PUBLIC_PATH_PREFIX` : laisser **vide** avec Tailscale Funnel (il retire déjà le préfixe avant de relayer, vérifié en vrai à l'étape 3) — seulement utile derrière un reverse proxy qui, lui, ne le retire pas.
 
 **Ne jamais commiter ce fichier.**
 
@@ -64,7 +64,7 @@ docker compose -f infra/docker-compose.yml --env-file .env logs -f api worker
 
 (la commande `tailscale funnel` de l'étape 3 est à lancer une fois, séparément — elle ne dépend pas de Compose.)
 
-Les migrations Prisma tournent automatiquement au démarrage du service `api` (`infra/docker-entrypoint-api.sh`). Vérifier `https://<machine>.<tailnet>.ts.net/news/health` (ou `/health` si `PUBLIC_PATH_PREFIX` est vide) → `{"status":"ok"}`.
+Les migrations Prisma tournent automatiquement au démarrage du service `api` (`infra/docker-entrypoint-api.sh`). Vérifier `https://<machine>.<tailnet>.ts.net/news/health` → `{"status":"ok"}` (`/news` reste dans l'URL publique même si `PUBLIC_PATH_PREFIX` est vide côté `.env` — c'est Tailscale qui l'ajoute/le retire à la volée, étape 3).
 
 ## 6. Sauvegardes
 

@@ -37,11 +37,11 @@ async function bootstrap() {
 
   const port = process.env.PORT ?? 3000;
 
-  // Derrière Tailscale Funnel, l'API cohabite avec d'autres services sur le
-  // même port public : montée sous un chemin (ex. "news"), non un port dédié
-  // (docs/05-deploiement.md §3). Express ne retire pas ce préfixe lui-même,
-  // donc on le fait ici en montant l'appli Nest sous une appli Express externe
-  // (`GET /v1/home` en local devient `GET /news/v1/home` en prod).
+  // Tailscale Funnel (utilisé en prod, docs/05-deploiement.md §3) retire déjà
+  // le préfixe de chemin avant de relayer vers l'API : PUBLIC_PATH_PREFIX y
+  // reste vide. Cet interrupteur ne sert que derrière un reverse proxy qui,
+  // lui, ne retire pas le préfixe (`GET /v1/home` en local deviendrait alors
+  // `GET /<préfixe>/v1/home` côté public).
   const pathPrefix = process.env.PUBLIC_PATH_PREFIX;
   if (pathPrefix) {
     const outer = express();
