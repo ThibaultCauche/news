@@ -13,6 +13,7 @@
 | J5 | Brackets (`event_link`) + arbre radial + repêchage + groupes | Écrans 02, 05, 06, 07 sur de vraies données | **Fait (2026-09-26)** |
 | J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | **Fait (2026-09-27)** |
 | J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | **Fait (2026-09-27)** |
+| J8 | Polissage UI/UX Valorant : retour optimiste, repères visuels, navigation Agenda | L'appli est plus lisible et plus réactive pour un néophyte | **Fait (2026-09-28)** |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -187,6 +188,30 @@
 **Vérifié en conditions réelles** sur le NAS (TrueNAS SCALE) : image construite et publiée sur GHCR par CI, `docker compose` de prod démarré avec Postgres/Redis/api/worker/backup, migrations Prisma automatiques au démarrage, exposition via Tailscale Funnel (l'API cohabite avec d'autres applis sous `/news` sur le port 443 déjà partagé, `PUBLIC_PATH_PREFIX` reste vide car Tailscale retire lui-même le préfixe avant de relayer). Deux bugs supplémentaires trouvés en le faisant : une fausse alerte "ingestion arrêtée" se déclenchait dès que PandaScore n'avait simplement rien de nouveau à rapporter (`provider_ref.last_synced_at` ne bouge que sur un vrai changement, règle 4 de `CLAUDE.md`) — corrigé par un battement dédié dans Redis, mis à jour à chaque poll réussi ; et le healthcheck Postgres (10 tentatives, ~50s) abandonnait trop tôt après un arrêt interrompu (~72s de rejeu du WAL constaté en vrai), faisant échouer le démarrage de `api`/`worker`. Un troisième bug, plus ancien (J2), trouvé en revérifiant les tests après 18h d'ingestion continue : `home.highlights` ("les grands rendez-vous") ne triait que par date croissante sans exclure les matchs déjà `finished`, qui finissaient par remplir les 10 places à mesure que l'historique s'accumule — corrigé.
 
 **Reporté** : distribution bêta Google Play (compte retrouvé, application pas encore publiée sur la piste de test interne) ; copie de sauvegarde hors site (règle 3-2-1, aucune destination choisie) ; licence open source du dépôt ; nom de domaine dédié (pas nécessaire avec Tailscale Funnel pour l'instant, contrepartie acceptée) ; nom de l'appli et logo/icône définitifs ; écrire à PandaScore pour l'attribution exigée.
+
+---
+
+## J8 — Polissage UI/UX Valorant (ajouté)
+
+**Objectif** : cinq retours utilisateur sur l'appli déjà en test (latence perçue, écrans peu lisibles pour un néophyte, Agenda bloqué sur aujourd'hui, écran Suivis trop pauvre, petits problèmes de mise en page) corrigés en un seul jalon de polissage, sans nouvelle fonctionnalité.
+
+**Périmètre**
+- Bouton « Suivre » : retour optimiste (le bouton change avant la réponse réseau).
+- Accueil : `SafeArea` autour de l'en-tête, pastille active de la tab bar recentrée.
+- Agenda : navigation ±14 jours (flèches précédent/suivant sur le bandeau de semaine).
+- Suivis : logo d'équipe et statut « encore en course »/« éliminée ».
+- Agenda : phrase d'enjeu courte sous le nom d'une poule GSL (« Group A »/« Group B »… tous identiques sans ça).
+
+**Critères d'acceptation**
+- [x] Le bouton « Suivre »/« Suivi » change d'état immédiatement au tap, avant la réponse réseau, et revient en arrière si l'appel échoue. Vérifié par 3 tests unitaires (`apps/mobile/test/follows_controller_test.dart`) et en conditions réelles sur téléphone Android physique.
+- [x] L'Accueil affiche la date sous la barre de statut (plus de chevauchement) et la pastille active de la tab bar reste bien centrée sur l'icône/le libellé, y compris le 1er et le dernier onglet. Vérifié en conditions réelles.
+- [x] L'Agenda permet de naviguer au moins 14 jours avant et après aujourd'hui via des flèches, désactivées aux bornes. Vérifié par 3 tests widget et en conditions réelles sur téléphone Android physique.
+- [x] L'écran Suivis affiche le logo de l'équipe (repli sur les initiales) et un statut « encore en course »/« éliminée » pour un suivi d'équipe. Vérifié par un test e2e Supertest (`apps/api/src/auth.e2e.spec.ts`, contre le vrai Postgres de dev) et 3 tests widget Flutter ; **non revérifié à l'œil sur l'écran Suivis en conditions réelles** faute d'un chemin de navigation existant vers la fiche d'une équipe suivie dans l'appli actuelle (voir « Reporté »).
+- [x] Dans l'Agenda, un match de poule GSL affiche une courte phrase précisant que la poule mène à la suite du tournoi. Vérifié par un test domaine unitaire et en conditions réelles sur les vraies données Champions 2026.
+
+**Vérifié en conditions réelles** sur un téléphone Android physique (4 des 5 lots — le lot Suivis via tests automatisés seulement, voir ci-dessus) : un vrai bug de débordement trouvé en testant l'Agenda sur cet écran (360 de large logique) — les deux flèches de navigation plus les 7 pastilles de jour ne tenaient pas dans la largeur disponible, débordement de 32 px — corrigé en réduisant la cible tactile des flèches (32×32 plutôt que le minimum Material 48×48) et la largeur des pastilles de jour (36 plutôt que 40). Un deuxième point trouvé en vérifiant : la phrase d'enjeu des poules n'apparaissait pas tant que le serveur API de développement (démarré avant ce jalon) n'avait pas été redémarré avec le nouveau code — pas un bug de l'appli, rappel que `pnpm api:dev` ne recharge pas à chaud.
+
+**Reporté** : vérification visuelle du logo/statut sur l'écran Suivis en conditions réelles (l'onglet « Équipes » de la page Valorant et les lignes de classement du tableau des groupes ne mènent pas encore à la fiche d'une équipe — lacune préexistante, pas causée par ce jalon, mais qui empêche d'atteindre un suivi d'équipe autrement que par un match dont les participants sont affichés) ; granularité éventuelle de la phrase d'enjeu par format autre que GSL (hors périmètre, aucun autre format n'en a besoin pour l'instant).
 
 ---
 
