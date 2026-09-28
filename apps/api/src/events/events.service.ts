@@ -68,7 +68,6 @@ export class EventsService {
       where: { id },
       include: {
         ...eventSummaryInclude,
-        competition: { select: { ...eventSummaryInclude.competition.select, format: true } },
         linksFrom: { include: { toEvent: { select: { name: true } } } },
       },
     });

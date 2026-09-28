@@ -1,14 +1,23 @@
-import { Controller, Get, Param, Req, Res } from "@nestjs/common";
+import { Controller, Get, Param, Query, Req, Res } from "@nestjs/common";
 import { ApiOkResponse } from "@nestjs/swagger";
 import type { Request, Response } from "express";
 import { sendWithEtag } from "../common/etag";
-import { BracketResponseDto, CompetitionResponseDto, CompetitionsService } from "./competitions.service";
+import { BracketResponseDto, CompetitionResponseDto, CompetitionRootDto, CompetitionsService } from "./competitions.service";
 
-// GET /v1/competitions/:id — écrans 01, 06, 14, 19 (docs/03 §4).
 @Controller("competitions")
 export class CompetitionsController {
   constructor(private readonly competitions: CompetitionsService) {}
 
+  // GET /v1/competitions/roots?category=esport — écran 09 (filtre "E-sport").
+  // Doit rester déclaré avant `:id` : sinon Nest/Express fait correspondre
+  // "roots" à ce paramètre en premier.
+  @Get("roots")
+  @ApiOkResponse({ type: [CompetitionRootDto] })
+  async getRoots(@Query("category") category: string): Promise<CompetitionRootDto[]> {
+    return this.competitions.getRoots(category);
+  }
+
+  // GET /v1/competitions/:id — écrans 01, 06, 14, 19 (docs/03 §4).
   @Get(":id")
   @ApiOkResponse({ type: CompetitionResponseDto })
   async getById(@Param("id") id: string, @Req() req: Request, @Res() res: Response): Promise<void> {

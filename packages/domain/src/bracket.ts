@@ -5,6 +5,12 @@ import { EventStatus } from "./status";
 // de format direct côté fournisseur) plutôt que codé en dur par compétition.
 export type BracketFormat = "single_elim" | "double_elim" | "triple_elim" | "groups_gsl";
 
+// Nombre d'équipes qualifiées d'une poule GSL : utilisé par le job "structure"
+// du worker (J5) ET par la phrase d'enjeu de l'agenda (J8, `buildGroupStakes`
+// dans `context.ts`) — une seule constante pour que les deux ne divergent pas.
+// Toujours 2 pour l'instant (règle 3 de CLAUDE.md : pas de champ par poule).
+export const GSL_QUALIFIED_COUNT = 2;
+
 export interface BracketMatchInput {
   externalId: string;
   name: string;

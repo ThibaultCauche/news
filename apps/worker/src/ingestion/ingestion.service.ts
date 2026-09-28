@@ -14,6 +14,7 @@ import {
   EventDTO,
   EventStateSnapshot,
   EventStatus,
+  GSL_QUALIFIED_COUNT,
   shouldUpsert,
   StandingMatchInput,
 } from "@news/domain";
@@ -114,9 +115,13 @@ export class IngestionService {
   private async upsertEvent(dto: EventDTO): Promise<void> {
     const existingRef = await findProviderRef(this.prisma, dto.provider, "event", dto.externalId);
     const hash = computePayloadHash(dto.raw);
-    if (existingRef && !shouldUpsert(existingRef.payloadHash, hash)) {
-      return; // rien n'a changé : on n'écrit rien et on n'émet aucun événement métier
-    }
+    // "Rien n'a changé" ne doit sauter que l'écriture des champs de l'événement
+    // et les événements métier — pas la boucle participants juste en dessous :
+    // un événement ingéré avant qu'elle n'existe ne la rejouerait sinon jamais
+    // tant que son payload PandaScore ne change plus (cas courant d'un match
+    // déjà `finished`), laissant `event_participant` vide pour de bon (règle 4
+    // ne dit "on n'écrit rien" que pour ce qui a déjà été écrit).
+    const payloadUnchanged = Boolean(existingRef) && !shouldUpsert(existingRef!.payloadHash, hash);
 
     const competitionRef = await findProviderRef(this.prisma, dto.provider, "competition", dto.competitionExternalId);
     if (!competitionRef) {
@@ -127,37 +132,41 @@ export class IngestionService {
       return;
     }
 
-    const existingEvent = existingRef
-      ? await this.prisma.event.findUnique({ where: { id: existingRef.objectId }, select: { status: true, result: true } })
-      : null;
-    const previousSnapshot: EventStateSnapshot | null = existingEvent
-      ? { status: existingEvent.status as EventDTO["status"], resultHash: existingEvent.result ? computePayloadHash(existingEvent.result) : null }
-      : null;
-
-    const data = {
-      competitionId: competitionRef.objectId,
-      kind: dto.kind,
-      name: dto.name,
-      status: dto.status,
-      startsAt: dto.startsAt,
-      endsAt: dto.endsAt,
-      bestOf: dto.bestOf,
-      result: dto.result as Prisma.InputJsonValue,
-    };
     const eventId = existingRef?.objectId ?? randomUUID();
-    if (existingRef) {
-      await this.prisma.event.update({ where: { id: eventId }, data });
-    } else {
-      await this.prisma.event.create({ data: { id: eventId, spoilerSensitive: true, ...data } });
+    let previousSnapshot: EventStateSnapshot | null = null;
+
+    if (!payloadUnchanged) {
+      const existingEvent = existingRef
+        ? await this.prisma.event.findUnique({ where: { id: existingRef.objectId }, select: { status: true, result: true } })
+        : null;
+      previousSnapshot = existingEvent
+        ? { status: existingEvent.status as EventDTO["status"], resultHash: existingEvent.result ? computePayloadHash(existingEvent.result) : null }
+        : null;
+
+      const data = {
+        competitionId: competitionRef.objectId,
+        kind: dto.kind,
+        name: dto.name,
+        status: dto.status,
+        startsAt: dto.startsAt,
+        endsAt: dto.endsAt,
+        bestOf: dto.bestOf,
+        result: dto.result as Prisma.InputJsonValue,
+      };
+      if (existingRef) {
+        await this.prisma.event.update({ where: { id: eventId }, data });
+      } else {
+        await this.prisma.event.create({ data: { id: eventId, spoilerSensitive: true, ...data } });
+      }
+      await commitProviderRef(this.prisma, {
+        provider: dto.provider,
+        objectType: "event",
+        externalId: dto.externalId,
+        objectId: eventId,
+        payloadHash: hash,
+        raw: dto.raw,
+      });
     }
-    await commitProviderRef(this.prisma, {
-      provider: dto.provider,
-      objectType: "event",
-      externalId: dto.externalId,
-      objectId: eventId,
-      payloadHash: hash,
-      raw: dto.raw,
-    });
 
     for (const participant of dto.participants) {
       const entityId = await this.upsertEntity(participant.entity);
@@ -167,6 +176,8 @@ export class IngestionService {
         update: { score: participant.score, isWinner: participant.isWinner },
       });
     }
+
+    if (payloadUnchanged) return;
 
     // Mesure de la latence réelle début/fin (point ouvert de docs/01, J1).
     if (dto.status === "finished" && previousSnapshot?.status !== "finished") {
@@ -290,7 +301,7 @@ export class IngestionService {
       participants: e.participants.map((p) => ({ entityExternalId: p.entityId, score: p.score, isWinner: p.isWinner })),
     }));
     const maxLives = format === "triple_elim" ? 3 : format === "single_elim" ? 1 : 2;
-    const qualifiedCount = format === "groups_gsl" ? 2 : undefined;
+    const qualifiedCount = format === "groups_gsl" ? GSL_QUALIFIED_COUNT : undefined;
     const standings = computeStandings(matches, { maxLives, qualifiedCount });
 
     // Avant d'écrire : l'ancien classement sert à détecter qui vient de passer

@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { BracketMatchInput, buildEventLinks } from "./bracket";
-import { buildMatchStakes } from "./context";
+import { BracketMatchInput, buildEventLinks, GSL_QUALIFIED_COUNT } from "./bracket";
+import { buildGroupStakes, buildMatchStakes } from "./context";
 
 // Fixtures = vraies réponses PandaScore (CLAUDE.md), gardées dans tests-pandascore/samples/.
 const SAMPLES = join(__dirname, "../../../tests-pandascore/samples");
@@ -61,5 +61,14 @@ describe("buildMatchStakes (playoffs Champions 2026, brackets-playoffs.json)", (
   it("finale du repêchage : le perdant est éliminé", () => {
     // Lower Bracket Final → gagnant : Grand Final, pas de lien perdant (élimination).
     expect(stakesFor("1685248")).toBe("Le vainqueur file en grande finale et assure le podium. Le perdant est éliminé du tournoi. Match en [[BO5]].");
+  });
+});
+
+// J8 (écran Agenda) : "Group A" et "Group B" apparaissaient identiques, sans
+// indiquer où ils mènent. Une seule phrase fixe suffit (`GSL_QUALIFIED_COUNT`
+// est le même pour toutes les poules d'un tournoi), pas de calcul par poule.
+describe("buildGroupStakes", () => {
+  it("mentionne le nombre d'équipes qualifiées d'une poule GSL", () => {
+    expect(buildGroupStakes()).toBe(`Les ${GSL_QUALIFIED_COUNT} premiers de la poule se qualifient pour la suite du tournoi.`);
   });
 });

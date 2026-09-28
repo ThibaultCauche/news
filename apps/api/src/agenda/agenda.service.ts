@@ -23,13 +23,24 @@ export class AgendaService {
   ) {}
 
   async getAgenda(query: AgendaQueryDto): Promise<AgendaResponseDto> {
-    const cacheKey = CacheKeys.agenda(query.from, query.to, query.category);
+    const cacheKey = CacheKeys.agenda(query.from, query.to, query.category, query.leagueIds);
     const cached = await this.cache.get<AgendaResponseDto>(cacheKey);
     if (cached) return cached;
 
+    const leagueIds = query.leagueIds?.split(",").filter(Boolean);
+    const competitionWhere: Prisma.CompetitionWhereInput = {
+      ...(query.category ? { category: { slug: query.category } } : {}),
+      // Ligue racine d'un jeu (ex. "VCT") : la compétition d'un match est à
+      // 0, 1 ou 2 niveaux en dessous d'elle (ligue → série → tournoi →
+      // match) dans toute la hiérarchie ingérée jusqu'ici (docs/03 §2) —
+      // pas besoin d'une requête récursive pour cette profondeur bornée.
+      ...(leagueIds?.length
+        ? { OR: [{ id: { in: leagueIds } }, { parentId: { in: leagueIds } }, { parent: { parentId: { in: leagueIds } } }] }
+        : {}),
+    };
     const where: Prisma.EventWhereInput = {
       startsAt: { gte: new Date(query.from), lte: new Date(query.to) },
-      ...(query.category ? { competition: { category: { slug: query.category } } } : {}),
+      ...(Object.keys(competitionWhere).length ? { competition: competitionWhere } : {}),
     };
     const events = await this.prisma.event.findMany({ where, include: eventSummaryInclude, orderBy: { startsAt: "asc" } });
 

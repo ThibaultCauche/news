@@ -8,6 +8,15 @@ import { PRISMA } from "../db/db.module";
 
 const TTL_SECONDS = 30;
 
+// Une ligue racine par jeu (ex. "VCT" pour Valorant) : sert de choix dans le
+// filtre "E-sport" de l'Agenda (écran 09) — pas de champ "jeu" dans le
+// modèle générique (règle 3 de CLAUDE.md), la racine de la hiérarchie en
+// tient lieu.
+export class CompetitionRootDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() name!: string;
+}
+
 export class CompetitionChildDto {
   @ApiProperty() id!: string;
   @ApiProperty() name!: string;
@@ -93,6 +102,20 @@ export class CompetitionsService {
     @Inject(PRISMA) private readonly prisma: PrismaClient,
     private readonly cache: CacheService,
   ) {}
+
+  async getRoots(category: string): Promise<CompetitionRootDto[]> {
+    const cacheKey = CacheKeys.competitionRoots(category);
+    const cached = await this.cache.get<CompetitionRootDto[]>(cacheKey);
+    if (cached) return cached;
+
+    const roots = await this.prisma.competition.findMany({
+      where: { parentId: null, category: { slug: category } },
+      select: { id: true, name: true },
+      orderBy: { name: "asc" },
+    });
+    await this.cache.set(cacheKey, roots, TTL_SECONDS);
+    return roots;
+  }
 
   async getById(id: string): Promise<CompetitionResponseDto> {
     const cacheKey = CacheKeys.competition(id);

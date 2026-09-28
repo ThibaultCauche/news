@@ -32,8 +32,9 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
       data: { id: randomUUID(), categoryId, kind: "tournament", name: "Test Champions", status: "live", importance: 3 },
     });
     competitionId = competition.id;
-    const teamG2 = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test G2" } });
+    const teamG2 = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test G2", imageUrl: "https://example.test/g2.png" } });
     teamG2Id = teamG2.id;
+    await prisma.standing.create({ data: { id: randomUUID(), competitionId, entityId: teamG2Id, qualified: true } });
     const event = await prisma.event.create({
       data: {
         id: randomUUID(),
@@ -52,6 +53,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   afterAll(async () => {
     await prisma.eventParticipant.deleteMany({ where: { event: { competitionId } } });
     await prisma.event.deleteMany({ where: { competitionId } });
+    await prisma.standing.deleteMany({ where: { competitionId } });
     await prisma.competition.delete({ where: { id: competitionId } });
     await prisma.entity.delete({ where: { id: teamG2Id } });
     await prisma.category.delete({ where: { id: categoryId } });
@@ -100,6 +102,9 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
     expect(list.body).toHaveLength(1);
     expect(list.body[0].name).toBe("Test G2");
     expect(list.body[0].currentEvent.id).toBe(eventId);
+    // Logo et statut de compétition sur l'écran Suivis (docs/04 J8).
+    expect(list.body[0].imageUrl).toBe("https://example.test/g2.png");
+    expect(list.body[0].status).toBe("qualified");
 
     const home = await request(app.getHttpServer()).get("/v1/home").set(auth).expect(200);
     expect(home.body.follows).toHaveLength(1);

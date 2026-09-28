@@ -1,8 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Entity, Event, EventParticipant } from "@news/db";
+import { buildGroupStakes } from "@news/domain";
 
 type EventWithRelations = Event & {
-  competition: { id: string; name: string };
+  competition: { id: string; name: string; format: string | null };
   participants: (EventParticipant & { entity: Pick<Entity, "id" | "name" | "shortName" | "imageUrl"> })[];
 };
 
@@ -12,6 +13,10 @@ type EventWithRelations = Event & {
 export class CompetitionRefDto {
   @ApiProperty() id!: string;
   @ApiProperty() name!: string;
+  // Phrase d'enjeu courte pour une poule GSL, `null` sinon (docs/04 J8) : pas
+  // de calcul par match ici, `buildMatchStakes` (par lien de bracket) reste
+  // réservé à l'écran Prochain match (`GET /v1/events/:id`).
+  @ApiProperty({ nullable: true, type: String }) stakes!: string | null;
 }
 
 export class EventParticipantDto {
@@ -49,7 +54,11 @@ export function toEventSummary(event: EventWithRelations): EventSummaryDto {
     endsAt: event.endsAt?.toISOString() ?? null,
     bestOf: event.bestOf,
     importance: event.importance,
-    competition: { id: event.competition.id, name: event.competition.name },
+    competition: {
+      id: event.competition.id,
+      name: event.competition.name,
+      stakes: event.competition.format === "groups_gsl" ? buildGroupStakes() : null,
+    },
     participants: event.participants.map((p) => ({
       entityId: p.entityId,
       name: p.entity.name,
@@ -63,6 +72,6 @@ export function toEventSummary(event: EventWithRelations): EventSummaryDto {
 
 // Inclusion Prisma correspondante, partagée pour rester cohérente avec le mapper.
 export const eventSummaryInclude = {
-  competition: { select: { id: true, name: true } },
+  competition: { select: { id: true, name: true, format: true } },
   participants: { include: { entity: { select: { id: true, name: true, shortName: true, imageUrl: true } } } },
 } as const;

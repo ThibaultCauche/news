@@ -53,13 +53,44 @@ export class SubscriptionsService {
     const subs = await this.prisma.subscription.findMany({ where: { userId }, orderBy: { createdAt: "asc" } });
     if (subs.length === 0) return [];
 
-    const [names, currentEvents] = await Promise.all([this.resolveNames(subs), this.resolveCurrentEvents(subs)]);
+    const entityIds = subs.filter((s) => s.targetType === "entity").map((s) => s.targetId);
+    const [names, currentEvents, entityImages, entityStatuses] = await Promise.all([
+      this.resolveNames(subs),
+      this.resolveCurrentEvents(subs),
+      this.resolveEntityImages(entityIds),
+      this.resolveEntityStatuses(entityIds),
+    ]);
 
     return subs.map((sub) => ({
       ...toSubscriptionDto(sub),
       name: names.get(`${sub.targetType}:${sub.targetId}`) ?? "?",
       currentEvent: currentEvents.get(sub.id) ?? null,
+      imageUrl: sub.targetType === "entity" ? (entityImages.get(sub.targetId) ?? null) : null,
+      status: sub.targetType === "entity" ? (entityStatuses.get(sub.targetId) ?? null) : null,
     }));
+  }
+
+  private async resolveEntityImages(entityIds: string[]): Promise<Map<string, string | null>> {
+    if (entityIds.length === 0) return new Map();
+    const entities = await this.prisma.entity.findMany({ where: { id: { in: entityIds } }, select: { id: true, imageUrl: true } });
+    return new Map(entities.map((e) => [e.id, e.imageUrl]));
+  }
+
+  // "Encore en course" / "Éliminée" pour une équipe suivie (écran Suivis,
+  // docs/04 J8) : recalculé depuis `standing` (rempli par le job "structure"
+  // du J5), pas de nouveau calcul ici. Une équipe peut avoir des lignes dans
+  // plusieurs compétitions (poules puis phase finale) : en pratique un seul
+  // tournoi actif à la fois, et si jamais plusieurs lignes existent,
+  // l'élimination l'emporte (statut le plus définitif).
+  private async resolveEntityStatuses(entityIds: string[]): Promise<Map<string, "qualified" | "eliminated" | null>> {
+    if (entityIds.length === 0) return new Map();
+    const standings = await this.prisma.standing.findMany({ where: { entityId: { in: entityIds }, qualified: { not: null } } });
+    const statuses = new Map<string, "qualified" | "eliminated" | null>();
+    for (const s of standings) {
+      if (statuses.get(s.entityId) === "eliminated") continue;
+      statuses.set(s.entityId, s.qualified ? "qualified" : "eliminated");
+    }
+    return statuses;
   }
 
   private async resolveNames(subs: Subscription[]): Promise<Map<string, string>> {

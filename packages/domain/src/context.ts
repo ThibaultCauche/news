@@ -1,3 +1,5 @@
+import { GSL_QUALIFIED_COUNT } from "./bracket";
+
 // "Pourquoi ce match compte" (docs/03 §7) : une phrase calculée par des règles à
 // partir des noms des matchs cible du bracket (`event_link`), jamais écrite à la
 // main pour un match précis — déterministe, gratuit et toujours juste. Les mots
@@ -49,4 +51,14 @@ export function buildMatchStakes(input: BracketStakesInput): string {
   if (input.bestOf != null) sentences.push(`Match en [[BO${input.bestOf}]].`);
 
   return sentences.join(" ");
+}
+
+// Phrase d'enjeu d'une poule GSL (docs/04 J8, écran Agenda) : contrairement à
+// `buildMatchStakes` (par match, formats à élimination), la règle de
+// qualification est la même pour toutes les poules d'un même tournoi
+// (`GSL_QUALIFIED_COUNT`) — une phrase fixe suffit, pas de calcul par poule.
+// Avant ça, "Group A" et "Group B" apparaissaient identiques dans l'agenda,
+// sans indiquer qu'ils mènent tous deux à la suite du tournoi.
+export function buildGroupStakes(): string {
+  return `Les ${GSL_QUALIFIED_COUNT} premiers de la poule se qualifient pour la suite du tournoi.`;
 }
