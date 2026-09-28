@@ -1,10 +1,12 @@
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:intl/date_symbol_data_local.dart";
 import "package:mobile/theme/tokens.dart";
 import "package:mobile/widgets/event_card.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../golden_helpers.dart";
+import "../settings_test_helpers.dart";
 
 // Comparé à docs/maquettes/09-agenda.png : ligne "G2-Paper Rex" en direct,
 // équipe suivie en or (93,431 → 374,463, cf. docs/maquettes/specs/09-agenda.md).
@@ -42,11 +44,14 @@ void main() {
   testWidgets("EventCard : en direct, équipe suivie en or", (tester) async {
     await pumpGolden(
       tester,
-      Scaffold(
-        backgroundColor: AppColors.background,
-        body: Padding(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          child: EventCard(event: _event(), scoresHidden: false, followedEntityIds: const {"team-a"}),
+      ProviderScope(
+        overrides: [overrideCompactEventCardsWith(false)],
+        child: Scaffold(
+          backgroundColor: AppColors.background,
+          body: Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: EventCard(event: _event(), scoresHidden: false, followedEntityIds: const {"team-a"}),
+          ),
         ),
       ),
     );

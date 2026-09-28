@@ -11,6 +11,7 @@ import "../../core/date_x.dart";
 import "../../core/settings_provider.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/event_card.dart" show entityAccentColorProvider;
 import "../../widgets/glossary_sheet.dart";
 import "../../widgets/live_dot.dart";
 import "../../widgets/section_card.dart";
@@ -107,7 +108,7 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
   }
 }
 
-class _NextMatchBody extends StatelessWidget {
+class _NextMatchBody extends ConsumerWidget {
   const _NextMatchBody({required this.event, required this.scoresHidden, required this.onReveal});
 
   final EventDetailResponseDto event;
@@ -115,22 +116,55 @@ class _NextMatchBody extends StatelessWidget {
   final VoidCallback onReveal;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final status = event.status.statusKind;
     final isStale = status == EventStatusKind.live &&
         DateTime.now().difference(event.sourceUpdatedAt.toDateTime.toLocal()) > _staleAfter;
+
+    // Même teinte par couleur d'équipe que la tuile de match (`EventCard`),
+    // règle 12 : les mêmes visuels quel que soit l'écran.
+    Color? accentOf(int index) {
+      if (event.participants.length != 2) return null;
+      final url = event.participants[index].imageUrl;
+      if (url == null) return null;
+      return ref.watch(entityAccentColorProvider(url)).value;
+    }
+
+    final colorA = accentOf(0);
+    final colorB = accentOf(1);
 
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
         if (isStale) const _StaleBanner(),
-        Text(
-          [event.competition.name, if (event.bestOf != null) "BO${event.bestOf}"].join(" · ").toUpperCase(),
-          textAlign: TextAlign.center,
-          style: Theme.of(context).textTheme.labelSmall,
+        Container(
+          padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(AppRadii.card),
+            gradient: (colorA == null && colorB == null)
+                ? null
+                : LinearGradient(
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: [
+                      (colorA ?? AppColors.surface).withValues(alpha: colorA != null ? 0.26 : 0),
+                      AppColors.surface,
+                      (colorB ?? AppColors.surface).withValues(alpha: colorB != null ? 0.26 : 0),
+                    ],
+                  ),
+          ),
+          child: Column(
+            children: [
+              Text(
+                [event.competition.name, if (event.bestOf != null) "BO${event.bestOf}"].join(" · ").toUpperCase(),
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              const SizedBox(height: AppSpacing.lg),
+              _Participants(event: event, scoresHidden: scoresHidden),
+            ],
+          ),
         ),
-        const SizedBox(height: AppSpacing.lg),
-        _Participants(event: event, scoresHidden: scoresHidden),
         const SizedBox(height: AppSpacing.lg),
         Center(
           child: GestureDetector(
@@ -223,6 +257,8 @@ class _ParticipantColumn extends StatelessWidget {
   final EventParticipantDto participant;
   final String competitionName;
 
+  static const _diameter = 64.0;
+
   @override
   Widget build(BuildContext context) {
     final raw = participant.shortName ?? participant.name;
@@ -236,10 +272,18 @@ class _ParticipantColumn extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
         child: Column(
           children: [
-            CircleAvatar(
-              radius: 32,
-              backgroundColor: AppColors.surface,
-              child: Text(initials, style: const TextStyle(fontWeight: FontWeight.w700)),
+            ClipOval(
+              child: Container(
+                width: _diameter,
+                height: _diameter,
+                color: AppColors.surface,
+                alignment: Alignment.center,
+                // `BoxFit.contain`, pas `cover` : les logos ne sont pas tous
+                // carrés (même logique que `EventCard`/`_TeamBadge`).
+                child: participant.imageUrl != null
+                    ? Image.network(participant.imageUrl!, fit: BoxFit.contain)
+                    : Text(initials, style: const TextStyle(fontWeight: FontWeight.w700)),
+              ),
             ),
             const SizedBox(height: AppSpacing.sm),
             Text(participant.name, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),

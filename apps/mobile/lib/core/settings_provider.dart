@@ -30,3 +30,19 @@ class SettingsController {
 }
 
 final settingsControllerProvider = Provider((ref) => SettingsController(ref));
+
+/// Taille des tuiles de match (`EventCard`) : réglage local (`AuthStore`,
+/// `shared_preferences`), pas envoyé au serveur — `Notifier` plutôt qu'une
+/// simple lecture directe pour que le bouton des Réglages fasse réagir
+/// toutes les tuiles déjà affichées ailleurs dans l'appli, immédiatement.
+class CompactEventCardsNotifier extends Notifier<bool> {
+  @override
+  bool build() => ref.watch(authStoreProvider).compactEventCards;
+
+  Future<void> set(bool value) async {
+    await ref.read(authStoreProvider).setCompactEventCards(value);
+    state = value;
+  }
+}
+
+final compactEventCardsProvider = NotifierProvider<CompactEventCardsNotifier, bool>(CompactEventCardsNotifier.new);

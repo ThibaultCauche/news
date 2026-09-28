@@ -4,8 +4,8 @@ import "package:flutter_test/flutter_test.dart";
 import "package:mobile/features/bracket/bracket_painter.dart";
 import "package:mobile/features/bracket/bracket_provider.dart";
 import "package:mobile/features/bracket/bracket_screen.dart";
-import "package:mobile/features/follows/follows_provider.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../follows_test_helpers.dart";
 
 CompetitionChildDto _child(String id, String name) => CompetitionChildDto((b) => b
   ..id = id
@@ -92,17 +92,17 @@ Future<void> _pump(WidgetTester tester) {
               ],
             )),
         bracketProvider("playoffs").overrideWith((ref) async => bracket),
-        followsProvider.overrideWith((ref) async => [
-              FollowStateDto((b) => b
-                ..id = "sub-g2"
-                ..targetType = "entity"
-                ..targetId = "g2"
-                ..level = "all"
-                ..notifyReminder = true
-                ..notifyStart = true
-                ..notifyResult = true
-                ..name = "G2"),
-            ]),
+        overrideFollowsWith([
+          FollowStateDto((b) => b
+            ..id = "sub-g2"
+            ..targetType = "entity"
+            ..targetId = "g2"
+            ..level = "all"
+            ..notifyReminder = true
+            ..notifyStart = true
+            ..notifyResult = true
+            ..name = "G2"),
+        ]),
       ],
       child: const MaterialApp(
         theme: null,

@@ -112,26 +112,22 @@ class _TeamBody extends ConsumerWidget {
           const SizedBox(height: AppSpacing.lg),
           const SectionLabel("DERNIER MATCH"),
           const SizedBox(height: AppSpacing.sm),
-          SectionCard(
-            padding: EdgeInsets.zero,
-            child: EventCard(
-              event: entity.lastEvent!,
-              scoresHidden: scoresHidden,
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: entity.lastEvent!.id))),
-            ),
+          // `EventCard` porte désormais sa propre bulle (même fond/bordure
+          // qu'un `SectionCard`) : plus besoin de l'y envelopper.
+          EventCard(
+            event: entity.lastEvent!,
+            scoresHidden: scoresHidden,
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: entity.lastEvent!.id))),
           ),
         ],
         if (entity.nextEvent != null) ...[
           const SizedBox(height: AppSpacing.lg),
           const SectionLabel("PROCHAIN MATCH"),
           const SizedBox(height: AppSpacing.sm),
-          SectionCard(
-            padding: EdgeInsets.zero,
-            child: EventCard(
-              event: entity.nextEvent!,
-              scoresHidden: scoresHidden,
-              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: entity.nextEvent!.id))),
-            ),
+          EventCard(
+            event: entity.nextEvent!,
+            scoresHidden: scoresHidden,
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: entity.nextEvent!.id))),
           ),
         ],
       ],

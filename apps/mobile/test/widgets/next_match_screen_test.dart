@@ -4,10 +4,10 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:mobile/core/settings_provider.dart";
-import "package:mobile/features/follows/follows_provider.dart";
 import "package:mobile/features/next_match/next_match_screen.dart";
 import "package:mobile/widgets/glossary_sheet.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../follows_test_helpers.dart";
 
 /// Simule le tap sur un mot souligné d'un `Text.rich` : plus fiable qu'un tap
 /// par coordonnées (`tester.tap`), qui hit-teste tout le `RichText` d'un coup.
@@ -67,7 +67,7 @@ Future<void> _pump(WidgetTester tester, EventDetailResponseDto event, {bool spoi
         userSettingProvider.overrideWith((ref) async => UserSettingDto((b) => b
           ..spoilerFree = spoilerFree
           ..morningDigest = false)),
-        followsProvider.overrideWith((ref) async => const []),
+        overrideFollowsWith(const []),
       ],
       child: const MaterialApp(home: NextMatchScreen(eventId: "evt-1")),
     ),
@@ -85,7 +85,7 @@ void main() {
           userSettingProvider.overrideWith((ref) async => UserSettingDto((b) => b
             ..spoilerFree = false
             ..morningDigest = false)),
-          followsProvider.overrideWith((ref) async => const []),
+          overrideFollowsWith(const []),
           glossaryTermProvider("BO3").overrideWith(
             (ref) async => GlossaryTermDto((b) => b
               ..term = "bo3"

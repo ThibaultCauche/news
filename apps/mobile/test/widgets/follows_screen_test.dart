@@ -2,11 +2,19 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:mobile/core/settings_provider.dart";
-import "package:mobile/features/follows/follows_provider.dart";
 import "package:mobile/features/follows/follows_screen.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../follows_test_helpers.dart";
+import "../settings_test_helpers.dart";
 
-FollowStateDto _follow({required String targetType, required String targetId, required String name, EventSummaryDto? currentEvent}) {
+FollowStateDto _follow({
+  required String targetType,
+  required String targetId,
+  required String name,
+  EventSummaryDto? currentEvent,
+  String? imageUrl,
+  FollowStateDtoStatusEnum? status,
+}) {
   return FollowStateDto((b) {
     b
       ..id = "sub-$targetId"
@@ -16,7 +24,9 @@ FollowStateDto _follow({required String targetType, required String targetId, re
       ..notifyReminder = true
       ..notifyStart = true
       ..notifyResult = true
-      ..name = name;
+      ..name = name
+      ..imageUrl = imageUrl
+      ..status = status;
     if (currentEvent != null) b.currentEvent.replace(currentEvent);
   });
 }
@@ -41,10 +51,11 @@ Future<void> _pump(WidgetTester tester, List<FollowStateDto> follows) {
   return tester.pumpWidget(
     ProviderScope(
       overrides: [
-        followsProvider.overrideWith((ref) async => follows),
+        overrideFollowsWith(follows),
         userSettingProvider.overrideWith((ref) async => UserSettingDto((b) => b
           ..spoilerFree = false
           ..morningDigest = false)),
+        overrideCompactEventCardsWith(false),
       ],
       child: MaterialApp(theme: ThemeData.dark(), home: const Scaffold(body: FollowsScreen())),
     ),
@@ -73,5 +84,35 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text("VCT 2026"), findsOneWidget);
     expect(find.text("Rien de prévu pour l'instant."), findsOneWidget);
+  });
+
+  testWidgets("équipe encore en course : logo et statut affichés", (tester) async {
+    await _pump(tester, [
+      _follow(targetType: "entity", targetId: "team-a", name: "Test G2", imageUrl: "https://example.test/g2.png", status: FollowStateDtoStatusEnum.qualified),
+    ]);
+    await tester.pumpAndSettle();
+    // `NetworkImage` tente un vrai appel réseau ici, qui échoue toujours en
+    // test (pas de réseau) : attendu, seule l'URL demandée nous intéresse.
+    tester.takeException();
+
+    expect(find.text("Encore en course"), findsOneWidget);
+    final avatar = tester.widget<CircleAvatar>(find.byType(CircleAvatar));
+    expect((avatar.foregroundImage as NetworkImage?)?.url, "https://example.test/g2.png");
+  });
+
+  testWidgets("équipe éliminée : statut affiché, pas de logo sans imageUrl", (tester) async {
+    await _pump(tester, [_follow(targetType: "entity", targetId: "team-a", name: "Test G2", status: FollowStateDtoStatusEnum.eliminated)]);
+    await tester.pumpAndSettle();
+
+    expect(find.text("Éliminée"), findsOneWidget);
+    final avatar = tester.widget<CircleAvatar>(find.byType(CircleAvatar));
+    expect(avatar.foregroundImage, isNull);
+  });
+
+  testWidgets("suivi d'une compétition : pas de logo ni de statut d'équipe", (tester) async {
+    await _pump(tester, [_follow(targetType: "competition", targetId: "comp-1", name: "VCT 2026")]);
+    await tester.pumpAndSettle();
+
+    expect(find.byType(CircleAvatar), findsNothing);
   });
 }

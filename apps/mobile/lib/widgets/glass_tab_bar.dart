@@ -23,8 +23,13 @@ class GlassTabBar extends StatelessWidget {
   final ValueChanged<int> onTap;
 
   static const _barHeight = 64.0;
-  static const _pillWidth = 86.0;
   static const _pillHeight = 50.0;
+  // Piste des onglets mesurée sur la maquette (358 de large, 4 onglets) :
+  // les pastilles sont **contiguës** (86 de large chacune, aucun espace
+  // entre elles) et seule la piste entière est centrée dans la barre avec
+  // une marge de 7 de chaque côté (`docs/maquettes/specs/tab-bar.md`). Le
+  // ratio 7/358 reste correct quelle que soit la largeur d'écran.
+  static const _trackMarginRatio = 7 / 358;
 
   @override
   Widget build(BuildContext context) {
@@ -44,15 +49,19 @@ class GlassTabBar extends StatelessWidget {
               ),
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  final slotWidth = constraints.maxWidth / items.length;
+                  final trackMargin = constraints.maxWidth * _trackMarginRatio;
+                  final slotWidth = (constraints.maxWidth - 2 * trackMargin) / items.length;
                   return Stack(
+                    // La Row (icône+texte) ne fait que sa hauteur de contenu (~38) : sans
+                    // ce centrage, un Stack aligne ses enfants non positionnés en haut.
+                    alignment: Alignment.center,
                     children: [
                       AnimatedPositioned(
                         duration: AppMotion.enterDuration,
                         curve: AppMotion.enter,
-                        left: currentIndex * slotWidth + (slotWidth - _pillWidth) / 2,
+                        left: trackMargin + currentIndex * slotWidth,
                         top: (_barHeight - _pillHeight) / 2,
-                        width: _pillWidth,
+                        width: slotWidth,
                         height: _pillHeight,
                         child: DecoratedBox(
                           decoration: BoxDecoration(
@@ -61,13 +70,16 @@ class GlassTabBar extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Row(
-                        children: [
-                          for (final (index, item) in items.indexed)
-                            Expanded(
-                              child: _TabButton(item: item, selected: index == currentIndex, onTap: () => onTap(index)),
-                            ),
-                        ],
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: trackMargin),
+                        child: Row(
+                          children: [
+                            for (final (index, item) in items.indexed)
+                              Expanded(
+                                child: _TabButton(item: item, selected: index == currentIndex, onTap: () => onTap(index)),
+                              ),
+                          ],
+                        ),
                       ),
                     ],
                   );
@@ -98,8 +110,8 @@ class _TabButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(item.icon, color: color, size: 22),
-          const SizedBox(height: 2),
+          Icon(item.icon, color: color, size: 20),
+          const SizedBox(height: 6),
           Text(item.label, style: (selected ? AppTextStyles.tabLabelActive : AppTextStyles.tabLabel).copyWith(color: color)),
         ],
       ),

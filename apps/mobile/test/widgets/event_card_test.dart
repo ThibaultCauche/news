@@ -1,8 +1,10 @@
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:intl/date_symbol_data_local.dart";
 import "package:mobile/widgets/event_card.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../settings_test_helpers.dart";
 
 EventSummaryDto _event({
   required String status,
@@ -41,9 +43,12 @@ EventSummaryDto _event({
 
 Future<void> _pump(WidgetTester tester, EventSummaryDto event, {bool scoresHidden = false}) {
   return tester.pumpWidget(
-    MaterialApp(
-      theme: ThemeData.dark(),
-      home: Scaffold(body: EventCard(event: event, scoresHidden: scoresHidden)),
+    ProviderScope(
+      overrides: [overrideCompactEventCardsWith(false)],
+      child: MaterialApp(
+        theme: ThemeData.dark(),
+        home: Scaffold(body: EventCard(event: event, scoresHidden: scoresHidden)),
+      ),
     ),
   );
 }
@@ -55,24 +60,29 @@ void main() {
 
   testWidgets("à venir : affiche l'heure de début, pas de score", (tester) async {
     await _pump(tester, _event(status: "scheduled", startsAt: "2026-10-18T11:55:00.000Z"));
-    expect(find.textContaining("G2 Esports"), findsOneWidget);
+    // Diminutif ("G2"/"PRX"), pas le nom complet (docs/02 — "le plus visuel possible").
+    expect(find.textContaining("G2"), findsOneWidget);
     expect(find.text("1-0"), findsNothing);
   });
 
-  testWidgets("en direct : affiche le score de série et le point rouge", (tester) async {
+  testWidgets("en direct : affiche le score par équipe sous chaque logo et le point rouge", (tester) async {
     await _pump(tester, _event(status: "live", scoreA: 1, scoreB: 0));
-    expect(find.text("1-0"), findsOneWidget);
+    expect(find.text("1"), findsOneWidget);
+    expect(find.text("0"), findsOneWidget);
   });
 
-  testWidgets("terminé : affiche le score final", (tester) async {
+  testWidgets("terminé : affiche le score final par équipe sous chaque logo", (tester) async {
     await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0));
-    expect(find.text("2-0"), findsOneWidget);
+    expect(find.text("2"), findsOneWidget);
+    expect(find.text("0"), findsOneWidget);
   });
 
   testWidgets("terminé, sans spoil activé : masque le score (écran 15, J6)", (tester) async {
     await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0), scoresHidden: true);
-    expect(find.text("2-0"), findsNothing);
-    expect(find.text("Terminé"), findsOneWidget);
+    expect(find.text("2"), findsNothing);
+    expect(find.text("0"), findsNothing);
+    // "VS" toujours affiché entre les deux logos, quel que soit le statut.
+    expect(find.text("VS"), findsOneWidget);
   });
 
   testWidgets("reporté : affiche le statut, pas d'heure ni de score", (tester) async {

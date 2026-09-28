@@ -6,6 +6,9 @@ const _accessTokenKey = "auth.accessToken";
 const _refreshTokenKey = "auth.refreshToken";
 const _installIdKey = "device.installId";
 const _onboardingSeenKey = "onboarding.seen";
+const _compactEventCardsKey = "display.compactEventCards";
+const _agendaCategoryKey = "agenda.category";
+const _agendaLeagueIdsKey = "agenda.leagueIds";
 
 /// Jetons du compte anonyme et identifiant d'installation, en clair dans
 /// `shared_preferences` (docs/04 J4) : le compte est anonyme, sans donnée
@@ -47,4 +50,29 @@ class AuthStore {
   bool get hasSeenOnboarding => _prefs.getBool(_onboardingSeenKey) ?? false;
 
   Future<void> markOnboardingSeen() => _prefs.setBool(_onboardingSeenKey, true);
+
+  // Taille des tuiles de match (`EventCard`) : préférence d'affichage pure,
+  // propre à l'appareil — pas de raison de la faire voyager sur le compte.
+  bool get compactEventCards => _prefs.getBool(_compactEventCardsKey) ?? false;
+
+  Future<void> setCompactEventCards(bool value) => _prefs.setBool(_compactEventCardsKey, value);
+
+  // Filtre de l'Agenda (catégorie + ligues e-sport cochées) : là aussi une
+  // préférence d'affichage propre à l'appareil, pas un réglage de compte —
+  // pour ne pas rouvrir sur "Tout" à chaque lancement (J8).
+  String? get agendaCategory => _prefs.getString(_agendaCategoryKey);
+  String? get agendaLeagueIds => _prefs.getString(_agendaLeagueIdsKey);
+
+  Future<void> setAgendaFilter({String? category, String? leagueIds}) async {
+    if (category == null) {
+      await _prefs.remove(_agendaCategoryKey);
+    } else {
+      await _prefs.setString(_agendaCategoryKey, category);
+    }
+    if (leagueIds == null) {
+      await _prefs.remove(_agendaLeagueIdsKey);
+    } else {
+      await _prefs.setString(_agendaLeagueIdsKey, leagueIds);
+    }
+  }
 }

@@ -46,3 +46,6 @@ app.*.map.json
 
 # Widget Preview related
 .widget_preview/
+
+# Diffs générés par un test golden qui échoue (flutter_test) — pas des fixtures.
+test/goldens/failures/

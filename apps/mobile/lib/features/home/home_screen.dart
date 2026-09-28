@@ -29,18 +29,20 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final home = ref.watch(homeProvider);
     final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
-    return RefreshIndicator(
-      onRefresh: () => ref.refresh(homeProvider.future),
-      child: CustomScrollView(
-        slivers: [
-          const SliverToBoxAdapter(child: _HomeHeader()),
-          switch (home) {
-            AsyncData(:final value) => _HomeBody(home: value, scoresHidden: scoresHidden),
-            AsyncError() when home.hasValue => _HomeBody(home: home.value!, scoresHidden: scoresHidden),
-            AsyncError() => const SliverFillRemaining(child: Center(child: Text("Impossible de charger l'accueil."))),
-            _ => const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
-          },
-        ],
+    return SafeArea(
+      child: RefreshIndicator(
+        onRefresh: () => ref.refresh(homeProvider.future),
+        child: CustomScrollView(
+          slivers: [
+            const SliverToBoxAdapter(child: _HomeHeader()),
+            switch (home) {
+              AsyncData(:final value) => _HomeBody(home: value, scoresHidden: scoresHidden),
+              AsyncError() when home.hasValue => _HomeBody(home: home.value!, scoresHidden: scoresHidden),
+              AsyncError() => const SliverFillRemaining(child: Center(child: Text("Impossible de charger l'accueil."))),
+              _ => const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
+            },
+          ],
+        ),
       ),
     );
   }
@@ -54,7 +56,7 @@ class _HomeHeader extends StatelessWidget {
     final date = DateFormat("EEEE d MMMM", "fr_FR").format(DateTime.now());
     final capitalized = date[0].toUpperCase() + date.substring(1);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, AppSpacing.sm),
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.sm),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -251,20 +253,19 @@ class _FollowsSection extends StatelessWidget {
           child: Text("Tes suivis", style: Theme.of(context).textTheme.titleLarge?.copyWith(color: AppColors.gold)),
         ),
         const SizedBox(height: AppSpacing.sm),
-        Card(
-          margin: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 4),
-            child: Column(
-              children: [
-                for (final follow in follows)
-                  EventCard(
-                    event: follow.currentEvent!,
-                    scoresHidden: scoresHidden,
-                    onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: follow.currentEvent!.id))),
-                  ),
-              ],
-            ),
+        // Chaque `EventCard` porte désormais sa propre bulle : plus de `Card`
+        // englobante qui les aurait doublement encadrées.
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+          child: Column(
+            children: [
+              for (final follow in follows)
+                EventCard(
+                  event: follow.currentEvent!,
+                  scoresHidden: scoresHidden,
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: follow.currentEvent!.id))),
+                ),
+            ],
           ),
         ),
         const SizedBox(height: AppSpacing.md),

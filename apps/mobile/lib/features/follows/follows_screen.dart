@@ -68,6 +68,11 @@ class _FollowCard extends ConsumerWidget {
   final FollowStateDto follow;
   final FollowTargetType targetType;
 
+  String get _initials {
+    final trimmed = follow.name.trim();
+    return (trimmed.length <= 3 ? trimmed : trimmed.substring(0, 3)).toUpperCase();
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final event = follow.currentEvent;
@@ -83,7 +88,24 @@ class _FollowCard extends ConsumerWidget {
               padding: const EdgeInsets.fromLTRB(AppSpacing.xs, AppSpacing.xs, AppSpacing.xs, 0),
               child: Row(
                 children: [
-                  Expanded(child: Text(follow.name, style: Theme.of(context).textTheme.titleLarge)),
+                  if (targetType == FollowTargetType.entity) ...[
+                    CircleAvatar(
+                      radius: 18,
+                      backgroundColor: AppColors.surface,
+                      foregroundImage: follow.imageUrl != null ? NetworkImage(follow.imageUrl!) : null,
+                      child: Text(_initials, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                  ],
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(follow.name, style: Theme.of(context).textTheme.titleLarge),
+                        if (follow.status != null) _StatusPill(status: follow.status!),
+                      ],
+                    ),
+                  ),
                   IconButton(
                     icon: const Icon(Icons.close_rounded, size: 20, color: AppColors.textTertiary),
                     tooltip: "Ne plus suivre",
@@ -107,5 +129,21 @@ class _FollowCard extends ConsumerWidget {
         ),
       ),
     );
+  }
+}
+
+/// "Encore en course" / "Éliminée" (docs/04 J8) : vert réservé
+/// victoire/qualifié (règle 12 de `CLAUDE.md`), gris neutre sinon — jamais
+/// rouge, réservé au direct.
+class _StatusPill extends StatelessWidget {
+  const _StatusPill({required this.status});
+
+  final FollowStateDtoStatusEnum status;
+
+  @override
+  Widget build(BuildContext context) {
+    final qualified = status == FollowStateDtoStatusEnum.qualified;
+    final color = qualified ? AppColors.win : AppColors.loss;
+    return Text(qualified ? "Encore en course" : "Éliminée", style: TextStyle(color: color, fontSize: AppTypography.caption, fontWeight: FontWeight.w600));
   }
 }

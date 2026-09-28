@@ -89,8 +89,19 @@ class _SettingsBody extends ConsumerWidget {
         const SizedBox(height: AppSpacing.lg),
         const SectionLabel("AFFICHAGE"),
         const SizedBox(height: AppSpacing.sm),
-        const SectionCard(
-          child: _StaticRow(label: "Mouvement réduit", caption: "Comme l'iPhone : suit le réglage du système."),
+        SectionCard(
+          child: Column(
+            children: [
+              _ToggleRow(
+                label: "Tuiles de match compactes",
+                caption: "Logo, score, logo — sans le nom des équipes.",
+                value: ref.watch(compactEventCardsProvider),
+                onChanged: (v) => ref.read(compactEventCardsProvider.notifier).set(v),
+              ),
+              const Divider(height: AppSpacing.lg),
+              const _StaticRow(label: "Mouvement réduit", caption: "Comme l'iPhone : suit le réglage du système."),
+            ],
+          ),
         ),
         const SizedBox(height: AppSpacing.lg),
         const SectionLabel("SOURCES ET CRÉDITS"),
