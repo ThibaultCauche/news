@@ -6,6 +6,7 @@ import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
+import "package:url_launcher/url_launcher.dart";
 import "../../core/api_providers.dart";
 import "../../core/date_x.dart";
 import "../../core/settings_provider.dart";
@@ -182,6 +183,13 @@ class _NextMatchBody extends ConsumerWidget {
           const Text("Toucher longuement pour révéler", style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption)),
         ],
         const SizedBox(height: AppSpacing.lg),
+        // Gagnant de chaque carte (règle 6 de CLAUDE.md) : masqué tant que le
+        // score l'est aussi, même logique que `_StatusDisplay` — pas de
+        // révélation séparée, le score et les cartes se démasquent ensemble.
+        if (!scoresHidden && event.maps.any((m) => m.winnerEntityId != null)) ...[
+          _MapsSection(event: event),
+          const SizedBox(height: AppSpacing.md),
+        ],
         if (event.context.stakes != null) ...[
           _StakesSection(stakes: event.context.stakes!),
           const SizedBox(height: AppSpacing.md),
@@ -202,6 +210,11 @@ class _NextMatchBody extends ConsumerWidget {
             ),
           ),
         ],
+        // Recherche externe (pas un lien direct : impossible à calculer sans
+        // l'identifiant interne du site tiers, ce qui reviendrait à le
+        // scraper — règle 7 de CLAUDE.md). Masqué tant que le score l'est :
+        // la page de résultats spoilerait un match qu'on masque nous-mêmes.
+        if (event.participants.length == 2 && (status == EventStatusKind.scheduled || !scoresHidden)) _ExternalDetailsLink(event: event),
       ],
     );
   }
@@ -272,14 +285,23 @@ class _ParticipantColumn extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
         child: Column(
           children: [
-            ClipOval(
+            // Coin arrondi plutôt que cercle, même logique que
+            // `EventCard`/`_TeamBadge` : certains logos débordaient visuellement
+            // d'un cercle. Rayon mis à l'échelle sur 44 (comme `_TeamBadge`) :
+            // sinon ce badge, plus grand (64), paraît moins arrondi que celui
+            // de la tuile pour le même token — même arrondi relatif partout
+            // (règle 12 de CLAUDE.md).
+            ClipRRect(
+              borderRadius: BorderRadius.circular(AppRadii.chip * _diameter / 44),
               child: Container(
                 width: _diameter,
                 height: _diameter,
-                color: AppColors.surface,
+                // Même fond que `_TeamBadge` (tuile agenda) : `AppColors.surface`
+                // était trop proche du fond de l'écran, les coins du badge
+                // devenaient invisibles au lieu de contraster (règle 12).
+                color: AppColors.surfaceBorder,
                 alignment: Alignment.center,
-                // `BoxFit.contain`, pas `cover` : les logos ne sont pas tous
-                // carrés (même logique que `EventCard`/`_TeamBadge`).
+                // `BoxFit.contain`, pas `cover` : les logos ne sont pas tous carrés.
                 child: participant.imageUrl != null
                     ? Image.network(participant.imageUrl!, fit: BoxFit.contain)
                     : Text(initials, style: const TextStyle(fontWeight: FontWeight.w700)),
@@ -476,6 +498,106 @@ class _AlertButtonState extends ConsumerState<_AlertButton> {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+/// Renvoie vers une recherche Google restreinte à VLR.gg (round par round,
+/// stats joueurs, noms de carte) : ce qu'on n'a pas le droit d'afficher
+/// nous-mêmes vient d'une source qu'on a explicitement écartée pour l'appli
+/// (`docs/01-donnees-sources-valorant.md` §4 — pas d'API officielle, pas de
+/// droit de redistribution). VLR.gg n'a pas d'ID de match dérivable de nos
+/// données (et sa propre recherche ne trouve rien sur une requête "A vs B",
+/// vérifié) : impossible de lier la page exacte sans le scraper. Google
+/// indexe déjà ces pages, donc une recherche `site:` y arrive presque
+/// toujours, sans dépendre de la structure de VLR.gg.
+class _ExternalDetailsLink extends StatelessWidget {
+  const _ExternalDetailsLink({required this.event});
+
+  final EventDetailResponseDto event;
+
+  Uri get _searchUri {
+    final teamA = event.participants[0].name;
+    final teamB = event.participants[1].name;
+    return Uri.https("www.google.com", "/search", {"q": 'site:vlr.gg "$teamA" "$teamB"'});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Center(
+          child: TextButton.icon(
+            onPressed: () => launchUrl(_searchUri, mode: LaunchMode.externalApplication),
+            icon: const Icon(Icons.open_in_new_rounded, size: 16),
+            label: const Text("Plus de détails (hors de l'appli)"),
+          ),
+        ),
+        // Pas juste "on n'a pas voulu" : la donnée existe, elle est payante
+        // (docs/01-donnees-sources-valorant.md — PandaScore Historical, 400
+        // €/mois) et hors de portée d'un projet non commercial pour l'instant.
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+          child: Text(
+            "Stats round par round et par joueur : option payante (~400 €/mois) chez notre fournisseur de données. "
+            "À revoir si l'appli grandit.",
+            textAlign: TextAlign.center,
+            style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+/// Gagnant de chaque carte, rien de plus (règle 6 de CLAUDE.md — pas de score
+/// en rounds, pas de nom de carte, limite du plan gratuit PandaScore).
+class _MapsSection extends StatelessWidget {
+  const _MapsSection({required this.event});
+
+  final EventDetailResponseDto event;
+
+  String _nameFor(String entityId) {
+    final participant = event.participants.firstWhere((p) => p.entityId == entityId, orElse: () => event.participants.first);
+    return participant.shortName ?? participant.name;
+  }
+
+  // "45:38", pas de nom de carte à côté (indisponible en plan gratuit) : la
+  // durée est la seule information supplémentaire que PandaScore expose par
+  // carte (docs/01-donnees-sources-valorant.md).
+  static String _formatDuration(num seconds) {
+    final total = seconds.toInt();
+    final m = total ~/ 60;
+    final s = total % 60;
+    return "$m:${s.toString().padLeft(2, "0")}";
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final maps = event.maps.where((m) => m.winnerEntityId != null).toList()..sort((a, b) => a.position.compareTo(b.position));
+    return SectionCard(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionLabel("CARTES"),
+          const SizedBox(height: AppSpacing.sm),
+          for (final map in maps)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Row(
+                children: [
+                  Text("Carte ${map.position}", style: Theme.of(context).textTheme.bodyMedium),
+                  if (map.durationSeconds != null) ...[
+                    const SizedBox(width: AppSpacing.xs),
+                    Text(_formatDuration(map.durationSeconds!), style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textTertiary)),
+                  ],
+                  const Spacer(),
+                  Text(_nameFor(map.winnerEntityId!), style: Theme.of(context).textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w600)),
+                ],
+              ),
+            ),
+        ],
       ),
     );
   }

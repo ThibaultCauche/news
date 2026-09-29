@@ -275,14 +275,16 @@ class _TeamBadge extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        ClipOval(
+        // Coin arrondi plutôt que cercle : certains logos (bannières larges
+        // type "LOBA SPORT", blasons non circulaires) ne remplissaient pas
+        // un cercle proprement et semblaient déborder dessus. `BoxFit.contain`
+        // reste nécessaire, tous les logos ne sont pas carrés.
+        ClipRRect(
+          borderRadius: BorderRadius.circular(AppRadii.chip * diameter / 44),
           child: Container(
             width: diameter,
             height: diameter,
             color: AppColors.surfaceBorder,
-            // `BoxFit.contain`, pas `cover` : les logos ne sont pas tous carrés
-            // (bannières larges type "LOBA SPORT") — `cover` les zoomait au
-            // point de déborder visuellement du cercle.
             child: imageUrl != null ? Image.network(imageUrl!, fit: BoxFit.contain) : null,
           ),
         ),

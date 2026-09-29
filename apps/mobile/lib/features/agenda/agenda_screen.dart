@@ -179,19 +179,7 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text("Agenda", style: Theme.of(context).textTheme.headlineLarge),
-                OutlinedButton(
-                  onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Export .ics bientôt disponible")),
-                  ),
-                  style: OutlinedButton.styleFrom(foregroundColor: AppColors.textTertiary),
-                  child: const Text("Exporter"),
-                ),
-              ],
-            ),
+            child: Text("Agenda", style: Theme.of(context).textTheme.headlineLarge),
           ),
           const SizedBox(height: AppSpacing.md),
           _WeekStrip(
@@ -226,6 +214,7 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
               ],
             ),
           ),
+          const SizedBox(height: AppSpacing.md),
           Expanded(
             child: switch (agenda) {
               AsyncData(:final value) =>
@@ -490,7 +479,12 @@ class _AgendaListState extends State<_AgendaList> {
     final response = widget.response;
     final scoresHidden = widget.scoresHidden;
     final dayKeys = widget.dayKeys;
-    final events = response.events.toList();
+    // Un match dont les équipes ne sont pas encore connues ("Decider Match:
+    // TBD vs TBD", J5) n'a aucun `event_participant` en base tant que le
+    // bracket ne l'a pas résolu : pas d'intérêt à l'afficher dans l'agenda
+    // avant de savoir qui joue (le bracket, lui, le montre déjà en
+    // placeholder — c'est voulu là-bas, pas ici).
+    final events = response.events.where((e) => e.participants.isNotEmpty).toList();
     if (events.isEmpty) {
       _currentDays = const [];
       return const Center(child: Text("Rien à afficher pour l'instant.", style: TextStyle(color: AppColors.textSecondary)));
@@ -514,8 +508,16 @@ class _AgendaListState extends State<_AgendaList> {
       // `Scrollable.ensureVisible` (vérifié en conditions réelles : la clé
       // existait bien, mais `currentContext` était `null`). Fenêtre ±14
       // jours bornée, un grand `cacheExtent` construit tout d'un coup sans
-      // vrai souci de performance ici.
-      scrollCacheExtent: const ScrollCacheExtent.pixels(5000),
+      // vrai souci de performance ici. 5000 (choisi au J8) ne couvrait que le
+      // premier écran : dès qu'on scrollait plus loin qu'un tournoi chargé,
+      // l'élément du jour visé ressortait de la fenêtre de cache et se
+      // faisait détruire, laissant `_selectDay`/`_scrollToToday` sans
+      // `currentContext` à cibler. Relevé à une valeur qui couvre toute la
+      // fenêtre même un jour à beaucoup de matchs simultanés.
+      // ponytail: valeur fixe plutôt qu'un calcul de hauteur réelle — si la
+      // fenêtre s'agrandit un jour (> ±14 jours) ou que le volume de matchs
+      // explose, remplacer par un `ScrollController` + offsets calculés.
+      scrollCacheExtent: const ScrollCacheExtent.pixels(50000),
       // Bas généreux (64 de barre + marge ~8 + respiration) pour que la
       // dernière carte puisse défiler entièrement au-dessus de la tab bar
       // flottante (`GlassTabBar`) au lieu d'être coupée par elle.

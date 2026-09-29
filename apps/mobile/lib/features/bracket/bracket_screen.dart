@@ -4,6 +4,7 @@ import "package:news_api_client/news_api_client.dart";
 import "../../core/iterable_x.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/group_bracket_tree.dart";
 import "../follows/follows_provider.dart";
 import "bracket_painter.dart";
 import "bracket_provider.dart";
@@ -15,27 +16,6 @@ bool _isLowerBracket(String name) => name.toLowerCase().contains("lower bracket"
 /// indépendamment du widget (`bracket_logic_test.dart`).
 Set<String> highlightedEventIds(List<BracketNodeDto> nodes, Set<String> followedEntityIds) {
   return nodes.where((n) => n.participants.any((p) => followedEntityIds.contains(p.entityId))).map((n) => n.eventId).toSet();
-}
-
-/// Une ligne par participant si le match est résolu, sinon un placeholder
-/// « Perdant de … »/« Gagnant de … » par lien entrant (écran 05).
-List<(String label, String? score, bool isWinner)> bracketMatchRows(
-  BracketNodeDto node,
-  List<BracketLinkDto> incoming,
-  Map<String, BracketNodeDto> byId,
-) {
-  if (node.participants.isNotEmpty) {
-    return [for (final p in node.participants) (p.shortName ?? p.name, p.score?.toString(), p.isWinner == true)];
-  }
-  return [for (final l in incoming) (_placeholderLabel(l, byId), null, false)];
-}
-
-String _placeholderLabel(BracketLinkDto link, Map<String, BracketNodeDto> byId) {
-  final from = byId[link.fromEventId];
-  final verb = link.outcome == "winner" ? "Gagnant de" : "Perdant de";
-  if (from == null) return "$verb un match à venir";
-  final fromLabel = from.participants.isEmpty ? from.name : from.participants.map((p) => p.shortName ?? p.name).join(" vs ");
-  return "$verb $fromLabel";
 }
 
 /// Écrans 02 (arbre radial), 05 (repêchage) et 07 (arbre terminé) — `docs/02`.
@@ -101,7 +81,7 @@ class _BracketBody extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final groupIds = children.where((c) => c.name.toLowerCase().contains("group")).map((c) => c.id).toList();
+    final groupIds = groupCompetitionIds(children);
     final playoffs = children.firstWhereOrNull((c) => c.name.toLowerCase().contains("playoff"));
 
     return Column(
@@ -190,119 +170,19 @@ class _EmptyMessage extends StatelessWidget {
   Widget build(BuildContext context) => Center(child: Text(text, style: const TextStyle(color: AppColors.textSecondary)));
 }
 
-/// Écran 06 : mini-grilles 2×2, trait entre qualifiés et éliminés.
-class _GroupsTab extends ConsumerWidget {
+/// Écran 06 : l'arbre de qualification de chaque poule (Ouverture →
+/// Vainqueurs/Élimination → Decider → Qualifiés), pas juste un classement —
+/// même widget que la carte "Maintenant" de l'écran Saison (`GroupBracketTree`).
+class _GroupsTab extends StatelessWidget {
   const _GroupsTab({required this.groupIds});
   final List<String> groupIds;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     if (groupIds.isEmpty) return const _EmptyMessage("Pas de phase de groupes pour cette compétition.");
-    return GridView.count(
+    return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
-      crossAxisCount: 2,
-      mainAxisSpacing: AppSpacing.md,
-      crossAxisSpacing: AppSpacing.md,
-      childAspectRatio: 0.85,
-      children: [for (final id in groupIds) _GroupCard(competitionId: id)],
-    );
-  }
-}
-
-class _GroupCard extends ConsumerWidget {
-  const _GroupCard({required this.competitionId});
-  final String competitionId;
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final detail = ref.watch(competitionDetailProvider(competitionId));
-    return Container(
-      padding: const EdgeInsets.all(AppSpacing.sm),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadii.chip),
-        border: Border.all(color: AppColors.surfaceBorder),
-      ),
-      child: switch (detail) {
-        AsyncData(:final value) => value.standings.isEmpty
-            ? _EmptyGroup(name: value.name)
-            : _GroupStandings(name: value.name, standings: value.standings.toList()),
-        AsyncError() => const Center(child: Text("—", style: TextStyle(color: AppColors.textTertiary))),
-        _ => const Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2))),
-      },
-    );
-  }
-}
-
-// Groupe pas encore commencé : le classement n'existe pas tant qu'aucun match
-// n'est terminé (`computeStandings`, `packages/domain`) — un message plutôt
-// qu'une carte vide.
-class _EmptyGroup extends StatelessWidget {
-  const _EmptyGroup({required this.name});
-  final String name;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(name.toUpperCase(), style: Theme.of(context).textTheme.labelSmall),
-        const Expanded(
-          child: Center(child: Text("Pas encore commencé", style: TextStyle(color: AppColors.textTertiary, fontSize: 12))),
-        ),
-      ],
-    );
-  }
-}
-
-class _GroupStandings extends StatelessWidget {
-  const _GroupStandings({required this.name, required this.standings});
-  final String name;
-  final List<CompetitionStandingDto> standings;
-
-  @override
-  Widget build(BuildContext context) {
-    final sorted = [...standings]..sort((a, b) => (a.rank ?? 99).compareTo(b.rank ?? 99));
-    // `SingleChildScrollView` plutôt qu'un `Column` nu : la carte a une hauteur
-    // fixe (grille 2×2) et un texte agrandi (accessibilité) ne doit pas déborder.
-    return SingleChildScrollView(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(name.toUpperCase(), style: Theme.of(context).textTheme.labelSmall),
-          const SizedBox(height: AppSpacing.xs),
-          for (var i = 0; i < sorted.length; i++) ...[
-            if (i > 0 && sorted[i - 1].qualified == true && sorted[i].qualified != true)
-              const Divider(height: AppSpacing.sm, color: AppColors.surfaceBorder),
-            _GroupRow(standing: sorted[i]),
-          ],
-        ],
-      ),
-    );
-  }
-}
-
-class _GroupRow extends StatelessWidget {
-  const _GroupRow({required this.standing});
-  final CompetitionStandingDto standing;
-
-  @override
-  Widget build(BuildContext context) {
-    final qualified = standing.qualified == true;
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              standing.entityName,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(color: qualified ? AppColors.textPrimary : AppColors.textSecondary, fontWeight: qualified ? FontWeight.w600 : FontWeight.w400),
-            ),
-          ),
-          Text("${standing.wins ?? 0}-${standing.losses ?? 0}", style: const TextStyle(color: AppColors.textSecondary, fontSize: 12)),
-        ],
-      ),
+      children: [for (final id in groupIds) GroupBracketTree(competitionId: id)],
     );
   }
 }

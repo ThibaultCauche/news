@@ -1,4 +1,5 @@
 import "package:flutter_test/flutter_test.dart";
+import "package:mobile/features/bracket/bracket_provider.dart";
 import "package:mobile/features/bracket/bracket_screen.dart";
 import "package:news_api_client/news_api_client.dart";
 
@@ -92,6 +93,22 @@ void main() {
       final target = _node(eventId: "t", name: "Semifinal", round: 1);
       final rows = bracketMatchRows(target, [_link(from: "inconnu", to: "t", outcome: "winner")], {});
       expect(rows, [("Gagnant de un match à venir", null, false)]);
+    });
+  });
+
+  group("groupCompetitionIds", () {
+    CompetitionChildDto child(String id, String name) => CompetitionChildDto((b) => b
+      ..id = id
+      ..name = name
+      ..kind = "tournament");
+
+    test("garde seulement les poules, triées par nom quel que soit l'ordre reçu", () {
+      final children = [child("d", "Group D"), child("playoffs", "Playoffs"), child("b", "Group B"), child("a", "Group A"), child("c", "Group C")];
+      expect(groupCompetitionIds(children), ["a", "b", "c", "d"]);
+    });
+
+    test("aucune poule : liste vide", () {
+      expect(groupCompetitionIds([child("playoffs", "Playoffs")]), isEmpty);
     });
   });
 }
