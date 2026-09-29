@@ -33,8 +33,14 @@ const _categories = [(label: "Tout", slug: null), (label: "E-sport", slug: "espo
 
 /// Écran 09 (`docs/02`). L'export `.ics` de la maquette n'est pas prévu au
 /// périmètre du J3 (`docs/04`) : le bouton reste visible mais désactivé.
+///
+/// Avec `leagueIds` (onglet Agenda d'une page jeu, J9), l'écran est intégré :
+/// filtre fixé sur ces ligues, sans titre ni pastilles de catégorie, et sans
+/// toucher au filtre mémorisé de l'onglet principal.
 class AgendaScreen extends ConsumerStatefulWidget {
-  const AgendaScreen({super.key});
+  const AgendaScreen({super.key, this.leagueIds});
+
+  final List<String>? leagueIds;
 
   @override
   ConsumerState<AgendaScreen> createState() => _AgendaScreenState();
@@ -65,6 +71,7 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
   @override
   void initState() {
     super.initState();
+    if (widget.leagueIds != null) return;
     final store = ref.read(authStoreProvider);
     _category = store.agendaCategory;
     final leagueIds = store.agendaLeagueIds;
@@ -168,20 +175,24 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final leagueIds = _category == "esport" ? _selectedLeagueIds : null;
-    final query = (from: _windowStart, to: _windowEnd, category: _category, leagueIds: leagueIds?.isEmpty == true ? null : leagueIds?.join(","));
+    final embedded = widget.leagueIds != null;
+    final leagueIds = embedded ? widget.leagueIds!.toSet() : (_category == "esport" ? _selectedLeagueIds : null);
+    final query = (from: _windowStart, to: _windowEnd, category: embedded ? null : _category, leagueIds: leagueIds?.isEmpty == true ? null : leagueIds?.join(","));
     final agenda = ref.watch(agendaProvider(query));
     final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
 
     return SafeArea(
+      top: !embedded,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 0),
-            child: Text("Agenda", style: Theme.of(context).textTheme.headlineLarge),
-          ),
-          const SizedBox(height: AppSpacing.md),
+          if (!embedded) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 0),
+              child: Text("Agenda", style: Theme.of(context).textTheme.headlineLarge),
+            ),
+            const SizedBox(height: AppSpacing.md),
+          ],
           _WeekStrip(
             weekStart: _weekStart,
             selectedDay: _selectedDay,
@@ -194,6 +205,7 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
             onNext: () => _shiftWeek(1),
             onSelect: _selectDay,
           ),
+          if (!embedded) ...[
           const SizedBox(height: AppSpacing.sm),
           SizedBox(
             height: 40,
@@ -214,6 +226,7 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
               ],
             ),
           ),
+          ],
           const SizedBox(height: AppSpacing.md),
           Expanded(
             child: switch (agenda) {

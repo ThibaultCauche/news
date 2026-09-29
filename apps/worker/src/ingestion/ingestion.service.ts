@@ -89,6 +89,8 @@ export class IngestionService {
           categoryId,
           parentId,
           kind: dto.kind,
+          game: dto.game,
+          imageUrl: dto.imageUrl,
           name: dto.name,
           status: dto.status,
           startsAt: dto.startsAt,

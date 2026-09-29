@@ -48,8 +48,10 @@ dependencies:
   firebase_messaging: ^16.7.0
   palette_generator: ^0.3.3
   url_launcher: ^6.3.2
+  flutter_svg: ^2.3.0
 
 dev_dependencies:
+  built_collection: ^5.1.1
   flutter_test:
     sdk: flutter
 
@@ -68,6 +70,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/games/
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

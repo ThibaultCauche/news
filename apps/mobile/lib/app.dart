@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "features/agenda/agenda_screen.dart";
+import "features/competitions/competitions_screen.dart";
 import "features/follows/follows_screen.dart";
 import "features/home/home_screen.dart";
 import "theme/tokens.dart";
@@ -10,11 +11,12 @@ import "widgets/glass_tab_bar.dart";
 const _items = [
   GlassTabBarItem(icon: Icons.wb_sunny_outlined, label: "Aujourd'hui"),
   GlassTabBarItem(icon: Icons.calendar_today_outlined, label: "Agenda"),
+  GlassTabBarItem(icon: Icons.explore_outlined, label: "Compétitions", featured: true),
   GlassTabBarItem(icon: Icons.star_outline_rounded, label: "Suivis"),
   GlassTabBarItem(icon: Icons.casino_outlined, label: "Jeu"),
 ];
 
-/// Tab bar V2 : Aujourd'hui · Agenda · Suivis · Jeu (`docs/02`). Suivis est
+/// Tab bar V2 : Aujourd'hui · Agenda · Compétitions · Suivis · Jeu (`docs/02`). Suivis est
 /// connecté aux abonnements depuis le J4 (`docs/04`) ; Jeu reste en
 /// placeholder (hors périmètre).
 class NewsApp extends StatefulWidget {
@@ -36,6 +38,7 @@ class _NewsAppState extends State<NewsApp> {
         children: const [
           HomeScreen(),
           AgendaScreen(),
+          CompetitionsScreen(),
           FollowsScreen(),
           _ComingSoon(label: "Jeu du jour"),
         ],

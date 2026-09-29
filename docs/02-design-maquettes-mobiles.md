@@ -8,7 +8,7 @@
 
 - Écrans iPhone 390×844, **thème sombre**, police Inter.
 - **Scénario fictif mais crédible** : VCT 2026, Champions Shanghai en phase finale. Équipe suivie : **G2 Esports**. Les exemples hors e-sport (loi, lancement, sorties, élection, keynote, streamers) sont marqués « exemple fictif ».
-- Tab bar V2 : **Aujourd'hui · Agenda · Suivis · Jeu**. Explorer s'ouvre avec la loupe de l'accueil, Réglages avec l'avatar.
+- Tab bar V2 : **Aujourd'hui · Agenda · Compétitions · Suivis · Jeu** (J9 : 5ᵉ onglet « Compétitions » au centre, icône plus grande). Explorer s'ouvre avec la loupe de l'accueil, Réglages avec l'avatar.
 
 ## Palette (tokens à reprendre dans Flutter)
 
@@ -52,7 +52,8 @@ Ordre du haut vers le bas, du plus urgent au plus exploratoire :
 
 | # | Écran | Rôle |
 |---|---|---|
-| 01 | Page Valorant — saison | Frise horizontale « ici », carte « Maintenant », étapes jouées repliées |
+| 01 | Page jeu (Valorant) — saison | Trois onglets (J9) : **Compétitions** (frise horizontale « ici », carte « Maintenant », étapes jouées), **Équipes**, **Agenda** (filtrés sur le jeu). Étoile « Favori » en haut à droite (raccourci, sans notification) |
+| 27 | Compétitions (J9, sans maquette) | 5ᵉ onglet : recherche (jeux, ligues, séries), raccourci « Favoris », catégories en accordéon (une catégorie sans donnée n'apparaît pas) |
 | 02 | Champions — arbre radial | Tableau principal en cercle, chemin de G2 en or, compte à rebours au centre |
 | 03 | Prochain match G2 – PRX | Compte à rebours, alerte, « pourquoi ce match compte », forme récente |
 | 04 | Feuille glossaire « BO3 » | Explication avec exemple en 3 cartes |

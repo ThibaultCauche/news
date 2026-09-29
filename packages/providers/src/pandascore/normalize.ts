@@ -54,12 +54,18 @@ export function normalizeTeamEntity(team: RawTeam): EntityDTO {
   };
 }
 
+// L'adaptateur ne couvre que Valorant pour l'instant (`provider.ts`) ; à lire depuis
+// `videogame` quand d'autres jeux arriveront.
+const GAME = "valorant";
+
 export function normalizeLeague(league: RawLeague): CompetitionDTO {
   return {
     provider: PROVIDER,
     externalId: String(league.id),
     parentExternalId: null,
     kind: "league",
+    game: GAME,
+    imageUrl: league.image_url ?? null,
     name: league.name,
     status: null,
     startsAt: null,
@@ -76,6 +82,8 @@ export function normalizeSerie(serie: RawSerie): CompetitionDTO {
     externalId: String(serie.id),
     parentExternalId: String(serie.league_id),
     kind: "serie",
+    game: GAME,
+    imageUrl: null,
     name: serie.full_name ?? serie.name,
     status: null,
     startsAt: serie.begin_at ? new Date(serie.begin_at) : null,
@@ -94,6 +102,8 @@ export function normalizeTournament(tournament: RawTournament, now: Date = new D
     externalId: String(tournament.id),
     parentExternalId: String(tournament.serie_id),
     kind: "tournament",
+    game: GAME,
+    imageUrl: null,
     name: tournament.name,
     status: computeCompetitionStatus(startsAt, endsAt, tournament.winner_id != null, now),
     startsAt,

@@ -2,59 +2,85 @@ import "dart:math" as math;
 
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:news_api_client/news_api_client.dart";
+
 import "../../core/settings_provider.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
+import "../../widgets/game_logo.dart";
 import "../../widgets/group_bracket_tree.dart";
 import "../bracket/bracket_provider.dart";
 import "../bracket/bracket_screen.dart";
 import "../bracket/kickoff_lives_screen.dart";
-import "../follows/follows_provider.dart";
 import "../next_match/next_match_screen.dart";
-import "season_data.dart";
+import "../agenda/agenda_screen.dart";
+import "../team/team_screen.dart";
+import "../valorant_season/season_data.dart";
+import "competitions_data.dart";
 
-const _tabs = ["Saison", "Tournoi", "Équipes", "Agenda"];
+const _tabs = ["Compétitions", "Équipes", "Agenda"];
 
 /// Kickoff se raconte en « 3 vies » (écran 14), les autres étapes à élimination
 /// double en arbre radial + groupes + repêchage (écrans 02/05/06/07) — `docs/02`.
-void _openStep(BuildContext context, SeasonStep step) {
-  final subtitle = step.status?.statusKind.label ?? "";
-  if (step.name.toLowerCase().contains("kickoff")) {
+void openCompetitionPage(BuildContext context, {required String id, required String name, String? status}) {
+  final subtitle = status?.statusKind.label ?? "";
+  if (name.toLowerCase().contains("kickoff")) {
     Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => KickoffLivesScreen(competitionId: step.id, title: step.name, subtitle: subtitle)),
+      MaterialPageRoute(
+        builder: (_) => KickoffLivesScreen(competitionId: id, title: name, subtitle: subtitle),
+      ),
     );
     return;
   }
   Navigator.of(context).push(
-    MaterialPageRoute(builder: (_) => BracketScreen(competitionId: step.id, title: step.name, subtitle: subtitle)),
+    MaterialPageRoute(
+      builder: (_) => BracketScreen(competitionId: id, title: name, subtitle: subtitle),
+    ),
   );
 }
 
-/// Écran 01 (`docs/02`). Seul l'onglet "Saison" est actif au J3 (`docs/04`) ;
-/// les autres restent en placeholder, comme la tab bar principale.
-class ValorantSeasonScreen extends ConsumerStatefulWidget {
-  const ValorantSeasonScreen({super.key});
+void _openStep(BuildContext context, SeasonStep step) => openCompetitionPage(context, id: step.id, name: step.name, status: step.status);
+
+/// Page jeu (écran 01 de `docs/02`, J9) : Compétitions (frise de saison,
+/// en cours, déjà jouées), Équipes et Agenda, ces deux derniers filtrés sur le
+/// jeu. `game` vient du catalogue : rien de propre à Valorant dans l'écran, sauf
+/// `valorantSeasonProvider` (seul jeu ingéré pour l'instant).
+class GameScreen extends ConsumerStatefulWidget {
+  const GameScreen({super.key, required this.game});
+
+  final CatalogGameDto game;
 
   @override
-  ConsumerState<ValorantSeasonScreen> createState() => _ValorantSeasonScreenState();
+  ConsumerState<GameScreen> createState() => _GameScreenState();
 }
 
-class _ValorantSeasonScreenState extends ConsumerState<ValorantSeasonScreen> {
+class _GameScreenState extends ConsumerState<GameScreen> {
   int _tabIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     final overview = ref.watch(valorantSeasonProvider);
     final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
+    final game = widget.game;
     return Scaffold(
-      appBar: AppBar(title: const Text("Valorant"), actions: [_FollowSeasonPill(competitionId: overview.value?.rootCompetitionId)]),
+      appBar: AppBar(
+        title: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GameLogo(slug: game.slug, size: 30),
+            const SizedBox(width: AppSpacing.sm),
+            Text(game.name),
+          ],
+        ),
+        actions: [_FavoriteGameButton(game: game.slug)],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Padding(
             padding: EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
-            child: Text("E-sport · saison VCT 2026", style: TextStyle(color: AppColors.textSecondary)),
+            child: Text("E-sport", style: TextStyle(color: AppColors.textSecondary)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
@@ -62,15 +88,20 @@ class _ValorantSeasonScreenState extends ConsumerState<ValorantSeasonScreen> {
           ),
           const SizedBox(height: AppSpacing.md),
           Expanded(
-            child: _tabIndex != 0
-                ? const Center(child: Text("Bientôt disponible", style: TextStyle(color: AppColors.textSecondary)))
-                : switch (overview) {
-                    AsyncData(:final value) => value == null
-                        ? const Center(child: Text("Aucune compétition Valorant en cours.", style: TextStyle(color: AppColors.textSecondary)))
-                        : _SeasonBody(overview: value, scoresHidden: scoresHidden),
-                    AsyncError() => const Center(child: Text("Impossible de charger la saison.")),
-                    _ => const Center(child: CircularProgressIndicator()),
-                  },
+            child: switch (_tabIndex) {
+              1 => _TeamsTab(game: game),
+              2 => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
+              _ => switch (overview) {
+                AsyncData(:final value) =>
+                  value == null
+                      ? Center(
+                          child: Text("Aucune compétition ${game.name} en cours.", style: const TextStyle(color: AppColors.textSecondary)),
+                        )
+                      : _SeasonBody(overview: value, scoresHidden: scoresHidden),
+                AsyncError() => const Center(child: Text("Impossible de charger la saison.")),
+                _ => const Center(child: CircularProgressIndicator()),
+              },
+            },
           ),
         ],
       ),
@@ -131,48 +162,81 @@ class _SeasonTabs extends StatelessWidget {
   }
 }
 
-/// Suit la ligue racine (ex. "VCT") plutôt qu'une seule étape (docs/04 J4) :
-/// couvre toutes les compétitions filles (abonnement hiérarchique, docs/03 §6).
-class _FollowSeasonPill extends ConsumerWidget {
-  const _FollowSeasonPill({required this.competitionId});
+/// Étoile « Favori » : raccourci vers le jeu depuis l'onglet Compétitions, sans
+/// abonnement ni notification (vocabulaire « Suivre » réservé aux compétitions,
+/// équipes et matchs).
+class _FavoriteGameButton extends ConsumerWidget {
+  const _FavoriteGameButton({required this.game});
 
-  final String? competitionId;
+  final String game;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final id = competitionId;
-    if (id == null) return const SizedBox.shrink();
-    final following = isFollowing(ref.watch(followsProvider).value, FollowTargetType.competition, id);
-    return Padding(
-      padding: const EdgeInsets.only(right: AppSpacing.md),
-      child: GestureDetector(
-        onTap: () => following
-            ? ref.read(followsControllerProvider).unfollow(FollowTargetType.competition, id)
-            : ref.read(followsControllerProvider).follow(FollowTargetType.competition, id),
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: 6),
-          decoration: BoxDecoration(
-            color: following ? AppColors.gold.withValues(alpha: 0.15) : AppColors.textPrimary,
-            borderRadius: BorderRadius.circular(AppRadii.pill),
-            border: following ? Border.all(color: AppColors.gold) : null,
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (following) const Icon(Icons.check_rounded, size: 14, color: AppColors.gold),
-              if (following) const SizedBox(width: 4),
-              Text(
-                following ? "Suivi" : "Suivre",
-                style: TextStyle(
-                  fontWeight: FontWeight.w600,
-                  fontSize: 13,
-                  color: following ? AppColors.gold : AppColors.background,
-                ),
+    final favorite = ref.watch(favoriteGamesProvider).value?.contains(game) ?? false;
+    return IconButton(
+      tooltip: favorite ? "Retirer des favoris" : "Ajouter aux favoris",
+      onPressed: () => ref.read(favoriteGamesProvider.notifier).toggle(game),
+      icon: Icon(favorite ? Icons.star_rounded : Icons.star_outline_rounded, color: favorite ? AppColors.gold : AppColors.textSecondary),
+    );
+  }
+}
+
+/// Équipes du jeu, triées par nom ; l'appui ouvre la fiche équipe (écran 10).
+class _TeamsTab extends ConsumerWidget {
+  const _TeamsTab({required this.game});
+
+  final CatalogGameDto game;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    return switch (ref.watch(gameTeamsProvider(game.slug))) {
+      AsyncData(:final value) =>
+        value.isEmpty
+            ? const Center(
+                child: Text("Aucune équipe pour l'instant.", style: TextStyle(color: AppColors.textSecondary)),
+              )
+            : ListView(
+                padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xl),
+                children: [
+                  for (final team in value)
+                    ListTile(
+                      contentPadding: EdgeInsets.zero,
+                      leading: _TeamLogo(team: team),
+                      title: Text(team.name),
+                      trailing: const Icon(Icons.chevron_right, color: AppColors.textTertiary),
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => TeamScreen(entityId: team.id, breadcrumb: game.name),
+                        ),
+                      ),
+                    ),
+                ],
               ),
-            ],
-          ),
-        ),
+      AsyncError() => const Center(child: Text("Impossible de charger les équipes.")),
+      _ => const Center(child: CircularProgressIndicator()),
+    };
+  }
+}
+
+class _TeamLogo extends StatelessWidget {
+  const _TeamLogo({required this.team});
+
+  final EntityListItemDto team;
+
+  @override
+  Widget build(BuildContext context) {
+    final fallback = Center(
+      child: Text(
+        (team.shortName ?? team.name).characters.take(3).toString().toUpperCase(),
+        style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700, color: AppColors.textSecondary),
       ),
+    );
+    return Container(
+      width: 40,
+      height: 40,
+      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.chip)),
+      clipBehavior: Clip.antiAlias,
+      child: team.imageUrl == null ? fallback : Image.network(team.imageUrl!, fit: BoxFit.contain, errorBuilder: (_, _, _) => fallback),
     );
   }
 }
@@ -372,10 +436,15 @@ class _Connector extends StatelessWidget {
     final color = colorFor(bright: bright && !dashed);
     final line = dashed
         ? Row(
-            children: [for (var i = 0; i < 3; i++) ...[Container(width: 2, height: 2, color: color), if (i != 2) const SizedBox(width: 2)]],
+            children: [
+              for (var i = 0; i < 3; i++) ...[Container(width: 2, height: 2, color: color), if (i != 2) const SizedBox(width: 2)],
+            ],
           )
         : Container(width: 14, height: 2, color: color);
-    return Padding(padding: const EdgeInsets.only(top: _dotCenterY - 1), child: line);
+    return Padding(
+      padding: const EdgeInsets.only(top: _dotCenterY - 1),
+      child: line,
+    );
   }
 }
 
@@ -416,7 +485,11 @@ class _StepDot extends StatelessWidget {
       dot = Container(
         width: 12,
         height: 12,
-        decoration: const BoxDecoration(color: AppColors.live, shape: BoxShape.circle, border: Border.fromBorderSide(BorderSide(color: Colors.white, width: 2))),
+        decoration: const BoxDecoration(
+          color: AppColors.live,
+          shape: BoxShape.circle,
+          border: Border.fromBorderSide(BorderSide(color: Colors.white, width: 2)),
+        ),
       );
       dot = Container(
         width: 24,
@@ -448,7 +521,13 @@ class _StepDot extends StatelessWidget {
             // ne prenne le relais. C'était la vraie raison des trous
             // signalés (pas une marge/un padding entre widgets, un trait
             // trop court).
-            Positioned(top: _dotCenterY - 1, left: 0, width: 46, height: 2, child: Container(color: _Connector.colorFor(bright: bright))),
+            Positioned(
+              top: _dotCenterY - 1,
+              left: 0,
+              width: 46,
+              height: 2,
+              child: Container(color: _Connector.colorFor(bright: bright)),
+            ),
             Column(
               children: [
                 SizedBox(
@@ -511,7 +590,13 @@ class _PauseDot extends StatelessWidget {
           // Même logique que `_StepDot` : le trait couvre toute la colonne
           // (46), pas seulement la case du point (24), sinon le segment
           // pointillé qui précède s'arrête avant de le toucher.
-          Positioned(top: _dotCenterY - 1, left: 0, width: 46, height: 2, child: Container(color: _Connector.colorFor(bright: false))),
+          Positioned(
+            top: _dotCenterY - 1,
+            left: 0,
+            width: 46,
+            height: 2,
+            child: Container(color: _Connector.colorFor(bright: false)),
+          ),
           Column(
             children: [
               const SizedBox(height: 18),
@@ -526,12 +611,20 @@ class _PauseDot extends StatelessWidget {
                   child: Container(
                     width: 9,
                     height: 9,
-                    decoration: BoxDecoration(color: AppColors.surface, shape: BoxShape.circle, border: Border.all(color: AppColors.textTertiary)),
+                    decoration: BoxDecoration(
+                      color: AppColors.surface,
+                      shape: BoxShape.circle,
+                      border: Border.all(color: AppColors.textTertiary),
+                    ),
                   ),
                 ),
               ),
               const SizedBox(height: 4),
-              const Text("À venir", textAlign: TextAlign.center, style: TextStyle(fontSize: 9, color: AppColors.textTertiary)),
+              const Text(
+                "À venir",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 9, color: AppColors.textTertiary),
+              ),
             ],
           ),
         ],

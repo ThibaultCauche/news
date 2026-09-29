@@ -1,11 +1,13 @@
+import "package:built_collection/built_collection.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:mobile/core/settings_provider.dart";
 import "package:mobile/features/bracket/bracket_provider.dart";
 import "package:mobile/features/valorant_season/season_data.dart";
-import "package:mobile/features/valorant_season/valorant_season_screen.dart";
+import "package:mobile/features/competitions/game_screen.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../competitions_test_helpers.dart";
 import "../follows_test_helpers.dart";
 
 // Noms longs et réels (pas les 6 étapes fictives de la maquette) : c'est ce
@@ -14,6 +16,11 @@ import "../follows_test_helpers.dart";
 // pas repéré.
 SeasonStep _step(String id, String name, {DateTime? startsAt, DateTime? endsAt}) =>
     SeasonStep(id: id, name: name, status: null, startsAt: startsAt, endsAt: endsAt);
+
+final _valorant = CatalogGameDto((b) => b
+  ..slug = "valorant"
+  ..name = "Valorant"
+  ..leagues = ListBuilder<CatalogLeagueDto>());
 
 void main() {
   testWidgets("frise de saison : pas d'exception de mise en page avec de vrais noms longs", (tester) async {
@@ -43,6 +50,7 @@ void main() {
             ..spoilerFree = false
             ..morningDigest = false)),
           overrideFollowsWith(const []),
+          overrideFavoriteGamesWith(const []),
           // `_NowCard` cherche des poules parmi les enfants de l'étape en
           // cours (`GroupBracketTree`) : sans ce mock, l'appel réseau réel
           // ne se résout jamais et laisse un timer pendant à la fin du test.
@@ -52,7 +60,7 @@ void main() {
             ..kind = "tournament"
             ..sourceUpdatedAt = "2026-09-27T00:00:00Z")),
         ],
-        child: const MaterialApp(home: ValorantSeasonScreen()),
+        child: MaterialApp(home: GameScreen(game: _valorant)),
       ),
     );
     await tester.pump();
@@ -99,6 +107,7 @@ void main() {
             ..spoilerFree = false
             ..morningDigest = false)),
           overrideFollowsWith(const []),
+          overrideFavoriteGamesWith(const []),
           competitionDetailProvider("champions").overrideWith((ref) async => CompetitionResponseDto((b) => b
             ..id = "champions"
             ..name = "Champions 2026"
@@ -118,7 +127,7 @@ void main() {
             ..sourceUpdatedAt = "2026-09-27T00:00:00Z"
             ..nodes.add(opening))),
         ],
-        child: const MaterialApp(home: ValorantSeasonScreen()),
+        child: MaterialApp(home: GameScreen(game: _valorant)),
       ),
     );
     await tester.pump();

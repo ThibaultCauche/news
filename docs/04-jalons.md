@@ -14,7 +14,7 @@
 | J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | **Fait (2026-09-27)** |
 | J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | **Fait (2026-09-27)** |
 | J8 | Polissage UI/UX Valorant : retour optimiste, repères visuels, navigation Agenda | L'appli est plus lisible et plus réactive pour un néophyte | **Fait (2026-09-28)** |
-| J9 | Onglet Compétitions : navigation catégorie → jeu → compétition, favoris de jeux, recherche | On retrouve n'importe quel jeu ou compétition en 2 taps, sans passer par l'Accueil | À planifier |
+| J9 | Onglet Compétitions : navigation catégorie → jeu → compétition, favoris de jeux, recherche | On retrouve n'importe quel jeu ou compétition en 2 taps, sans passer par l'Accueil | **Fait (2026-09-29)** |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -229,15 +229,23 @@
 
 **À vérifier au cadrage** : le bouton « Suivi » actuel de l'écran Valorant est-il un vrai abonnement sur la ligue racine (donc notifie pour tout le jeu) ? Si oui, le migrer vers le favori. Mettre à jour `docs/02` (nouvelle tab bar et écrans) avant d'implémenter.
 
+**Cadrage (2026-09-29)** : le modèle n'avait aucune notion de « jeu » (les racines sont des ligues : VCT, Esports World Cup…) → colonne `competition.game` (slug, renseignée à l'ingestion, rattrapée en migration). Favoris dans `favorite_game`, séparés de `subscription`. Le bouton « Suivi » de l'ancien écran Valorant était bien un abonnement sur la ligue racine : remplacé par l'étoile « Favori » (pas de migration des abonnements existants, un seul compte concerné). L'onglet **Équipes** est inclus au périmètre (`GET /v1/entities?game=`). Recherche : jeux, ligues et séries du catalogue, côté appli.
+
 **Hors périmètre** : recherche d'équipes et de joueurs (plus tard, demandera un endpoint dédié) ; catégories Sport/Politique (pas encore de données).
 
 **Critères d'acceptation**
-- [ ] Depuis n'importe quel écran, l'onglet Compétitions mène à un jeu en 2 taps (catégorie, jeu).
-- [ ] La recherche trouve un jeu ou une compétition par son nom (insensible à la casse et aux accents).
-- [ ] Mettre un jeu en favori l'ajoute au raccourci, sans créer d'abonnement ni de notification.
-- [ ] La page jeu affiche la frise de saison, les compétitions en cours/passées, Équipes et Agenda filtrés sur le jeu.
-- [ ] La page compétition ne montre plus la frise ni les compétitions passées.
-- [ ] Vérifié en conditions réelles sur téléphone Android physique.
+- [x] Depuis n'importe quel écran, l'onglet Compétitions mène à un jeu en 2 taps (catégorie, jeu).
+- [x] La recherche trouve un jeu ou une compétition par son nom (insensible à la casse et aux accents).
+- [x] Mettre un jeu en favori l'ajoute au raccourci, sans créer d'abonnement ni de notification.
+- [x] La page jeu affiche la frise de saison, les compétitions en cours/passées, Équipes et Agenda filtrés sur le jeu.
+- [x] La page compétition ne montre plus la frise ni les compétitions passées.
+- [x] Vérifié en conditions réelles sur téléphone Android physique.
+
+---
+
+**Fait (2026-09-29).** Vérifié : tests API (25, dont 4 e2e pour catalogue/favoris/équipes par jeu), Flutter (widgets, bracket, suivis), `flutter analyze` propre, puis conditions réelles sur téléphone Android physique.
+
+**Reporté** : golden de la tab bar à régénérer via la CI (le widget a changé, procédure du `CLAUDE.md` ; échoue déjà sous Windows à cause de la police) ; page dédiée à la ligue (VCT) pour y afficher son logo en grand (le logo de ligue n'apparaît pour l'instant que dans la recherche) ; recherche d'équipes et de joueurs ; catégories Sport/Politique (pas de données) ; logos de jeux autres que Valorant (un SVG par jeu à ajouter dans `apps/mobile/assets/games/<slug>.svg`).
 
 ---
 

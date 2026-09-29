@@ -12,7 +12,6 @@ import "../../widgets/live_dot.dart";
 import "../follows/follows_provider.dart";
 import "../next_match/next_match_screen.dart";
 import "../settings/settings_screen.dart";
-import "../valorant_season/valorant_season_screen.dart";
 
 final homeProvider = FutureProvider.autoDispose<HomeResponseDto>((ref) async {
   final response = await ref.watch(apiClientProvider).getHomeApi().homeControllerGetHome();
@@ -111,42 +110,12 @@ class _HomeBody extends StatelessWidget {
 
     return SliverList(
       delegate: SliverChildListDelegate([
-        const _ValorantEntryPoint(),
         if (liveEvent != null) _MatchBanner(event: liveEvent, next: upcoming.firstOrNull, isLive: true),
         if (liveEvent == null && upNextEvent != null) _MatchBanner(event: upNextEvent, isLive: false),
         if (follows.isNotEmpty) _FollowsSection(follows: follows, scoresHidden: scoresHidden),
         if (highlights.isNotEmpty) _HighlightsSection(events: highlights.take(5).toList()),
         const SizedBox(height: AppSpacing.xl),
       ]),
-    );
-  }
-}
-
-/// Seule catégorie active pour l'instant (règle 1 de `docs/00` : Valorant
-/// d'abord) : point d'entrée vers la page saison (écran 01) et, depuis là,
-/// les brackets (écrans 02/05/06/07, J5). En attendant l'écran Explorer (18).
-class _ValorantEntryPoint extends StatelessWidget {
-  const _ValorantEntryPoint();
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadii.chip),
-        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ValorantSeasonScreen())),
-        child: const Padding(
-          padding: EdgeInsets.symmetric(vertical: AppSpacing.sm),
-          child: Row(
-            children: [
-              Icon(Icons.sports_esports_rounded, size: 18, color: AppColors.textSecondary),
-              SizedBox(width: AppSpacing.sm),
-              Expanded(child: Text("Valorant · saison VCT 2026", style: TextStyle(fontWeight: FontWeight.w600))),
-              Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
-            ],
-          ),
-        ),
-      ),
     );
   }
 }

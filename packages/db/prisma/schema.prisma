@@ -29,6 +29,11 @@ model Competition {
   parent     Competition?  @relation("CompetitionHierarchy", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   children   Competition[] @relation("CompetitionHierarchy")
   kind       String
+  // Slug du jeu (ex. "valorant"), null hors e-sport : sert à regrouper les ligues
+  // par jeu dans l'onglet Compétitions (J9). Champ, pas une table (règle 3).
+  game       String?
+  // Logo fourni par le fournisseur (ligues PandaScore) ; sert de logo de jeu (J9).
+  imageUrl   String?       @map("image_url")
   name       String
   format     String?
   status     String?
@@ -190,9 +195,23 @@ model AppUser {
   subscriptions    Subscription[]
   setting          UserSetting?
   notificationLogs NotificationLog[]
+  favoriteGames    FavoriteGame[]
   createdAt        DateTime          @default(now()) @map("created_at")
 
   @@map("app_user")
+}
+
+// Jeu mis en favori (J9) : simple raccourci d'accès, sans notification. Séparé de
+// `subscription`, qui est hiérarchique (suivre une ligue notifierait tout le jeu).
+model FavoriteGame {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      String
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@unique([userId, game])
+  @@map("favorite_game")
 }
 
 // Un appareil par installation (`installId` généré une fois côté client). `liveActivityToken`

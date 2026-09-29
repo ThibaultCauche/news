@@ -5,6 +5,7 @@ export const CacheKeys = {
   home: () => "cache:v1:home",
   agenda: (from: string, to: string, category?: string, leagueIds?: string) =>
     `cache:v1:agenda:${from}:${to}:${category ?? "all"}:${leagueIds ?? "all"}`,
+  catalog: () => "cache:v1:catalog",
   competitionRoots: (category: string) => `cache:v1:competition-roots:${category}`,
   competition: (id: string) => `cache:v1:competition:${id}`,
   bracket: (id: string) => `cache:v1:bracket:${id}`,

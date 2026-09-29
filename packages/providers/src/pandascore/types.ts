@@ -12,6 +12,7 @@ export interface RawTeam {
 export interface RawLeague {
   id: number;
   name: string;
+  image_url?: string | null;
 }
 
 export interface RawSerie {

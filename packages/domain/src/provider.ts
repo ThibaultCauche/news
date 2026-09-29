@@ -16,6 +16,9 @@ export interface CompetitionDTO {
   externalId: string;
   parentExternalId: string | null;
   kind: string;
+  // Slug du jeu (ex. "valorant"), voir `competition.game` (J9).
+  game: string | null;
+  imageUrl: string | null;
   name: string;
   status: EventStatus | null;
   startsAt: Date | null;

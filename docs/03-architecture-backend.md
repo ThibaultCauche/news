@@ -53,7 +53,7 @@
 | Table | Rôle | Champs clés |
 |---|---|---|
 | `category` | E-sport, Sport, Politique, Élections, Espace… | `slug`, `name`, `icon` |
-| `competition` | Tout ce qui a une structure : saison VCT, Champions, phase finale, Kickoff, Top 14, loi, programme de lancement | `parent_id` (hiérarchie), `category_id`, `kind`, `format`, `status`, `starts_at`, `ends_at`, `structure` (JSONB), `importance` |
+| `competition` | Tout ce qui a une structure : saison VCT, Champions, phase finale, Kickoff, Top 14, loi, programme de lancement | `parent_id` (hiérarchie), `category_id`, `kind`, `game` (slug du jeu, J9), `format`, `status`, `starts_at`, `ends_at`, `structure` (JSONB), `importance` |
 | `entity` | Équipe, joueur, streamer, parti/groupe, fusée, studio… | `kind`, `name`, `short_name` (G2, PRX), `parent_id`, `region`, `image_url` |
 | `event` | Le cœur : match, vote, lancement, sortie, stream, keynote | `competition_id`, `kind`, `status`, `starts_at`, `ends_at`, `best_of`, `result` (JSONB), `importance`, `spoiler_sensitive` |
 | `event_participant` | Qui joue / qui est concerné | `event_id`, `entity_id`, `side`, `score`, `is_winner`, `seed` |
@@ -147,6 +147,9 @@ Les endpoints suivent les écrans, pour que l'appli fasse un seul appel par écr
 | `GET /v1/competitions/:id/bracket` | 02, 05, 07 | Nœuds (événements), liens gagnant/perdant, rounds et slots, indices de mise en page |
 | `GET /v1/events/:id` | 03, 15, 24, 25, 26 | Participants, score, moments, contexte, forme récente, où regarder |
 | `GET /v1/entities/:id` | 10 Fiche équipe | Chiffres clés, dernier et prochain événement |
+| `GET /v1/entities?game=` | 01 Page jeu, onglet Équipes (J9) | Équipes ayant joué dans une compétition du jeu |
+| `GET /v1/catalog` | 27 Compétitions (J9) | Catégories → jeux → ligues et séries, seulement celles qui ont des données |
+| `GET /v1/favorites/games`, `PUT/DELETE /v1/favorites/games/:game` | 27, 01 (J9) | Jeux favoris : raccourci d'accès, **sans** notification (table `favorite_game`, distincte de `subscription`, hiérarchique) |
 | `GET /v1/explore`, `GET /v1/search?q` | 18 Explorer | Catégories, tendances, recherche |
 | `GET /v1/glossary/:term` | 04 Feuille glossaire | Définition + exemple |
 | `POST/DELETE /v1/subscriptions` | Partout (« Suivre ») | Abonnement / désabonnement |

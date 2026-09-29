@@ -6,11 +6,13 @@ import { SentryGlobalFilter } from "@sentry/nestjs/setup";
 import { AgendaModule } from "./agenda/agenda.module";
 import { AuthModule } from "./auth/auth.module";
 import { CacheModule } from "./cache/cache.module";
+import { CatalogModule } from "./catalog/catalog.module";
 import { CompetitionsModule } from "./competitions/competitions.module";
 import { DbModule } from "./db/db.module";
 import { DevicesModule } from "./devices/devices.module";
 import { EntitiesModule } from "./entities/entities.module";
 import { EventsModule } from "./events/events.module";
+import { FavoritesModule } from "./favorites/favorites.module";
 import { GlossaryModule } from "./glossary/glossary.module";
 import { HealthController } from "./health/health.controller";
 import { HomeModule } from "./home/home.module";
@@ -33,6 +35,8 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     AgendaModule,
     EventsModule,
     CompetitionsModule,
+    CatalogModule,
+    FavoritesModule,
     EntitiesModule,
     GlossaryModule,
   ],

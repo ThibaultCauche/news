@@ -1,14 +1,19 @@
 import "dart:ui";
 
 import "package:flutter/material.dart";
+
 import "../theme/app_theme.dart";
 import "../theme/tokens.dart";
 
 class GlassTabBarItem {
-  const GlassTabBarItem({required this.icon, required this.label});
+  const GlassTabBarItem({required this.icon, required this.label, this.featured = false});
 
   final IconData icon;
   final String label;
+
+  /// Onglet mis en avant (Compétitions, J9) : icône dans un cercle or qui dépasse
+  /// de la barre (or = « à moi », comme Suivis, `docs/02`).
+  final bool featured;
 }
 
 /// Tab bar V2 : capsule de verre flottante (`docs/maquettes/specs/tab-bar.md`
@@ -31,67 +36,115 @@ class GlassTabBar extends StatelessWidget {
   // ratio 7/358 reste correct quelle que soit la largeur d'écran.
   static const _trackMarginRatio = 7 / 358;
 
+  static const _featuredSize = 54.0;
+  // Dépassement au-dessus de la barre, hors du `ClipRRect` (sinon rogné).
+  static const _featuredRise = 22.0;
+
   @override
   Widget build(BuildContext context) {
+    final featuredIndex = items.indexWhere((i) => i.featured);
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(AppRadii.pill),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-            child: Container(
-              height: _barHeight,
-              decoration: BoxDecoration(
-                color: AppColors.glass.withValues(alpha: AppColors.glassOpacity),
-                borderRadius: BorderRadius.circular(AppRadii.pill),
-                border: Border.all(color: AppColors.glassBorder),
-              ),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final trackMargin = constraints.maxWidth * _trackMarginRatio;
-                  final slotWidth = (constraints.maxWidth - 2 * trackMargin) / items.length;
-                  return Stack(
-                    // La Row (icône+texte) ne fait que sa hauteur de contenu (~38) : sans
-                    // ce centrage, un Stack aligne ses enfants non positionnés en haut.
-                    alignment: Alignment.center,
-                    children: [
-                      AnimatedPositioned(
-                        duration: AppMotion.enterDuration,
-                        curve: AppMotion.enter,
-                        left: trackMargin + currentIndex * slotWidth,
-                        top: (_barHeight - _pillHeight) / 2,
-                        width: slotWidth,
-                        height: _pillHeight,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.12),
-                            borderRadius: BorderRadius.circular(_pillHeight / 2),
+        child: Stack(
+          clipBehavior: Clip.none,
+          children: [
+            _bar(),
+            if (featuredIndex >= 0)
+              Positioned.fill(
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    final trackMargin = constraints.maxWidth * _trackMarginRatio;
+                    final slotWidth = (constraints.maxWidth - 2 * trackMargin) / items.length;
+                    return Stack(
+                      clipBehavior: Clip.none,
+                      children: [
+                        Positioned(
+                          left: trackMargin + featuredIndex * slotWidth + (slotWidth - _featuredSize) / 2,
+                          top: -_featuredRise,
+                          child: GestureDetector(
+                            onTap: () => onTap(featuredIndex),
+                            child: Container(
+                              width: _featuredSize,
+                              height: _featuredSize,
+                              decoration: BoxDecoration(
+                                color: AppColors.gold,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: AppColors.background, width: 3),
+                              ),
+                              child: Icon(items[featuredIndex].icon, color: AppColors.background, size: 26),
+                            ),
                           ),
                         ),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.symmetric(horizontal: trackMargin),
-                        child: Row(
-                          children: [
-                            for (final (index, item) in items.indexed)
-                              Expanded(
-                                child: _TabButton(item: item, selected: index == currentIndex, onTap: () => onTap(index)),
-                              ),
-                          ],
+                      ],
+                    );
+                  },
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _bar() {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(AppRadii.pill),
+      child: BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+        child: Container(
+          height: _barHeight,
+          decoration: BoxDecoration(
+            color: AppColors.glass.withValues(alpha: AppColors.glassOpacity),
+            borderRadius: BorderRadius.circular(AppRadii.pill),
+            border: Border.all(color: AppColors.glassBorder),
+          ),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final trackMargin = constraints.maxWidth * _trackMarginRatio;
+              final slotWidth = (constraints.maxWidth - 2 * trackMargin) / items.length;
+              return Stack(
+                // La Row (icône+texte) ne fait que sa hauteur de contenu (~38) : sans
+                // ce centrage, un Stack aligne ses enfants non positionnés en haut.
+                alignment: Alignment.center,
+                children: [
+                  if (currentIndex != featuredIndexOf(items))
+                    AnimatedPositioned(
+                      duration: AppMotion.enterDuration,
+                      curve: AppMotion.enter,
+                      left: trackMargin + currentIndex * slotWidth,
+                      top: (_barHeight - _pillHeight) / 2,
+                      width: slotWidth,
+                      height: _pillHeight,
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          color: Colors.white.withValues(alpha: 0.12),
+                          borderRadius: BorderRadius.circular(_pillHeight / 2),
                         ),
                       ),
-                    ],
-                  );
-                },
-              ),
-            ),
+                    ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: trackMargin),
+                    child: Row(
+                      children: [
+                        for (final (index, item) in items.indexed)
+                          Expanded(
+                            child: _TabButton(item: item, selected: index == currentIndex, onTap: () => onTap(index)),
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
         ),
       ),
     );
   }
 }
+
+int featuredIndexOf(List<GlassTabBarItem> items) => items.indexWhere((i) => i.featured);
 
 class _TabButton extends StatelessWidget {
   const _TabButton({required this.item, required this.selected, required this.onTap});
@@ -102,7 +155,9 @@ class _TabButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = selected ? AppColors.textPrimary : AppColors.textSecondary;
+    final color = item.featured
+        ? (selected ? AppColors.gold : AppColors.textSecondary)
+        : (selected ? AppColors.textPrimary : AppColors.textSecondary);
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadii.pill),
@@ -110,7 +165,8 @@ class _TabButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(item.icon, color: color, size: 20),
+          // L'icône de l'onglet mis en avant est dessinée par le cercle or, au-dessus.
+          if (item.featured) const SizedBox(height: 20) else Icon(item.icon, color: color, size: 20),
           const SizedBox(height: 6),
           Text(item.label, style: (selected ? AppTextStyles.tabLabelActive : AppTextStyles.tabLabel).copyWith(color: color)),
         ],

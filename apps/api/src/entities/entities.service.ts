@@ -1,6 +1,7 @@
-import { Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { Entity, PrismaClient } from "@news/db";
+import { isKnownGame } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { eventSummaryInclude, EventSummaryDto, toEventSummary } from "../common/event-summary.mapper";
@@ -29,6 +30,13 @@ export class EntityResponseDto {
   @ApiProperty() sourceUpdatedAt!: string;
 }
 
+export class EntityListItemDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty({ nullable: true, type: String }) shortName!: string | null;
+  @ApiProperty({ nullable: true, type: String }) imageUrl!: string | null;
+}
+
 @Injectable()
 export class EntitiesService {
   constructor(
@@ -47,6 +55,17 @@ export class EntitiesService {
     const response = await this.buildResponse(entity);
     await this.cache.set(cacheKey, response, TTL_SECONDS);
     return response;
+  }
+
+  // Équipes ayant au moins un match dans une compétition de ce jeu (onglet Équipes,
+  // J9) : pas de rattachement direct équipe → jeu dans le modèle, on le déduit des matchs.
+  async listByGame(game: string): Promise<EntityListItemDto[]> {
+    if (!isKnownGame(game)) throw new BadRequestException("Jeu inconnu");
+    return this.prisma.entity.findMany({
+      where: { kind: "team", participants: { some: { event: { competition: { game } } } } },
+      select: { id: true, name: true, shortName: true, imageUrl: true },
+      orderBy: { name: "asc" },
+    });
   }
 
   // Résolution par nom court (ex. "G2", "KC") plutôt que par id interne :
