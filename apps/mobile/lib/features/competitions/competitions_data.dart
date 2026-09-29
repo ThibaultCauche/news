@@ -50,7 +50,7 @@ final favoriteGamesProvider = AsyncNotifierProvider.autoDispose<FavoriteGamesNot
 enum SearchKind { game, league, serie }
 
 class SearchResult {
-  const SearchResult({required this.kind, required this.name, required this.game, this.imageUrl, this.competitionId});
+  const SearchResult({required this.kind, required this.name, required this.game, this.imageUrl, this.competitionId, this.league});
 
   final SearchKind kind;
   final String name;
@@ -59,9 +59,11 @@ class SearchResult {
   /// Logo de la ligue (pour une ligue ou une de ses séries).
   final String? imageUrl;
 
-  /// Renseigné pour une série (ouvre la page compétition) ; une ligue ou un jeu
-  /// ouvre la page jeu.
+  /// Renseigné pour une série (ouvre la page compétition).
   final String? competitionId;
+
+  /// Renseignée pour une ligue (ouvre sa page) ; un jeu ouvre la page jeu.
+  final CatalogLeagueDto? league;
 }
 
 /// Jeux, ligues et séries dont le nom contient la recherche (insensible à la
@@ -76,7 +78,7 @@ List<SearchResult> searchCatalog(CatalogDto catalog, String query) {
     for (final game in category.games) {
       if (matches(game.name)) results.add(SearchResult(kind: SearchKind.game, name: game.name, game: game));
       for (final league in game.leagues) {
-        if (matches(league.name)) results.add(SearchResult(kind: SearchKind.league, name: league.name, game: game, imageUrl: league.imageUrl));
+        if (matches(league.name)) results.add(SearchResult(kind: SearchKind.league, name: league.name, game: game, imageUrl: league.imageUrl, league: league));
         for (final serie in league.children) {
           if (matches(serie.name)) {
             results.add(SearchResult(kind: SearchKind.serie, name: serie.name, game: game, imageUrl: league.imageUrl, competitionId: serie.id));
@@ -86,4 +88,18 @@ List<SearchResult> searchCatalog(CatalogDto catalog, String query) {
     }
   }
   return results;
+}
+
+/// La ligue du catalogue d'identifiant [competitionId], avec son jeu, ou `null` (une série,
+/// une étape…) : sert à ouvrir la page ligue plutôt que la page compétition (docs/04 J10).
+({CatalogLeagueDto league, CatalogGameDto game})? findLeague(CatalogDto? catalog, String competitionId) {
+  if (catalog == null) return null;
+  for (final category in catalog.categories) {
+    for (final game in category.games) {
+      for (final league in game.leagues) {
+        if (league.id == competitionId) return (league: league, game: game);
+      }
+    }
+  }
+  return null;
 }

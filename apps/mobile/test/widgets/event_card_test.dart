@@ -101,6 +101,16 @@ void main() {
     expect(find.text("VS"), findsOneWidget);
   });
 
+  testWidgets("équipes inconnues : le compte à rebours s'affiche sous le nom du match", (tester) async {
+    final start = DateTime.now().toUtc().add(const Duration(hours: 5, minutes: 10, seconds: 30));
+    final event = _event(status: "scheduled", startsAt: start.toIso8601String()).rebuild((b) => b.participants.clear());
+    await _pump(tester, event, showCountdown: true);
+    await tester.pump();
+    expect(find.text("G2 Esports vs Paper Rex"), findsOneWidget);
+    expect(find.textContaining("05:10:", findRichText: true), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+  });
+
   testWidgets("terminé : couronne au-dessus du vainqueur seulement, jamais si le score est masqué (J10)", (tester) async {
     await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0));
     expect(find.byWidgetPredicate((w) => w is CustomPaint && w.painter.runtimeType.toString() == "_CrownPainter"), findsOneWidget);

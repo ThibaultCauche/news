@@ -7,6 +7,7 @@ import "../../theme/tokens.dart";
 import "../../widgets/game_logo.dart";
 import "competitions_data.dart";
 import "game_screen.dart";
+import "league_screen.dart";
 
 void _openGame(BuildContext context, CatalogGameDto game) {
   Navigator.of(context).push(MaterialPageRoute(builder: (_) => GameScreen(game: game)));
@@ -158,8 +159,15 @@ class _Results extends StatelessWidget {
               SearchKind.serie => "Compétition · ${r.game.name}",
             }, style: const TextStyle(color: AppColors.textSecondary)),
             trailing: const Icon(Icons.chevron_right, color: AppColors.textTertiary),
-            onTap: () =>
-                r.competitionId == null ? _openGame(context, r.game) : openCompetitionPage(context, id: r.competitionId!, name: r.name),
+            onTap: () {
+              if (r.league != null) {
+                openLeaguePage(context, league: r.league!, game: r.game);
+              } else if (r.competitionId != null) {
+                openCompetitionPage(context, id: r.competitionId!, name: r.name);
+              } else {
+                _openGame(context, r.game);
+              }
+            },
           ),
       ],
     );

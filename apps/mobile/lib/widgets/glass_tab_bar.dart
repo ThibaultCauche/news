@@ -168,7 +168,11 @@ class _TabButton extends StatelessWidget {
           // L'icône de l'onglet mis en avant est dessinée par le cercle or, au-dessus.
           if (item.featured) const SizedBox(height: 20) else Icon(item.icon, color: color, size: 20),
           const SizedBox(height: 6),
-          Text(item.label, style: (selected ? AppTextStyles.tabLabelActive : AppTextStyles.tabLabel).copyWith(color: color)),
+          // Rétrécit plutôt que de passer à la ligne (« Compétition/s » sur un écran de 360 dp).
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            child: Text(item.label, maxLines: 1, style: (selected ? AppTextStyles.tabLabelActive : AppTextStyles.tabLabel).copyWith(color: color)),
+          ),
         ],
       ),
     );

@@ -114,7 +114,8 @@ class EventCard extends ConsumerWidget {
     Widget centerBadge(double fontSize) => status == EventStatusKind.postponed
         ? Text(status.label, style: textTheme.bodySmall?.copyWith(color: status.color))
         : countdownTarget != null
-        ? MatchCountdown(startsAt: countdownTarget, fontSize: fontSize)
+        // 72 % du "VS" : HH:MM:SS doit tenir entre les deux logos (≈ 88 px sur un écran de 360 dp).
+        ? MatchCountdown(startsAt: countdownTarget, fontSize: fontSize * 0.72)
         : Text(
             "VS",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontStyle: FontStyle.italic, fontSize: fontSize),
@@ -199,7 +200,16 @@ class EventCard extends ConsumerWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Flexible(child: Text(event.name, style: AppTextStyles.bodyLargeStrong, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center)),
+                  Flexible(
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(event.name, style: AppTextStyles.bodyLargeStrong, overflow: TextOverflow.ellipsis, textAlign: TextAlign.center),
+                        // Équipes pas encore connues : le compte à rebours reste utile.
+                        if (countdownTarget != null) ...[const SizedBox(height: 4), MatchCountdown(startsAt: countdownTarget, fontSize: 20)],
+                      ],
+                    ),
+                  ),
                 ],
               ));
 
@@ -291,7 +301,10 @@ class EventAlertBell extends ConsumerWidget {
     final active = isFollowing(ref.watch(followsProvider).value, FollowTargetType.event, eventId);
     return IconButton(
       tooltip: active ? "Alerte activée" : "M'alerter au début du match",
-      visualDensity: VisualDensity.compact,
+      // Cible réduite (36×32) : la cloche reste dans la ligne de l'heure et ne touche pas
+      // le nom de l'équipe de droite, juste en dessous.
+      padding: EdgeInsets.zero,
+      constraints: const BoxConstraints.tightFor(width: 36, height: 32),
       icon: Icon(active ? Icons.notifications_active_rounded : Icons.notifications_none_rounded, size: 20),
       color: active ? AppColors.gold : AppColors.textSecondary,
       onPressed: () => toggleEventAlert(context, ref, eventId, active: active),

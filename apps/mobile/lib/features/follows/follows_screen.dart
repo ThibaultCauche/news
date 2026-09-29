@@ -5,7 +5,9 @@ import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
+import "../competitions/competitions_data.dart";
 import "../competitions/game_screen.dart";
+import "../competitions/league_screen.dart";
 import "../next_match/next_match_screen.dart";
 import "../team/team_screen.dart";
 import "follows_provider.dart";
@@ -86,8 +88,19 @@ class _FollowCard extends ConsumerWidget {
 
   // Le nom mène à la page de ce qu'on suit (compétition, fiche équipe, match) : le
   // désabonnement se fait depuis cette page (docs/04 J10). Une catégorie n'a pas de page.
-  VoidCallback? _onOpen(BuildContext context) => switch (targetType) {
-    FollowTargetType.competition => () => openCompetitionPage(context, id: follow.targetId, name: follow.name),
+  VoidCallback? _onOpen(BuildContext context, WidgetRef ref) => switch (targetType) {
+    FollowTargetType.competition => () async {
+      // Une ligue racine (VCT…) a sa propre page ; le reste (série, étape) la page compétition.
+      // Catalogue chargé au tap (il ne l'est pas forcément ici) ; en cas d'échec, page compétition.
+      final catalog = await ref.read(catalogProvider.future).then<CatalogDto?>((c) => c).catchError((_) => null);
+      if (!context.mounted) return;
+      final found = findLeague(catalog, follow.targetId);
+      if (found != null) {
+        openLeaguePage(context, league: found.league, game: found.game);
+      } else {
+        openCompetitionPage(context, id: follow.targetId, name: follow.name);
+      }
+    },
     FollowTargetType.entity => () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TeamScreen(entityId: follow.targetId, breadcrumb: "Suivis"))),
     FollowTargetType.event => () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: follow.targetId))),
     FollowTargetType.category => null,
@@ -105,7 +118,7 @@ class _FollowCard extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             InkWell(
-              onTap: _onOpen(context),
+              onTap: _onOpen(context, ref),
               borderRadius: BorderRadius.circular(AppRadii.chip),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(AppSpacing.xs, AppSpacing.xs, AppSpacing.xs, 0),
@@ -129,7 +142,7 @@ class _FollowCard extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    if (_onOpen(context) != null) const Icon(Icons.chevron_right, color: AppColors.textTertiary),
+                    if (_onOpen(context, ref) != null) const Icon(Icons.chevron_right, color: AppColors.textTertiary),
                   ],
                 ),
               ),
