@@ -257,6 +257,29 @@
 
 **Ordre décidé le 2026-09-29** (voir `docs/00` §7) : J11, J12, J13 ci-dessus, chacun cadré dans sa propre discussion (`/jalon <n>`). Le forum vient ensuite par étapes (fils par équipe, tournoi, jeu, puis création libre), toujours sur Valorant seul : les autres jeux attendent que Valorant soit complet. Les options communautaires sont **facultatives** pour l'utilisateur : l'appli reste utilisable pour les seuls résultats. Sont déjà connus : passer du compte anonyme à un compte avec pseudo (J11), et prévoir avant toute ouverture publique du forum signalement, blocage, conditions d'utilisation, suppression des messages avec le compte (RGPD).
 
+## J10 — Polissage des pages existantes (ajouté)
+
+**Objectif** : affiner les écrans déjà en place pour qu'ils correspondent au porteur du projet, sans nouvelle fonctionnalité. Retours recueillis le 2026-09-29 ; **liste encore incomplète** (d'autres pages seront ajoutées avant le cadrage).
+
+**Retours par page**
+
+*Accueil (« Aujourd'hui »)*
+- Icône de recherche : à retoucher (ce qui ne va pas reste à préciser).
+- « Grands rendez-vous » : n'afficher que les finales (grande finale via `event_link`), avec la raison pour laquelle c'est un grand rendez-vous. La section disparaît hors phase finale.
+- Cartes des matchs à venir : bouton « Suivre » visible ; logos des équipes à la place du seul gros nom ; davantage d'informations (à préciser : compétition et phase, format BO, heure locale, phrase « pourquoi ce match compte »). La couleur des cartes ne représente pas celle des équipes : PandaScore ne fournit pas de couleurs, choix à faire entre couleur neutre et couleur dominante extraite du logo.
+- Compte à rebours en gros à la place du « VS », mis à jour à la minute (secondes seulement dans la dernière minute), sans animation (règle 13).
+
+*Suivis*
+- Le nom d'une compétition suivie mène à sa page ; proposé aussi : le nom d'une équipe suivie mène à sa fiche (écran 10).
+- Retirer le « x » qui désabonne directement : le désabonnement se fait depuis la page de la compétition (ou de l'équipe), dont le bouton « Suivi » doit donc y être bien visible (à vérifier sur la fiche d'équipe).
+- État vide : à décider (invitation vers l'onglet Compétitions ou inchangé).
+
+**Candidats reportés des jalons précédents** : fidélité pixel-perfect aux maquettes (J3, J5) ; fluidité de l'arbre à 60 i/s et remplissage en vrai (J5).
+
+**Critères d'acceptation** : à rédiger au cadrage (`/jalon 10`), une fois la liste des pages complète.
+
+---
+
 ## Ensuite (par ordre de priorité proposé)
 
 1. **Autres jeux PandaScore** (LoL, CS2, Dota 2, R6, Rocket League…) : même adaptateur, filtrage par tier. Nouveaux formats à dessiner : **phase suisse**, **classement de lobby** (battle royale). Vérifier le gagnant par carte pour CS, Dota 2 et LoL sur du tier S.
