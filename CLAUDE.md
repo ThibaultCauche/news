@@ -97,7 +97,10 @@ pnpm db:migrate       # migration dev + génère le client
 pnpm db:generate      # régénère juste le client Prisma
 pnpm db:seed          # glossaire (context_snippet), idempotent, à rejouer si le texte change (J6)
 
-# Lancer l'API / le worker (chacun charge .env à la racine)
+# Lancer l'API + le worker ensemble (à préférer : sans worker, plus d'ingestion et les scores restent figés)
+pnpm dev
+
+# Ou séparément (chacun charge .env à la racine)
 pnpm api:dev
 pnpm worker:dev
 
@@ -113,7 +116,7 @@ pnpm generate:client       # openapi.json + client Dart + build_runner en un cou
 pnpm generate:openapi      # juste la spec, dans openapi.json à la racine
 
 # Appli Flutter (apps/mobile)
-flutter test               # tests de widgets
+flutter test               # tests de widgets (les goldens échouent en CI si générés sous Windows, voir ci-dessous)
 flutter analyze            # analyse statique
 flutter run -d <device>    # sur un émulateur ou un téléphone en USB (debug)
 adb reverse tcp:3000 tcp:3000   # Android (émulateur ou téléphone) : fait pointer son localhost vers l'API locale
@@ -124,6 +127,10 @@ docker compose -f infra/docker-compose.yml --env-file .env logs -f api worker
 ```
 
 `.env` doit contenir `PANDASCORE_TOKEN` (voir `.env.example`) pour que le worker ingère de vraies données, `LIQUIPEDIA_USER_AGENT` (contact réel, exigé par la licence — J6) pour l'enrichissement Liquipedia, `JWT_SECRET`/`JWT_REFRESH_SECRET` (deux chaînes aléatoires, J4) pour l'authentification, et `FIREBASE_PROJECT_ID`/`FIREBASE_CLIENT_EMAIL`/`FIREBASE_PRIVATE_KEY` (clé de compte de service, Paramètres du projet → Comptes de service dans la console Firebase) pour que le worker envoie de vraies notifications — sans ça il journalise sans envoyer. Côté Android, `apps/mobile/android/app/google-services.json` (projet Firebase → app Android `com.news.mobile`, gitignoré) est nécessaire pour que l'appli reçoive les notifications ; sans lui, `flutter run` fonctionne quand même (les appels Firebase échouent silencieusement). `pnpm generate:client` a besoin de Java (openapi-generator) et du SDK Dart. `flutter run` a besoin que `pnpm api:dev` et `pnpm worker:dev` tournent déjà (et `adb reverse` sur Android). En prod uniquement (J7, jamais en dev) : `POSTGRES_PASSWORD`, `IMAGE` (`ghcr.io/<compte-github>/news`), `ALERT_WEBHOOK_URL` (alerte de supervision), `SENTRY_DSN` (suivi d'erreurs) et `PUBLIC_PATH_PREFIX` (laisser vide avec Tailscale Funnel, voir `docs/05-deploiement.md`).
+
+## Goldens Flutter (`apps/mobile/test/goldens/golden_files`)
+
+Les images de référence doivent venir du **runner CI (Ubuntu)**, pas de Windows : la police rend différemment et la CI échoue sinon. Après tout changement visuel d'un widget couvert par un golden, les régénérer via la CI : branche jetable où le job `mobile` de `.github/workflows/ci.yml` lance `flutter test --update-goldens` puis `upload-artifact` de `apps/mobile/test/goldens/golden_files` (et `regen-goldens` ajouté à `branches:` du déclencheur `push`), télécharger l'artefact avec `gh run download`, copier les PNG sur `main`, supprimer la branche. Précédents : `c9980e8`, `2b5bdc0`.
 
 ## Maquettes (Figma)
 
