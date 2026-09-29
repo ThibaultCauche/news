@@ -1,8 +1,12 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
+import "package:mobile/core/navigation.dart";
 import "package:mobile/core/settings_provider.dart";
+import "package:mobile/features/bracket/bracket_provider.dart";
+import "package:mobile/features/bracket/bracket_screen.dart";
 import "package:mobile/features/follows/follows_screen.dart";
+import "package:mobile/features/team/team_screen.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../follows_test_helpers.dart";
 import "../settings_test_helpers.dart";
@@ -56,6 +60,9 @@ Future<void> _pump(WidgetTester tester, List<FollowStateDto> follows) {
           ..spoilerFree = false
           ..morningDigest = false)),
         overrideCompactEventCardsWith(false),
+        // Pages ouvertes par un tap sur le nom : pas de réseau en test.
+        entityProvider("team-a").overrideWith((ref) async => throw Exception("hors ligne")),
+        competitionDetailProvider("comp-1").overrideWith((ref) async => throw Exception("hors ligne")),
       ],
       child: MaterialApp(theme: ThemeData.dark(), home: const Scaffold(body: FollowsScreen())),
     ),
@@ -114,5 +121,36 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(CircleAvatar), findsNothing);
+  });
+
+  testWidgets("plus de « x » : le désabonnement se fait depuis la page (J10)", (tester) async {
+    await _pump(tester, [_follow(targetType: "competition", targetId: "comp-1", name: "VCT 2026")]);
+    await tester.pumpAndSettle();
+    expect(find.byIcon(Icons.close_rounded), findsNothing);
+  });
+
+  testWidgets("le nom d'une équipe suivie mène à sa fiche", (tester) async {
+    await _pump(tester, [_follow(targetType: "entity", targetId: "team-a", name: "Test G2")]);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Test G2"));
+    await tester.pumpAndSettle();
+    expect(find.byType(TeamScreen), findsOneWidget);
+  });
+
+  testWidgets("le nom d'une compétition suivie mène à sa page", (tester) async {
+    await _pump(tester, [_follow(targetType: "competition", targetId: "comp-1", name: "VCT 2026")]);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("VCT 2026"));
+    await tester.pumpAndSettle();
+    expect(find.byType(BracketScreen), findsOneWidget);
+  });
+
+  testWidgets("aucun suivi : le bouton mène à l'onglet Compétitions", (tester) async {
+    await _pump(tester, const []);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Explorer les compétitions"));
+    await tester.pump();
+    final container = ProviderScope.containerOf(tester.element(find.byType(FollowsScreen)));
+    expect(container.read(tabIndexProvider), competitionsTabIndex);
   });
 }

@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/competition_follow_button.dart";
 import "bracket_provider.dart";
 
 const _maxLives = 3;
@@ -28,6 +29,7 @@ class KickoffLivesScreen extends ConsumerWidget {
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
           label: const Text("Valorant", style: TextStyle(color: AppColors.textSecondary)),
         ),
+        actions: [CompetitionFollowButton(competitionId: competitionId, name: title)],
       ),
       body: switch (detail) {
         AsyncData(:final value) => _LivesBody(title: title, subtitle: subtitle, standings: value.standings.toList()),

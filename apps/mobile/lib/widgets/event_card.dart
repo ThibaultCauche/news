@@ -7,8 +7,11 @@ import "../core/date_x.dart";
 import "../core/settings_provider.dart";
 import "../domain/event_status.dart";
 import "../theme/app_theme.dart";
+import "../features/follows/follows_provider.dart";
 import "../theme/tokens.dart";
 import "live_dot.dart";
+import "match_countdown.dart";
+import "match_visuals.dart";
 
 /// Couleur dominante d'un logo d'équipe, mise en cache par URL (un seul calcul
 /// par équipe même si sa tuile apparaît sur plusieurs écrans) : teinte le fond
@@ -37,7 +40,12 @@ class EventCard extends ConsumerWidget {
     required this.scoresHidden,
     this.onTap,
     this.followedEntityIds = const {},
+    this.showCountdown = false,
   });
+
+  /// Compte à rebours en gros à la place du "VS" (bannière "À suivre" de l'Accueil,
+  /// J10) : un match à venir seulement, sinon le "VS" habituel.
+  final bool showCountdown;
 
   /// Score d'un match terminé masqué (réglage sans spoil du compte).
   final bool scoresHidden;
@@ -83,7 +91,8 @@ class EventCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final status = event.status.statusKind;
     final textTheme = Theme.of(context).textTheme;
-    final score = status == EventStatusKind.finished && scoresHidden ? null : _scoreLine;
+    // Un match à venir n'a pas de score : l'API renvoie 0-0, à ne pas afficher.
+    final score = status == EventStatusKind.scheduled || (status == EventStatusKind.finished && scoresHidden) ? null : _scoreLine;
     final hasTwoTeams = event.participants.length == 2;
     final teamA = hasTwoTeams ? event.participants[0] : null;
     final teamB = hasTwoTeams ? event.participants[1] : null;
@@ -101,8 +110,11 @@ class EventCard extends ConsumerWidget {
     // seulement avant le match), sauf reporté où le statut prime. Fonction
     // plutôt qu'un widget figé : la tuile réduite le veut plus petit, au
     // même niveau visuel que ses logos et scores plus petits eux aussi.
+    final countdownTarget = showCountdown && status == EventStatusKind.scheduled ? event.startsAt.toDateTime : null;
     Widget centerBadge(double fontSize) => status == EventStatusKind.postponed
         ? Text(status.label, style: textTheme.bodySmall?.copyWith(color: status.color))
+        : countdownTarget != null
+        ? MatchCountdown(startsAt: countdownTarget, fontSize: fontSize)
         : Text(
             "VS",
             style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontStyle: FontStyle.italic, fontSize: fontSize),
@@ -124,12 +136,16 @@ class EventCard extends ConsumerWidget {
           children: [
             if (status == EventStatusKind.live) ...[const LiveDot(), const SizedBox(width: 4)],
             Text(DateFormat.Hm("fr_FR").format(startsAt), style: textTheme.bodySmall),
-            ?_tomorrowCountdown(status, startsAt, textTheme),
+            if (!showCountdown) ?_tomorrowCountdown(status, startsAt, textTheme),
           ],
         ),
       );
     }
 
+    // Couronne du vainqueur d'un match terminé (J10) : jamais quand le score est masqué,
+    // elle révélerait le résultat (sans spoil, règle 10 de `CLAUDE.md`).
+    final showCrown = status == EventStatusKind.finished && !scoresHidden && hasTwoTeams && event.participants.any((p) => p.isWinner == true);
+    bool? crownFor(EventParticipantDto p) => showCrown ? p.isWinner == true : null;
     Color? colorFor(EventParticipantDto p) => followedEntityIds.contains(p.entityId) ? AppColors.gold : null;
     final compact = ref.watch(compactEventCardsProvider);
 
@@ -137,7 +153,7 @@ class EventCard extends ConsumerWidget {
     // en symétrie avec "VS" au centre — sans les noms.
     Widget? scoreText(num? value) => value == null
         ? null
-        : Text("${value.toInt()}", style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: 20, fontWeight: FontWeight.w800));
+        : Text("${value.toInt()}", style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: 22, fontWeight: FontWeight.w800));
 
     final compactRow = compact && hasTwoTeams
         ? Row(
@@ -146,11 +162,11 @@ class EventCard extends ConsumerWidget {
             // au centre avec de grandes marges vides de chaque côté.
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              _TeamBadge(imageUrl: teamA!.imageUrl, diameter: 32),
+              TeamBadge(imageUrl: teamA!.imageUrl, diameter: 56, crowned: crownFor(teamA)),
               ?scoreText(score != null ? teamA.score : null),
-              centerBadge(16),
+              centerBadge(20),
               ?scoreText(score != null ? teamB!.score : null),
-              _TeamBadge(imageUrl: teamB!.imageUrl, diameter: 32),
+              TeamBadge(imageUrl: teamB!.imageUrl, diameter: 56, crowned: crownFor(teamB)),
             ],
           )
         : null;
@@ -167,12 +183,12 @@ class EventCard extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: Center(
-                          child: _TeamBlock(participant: teamA!, score: score != null ? teamA.score : null, nameColor: colorFor(teamA)),
+                          child: _TeamBlock(participant: teamA!, score: score != null ? teamA.score : null, nameColor: colorFor(teamA), crowned: crownFor(teamA)),
                         ),
                       ),
                       Expanded(
                         child: Center(
-                          child: _TeamBlock(participant: teamB!, score: score != null ? teamB.score : null, nameColor: colorFor(teamB)),
+                          child: _TeamBlock(participant: teamB!, score: score != null ? teamB.score : null, nameColor: colorFor(teamB), crowned: crownFor(teamB)),
                         ),
                       ),
                     ],
@@ -197,17 +213,7 @@ class EventCard extends ConsumerWidget {
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadii.card),
         border: Border.all(color: AppColors.surfaceBorder),
-        gradient: (colorA == null && colorB == null)
-            ? null
-            : LinearGradient(
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-                colors: [
-                  (colorA ?? AppColors.surface).withValues(alpha: colorA != null ? 0.26 : 0),
-                  AppColors.surface,
-                  (colorB ?? AppColors.surface).withValues(alpha: colorB != null ? 0.26 : 0),
-                ],
-              ),
+        gradient: teamsGradient(colorA, colorB),
       ),
       child: Material(
         type: MaterialType.transparency,
@@ -217,12 +223,20 @@ class EventCard extends ConsumerWidget {
           onTap: onTap,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm, horizontal: AppSpacing.sm),
-            child: Column(
+            child: Stack(
               children: [
-                ?topTime,
-                teamsRow,
-                const SizedBox(height: 4),
-                Text(subtitle, style: textTheme.bodySmall),
+                Column(
+                  children: [
+                    ?topTime,
+                    teamsRow,
+                    const SizedBox(height: 4),
+                    Text(subtitle, style: textTheme.bodySmall),
+                  ],
+                ),
+                // Alerte directement sur la carte (J10), seulement avant le match : en
+                // direct ou terminé, "M'alerter au début" n'a plus de sens.
+                if (status == EventStatusKind.scheduled)
+                  Positioned(top: -AppSpacing.xs, right: -AppSpacing.xs, child: EventAlertBell(eventId: event.id)),
               ],
             ),
           ),
@@ -236,11 +250,12 @@ class EventCard extends ConsumerWidget {
 /// deux équipes a été retirée : c'est désormais le changement de couleur
 /// (`EventCard`) qui sépare visuellement les deux moitiés.
 class _TeamBlock extends StatelessWidget {
-  const _TeamBlock({required this.participant, required this.score, required this.nameColor});
+  const _TeamBlock({required this.participant, required this.score, required this.nameColor, required this.crowned});
 
   final EventParticipantDto participant;
   final num? score;
   final Color? nameColor;
+  final bool? crowned;
 
   @override
   Widget build(BuildContext context) {
@@ -257,47 +272,41 @@ class _TeamBlock extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 4),
-        _TeamBadge(imageUrl: participant.imageUrl, score: score),
+        TeamBadge(imageUrl: participant.imageUrl, score: score, diameter: 68, crowned: crowned),
       ],
     );
   }
 }
 
-class _TeamBadge extends StatelessWidget {
-  const _TeamBadge({required this.imageUrl, this.score, this.diameter = 44});
+/// Cloche "M'alerter" d'une carte de match (J10) : même abonnement que le bouton
+/// "M'alerter au début du match" de l'écran du match (rappel T-15, début, résultat),
+/// sans passer par la page du match. Or plein quand l'alerte est active (règle 12).
+class EventAlertBell extends ConsumerWidget {
+  const EventAlertBell({super.key, required this.eventId});
 
-  final String? imageUrl;
-  final num? score;
-  final double diameter;
+  final String eventId;
 
   @override
-  Widget build(BuildContext context) {
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        // Coin arrondi plutôt que cercle : certains logos (bannières larges
-        // type "LOBA SPORT", blasons non circulaires) ne remplissaient pas
-        // un cercle proprement et semblaient déborder dessus. `BoxFit.contain`
-        // reste nécessaire, tous les logos ne sont pas carrés.
-        ClipRRect(
-          borderRadius: BorderRadius.circular(AppRadii.chip * diameter / 44),
-          child: Container(
-            width: diameter,
-            height: diameter,
-            color: AppColors.surfaceBorder,
-            child: imageUrl != null ? Image.network(imageUrl!, fit: BoxFit.contain) : null,
-          ),
-        ),
-        if (score != null) ...[
-          const SizedBox(height: 2),
-          Text(
-            "${score!.toInt()}",
-            // Taille de score proportionnelle au logo (44 → 26, la tuile
-            // réduite a un logo plus petit donc un score plus petit aussi).
-            style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: AppTypography.heroScore * diameter / 44, fontWeight: FontWeight.w800),
-          ),
-        ],
-      ],
+  Widget build(BuildContext context, WidgetRef ref) {
+    final active = isFollowing(ref.watch(followsProvider).value, FollowTargetType.event, eventId);
+    return IconButton(
+      tooltip: active ? "Alerte activée" : "M'alerter au début du match",
+      visualDensity: VisualDensity.compact,
+      icon: Icon(active ? Icons.notifications_active_rounded : Icons.notifications_none_rounded, size: 20),
+      color: active ? AppColors.gold : AppColors.textSecondary,
+      onPressed: () => toggleEventAlert(context, ref, eventId, active: active),
     );
+  }
+}
+
+/// Active ou coupe l'alerte d'un match ; le retour optimiste est déjà annulé par
+/// `FollowsNotifier` si l'appel échoue, il reste à le dire à l'utilisateur.
+Future<void> toggleEventAlert(BuildContext context, WidgetRef ref, String eventId, {required bool active}) async {
+  final controller = ref.read(followsControllerProvider);
+  final messenger = ScaffoldMessenger.of(context);
+  try {
+    await (active ? controller.unfollow(FollowTargetType.event, eventId) : controller.follow(FollowTargetType.event, eventId));
+  } catch (_) {
+    messenger.showSnackBar(const SnackBar(content: Text("Impossible de modifier l'alerte.")));
   }
 }

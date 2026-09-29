@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 
+import "../../core/navigation.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/game_logo.dart";
 import "competitions_data.dart";
@@ -23,9 +24,18 @@ class CompetitionsScreen extends ConsumerStatefulWidget {
 
 class _CompetitionsScreenState extends ConsumerState<CompetitionsScreen> {
   String _query = "";
+  final _searchFocus = FocusNode();
+
+  @override
+  void dispose() {
+    _searchFocus.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    // L'icône de recherche de l'Accueil (J10) ouvre cet onglet puis demande le focus.
+    ref.listen(searchFocusRequestProvider, (_, _) => WidgetsBinding.instance.addPostFrameCallback((_) => _searchFocus.requestFocus()));
     final catalog = ref.watch(catalogProvider);
     return SafeArea(
       child: Column(
@@ -38,6 +48,7 @@ class _CompetitionsScreenState extends ConsumerState<CompetitionsScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             child: TextField(
+              focusNode: _searchFocus,
               onChanged: (v) => setState(() => _query = v),
               textInputAction: TextInputAction.search,
               decoration: InputDecoration(

@@ -13,6 +13,7 @@ import "../../core/settings_provider.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart" show entityAccentColorProvider;
+import "../../widgets/match_visuals.dart";
 import "../../widgets/glossary_sheet.dart";
 import "../../widgets/live_dot.dart";
 import "../../widgets/section_card.dart";
@@ -142,17 +143,7 @@ class _NextMatchBody extends ConsumerWidget {
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadii.card),
-            gradient: (colorA == null && colorB == null)
-                ? null
-                : LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      (colorA ?? AppColors.surface).withValues(alpha: colorA != null ? 0.26 : 0),
-                      AppColors.surface,
-                      (colorB ?? AppColors.surface).withValues(alpha: colorB != null ? 0.26 : 0),
-                    ],
-                  ),
+            gradient: teamsGradient(colorA, colorB),
           ),
           child: Column(
             children: [
@@ -285,28 +276,7 @@ class _ParticipantColumn extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
         child: Column(
           children: [
-            // Coin arrondi plutôt que cercle, même logique que
-            // `EventCard`/`_TeamBadge` : certains logos débordaient visuellement
-            // d'un cercle. Rayon mis à l'échelle sur 44 (comme `_TeamBadge`) :
-            // sinon ce badge, plus grand (64), paraît moins arrondi que celui
-            // de la tuile pour le même token — même arrondi relatif partout
-            // (règle 12 de CLAUDE.md).
-            ClipRRect(
-              borderRadius: BorderRadius.circular(AppRadii.chip * _diameter / 44),
-              child: Container(
-                width: _diameter,
-                height: _diameter,
-                // Même fond que `_TeamBadge` (tuile agenda) : `AppColors.surface`
-                // était trop proche du fond de l'écran, les coins du badge
-                // devenaient invisibles au lieu de contraster (règle 12).
-                color: AppColors.surfaceBorder,
-                alignment: Alignment.center,
-                // `BoxFit.contain`, pas `cover` : les logos ne sont pas tous carrés.
-                child: participant.imageUrl != null
-                    ? Image.network(participant.imageUrl!, fit: BoxFit.contain)
-                    : Text(initials, style: const TextStyle(fontWeight: FontWeight.w700)),
-              ),
-            ),
+            TeamBadge(imageUrl: participant.imageUrl, diameter: _diameter, fallback: initials),
             const SizedBox(height: AppSpacing.sm),
             Text(participant.name, textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium),
           ],
@@ -619,7 +589,7 @@ class _StakesSection extends StatelessWidget {
         children: [
           const SectionLabel("POURQUOI CE MATCH COMPTE"),
           const SizedBox(height: AppSpacing.sm),
-          _StakesText(text: stakes),
+          StakesText(text: stakes),
           const SizedBox(height: AppSpacing.sm),
           const Text(
             "Touche un mot souligné pour l'explication.",
@@ -631,16 +601,16 @@ class _StakesSection extends StatelessWidget {
   }
 }
 
-class _StakesText extends StatefulWidget {
-  const _StakesText({required this.text});
+class StakesText extends StatefulWidget {
+  const StakesText({super.key, required this.text});
 
   final String text;
 
   @override
-  State<_StakesText> createState() => _StakesTextState();
+  State<StakesText> createState() => _StakesTextState();
 }
 
-class _StakesTextState extends State<_StakesText> {
+class _StakesTextState extends State<StakesText> {
   static final _termPattern = RegExp(r"\[\[(.+?)\]\]");
 
   final List<TapGestureRecognizer> _recognizers = [];

@@ -15,7 +15,7 @@
 | J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | **Fait (2026-09-27)** |
 | J8 | Polissage UI/UX Valorant : retour optimiste, repères visuels, navigation Agenda | L'appli est plus lisible et plus réactive pour un néophyte | **Fait (2026-09-28)** |
 | J9 | Onglet Compétitions : navigation catégorie → jeu → compétition, favoris de jeux, recherche | On retrouve n'importe quel jeu ou compétition en 2 taps, sans passer par l'Accueil | **Fait (2026-09-29)** |
-| J10 | Polissage des pages existantes : mise en conformité avec les maquettes et les retours d'usage | Chaque écran existant te correspond, sans nouvelle fonctionnalité | À planifier |
+| J10 | Polissage des pages existantes : mise en conformité avec les maquettes et les retours d'usage | Chaque écran existant te correspond, sans nouvelle fonctionnalité | **En cours** |
 | J11 | Comptes avec pseudo, page de profil (badges, score de pronostics, stats), pronostics en points fictifs, groupes d'amis (façon MPP) | On parie sur ses matchs et on se compare à ses amis, gratuitement | À planifier |
 | J12 | Section apprentissage Valorant : tutos écrits (jeu, rôles, cartes) | Un néophyte comprend comment on joue | À planifier |
 | J13 | Forum par match (bêta fermée) : badge d'équipe selon le jeu/sport du forum, modération de base | On discute d'un match sans que ça dégénère | À planifier |
@@ -276,7 +276,19 @@
 
 **Candidats reportés des jalons précédents** : fidélité pixel-perfect aux maquettes (J3, J5) ; fluidité de l'arbre à 60 i/s et remplissage en vrai (J5).
 
-**Critères d'acceptation** : à rédiger au cadrage (`/jalon 10`), une fois la liste des pages complète.
+**Cadrage (2026-09-29)** : liste des pages figée à Accueil et Suivis (aucune autre page à retoucher pour l'instant). Décisions : l'icône de recherche ouvre l'onglet Compétitions avec le champ de recherche focalisé ; couleur dominante du logo sur les cartes de l'Accueil (comme `EventCard`), sans la bande grise au milieu du dégradé ; bouton cloche (icône seule) directement sur toute carte de match à venir, qui alerte sans ouvrir la page du match ; « Grands rendez-vous » = carte dédiée à la **grande finale de la phase finale uniquement, dans les 7 prochains jours** (avec phrase de contexte), qui disparaît sinon ; page compétition avec bouton « Suivre » (n'existait pas hors onboarding) avant de retirer le « x » de Suivis. **Retrait de « Tes suivis » de l'Accueil** (décidé le 2026-09-30) : les matchs suivis y doublonnaient « À suivre » et l'écran Suivis ; l'Accueil montre le moment (en direct, à suivre, grande finale), Suivis la liste complète. Logos des cartes agrandis (56 px en tuile réduite, 68 px sinon). Compte à rebours en HH:MM:SS à deux-points clignotants (demande du 2026-09-30, dérogation à la règle 13 « pas d'animation sur ce qu'on voit souvent » : limitée au seul compte à rebours de l'Accueil et coupée en mouvement réduit). Couronne dorée du vainqueur sur les matchs terminés (l'or est aussi « mes suivis » : distingué ici par la forme). Fidélité pixel-perfect aux maquettes et fluidité de l'arbre : reportées.
+
+**Critères d'acceptation**
+- [ ] Plus de gris entre les deux couleurs d'une carte de match, y compris dans l'en-tête de l'écran du match (dégradé et logo d'équipe partagés dans `widgets/match_visuals.dart`, logos contenus dans leur case).
+- [ ] Une carte de match à venir a une cloche qui alerte sans ouvrir la page du match (retour optimiste, message d'erreur si l'appel échoue) ; pas de cloche en direct/terminé.
+- [ ] L'Accueil ne répète plus les suivis (section « Tes suivis » retirée) et n'utilise plus de carte maison : « À suivre » basé sur `EventCard`, avec un compte à rebours HH:MM:SS à la place du « VS », deux-points clignotants (fixes en mouvement réduit, règle 13).
+- [ ] « Grands rendez-vous » n'affiche que la grande finale en phase finale, si elle a lieu dans les 7 prochains jours, avec le nom du tournoi, sa phrase « pourquoi ça compte » et « M'alerter » ; « Adversaires à déterminer » si les équipes ne sont pas connues ; section absente hors phase finale.
+- [ ] Suivis : nom de compétition → page compétition, nom d'équipe → fiche, plus de « x » ; le désabonnement se fait depuis la page compétition (bouton « Suivre »/« Suivi » en haut) ou la fiche équipe ; état vide avec bouton « Explorer les compétitions ».
+- [ ] Sur une carte de match terminé, une couronne dorée surmonte le logo du vainqueur ; jamais quand le score est masqué (sans spoil).
+- [ ] L'icône de recherche de l'Accueil ouvre la recherche de l'onglet Compétitions, clavier ouvert.
+- [ ] Vérifié en conditions réelles sur téléphone Android physique.
+
+**État (2026-09-29)** : tout est implémenté et couvert par des tests (API 26, Flutter `test/widgets`) ; vérifié à l'œil sur l'**émulateur** (Pixel Tablet) avec les vraies données Champions 2026 : Accueil, grande finale « Adversaires à déterminer », recherche, Suivis, page compétition. **Reste** : passage sur le téléphone physique, régénération des goldens en CI (tab bar, J9).
 
 ---
 
@@ -300,3 +312,4 @@
 | Logo et icône d'app définitifs | Avant J7 |
 | Écrire à PandaScore : usage du plan gratuit et attribution exigée | Avant J7 |
 | Licence open source du code (MIT, AGPL…) | Avant J7 |
+| **Supprimer l'onglet Suivis** (idée du 2026-09-30) : réintégrer les suivis dans l'Accueil (« Tes suivis », prévu par `docs/02` écran 17, retiré au J10 car doublon tant que Suivis existe) pour libérer un onglet quand les options communautaires (J11-J13) en demanderont. Un seul des deux doit exister, pas les deux | À l'arrivée du J11 |

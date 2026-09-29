@@ -1,3 +1,4 @@
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:mobile/features/follows/follows_provider.dart";
 import "package:news_api_client/news_api_client.dart";
 
@@ -14,3 +15,43 @@ class _FixedFollowsNotifier extends FollowsNotifier {
 /// l'ancien `followsProvider.overrideWith((ref) async => value)`.
 // ignore: strict_top_level_inference (le type `Override` n'est pas exporté par flutter_riverpod)
 overrideFollowsWith(List<FollowStateDto> value) => followsProvider.overrideWith(() => _FixedFollowsNotifier(value));
+
+/// Comme `_FixedFollowsNotifier` mais `follow`/`unfollow` ne touchent pas au réseau :
+/// ils enregistrent l'appel et mettent l'état à jour (J10, cloche des cartes).
+class RecordingFollowsNotifier extends FollowsNotifier {
+  RecordingFollowsNotifier(this._initial, this.calls, {this.failWith});
+  final List<FollowStateDto> _initial;
+  final List<String> calls;
+  final Object? failWith;
+
+  @override
+  Future<List<FollowStateDto>> build() async => _initial;
+
+  @override
+  Future<void> follow(FollowTargetType type, String targetId, {String name = ""}) async {
+    calls.add("follow ${type.name} $targetId");
+    if (failWith != null) throw failWith!;
+    state = AsyncValue.data([
+      ...?state.value,
+      FollowStateDto((b) => b
+        ..id = "sub-$targetId"
+        ..targetType = type.name
+        ..targetId = targetId
+        ..level = "all"
+        ..notifyReminder = true
+        ..notifyStart = true
+        ..notifyResult = true
+        ..name = name),
+    ]);
+  }
+
+  @override
+  Future<void> unfollow(FollowTargetType type, String targetId) async {
+    calls.add("unfollow ${type.name} $targetId");
+    state = AsyncValue.data([...?state.value?.where((f) => !(f.targetType == type.name && f.targetId == targetId))]);
+  }
+}
+
+// ignore: strict_top_level_inference
+overrideFollowsRecording(List<FollowStateDto> initial, List<String> calls, {Object? failWith}) =>
+    followsProvider.overrideWith(() => RecordingFollowsNotifier(initial, calls, failWith: failWith));

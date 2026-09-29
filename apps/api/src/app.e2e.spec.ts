@@ -107,11 +107,39 @@ describe("API v1 (e2e)", () => {
     await request(app.getHttpServer()).get("/health").expect(200, { status: "ok" });
   });
 
-  it("GET /v1/home renvoie le match en direct, le prochain match et le grand rendez-vous", async () => {
+  it("GET /v1/home renvoie le match en direct et le prochain match, sans grande finale hors phase finale", async () => {
     const res = await request(app.getHttpServer()).get("/v1/home").expect(200);
     expect(res.body.liveNow.some((e: { id: string }) => e.id === liveEventId)).toBe(true);
     expect(res.body.upcoming.some((e: { id: string }) => e.id === upcomingEventId)).toBe(true);
-    expect(res.body.highlights.some((e: { id: string }) => e.id === liveEventId)).toBe(true);
+    // Aucun lien de bracket : un match d'une compétition importante n'est plus un « grand rendez-vous » (J10).
+    expect(res.body.grandFinals.some((f: { event: { id: string } }) => f.event.id === liveEventId)).toBe(false);
+  });
+
+  it("GET /v1/home : la grande finale (sans lien « winner » sortant, alimentée par un autre match) porte sa phrase d'enjeu — J10", async () => {
+    const finalEvent = await prisma.event.create({
+      data: { id: randomUUID(), competitionId, kind: "match", name: "Grand Final: TBD vs TBD", status: "scheduled", startsAt: new Date(Date.now() + 2 * 24 * 3600 * 1000), bestOf: 5, importance: 3 },
+    });
+    // La finale du tableau bas alimente la grande finale : elle a un lien « winner », donc n'en est pas une.
+    await prisma.eventLink.create({ data: { id: randomUUID(), fromEventId: upcomingEventId, toEventId: finalEvent.id, outcome: "winner", slot: 0 } });
+    await redis.del(CacheKeys.home());
+
+    const res = await request(app.getHttpServer()).get("/v1/home").expect(200);
+    const ids = res.body.grandFinals.map((f: { event: { id: string } }) => f.event.id);
+    expect(ids).toContain(finalEvent.id);
+    expect(ids).not.toContain(upcomingEventId);
+    const final = res.body.grandFinals.find((f: { event: { id: string } }) => f.event.id === finalEvent.id);
+    expect(final.stakes).toContain("sacré champion");
+    expect(final.tournamentName).toBe("Test Champions"); // pas de parent : repli sur le nom de la compétition
+
+    // Au-delà de 7 jours, la finale n'est plus proposée sur l'Accueil.
+    await prisma.event.update({ where: { id: finalEvent.id }, data: { startsAt: new Date(Date.now() + 10 * 24 * 3600 * 1000) } });
+    await redis.del(CacheKeys.home());
+    const later = await request(app.getHttpServer()).get("/v1/home").expect(200);
+    expect(later.body.grandFinals.map((f: { event: { id: string } }) => f.event.id)).not.toContain(finalEvent.id);
+
+    await prisma.eventLink.deleteMany({ where: { toEventId: finalEvent.id } });
+    await prisma.event.delete({ where: { id: finalEvent.id } });
+    await redis.del(CacheKeys.home());
   });
 
   it("GET /v1/agenda?from&to renvoie les événements de la fenêtre, 400 sans bornes", async () => {

@@ -118,7 +118,7 @@ BracketResponseDto _groupBracket() {
     ]));
 }
 
-Future<void> _pump(WidgetTester tester) {
+Future<void> _pump(WidgetTester tester, {List<String>? calls}) {
   final qf1 = _node(
     eventId: "qf1",
     name: "Upper Bracket Quarterfinal 1",
@@ -151,7 +151,7 @@ Future<void> _pump(WidgetTester tester) {
         userSettingProvider.overrideWith((ref) async => UserSettingDto((b) => b
           ..spoilerFree = false
           ..morningDigest = false)),
-        overrideFollowsWith([
+        overrideFollowsRecording([
           FollowStateDto((b) => b
             ..id = "sub-g2"
             ..targetType = "entity"
@@ -161,7 +161,7 @@ Future<void> _pump(WidgetTester tester) {
             ..notifyStart = true
             ..notifyResult = true
             ..name = "G2"),
-        ]),
+        ], calls ?? []),
       ],
       child: const MaterialApp(
         theme: null,
@@ -224,5 +224,21 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.textContaining("Perdant de G2 vs TH"), findsOneWidget);
+  });
+
+  testWidgets("la page compétition a un bouton Suivre qui abonne la compétition (J10)", (tester) async {
+    final calls = <String>[];
+    await _pump(tester, calls: calls);
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text("Suivre"));
+    await tester.pump();
+
+    expect(calls, ["follow competition champions"]);
+    expect(find.text("Suivi"), findsOneWidget);
+
+    await tester.tap(find.text("Suivi"));
+    await tester.pump();
+    expect(calls, ["follow competition champions", "unfollow competition champions"]);
   });
 }

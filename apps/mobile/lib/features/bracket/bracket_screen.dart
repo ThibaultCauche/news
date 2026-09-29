@@ -4,6 +4,7 @@ import "package:news_api_client/news_api_client.dart";
 import "../../core/iterable_x.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/competition_follow_button.dart";
 import "../../widgets/group_bracket_tree.dart";
 import "../follows/follows_provider.dart";
 import "bracket_painter.dart";
@@ -48,6 +49,7 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
           label: const Text("Valorant", style: TextStyle(color: AppColors.textSecondary)),
         ),
+        actions: [CompetitionFollowButton(competitionId: widget.competitionId, name: widget.title)],
       ),
       body: switch (detail) {
         AsyncData(:final value) => _BracketBody(
