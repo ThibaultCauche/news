@@ -27,9 +27,10 @@ describe("normalizeMatch", () => {
     expect(tyloo?.score).toBe(0);
     expect(tyloo?.isWinner).toBe(false);
 
-    const result = event.result as { games: Array<{ winnerExternalId: string | null }> };
+    const result = event.result as { games: Array<{ winnerExternalId: string | null; durationSeconds: number | null }> };
     expect(result.games).toHaveLength(2);
     expect(result.games.every((g) => g.winnerExternalId === "128538")).toBe(true);
+    expect(result.games[0].durationSeconds).toBe(2738);
   });
 
   it("normalise un match en cours : pas de gagnant tranché, cartes mélangées", () => {

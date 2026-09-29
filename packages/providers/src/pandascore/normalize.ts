@@ -141,6 +141,7 @@ export function normalizeMatch(match: RawMatch): EventDTO {
         position: g.position,
         status: g.status,
         winnerExternalId: g.winner?.id != null ? String(g.winner.id) : null,
+        durationSeconds: g.length ?? null,
       })),
     },
     participants,

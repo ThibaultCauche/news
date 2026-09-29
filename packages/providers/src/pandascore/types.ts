@@ -43,6 +43,10 @@ export interface RawGame {
   position: number;
   status: string;
   winner: { id: number | null; type: string } | null;
+  // Durée en secondes, disponible en plan gratuit contrairement au score en
+  // rounds ou au nom de la carte (docs/01-donnees-sources-valorant.md §"Ce
+  // qu'on obtient vraiment").
+  length?: number | null;
 }
 
 export interface RawMatchOpponent {

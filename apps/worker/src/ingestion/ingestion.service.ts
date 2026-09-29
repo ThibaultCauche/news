@@ -27,6 +27,19 @@ import { commitProviderRef, findProviderRef, upsertByProviderRef } from "./provi
 const CATEGORY_SLUG = "esport";
 const PROVIDER_PAYLOAD_RETENTION_DAYS = 7;
 
+// Au moins un lien de bracket n'a pas pu être résolu ce passage (match source
+// pas encore en base — course avec le job calendrier/live qui le crée). Fait
+// échouer `write()` exprès pour empêcher `upsertByProviderRef` de valider le
+// hash du payload : sinon, une fois le match manquant enfin ingéré, le
+// prochain passage verrait le même hash (le bracket PandaScore n'a pas
+// changé) et abandonnerait ce lien pour toujours — pas un vrai échec, un
+// signal "réessayer au prochain passage".
+class StructureIncompleteError extends Error {
+  constructor(readonly competitionId: string) {
+    super(`bracket incomplet pour ${competitionId}, réessai au prochain passage`);
+  }
+}
+
 const logger = createLogger("worker:ingestion");
 
 // Normalise → upsert via provider_ref + payload_hash (règle 4 de CLAUDE.md).
@@ -245,7 +258,13 @@ export class IngestionService {
       select: { id: true },
     });
     for (const competition of targets) {
-      await this.syncStructure(competition.id).catch((err) => logger.error({ err, competitionId: competition.id }, "échec de la synchro structure"));
+      await this.syncStructure(competition.id).catch((err) => {
+        if (err instanceof StructureIncompleteError) {
+          logger.warn({ competitionId: competition.id }, "bracket incomplet, réessai au prochain passage");
+          return;
+        }
+        logger.error({ err, competitionId: competition.id }, "échec de la synchro structure");
+      });
     }
     logger.info({ count: targets.length, quota: this.provider.quota.getUsageRatio() }, "structure ingérée");
   }
@@ -264,6 +283,7 @@ export class IngestionService {
       externalId: ref.externalId,
       raw: structure,
       write: async () => {
+        let incomplete = false;
         for (const link of structure.links) {
           const [fromRef, toRef] = await Promise.all([
             findProviderRef(this.prisma, ref.provider, "event", link.fromExternalId),
@@ -271,6 +291,7 @@ export class IngestionService {
           ]);
           if (!fromRef || !toRef) {
             logger.warn({ link, competitionId }, "match introuvable pour ce lien de bracket, ignoré pour ce passage");
+            incomplete = true;
             continue;
           }
           await this.prisma.eventLink.upsert({
@@ -280,6 +301,9 @@ export class IngestionService {
           });
         }
         await this.prisma.competition.update({ where: { id: competitionId }, data: { format: structure.format } });
+        // Ne pas laisser `upsertByProviderRef` valider le hash de ce passage
+        // incomplet — voir `StructureIncompleteError`.
+        if (incomplete) throw new StructureIncompleteError(competitionId);
         return competitionId;
       },
     });
