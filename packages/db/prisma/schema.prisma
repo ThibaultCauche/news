@@ -266,7 +266,7 @@ model UserSetting {
   id              String   @id @default(uuid())
   userId          String   @unique @map("user_id")
   user            AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
-  spoilerFree     Boolean  @default(true) @map("spoiler_free")
+  spoilerFree     Boolean  @default(false) @map("spoiler_free")
   morningDigest   Boolean  @default(false) @map("morning_digest")
   quietHoursStart Int?     @map("quiet_hours_start")
   quietHoursEnd   Int?     @map("quiet_hours_end")

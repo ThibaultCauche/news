@@ -66,10 +66,10 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
     return res.body as { userId: string; accessToken: string; refreshToken: string };
   }
 
-  it("crée un compte anonyme avec des réglages par défaut (sans spoil activé)", async () => {
+  it("crée un compte anonyme avec des réglages par défaut (sans spoil désactivé)", async () => {
     const { accessToken } = await createAnonymousAccount();
     const res = await request(app.getHttpServer()).get("/v1/me/settings").set("Authorization", `Bearer ${accessToken}`).expect(200);
-    expect(res.body).toEqual({ spoilerFree: true, morningDigest: false, quietHoursStart: null, quietHoursEnd: null });
+    expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: null, quietHoursEnd: null });
   });
 
   it("refuse l'accès sans jeton et avec un jeton invalide", async () => {

@@ -88,7 +88,7 @@ export class NotificationDispatchService {
         throw err;
       }
 
-      const { title, body } = buildNotificationText(type, event.name, sub.user.setting?.spoilerFree ?? true, winnerName);
+      const { title, body } = buildNotificationText(type, event.name, sub.user.setting?.spoilerFree ?? false, winnerName);
       for (const device of sub.user.devices) {
         if (
           device.utcOffsetMinutes !== null &&
@@ -135,7 +135,7 @@ export class NotificationDispatchService {
         throw err;
       }
 
-      const { title, body } = buildNotificationText(type, entity.name, sub.user.setting?.spoilerFree ?? true, null);
+      const { title, body } = buildNotificationText(type, entity.name, sub.user.setting?.spoilerFree ?? false, null);
       for (const device of sub.user.devices) {
         if (
           device.utcOffsetMinutes !== null &&
