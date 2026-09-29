@@ -13,6 +13,7 @@
     "db:migrate": "dotenv -e .env -- pnpm --filter @news/db exec prisma migrate dev",
     "db:generate": "dotenv -e .env -- pnpm --filter @news/db exec prisma generate",
     "db:seed": "dotenv -e .env -- pnpm --filter @news/db run seed",
+    "dev": "dotenv -e .env -- pnpm --parallel --filter @news/api --filter @news/worker dev",
     "worker:dev": "dotenv -e .env -- pnpm --filter @news/worker dev",
     "api:dev": "dotenv -e .env -- pnpm --filter @news/api dev",
     "generate:openapi": "dotenv -e .env -- pnpm --filter @news/api generate:openapi",
