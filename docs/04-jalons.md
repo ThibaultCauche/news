@@ -15,6 +15,9 @@
 | J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | **Fait (2026-09-27)** |
 | J8 | Polissage UI/UX Valorant : retour optimiste, repères visuels, navigation Agenda | L'appli est plus lisible et plus réactive pour un néophyte | **Fait (2026-09-28)** |
 | J9 | Onglet Compétitions : navigation catégorie → jeu → compétition, favoris de jeux, recherche | On retrouve n'importe quel jeu ou compétition en 2 taps, sans passer par l'Accueil | **Fait (2026-09-29)** |
+| J10 | Comptes avec pseudo, page de profil (badges, score de pronostics, stats), pronostics en points fictifs, groupes d'amis (façon MPP) | On parie sur ses matchs et on se compare à ses amis, gratuitement | À planifier |
+| J11 | Section apprentissage Valorant : tutos écrits (jeu, rôles, cartes) | Un néophyte comprend comment on joue | À planifier |
+| J12 | Forum par match (bêta fermée) : badge d'équipe selon le jeu/sport du forum, modération de base | On discute d'un match sans que ça dégénère | À planifier |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -248,6 +251,8 @@
 **Reporté** : golden de la tab bar à régénérer via la CI (le widget a changé, procédure du `CLAUDE.md` ; échoue déjà sous Windows à cause de la police) ; page dédiée à la ligue (VCT) pour y afficher son logo en grand (le logo de ligue n'apparaît pour l'instant que dans la recherche) ; recherche d'équipes et de joueurs ; catégories Sport/Politique (pas de données) ; logos de jeux autres que Valorant (un SVG par jeu à ajouter dans `apps/mobile/assets/games/<slug>.svg`).
 
 ---
+
+**Ordre décidé le 2026-09-29** (voir `docs/00` §7) : J10, J11, J12 ci-dessus, chacun cadré dans sa propre discussion (`/jalon <n>`). Le forum vient ensuite par étapes (fils par équipe, tournoi, jeu, puis création libre), toujours sur Valorant seul : les autres jeux attendent que Valorant soit complet. Les options communautaires sont **facultatives** pour l'utilisateur : l'appli reste utilisable pour les seuls résultats. Sont déjà connus : passer du compte anonyme à un compte avec pseudo (J10), et prévoir avant toute ouverture publique du forum signalement, blocage, conditions d'utilisation, suppression des messages avec le compte (RGPD).
 
 ## Ensuite (par ordre de priorité proposé)
 
