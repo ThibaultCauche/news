@@ -92,6 +92,7 @@ describe("API v1 (e2e)", () => {
   });
 
   afterAll(async () => {
+    await prisma.providerRef.deleteMany({ where: { objectType: "entity", objectId: { in: [teamAId, teamBId] } } });
     await prisma.eventParticipant.deleteMany({ where: { event: { competitionId } } });
     await prisma.event.deleteMany({ where: { competitionId } });
     await prisma.competition.delete({ where: { id: competitionId } });
@@ -129,6 +130,53 @@ describe("API v1 (e2e)", () => {
     expect((res.body.result as { seriesScore: unknown[] }).seriesScore).toHaveLength(1);
 
     await request(app.getHttpServer()).get(`/v1/events/${randomUUID()}`).expect(404);
+  });
+
+  it("GET /v1/events/:id résout le gagnant de chaque carte depuis provider_ref (règle 6)", async () => {
+    const externalTeamAId = `pandascore-team-a-${randomUUID().slice(0, 8)}`;
+    await prisma.providerRef.create({
+      data: {
+        id: randomUUID(),
+        objectType: "entity",
+        objectId: teamAId,
+        provider: "pandascore",
+        externalId: externalTeamAId,
+        lastSyncedAt: new Date(),
+        payloadHash: "test",
+      },
+    });
+    const mapsEvent = await prisma.event.create({
+      data: {
+        id: randomUUID(),
+        competitionId,
+        kind: "match",
+        name: "Test Alpha vs Test Bravo (cartes)",
+        status: "finished",
+        bestOf: 3,
+        importance: 1,
+        result: {
+          games: [
+            { position: 1, status: "finished", winnerExternalId: externalTeamAId, durationSeconds: 2201 },
+            { position: 2, status: "not_started", winnerExternalId: null, durationSeconds: null },
+          ],
+        } as Prisma.InputJsonValue,
+        participants: {
+          create: [
+            { id: randomUUID(), entityId: teamAId, score: 1, isWinner: null },
+            { id: randomUUID(), entityId: teamBId, score: 0, isWinner: null },
+          ],
+        },
+      },
+    });
+
+    const res = await request(app.getHttpServer()).get(`/v1/events/${mapsEvent.id}`).expect(200);
+    expect(res.body.maps).toEqual([
+      { position: 1, winnerEntityId: teamAId, durationSeconds: 2201 },
+      { position: 2, winnerEntityId: null, durationSeconds: null },
+    ]);
+
+    await prisma.eventParticipant.deleteMany({ where: { eventId: mapsEvent.id } });
+    await prisma.event.delete({ where: { id: mapsEvent.id } });
   });
 
   it("un deuxième appel identique renvoie 304 grâce à l'ETag", async () => {

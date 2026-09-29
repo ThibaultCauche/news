@@ -23,6 +23,17 @@ export class HeadToHeadDto {
   @ApiProperty() entityBWins!: number;
 }
 
+// Gagnant de chaque carte, rien de plus (règle 6 de CLAUDE.md — pas de score en
+// rounds, pas de nom de carte, plan gratuit PandaScore). `winnerExternalId`
+// (`event.result.games`) est un identifiant PandaScore, résolu ici vers notre
+// `entityId` via `provider_ref` : l'appli ne doit jamais voir d'identifiant
+// fournisseur (règle 1 de CLAUDE.md).
+export class MapResultDto {
+  @ApiProperty() position!: number;
+  @ApiProperty({ nullable: true, type: String }) winnerEntityId!: string | null;
+  @ApiProperty({ nullable: true, type: Number }) durationSeconds!: number | null;
+}
+
 // "Pourquoi ce match compte" (docs/03 §7) : calculé par des règles à partir du
 // bracket (`event_link`), `null` hors phase à élimination (une poule n'a pas de
 // lien de bracket : pas de phrase plutôt qu'une phrase fausse). Forme récente et
@@ -36,6 +47,7 @@ export class EventContextDto {
 export class EventDetailResponseDto extends EventSummaryDto {
   @ApiProperty() sourceUpdatedAt!: string;
   @ApiProperty({ type: Object }) result!: unknown;
+  @ApiProperty({ type: [MapResultDto] }) maps!: MapResultDto[];
   @ApiProperty({ type: EventContextDto }) context!: EventContextDto;
 }
 
@@ -77,10 +89,26 @@ export class EventsService {
       ...toEventSummary(event),
       sourceUpdatedAt: event.updatedAt.toISOString(),
       result: event.result,
+      maps: await this.buildMaps(event.result),
       context: await this.buildContext(event),
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);
     return response;
+  }
+
+  private async buildMaps(result: unknown): Promise<MapResultDto[]> {
+    const games =
+      (result as { games?: { position: number; winnerExternalId: string | null; durationSeconds?: number | null }[] } | null)?.games ?? [];
+    const externalIds = [...new Set(games.map((g) => g.winnerExternalId).filter((id): id is string => id != null))];
+    const refs = externalIds.length
+      ? await this.prisma.providerRef.findMany({ where: { objectType: "entity", provider: "pandascore", externalId: { in: externalIds } } })
+      : [];
+    const entityIdByExternalId = new Map(refs.map((r) => [r.externalId, r.objectId]));
+    return games.map((g) => ({
+      position: g.position,
+      winnerEntityId: g.winnerExternalId != null ? (entityIdByExternalId.get(g.winnerExternalId) ?? null) : null,
+      durationSeconds: g.durationSeconds ?? null,
+    }));
   }
 
   private async buildContext(event: EventWithLinks): Promise<EventContextDto> {
