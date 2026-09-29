@@ -14,6 +14,7 @@
 | J6 | Liquipedia, « pourquoi ce match compte », glossaire, sans spoil, onboarding | Expérience complète pour les nouveaux venus | **Fait (2026-09-27)** |
 | J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | **Fait (2026-09-27)** |
 | J8 | Polissage UI/UX Valorant : retour optimiste, repères visuels, navigation Agenda | L'appli est plus lisible et plus réactive pour un néophyte | **Fait (2026-09-28)** |
+| J9 | Onglet Compétitions : navigation catégorie → jeu → compétition, favoris de jeux, recherche | On retrouve n'importe quel jeu ou compétition en 2 taps, sans passer par l'Accueil | À planifier |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -212,6 +213,31 @@
 **Vérifié en conditions réelles** sur un téléphone Android physique (4 des 5 lots — le lot Suivis via tests automatisés seulement, voir ci-dessus) : un vrai bug de débordement trouvé en testant l'Agenda sur cet écran (360 de large logique) — les deux flèches de navigation plus les 7 pastilles de jour ne tenaient pas dans la largeur disponible, débordement de 32 px — corrigé en réduisant la cible tactile des flèches (32×32 plutôt que le minimum Material 48×48) et la largeur des pastilles de jour (36 plutôt que 40). Un deuxième point trouvé en vérifiant : la phrase d'enjeu des poules n'apparaissait pas tant que le serveur API de développement (démarré avant ce jalon) n'avait pas été redémarré avec le nouveau code — pas un bug de l'appli, rappel que `pnpm api:dev` ne recharge pas à chaud.
 
 **Reporté** : vérification visuelle du logo/statut sur l'écran Suivis en conditions réelles (l'onglet « Équipes » de la page Valorant et les lignes de classement du tableau des groupes ne mènent pas encore à la fiche d'une équipe — lacune préexistante, pas causée par ce jalon, mais qui empêche d'atteindre un suivi d'équipe autrement que par un match dont les participants sont affichés) ; granularité éventuelle de la phrase d'enjeu par format autre que GSL (hors périmètre, aucun autre format n'en a besoin pour l'instant).
+
+---
+
+## J9 — Onglet Compétitions et hiérarchie de navigation (ajouté)
+
+**Objectif** : remplacer l'unique point d'entrée vers la page Valorant (une ligne sur l'Accueil) par une vraie navigation catégorie → jeu → compétition, qui tiendra quand d'autres jeux et sports arriveront. Décidé en discussion le 2026-09-29 ; la logique complète se cadre avant d'implémenter.
+
+**Périmètre**
+- **5ᵉ onglet « Compétitions »** dans la tab bar, centré et mis en avant. L'écran contient : une barre de recherche en haut (jeux et compétitions uniquement, filtrage côté appli sur le catalogue déjà chargé) ; un raccourci « Favoris » (jeux mis en favori) ; les catégories en accordéon (Esport, Sport…) qui déroulent la liste des jeux/sports. **Une catégorie sans donnée n'est pas affichée** : au départ, seulement Esport avec Valorant.
+- **Page jeu** (ex-« Valorant · saison VCT 2026 ») avec trois onglets : **Compétitions** (frise d'avancement de la saison, compétitions en cours puis passées), **Équipes** et **Agenda**, ces deux derniers filtrés sur le jeu.
+- **Page compétition** (ex-Champions 2026) : le tournoi seul (« Maintenant », bracket, matchs), sans onglets. « Suivre »/« M'alerter » restent au niveau compétition, équipe et match.
+- **Favori de jeu** : raccourci d'accès uniquement, **aucune notification**. Vocabulaire « Favori » réservé aux jeux entiers ; « Suivre » ne change pas ailleurs. À stocker à part des abonnements (`subscription` est hiérarchique : un abonnement sur la ligue racine notifierait tous les matchs du jeu).
+- Retirer de l'Accueil la ligne d'accès à la page Valorant.
+
+**À vérifier au cadrage** : le bouton « Suivi » actuel de l'écran Valorant est-il un vrai abonnement sur la ligue racine (donc notifie pour tout le jeu) ? Si oui, le migrer vers le favori. Mettre à jour `docs/02` (nouvelle tab bar et écrans) avant d'implémenter.
+
+**Hors périmètre** : recherche d'équipes et de joueurs (plus tard, demandera un endpoint dédié) ; catégories Sport/Politique (pas encore de données).
+
+**Critères d'acceptation**
+- [ ] Depuis n'importe quel écran, l'onglet Compétitions mène à un jeu en 2 taps (catégorie, jeu).
+- [ ] La recherche trouve un jeu ou une compétition par son nom (insensible à la casse et aux accents).
+- [ ] Mettre un jeu en favori l'ajoute au raccourci, sans créer d'abonnement ni de notification.
+- [ ] La page jeu affiche la frise de saison, les compétitions en cours/passées, Équipes et Agenda filtrés sur le jeu.
+- [ ] La page compétition ne montre plus la frise ni les compétitions passées.
+- [ ] Vérifié en conditions réelles sur téléphone Android physique.
 
 ---
 
