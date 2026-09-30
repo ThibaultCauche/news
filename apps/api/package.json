@@ -7,7 +7,7 @@
     "dev": "ts-node -r tsconfig-paths/register src/main.ts",
     "generate:openapi": "ts-node -r tsconfig-paths/register src/main.ts --write-openapi=../../openapi.json",
     "start": "node dist/main.js",
-    "test": "jest --passWithNoTests",
+    "test": "jest --passWithNoTests --runInBand",
     "lint": "tsc -p tsconfig.json --noEmit",
     "build:deps": "pnpm --filter @news/domain build && pnpm --filter @news/providers build && pnpm --filter @news/db exec tsc -p tsconfig.json",
     "predev": "pnpm run build:deps",
