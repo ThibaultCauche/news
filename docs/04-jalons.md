@@ -320,22 +320,26 @@
 
 **Hors périmètre** : forum (J13) ; pronostics sur autre chose que des matchs (compétition entière, etc.) au début.
 
-**Décisions du cadrage (2026-10-01)** : voir `docs/00` §7. Invité en lecture seule ; compte e-mail + mot de passe (Firebase Auth) ; pseudo unique ; barème 3 + 2 ; groupes à code de 8 caractères ; onglet Suivis retiré ; anciens comptes anonymes supprimés.
+**Décisions du cadrage (2026-09-30)** : voir `docs/00` §7. Invité en lecture seule ; compte e-mail + mot de passe (Firebase Auth) ; pseudo unique ; barème 3 + 2 ; groupes à code de 8 caractères ; onglet Suivis retiré ; anciens comptes anonymes supprimés.
 
 **Actions manuelles** : console Firebase → Authentication → Sign-in method → activer **E-mail/Mot de passe** ; `FIREBASE_*` dans le `.env` lu par l'API (en prod, le même `.env` que le worker).
 
 **Critères d'acceptation**
-- [ ] Un invité navigue (Accueil, Agenda, Compétitions, match) sans compte ; toute action réservée (suivre, alerter, favori, réglage, pronostic) propose de créer un compte, puis continue après la connexion.
-- [ ] Inscription par e-mail + mot de passe, e-mail de vérification reçu, connexion, déconnexion, mot de passe oublié.
-- [ ] Pseudo unique (casse et accents ignorés), refusé s'il est trop court, avec caractères spéciaux ou interdit ; changement limité à un par 30 jours ; exige un e-mail vérifié.
-- [ ] Un pronostic se pose et se modifie jusqu'au début du match, puis se verrouille ; les points sont attribués une seule fois à la fin du match (3, +2 avec le score exact).
-- [ ] Deux comptes forment un groupe par code et se voient classés ; groupe complet et code inconnu refusés ; le créateur supprime, les autres quittent.
-- [ ] Sans spoil respecté : points, stats et classements masqués (appui long pour révéler).
-- [ ] Suppression du compte complète (Firebase, pronostics, groupes, suivis), pseudo libéré.
-- [ ] L'avatar est le logo d'une équipe, choisi par jeu ; le profil d'un joueur s'ouvre depuis le classement d'un groupe (membres d'un groupe commun seulement) ; le code d'invitation s'affiche derrière une icône d'invitation, avec un bouton de copie.
-- [ ] L'onglet Jeux mène à Pronostics ; les matchs à pronostiquer se filtrent par jeu du catalogue.
-- [ ] Onglet Suivis retiré (4ᵉ onglet vide) ; « Tes suivis » sur l'Accueil ; profil ouvert depuis l'avatar de l'Accueil, réglages depuis le rouage du profil.
-- [ ] **Vérifié en conditions réelles** sur téléphone Android : inscription, e-mail de vérification reçu, pseudo, pronostic sur un vrai match, points reçus à la fin, groupe à deux comptes.
+- [x] Un invité navigue (Accueil, Agenda, Compétitions, match) sans compte ; toute action réservée (suivre, alerter, favori, réglage, pronostic) propose de créer un compte, puis continue après la connexion.
+- [x] Inscription par e-mail + mot de passe, e-mail de vérification reçu, connexion, déconnexion, mot de passe oublié.
+- [x] Pseudo unique (casse et accents ignorés), refusé s'il est trop court, avec caractères spéciaux ou interdit ; changement limité à un par 30 jours ; exige un e-mail vérifié.
+- [x] Un pronostic se pose et se modifie jusqu'au début du match, puis se verrouille ; les points sont attribués une seule fois à la fin du match (3, +2 avec le score exact).
+- [x] Deux comptes forment un groupe par code et se voient classés ; groupe complet et code inconnu refusés ; le créateur supprime, les autres quittent.
+- [x] Sans spoil respecté : points, stats et classements masqués (appui long pour révéler). *Le score d'un match est désormais flouté (J11) ; le masquage des points, stats et classements est couvert par des tests de widgets, vérifié à l'œil sur téléphone pour les scores seulement.*
+- [x] Suppression du compte complète (Firebase, pronostics, groupes, suivis), pseudo libéré.
+- [x] L'avatar est le logo d'une équipe, choisi par jeu ; le profil d'un joueur s'ouvre depuis le classement d'un groupe (membres d'un groupe commun seulement) ; le code d'invitation s'affiche derrière une icône d'invitation, avec un bouton de copie.
+- [x] L'onglet Jeux mène à Pronostics ; les matchs à pronostiquer se filtrent par jeu du catalogue. *Filtre par jeu non visible tant que Valorant est le seul jeu (les puces n'apparaissent qu'à partir de deux jeux), couvert par la construction de la requête seulement.*
+- [x] Onglet Suivis retiré (4ᵉ onglet vide) ; « Tes suivis » sur l'Accueil ; profil ouvert depuis l'avatar de l'Accueil, réglages depuis le rouage du profil.
+- [x] **Vérifié en conditions réelles** sur téléphone Android : inscription, e-mail de vérification reçu, pseudo, pronostic sur un vrai match, points reçus à la fin, groupe à deux comptes. *Réserve : le règlement des points est vérifié sur le **vrai worker** avec un match simulé (5 / 3 / 0 points, « pronostics réglés » journalisé, règlement unique), pas sur un match PandaScore réel ; le pronostic réel de `Wylfram` se réglera par le même chemin à la fin de son match.*
+
+**Fait (2026-09-30).** Vérifié : lint propre ; tests domaine 58, API 49 (suites e2e l'une après l'autre), worker 15 ; `flutter analyze` propre, tests Flutter verts ; CI verte sur une branche jetable (backend + mobile). Goldens : les 9 échecs locaux ne viennent que du rendu Windows, la CI régénère des images **identiques** à celles du dépôt (rien à recommiter). En conditions réelles sur téléphone Android et émulateur : invité, garde de compte, inscription avec e-mail de vérification, pseudo et changement, avatar (logo d'équipe), groupe à deux comptes, profil d'un joueur, invitation, suppression de compte, sans spoil (score flouté, appui long), pronostic posé sur un vrai match. Règlement des points vérifié sur le vrai worker avec un match simulé.
+
+**Reporté** : **points d'un vrai match PandaScore** (le pronostic réel de `Wylfram` se réglera à la fin de son match) ; **modèles d'e-mails Firebase et page « Your email has been verified »** (avec l'identité de l'app, voir « Points ouverts ») ; **classement de groupe par jeu** (global pour l'instant) ; **lien Google / Apple** pour les comptes (Apple obligatoire à la sortie iOS) ; **pronostic directement sur les cartes de match** (seulement sur l'écran du match) ; **liste de mots interdits** du pseudo minimale, à étoffer (le forum du J13 aura sa modération).
 
 ---
 
@@ -376,7 +380,7 @@
 1. **Guide d'explications des compétitions** (idée du 2026-09-30) : page « Comprendre les compétitions » (Kickoff, Stage, Masters, Champions, formats, qualification), ouverte depuis un « ? » de la page jeu. Textes propres écrits pour un néophyte, relus avant mise en base (pas de recopie du site officiel VCT, qui ne sert qu'à vérifier les faits), stockés en base comme le glossaire, avec un petit endpoint.
 2. **Autres jeux PandaScore** (LoL, CS2, Dota 2, R6, Rocket League…) : même adaptateur, filtrage par tier. Nouveaux formats à dessiner : **phase suisse**, **classement de lobby** (battle royale). Vérifier le gagnant par carte pour CS, Dota 2 et LoL sur du tier S.
 3. **Temps réel V2** : flux SSE `GET /v1/live/events/:id`, **Live Activities** iOS (écran 13).
-4. **Jeu du jour** (écran 16) : « devine le score », pronostics (`prediction`, `quiz_answer`).
+4. **Autres jeux de l'onglet Jeux** (écran 16) : « devine le score », quiz (`quiz_answer`). Les pronostics (`prediction`) sont faits depuis le J11.
 5. **Politique** avant avril 2027 : adaptateurs `assemblee` (zips quotidiens), `senat`, `legifrance` (PISTE), `elections` (data.gouv, rythme rapide le soir d'élection). Écrans 19 (loi façon colis) et 25 (soirée électorale). Jeu « Qui a voté ? » à partir de `politique-quiz/`. Tester le flux de résultats en direct sur un scrutin partiel **avant** la présidentielle.
 6. **Streams** : API Twitch (écran 23).
 7. **Sport par vagues** (`docs/01b`) : football (football-data.org + openfootball), F1 (Jolpica), puis rugby/basket.
@@ -393,4 +397,4 @@
 | **Identité de l'app** (nom, logo, domaine) → à ce moment-là : modèles d'e-mails Firebase Auth (vérification, réinitialisation : expéditeur, objet, texte en français) et **page de validation « Your email has been verified »**, hébergée par Firebase, à remplacer par une page à nous | Avec le nom et le logo (reporté du J7, pas rattaché à un jalon) |
 | Écrire à PandaScore : usage du plan gratuit et attribution exigée | Avant J7 |
 | Licence open source du code (MIT, AGPL…) | Avant J7 |
-| **Supprimer l'onglet Suivis** (idée du 2026-09-30) : réintégrer les suivis dans l'Accueil (« Tes suivis », prévu par `docs/02` écran 17, retiré au J10 car doublon tant que Suivis existe) pour libérer un onglet quand les options communautaires (J11-J13) en demanderont. Un seul des deux doit exister, pas les deux | À l'arrivée du J11 |
+| ~~**Supprimer l'onglet Suivis**~~ **Fait au J11** (idée du 2026-09-30) : réintégrer les suivis dans l'Accueil (« Tes suivis », prévu par `docs/02` écran 17, retiré au J10 car doublon tant que Suivis existe) pour libérer un onglet quand les options communautaires (J11-J13) en demanderont. Un seul des deux doit exister, pas les deux | À l'arrivée du J11 |
