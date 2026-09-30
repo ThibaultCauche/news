@@ -4,6 +4,7 @@ import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
 import "../../core/clock.dart";
+import "../../core/date_x.dart";
 import "../../core/iterable_x.dart";
 import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
@@ -111,7 +112,8 @@ class _HomeBody extends StatelessWidget {
 
     return SliverList(
       delegate: SliverChildListDelegate([
-        if (liveEvent != null) _LiveBanner(event: liveEvent, scoresHidden: scoresHidden, next: upcoming.firstOrNull),
+        // « Ensuite » seulement si ce match a lieu aujourd'hui : un match de demain n'est pas « ensuite ».
+        if (liveEvent != null) _LiveBanner(event: liveEvent, scoresHidden: scoresHidden, next: upcoming.firstOrNull.ifToday),
         if (liveEvent == null && upNextEvent != null) _UpNextSection(event: upNextEvent, scoresHidden: scoresHidden),
         if (grandFinals.isNotEmpty) _GrandFinalsSection(grandFinals: grandFinals),
         const SizedBox(height: AppSpacing.xl),
@@ -198,5 +200,14 @@ class _GrandFinalsSection extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+extension _NextToday on EventSummaryDto? {
+  /// Ce match s'il commence aujourd'hui (heure locale), sinon `null`.
+  EventSummaryDto? get ifToday {
+    final start = this?.startsAt.toDateTime?.toLocal();
+    if (start == null) return null;
+    return dateOnly(start) == dateOnly(DateTime.now()) ? this : null;
   }
 }

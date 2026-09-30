@@ -35,6 +35,12 @@ EventSummaryDto _final({bool withTeams = true}) => EventSummaryDto(
             : <EventParticipantDto>[]),
     );
 
+// Aujourd'hui à `h`:`m` (heure locale) : seul le jour compte pour « Ensuite », pas l'heure.
+DateTime _todayAt(int h, int m) {
+  final now = DateTime.now();
+  return DateTime(now.year, now.month, now.day, h, m);
+}
+
 HomeResponseDto _home({List<GrandFinalDto> grandFinals = const [], List<EventSummaryDto> live = const [], List<EventSummaryDto> upcoming = const []}) => HomeResponseDto(
       (b) => b
         ..sourceUpdatedAt = "2026-10-18T10:00:00.000Z"
@@ -43,13 +49,13 @@ HomeResponseDto _home({List<GrandFinalDto> grandFinals = const [], List<EventSum
         ..grandFinals.addAll(grandFinals),
     );
 
-EventSummaryDto _match(String id, String status, String a, String b, {int? scoreA, int? scoreB}) => EventSummaryDto(
+EventSummaryDto _match(String id, String status, String a, String b, {int? scoreA, int? scoreB, DateTime? startsAt}) => EventSummaryDto(
       (e) => e
         ..id = id
         ..kind = "match"
         ..name = "$a vs $b"
         ..status = status
-        ..startsAt = "2026-10-18T09:00:00.000Z"
+        ..startsAt = (startsAt ?? DateTime.now()).toUtc().toIso8601String()
         ..bestOf = 3
         ..importance = 1
         ..competition.replace(CompetitionRefDto((c) => c
@@ -96,7 +102,7 @@ void main() {
   testWidgets("match en direct : carte de match commune (logos, scores) en rouge, avec « Ensuite » en dessous", (tester) async {
     await _pump(
       tester,
-      _home(live: [_match("live", "live", "VIT", "LOUD", scoreA: 1, scoreB: 0)], upcoming: [_match("next", "scheduled", "FUT", "100T")]),
+      _home(live: [_match("live", "live", "VIT", "LOUD", scoreA: 1, scoreB: 0)], upcoming: [_match("next", "scheduled", "FUT", "100T", startsAt: _todayAt(23, 59))]),
     );
 
     expect(find.text("EN DIRECT"), findsOneWidget);
@@ -109,6 +115,20 @@ void main() {
     expect(tester.getTopLeft(find.text("VIT")).dx, lessThan(tester.getTopLeft(find.text("LOUD")).dx));
 
     await tester.pumpWidget(const SizedBox()); // arrête l'animation du point
+  });
+
+  testWidgets("le match suivant est demain : pas de ligne « Ensuite » (J10)", (tester) async {
+    final tomorrow = DateTime.now().add(const Duration(days: 1));
+    await _pump(
+      tester,
+      _home(
+        live: [_match("live", "live", "VIT", "LOUD", scoreA: 1, scoreB: 0)],
+        upcoming: [_match("next", "scheduled", "TYLOO", "TL", startsAt: DateTime(tomorrow.year, tomorrow.month, tomorrow.day, 12))],
+      ),
+    );
+    expect(find.text("EN DIRECT"), findsOneWidget);
+    expect(find.textContaining("Ensuite"), findsNothing);
+    await tester.pumpWidget(const SizedBox());
   });
 
   testWidgets("match en direct sans match ensuite : pas de ligne « Ensuite »", (tester) async {
