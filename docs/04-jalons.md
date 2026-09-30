@@ -305,6 +305,57 @@
 
 ---
 
+## J11 — Comptes avec pseudo, profil, pronostics et groupes d'amis (ajouté)
+
+**Objectif** : première couche communautaire, **optionnelle** (l'appli reste utilisable pour les seuls résultats) : pronostiquer des matchs en points fictifs, se comparer à ses amis, avoir une page de profil. Décidé le 2026-09-29 (`docs/00` §7).
+
+**Périmètre**
+- **Compte avec pseudo** : passage du compte anonyme (J4) à un compte identifiable, **sans perdre les abonnements existants** (l'utilisateur anonyme qui « crée son profil » garde ses suivis). Le compte anonyme reste possible pour qui ne veut pas de la couche communautaire.
+- **Pronostics** en points fictifs : pronostiquer le vainqueur (et éventuellement le score de série) d'un match, jusqu'à son début ; points attribués à la fin du match. Pas de gain réel, pas de lot, pas d'achat de points (reste hors « jeu d'argent »). Tables génériques (`prediction`, `quiz_answer` de `docs/03`), aucune table propre à un jeu (règle 3).
+- **Groupes d'amis** façon Mon Petit Prono : créer un groupe, rejoindre par code d'invitation, classement du groupe.
+- **Page de profil** : pseudo, résumé des badges par jeu/sport (les badges eux-mêmes servent surtout au J13), score de pronostics, quelques statistiques.
+- Compatible **sans spoil** : un pronostic ne révèle pas le résultat d'un match pour un utilisateur qui masque les scores.
+
+**À trancher au cadrage** : méthode de connexion (lien magique par e-mail, Google…) ; unicité et règles du pseudo (pseudos injurieux) ; barème des pronostics ; ce que contiennent exactement les « petites stats » du profil ; suppression du compte avec ses données (RGPD, `DELETE /v1/me` existe déjà).
+
+**Hors périmètre** : forum (J13) ; pronostics sur autre chose que des matchs (compétition entière, etc.) au début.
+
+**Critères d'acceptation** : à rédiger au cadrage (`/jalon 11`).
+
+---
+
+## J12 — Apprentissage Valorant (ajouté)
+
+**Objectif** : donner envie de jouer aux néophytes qui regardent une compétition, avec des tutos écrits à la main en français (comment marche le jeu, les rôles, les cartes), dans l'esprit du glossaire de J6.
+
+**Périmètre**
+- Section « Apprendre » dans l'espace Valorant, contenu éditorial versionné dans le dépôt (comme le glossaire du seed, `pnpm db:seed`, ou fichiers embarqués : à choisir au cadrage).
+- Divulgation progressive : l'essentiel d'abord, le détail si on le cherche.
+
+**Hors périmètre (reporté)** : meilleures compositions par carte, stats par arme, stats joueurs. Le plan gratuit PandaScore n'a ni noms de cartes ni stats (règle 6), l'API officielle de Riot exige une clé de production validée, et le scraping est interdit (règle 7). À revoir plus tard, source par source.
+
+**Critères d'acceptation** : à rédiger au cadrage (`/jalon 12`).
+
+---
+
+## J13 — Forum par match, bêta fermée (ajouté)
+
+**Objectif** : permettre de discuter d'un match sans que ça dégénère. Optionnel, comme le reste de la couche communautaire. **Prérequis : J11** (comptes avec pseudo).
+
+**Périmètre**
+- Un **fil de discussion créé automatiquement pour chaque match**, **texte seul** (ni images ni liens libres).
+- **Pas de cloisonnement par équipe** : tout le monde lit tout. Le suivi d'une équipe donne un **badge visible** à côté du pseudo, **selon le jeu ou le sport du forum** (équipe Valorant dans un forum Valorant). Un seul « camp » actif par jeu/sport, modifiable avec un délai (par exemple 1 fois par semaine).
+- **Modération de base** : signalement, masquage d'un utilisateur, mode lent, filtre de mots, ancienneté minimale du compte avant de pouvoir écrire, outil pour retirer un message rapidement.
+- **Bêta fermée** avant toute ouverture publique.
+
+**À prévoir avant l'ouverture publique** : conditions d'utilisation, retrait rapide des contenus signalés, blocage d'utilisateur, suppression des messages avec le compte (RGPD), exigences des stores pour le contenu généré par les utilisateurs.
+
+**Hors périmètre (étapes suivantes)** : fils par équipe, tournoi et jeu, puis création libre de discussions ; autres jeux (Valorant doit être complet d'abord).
+
+**Critères d'acceptation** : à rédiger au cadrage (`/jalon 13`).
+
+---
+
 ## Ensuite (par ordre de priorité proposé)
 
 1. **Guide d'explications des compétitions** (idée du 2026-09-30) : page « Comprendre les compétitions » (Kickoff, Stage, Masters, Champions, formats, qualification), ouverte depuis un « ? » de la page jeu. Textes propres écrits pour un néophyte, relus avant mise en base (pas de recopie du site officiel VCT, qui ne sert qu'à vérifier les faits), stockés en base comme le glossaire, avec un petit endpoint.
