@@ -85,6 +85,32 @@ describe("Familles et sourdine (e2e)", () => {
     expect(league.children.map((c: { familyId: string | null }) => c.familyId)).toEqual([familyId, familyId]);
   });
 
+  it("le catalogue signale une ligue « en cours » d'après les dates de ses séries", async () => {
+    const isLive = async () => {
+      await redis.del(CacheKeys.catalog());
+      const res = await request(app.getHttpServer()).get("/v1/catalog").expect(200);
+      const league = res.body.categories
+        .flatMap((c: { games: { leagues: { id: string }[] }[] }) => c.games.flatMap((g) => g.leagues))
+        .find((l: { id: string }) => l.id === leagueId);
+      return league.live as boolean;
+    };
+    expect(await isLive()).toBe(false); // aucune série datée
+
+    const hour = 3600 * 1000;
+    await prisma.competition.update({
+      where: { id: champions2026.serieId },
+      data: { startsAt: new Date(Date.now() - hour), endsAt: new Date(Date.now() + 24 * hour) },
+    });
+    expect(await isLive()).toBe(true);
+
+    await prisma.competition.update({
+      where: { id: champions2026.serieId },
+      data: { startsAt: new Date(Date.now() - 48 * hour), endsAt: new Date(Date.now() - 24 * hour) },
+    });
+    expect(await isLive()).toBe(false); // terminée
+    await prisma.competition.update({ where: { id: champions2026.serieId }, data: { startsAt: null, endsAt: null } });
+  });
+
   it("suivre une famille : nom et prochain match toutes éditions confondues", async () => {
     await request(app.getHttpServer()).post("/v1/subscriptions").set(auth()).send({ targetType: "competition_family", targetId: familyId }).expect(201);
     const list = await request(app.getHttpServer()).get("/v1/subscriptions").set(auth()).expect(200);

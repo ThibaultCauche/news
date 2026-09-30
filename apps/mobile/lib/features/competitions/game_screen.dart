@@ -18,8 +18,9 @@ import "../agenda/agenda_screen.dart";
 import "../team/team_screen.dart";
 import "../valorant_season/season_data.dart";
 import "competitions_data.dart";
+import "leagues_tab.dart";
 
-const _tabs = ["Compétitions", "Équipes", "Agenda"];
+const _tabs = ["Compétitions", "Ligues", "Équipes", "Agenda"];
 
 /// Kickoff se raconte en « 3 vies » (écran 14), les autres étapes à élimination
 /// double en arbre radial + groupes + repêchage (écrans 02/05/06/07) — `docs/02`.
@@ -43,7 +44,7 @@ void openCompetitionPage(BuildContext context, {required String id, required Str
 void _openStep(BuildContext context, SeasonStep step) => openCompetitionPage(context, id: step.id, name: step.name, status: step.status);
 
 /// Page jeu (écran 01 de `docs/02`, J9) : Compétitions (frise de saison,
-/// en cours, déjà jouées), Équipes et Agenda, ces deux derniers filtrés sur le
+/// en cours, déjà jouées), Ligues (J10), Équipes et Agenda, ces deux derniers filtrés sur le
 /// jeu. `game` vient du catalogue : rien de propre à Valorant dans l'écran, sauf
 /// `valorantSeasonProvider` (seul jeu ingéré pour l'instant).
 class GameScreen extends ConsumerStatefulWidget {
@@ -89,8 +90,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           const SizedBox(height: AppSpacing.md),
           Expanded(
             child: switch (_tabIndex) {
-              1 => _TeamsTab(game: game),
-              2 => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
+              1 => LeaguesTab(game: game),
+              2 => _TeamsTab(game: game),
+              3 => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
               _ => switch (overview) {
                 AsyncData(:final value) =>
                   value == null

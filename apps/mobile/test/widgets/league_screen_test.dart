@@ -15,6 +15,7 @@ import "../follows_test_helpers.dart";
 import "../settings_test_helpers.dart";
 
 final _vct = CatalogLeagueDto((l) => l
+  ..live = false
   ..id = "vct"
   ..name = "VCT"
   ..families = ListBuilder<CatalogFamilyDto>([

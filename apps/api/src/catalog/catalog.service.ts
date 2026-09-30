@@ -27,6 +27,8 @@ export class CatalogLeagueDto {
   @ApiProperty({ nullable: true, type: String }) imageUrl!: string | null;
   @ApiProperty({ type: [CatalogChildDto] }) children!: CatalogChildDto[];
   @ApiProperty({ type: [CatalogFamilyDto] }) families!: CatalogFamilyDto[];
+  // Une compétition de la ligue est en cours (dates de la série : le fournisseur ne donne pas de statut de série).
+  @ApiProperty() live!: boolean;
 }
 
 export class CatalogGameDto {
@@ -63,7 +65,7 @@ export class CatalogService {
       where: { parentId: null, game: { not: null } },
       include: {
         category: true,
-        children: { select: { id: true, name: true, familyId: true }, orderBy: { startsAt: "desc" } },
+        children: { select: { id: true, name: true, familyId: true, startsAt: true, endsAt: true }, orderBy: { startsAt: "desc" } },
         families: { select: { id: true, name: true }, orderBy: { name: "asc" } },
       },
       orderBy: { name: "asc" },
@@ -82,7 +84,15 @@ export class CatalogService {
         game = { slug, name: GAME_NAMES[slug] ?? slug, leagues: [] };
         category.games.push(game);
       }
-      game.leagues.push({ id: root.id, name: root.name, imageUrl: root.imageUrl, children: root.children, families: root.families });
+      const now = new Date();
+      game.leagues.push({
+        id: root.id,
+        name: root.name,
+        imageUrl: root.imageUrl,
+        children: root.children.map(({ id, name, familyId }) => ({ id, name, familyId })),
+        families: root.families,
+        live: root.children.some((c) => c.startsAt !== null && c.startsAt <= now && (c.endsAt === null || c.endsAt >= now)),
+      });
     }
 
     const catalog = { categories: [...categories.values()] };

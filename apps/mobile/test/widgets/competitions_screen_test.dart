@@ -19,6 +19,7 @@ CatalogDto _catalog() => CatalogDto((b) => b
           ..name = "Valorant"
           ..leagues = ListBuilder<CatalogLeagueDto>([
             CatalogLeagueDto((l) => l
+              ..live = false
               ..id = "vct"
               ..name = "VCT"
               ..children = ListBuilder<CatalogChildDto>([
