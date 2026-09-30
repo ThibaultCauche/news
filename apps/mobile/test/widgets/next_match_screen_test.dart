@@ -110,17 +110,20 @@ void main() {
   testWidgets("sans spoil, match terminé : score masqué puis révélé par appui long", (tester) async {
     await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0), spoilerFree: true);
 
-    // `AnimatedCrossFade` monte les deux enfants en continu (pour l'animation) :
-    // c'est son `crossFadeState`, pas la présence du texte, qui dit ce qui est
-    // visible.
-    AnimatedCrossFade crossFade() => tester.widget<AnimatedCrossFade>(find.byType(AnimatedCrossFade));
-    expect(crossFade().crossFadeState, CrossFadeState.showFirst);
-    expect(find.text("Toucher longuement pour révéler"), findsOneWidget);
+    // Le score est flouté (J11) : présent mais sous un `ImageFiltered`, tant qu'on ne maintient pas.
+    expect(find.byType(ImageFiltered), findsOneWidget);
+    expect(find.text("Maintiens pour révéler le score"), findsOneWidget);
 
-    await tester.longPress(find.text("•  •"));
+    final gesture = await tester.startGesture(tester.getCenter(find.text("Terminé")));
+    // Le premier `pump` ne fait que démarrer l'horloge de l'animation : d'où la durée en plus.
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.pump(const Duration(milliseconds: 700));
+    await tester.pump(const Duration(milliseconds: 100));
+    await gesture.up();
     await tester.pump();
-    await tester.pump(const Duration(milliseconds: 200));
 
-    expect(crossFade().crossFadeState, CrossFadeState.showSecond);
+    expect(find.byType(ImageFiltered), findsNothing);
+    expect(find.text("2-0"), findsOneWidget);
   });
 }

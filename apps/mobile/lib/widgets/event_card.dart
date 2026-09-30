@@ -12,6 +12,7 @@ import "../theme/tokens.dart";
 import "live_dot.dart";
 import "match_countdown.dart";
 import "match_visuals.dart";
+import "spoiler_hold.dart";
 
 /// Couleur dominante d'un logo d'équipe, mise en cache par URL (un seul calcul
 /// par équipe même si sa tuile apparaît sur plusieurs écrans) : teinte le fond
@@ -74,8 +75,12 @@ class EventCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final status = event.status.statusKind;
     final textTheme = Theme.of(context).textTheme;
+    // Sans spoil : le score d'un match terminé reste sur la carte, flouté ; un appui long le
+    // dissipe petit à petit (J11) et le révèle pour la session, carte et écran du match ensemble.
+    final hidden = scoresHidden && !ref.watch(revealedEventsProvider).contains(event.id);
     // Un match à venir n'a pas de score : l'API renvoie 0-0, à ne pas afficher.
-    final score = status == EventStatusKind.scheduled || (status == EventStatusKind.finished && scoresHidden) ? null : _scoreLine;
+    final score = status == EventStatusKind.scheduled ? null : _scoreLine;
+    final blurScores = status == EventStatusKind.finished && hidden && score != null;
     final hasTwoTeams = event.participants.length == 2;
     final teamA = hasTwoTeams ? event.participants[0] : null;
     final teamB = hasTwoTeams ? event.participants[1] : null;
@@ -136,16 +141,21 @@ class EventCard extends ConsumerWidget {
 
     // Couronne du vainqueur d'un match terminé (J10) : jamais quand le score est masqué,
     // elle révélerait le résultat (sans spoil, règle 10 de `CLAUDE.md`).
-    final showCrown = status == EventStatusKind.finished && !scoresHidden && hasTwoTeams && event.participants.any((p) => p.isWinner == true);
+    final showCrown = status == EventStatusKind.finished && !hidden && hasTwoTeams && event.participants.any((p) => p.isWinner == true);
     bool? crownFor(EventParticipantDto p) => showCrown ? p.isWinner == true : null;
     Color? colorFor(EventParticipantDto p) => followedEntityIds.contains(p.entityId) ? AppColors.gold : null;
     final compact = ref.watch(compactEventCardsProvider);
 
     // Réglages → Affichage : logo, puis son score à côté (pas en dessous),
     // en symétrie avec "VS" au centre — sans les noms.
+    // `sigma` : flou courant du score (0 = net), piloté par l'appui long (`SpoilerHold`).
+    Widget buildTeams(double sigma) {
     Widget? scoreText(num? value) => value == null
         ? null
-        : Text("${value.toInt()}", style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: 22, fontWeight: FontWeight.w800));
+        : SpoilerBlur(
+            sigma: sigma,
+            child: Text("${value.toInt()}", style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: 22, fontWeight: FontWeight.w800)),
+          );
 
     final compactRow = compact && hasTwoTeams
         ? Row(
@@ -166,7 +176,7 @@ class EventCard extends ConsumerWidget {
     // Deux moitiés de largeur strictement égale, "VS"/statut posé par-dessus
     // au centre exact (`Stack`) : les deux logos restent parfaitement en
     // miroir quels que soient l'heure ou la longueur des noms.
-    final teamsRow = compactRow ??
+    return compactRow ??
         (hasTwoTeams
             ? Stack(
                 alignment: Alignment.center,
@@ -175,12 +185,12 @@ class EventCard extends ConsumerWidget {
                     children: [
                       Expanded(
                         child: Center(
-                          child: _TeamBlock(participant: teamA!, score: score != null ? teamA.score : null, nameColor: colorFor(teamA), crowned: crownFor(teamA)),
+                          child: _TeamBlock(participant: teamA!, score: score != null ? teamA.score : null, scoreSigma: sigma, nameColor: colorFor(teamA), crowned: crownFor(teamA)),
                         ),
                       ),
                       Expanded(
                         child: Center(
-                          child: _TeamBlock(participant: teamB!, score: score != null ? teamB.score : null, nameColor: colorFor(teamB), crowned: crownFor(teamB)),
+                          child: _TeamBlock(participant: teamB!, score: score != null ? teamB.score : null, scoreSigma: sigma, nameColor: colorFor(teamB), crowned: crownFor(teamB)),
                         ),
                       ),
                     ],
@@ -203,6 +213,11 @@ class EventCard extends ConsumerWidget {
                   ),
                 ],
               ));
+    }
+
+    final teamsRow = blurScores
+        ? SpoilerHold(builder: (context, sigma) => buildTeams(sigma), onReveal: () => ref.read(revealedEventsProvider.notifier).reveal(event.id))
+        : buildTeams(0);
 
     return Container(
       // Largeur pleine forcée : la ligne compacte (`compactRow`) se dimensionne
@@ -222,6 +237,9 @@ class EventCard extends ConsumerWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: onTap,
+          // Réclame l'appui long : sans lui, relâcher après avoir maintenu pour révéler le score
+          // ouvrirait quand même le match.
+          onLongPress: blurScores ? () {} : null,
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm, horizontal: AppSpacing.sm),
             child: Stack(
@@ -255,10 +273,11 @@ class EventCard extends ConsumerWidget {
 /// deux équipes a été retirée : c'est désormais le changement de couleur
 /// (`EventCard`) qui sépare visuellement les deux moitiés.
 class _TeamBlock extends StatelessWidget {
-  const _TeamBlock({required this.participant, required this.score, required this.nameColor, required this.crowned});
+  const _TeamBlock({required this.participant, required this.score, this.scoreSigma = 0, required this.nameColor, required this.crowned});
 
   final EventParticipantDto participant;
   final num? score;
+  final double scoreSigma;
   final Color? nameColor;
   final bool? crowned;
 
@@ -277,7 +296,7 @@ class _TeamBlock extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 4),
-        TeamBadge(imageUrl: participant.imageUrl, score: score, diameter: 68, crowned: crowned),
+        TeamBadge(imageUrl: participant.imageUrl, score: score, scoreSigma: scoreSigma, diameter: 68, crowned: crowned),
       ],
     );
   }

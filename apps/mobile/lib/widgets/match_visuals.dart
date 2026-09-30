@@ -1,3 +1,4 @@
+import "spoiler_hold.dart";
 import "package:flutter/material.dart";
 import "../theme/app_theme.dart";
 import "../theme/tokens.dart";
@@ -24,10 +25,13 @@ LinearGradient? teamsGradient(Color? colorA, Color? colorB) {
 /// case moins une marge : sans taille explicite, un logo plus grand que la case la
 /// débordait (écran du match, J10). [fallback] s'affiche sans logo (initiales).
 class TeamBadge extends StatelessWidget {
-  const TeamBadge({super.key, required this.imageUrl, this.score, this.diameter = 44, this.fallback, this.crowned});
+  const TeamBadge({super.key, required this.imageUrl, this.score, this.scoreSigma = 0, this.diameter = 44, this.fallback, this.crowned});
 
   final String? imageUrl;
   final num? score;
+
+  /// Flou du score (sans spoil, J11) : 0 = net.
+  final double scoreSigma;
   final double diameter;
   final String? fallback;
 
@@ -72,11 +76,14 @@ class TeamBadge extends StatelessWidget {
         ),
         if (score != null) ...[
           const SizedBox(height: 2),
-          Text(
-            "${score!.toInt()}",
-            // Taille de score proportionnelle au logo (44 → 26, la tuile
-            // réduite a un logo plus petit donc un score plus petit aussi).
-            style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: AppTypography.heroScore * diameter / 44, fontWeight: FontWeight.w800),
+          SpoilerBlur(
+            sigma: scoreSigma,
+            child: Text(
+              "${score!.toInt()}",
+              // Taille de score proportionnelle au logo (44 → 26, la tuile
+              // réduite a un logo plus petit donc un score plus petit aussi).
+              style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: AppTypography.heroScore * diameter / 44, fontWeight: FontWeight.w800),
+            ),
           ),
         ],
       ],

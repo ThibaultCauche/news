@@ -93,12 +93,34 @@ void main() {
     expect(find.text("0"), findsOneWidget);
   });
 
-  testWidgets("terminé, sans spoil activé : masque le score (écran 15, J6)", (tester) async {
+  testWidgets("terminé, sans spoil activé : score flouté sur la carte (écran 15, J6 ; flou J11)", (tester) async {
     await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0), scoresHidden: true);
-    expect(find.text("2"), findsNothing);
-    expect(find.text("0"), findsNothing);
+    // Le score est là mais flouté (un `ImageFiltered` par score) et caché aux lecteurs d'écran.
+    expect(find.byType(ImageFiltered), findsNWidgets(2));
+    expect(find.bySemanticsLabel("2"), findsNothing);
     // "VS" toujours affiché entre les deux logos, quel que soit le statut.
     expect(find.text("VS"), findsOneWidget);
+  });
+
+  testWidgets("terminé, sans spoil : un appui long maintenu dissipe le flou et révèle le score", (tester) async {
+    await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0), scoresHidden: true);
+    final gesture = await tester.startGesture(tester.getCenter(find.text("VS")));
+    // Relâché trop tôt : le flou revient.
+    await tester.pump(const Duration(milliseconds: 300));
+    await gesture.up();
+    await tester.pump(const Duration(milliseconds: 400));
+    expect(find.byType(ImageFiltered), findsNWidgets(2));
+
+    final hold = await tester.startGesture(tester.getCenter(find.text("VS")));
+    // Le premier `pump` ne fait que démarrer l'horloge de l'animation : d'où la durée en plus.
+    await tester.pump(const Duration(milliseconds: 100));
+    await tester.pump(const Duration(milliseconds: 600));
+    await tester.pump(const Duration(milliseconds: 700));
+    await tester.pump(const Duration(milliseconds: 100));
+    await hold.up();
+    await tester.pump();
+    expect(find.byType(ImageFiltered), findsNothing);
+    expect(find.text("2"), findsOneWidget);
   });
 
   testWidgets("équipes inconnues : le compte à rebours s'affiche sous le nom du match", (tester) async {

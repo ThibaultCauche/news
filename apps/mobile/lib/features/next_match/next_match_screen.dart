@@ -20,6 +20,7 @@ import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
 import "../team/team_screen.dart";
+import "../../widgets/spoiler_hold.dart";
 import "../profile/prediction_panel.dart";
 
 final eventProvider = FutureProvider.autoDispose.family<EventDetailResponseDto, String>((ref, id) async {
@@ -78,7 +79,9 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
     // l'instant, la granularité par catégorie de l'écran 22 attendra une 2e
     // catégorie. `true` par défaut tant que le réglage n'est pas encore chargé.
     final defaultHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
-    final scoresHidden = _scoresHiddenOverride ?? defaultHidden;
+    // Un score révélé par appui long sur sa carte l'est aussi ici (et inversement).
+    final revealed = ref.watch(revealedEventsProvider).contains(widget.eventId);
+    final scoresHidden = _scoresHiddenOverride ?? (defaultHidden && !revealed);
 
     return Scaffold(
       appBar: AppBar(
@@ -162,17 +165,23 @@ class _NextMatchBody extends ConsumerWidget {
         Center(
           child: GestureDetector(
             onLongPress: scoresHidden && status == EventStatusKind.finished
-                ? () {
-                    HapticFeedback.mediumImpact();
-                    onReveal();
-                  }
+                ? () {}
                 : null,
-            child: _StatusDisplay(event: event, scoresHidden: scoresHidden),
+            // Score flouté : l'appui long le dissipe petit à petit (`SpoilerHold`), puis le révèle.
+            child: scoresHidden && status == EventStatusKind.finished
+                ? SpoilerHold(
+                    builder: (context, sigma) => _StatusDisplay(event: event, scoresHidden: scoresHidden, sigma: sigma),
+                    onReveal: () {
+                      ref.read(revealedEventsProvider.notifier).reveal(event.id);
+                      onReveal();
+                    },
+                  )
+                : _StatusDisplay(event: event, scoresHidden: scoresHidden),
           ),
         ),
         if (scoresHidden && status == EventStatusKind.finished) ...[
           const SizedBox(height: AppSpacing.xs),
-          const Text("Toucher longuement pour révéler", style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption)),
+          const Text("Maintiens pour révéler le score", style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption)),
         ],
         const SizedBox(height: AppSpacing.lg),
         // Gagnant de chaque carte (règle 6 de CLAUDE.md) : masqué tant que le
@@ -290,10 +299,13 @@ class _ParticipantColumn extends StatelessWidget {
 }
 
 class _StatusDisplay extends StatelessWidget {
-  const _StatusDisplay({required this.event, required this.scoresHidden});
+  const _StatusDisplay({required this.event, required this.scoresHidden, this.sigma = 14});
 
   final EventDetailResponseDto event;
   final bool scoresHidden;
+
+  /// Flou du score masqué (piloté par l'appui long) ; ignoré quand le score est visible.
+  final double sigma;
 
   String? get _score {
     if (event.participants.length != 2) return null;
@@ -321,14 +333,14 @@ class _StatusDisplay extends StatelessWidget {
           ),
           if (_score != null) ...[
             const SizedBox(height: AppSpacing.sm),
-            _AnimatedSpoiler(hidden: scoresHidden, child: Text(_score!, style: textTheme.headlineLarge)),
+            _AnimatedSpoiler(hidden: scoresHidden, sigma: sigma, child: Text(_score!, style: textTheme.headlineLarge)),
           ],
         ],
       ),
       EventStatusKind.finished => Column(
         children: [
           Text("Terminé", style: textTheme.bodyMedium),
-          if (_score != null) _AnimatedSpoiler(hidden: scoresHidden, child: Text(_score!, style: textTheme.headlineLarge)),
+          if (_score != null) _AnimatedSpoiler(hidden: scoresHidden, sigma: sigma, child: Text(_score!, style: textTheme.headlineLarge)),
         ],
       ),
       EventStatusKind.postponed => Text("Reporté", style: textTheme.titleLarge?.copyWith(color: AppColors.textTertiary)),
@@ -337,22 +349,17 @@ class _StatusDisplay extends StatelessWidget {
   }
 }
 
-/// "Scores masqués ↔ visibles en fondu 150 ms, rien ne bouge" (`docs/maquettes/motion-specs`).
+/// Score masqué = score flouté (J11, à la place des deux points) : le vrai texte sous un flou
+/// qu'un appui long dissipe (`SpoilerHold`). Même gabarit masqué ou non, rien ne bouge.
 class _AnimatedSpoiler extends StatelessWidget {
-  const _AnimatedSpoiler({required this.hidden, required this.child});
+  const _AnimatedSpoiler({required this.hidden, required this.sigma, required this.child});
 
   final bool hidden;
+  final double sigma;
   final Widget child;
 
   @override
-  Widget build(BuildContext context) {
-    return AnimatedCrossFade(
-      duration: const Duration(milliseconds: 150),
-      crossFadeState: hidden ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-      firstChild: Text("•  •", style: Theme.of(context).textTheme.headlineLarge),
-      secondChild: child,
-    );
-  }
+  Widget build(BuildContext context) => SpoilerBlur(sigma: hidden ? sigma : 0, child: child);
 }
 
 /// Chiffres tabulaires, jamais animés (`docs/maquettes/motion-specs` — "60
