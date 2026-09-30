@@ -100,8 +100,8 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
         ],
       ),
       body: switch (event) {
-        AsyncData(:final value) => _NextMatchBody(event: value, scoresHidden: scoresHidden, onReveal: () => setState(() => _scoresHiddenOverride = false)),
-        AsyncError() when event.hasValue =>
+        // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
+        _ when event.hasValue =>
           _NextMatchBody(event: event.value!, scoresHidden: scoresHidden, onReveal: () => setState(() => _scoresHiddenOverride = false)),
         AsyncError() => const Center(child: Text("Impossible de charger ce match.")),
         _ => const Center(child: CircularProgressIndicator()),

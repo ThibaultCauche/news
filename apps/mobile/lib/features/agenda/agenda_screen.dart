@@ -4,6 +4,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
+import "../../core/clock.dart";
 import "../../core/date_x.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
@@ -47,14 +48,16 @@ class AgendaScreen extends ConsumerStatefulWidget {
 }
 
 class _AgendaScreenState extends ConsumerState<AgendaScreen> {
-  static final DateTime _today = _dateOnly(DateTime.now());
+  // Date du jour : celle de `todayProvider`, remise à jour quand le jour change (une app laissée
+  // ouverte la nuit restait sur la veille : ces dates étaient `static`, calculées au lancement).
+  late DateTime _today = ref.read(todayProvider);
   // Fenêtre ±14 jours (J8 : impossible d'aller plus loin que la date du jour
   // auparavant) fixe, indépendante du jour sélectionné — un seul appel API,
   // la liste montre toute la fenêtre d'un coup (voir `_AgendaList`).
-  static final DateTime _windowStart = _today.subtract(const Duration(days: 14));
-  static final DateTime _windowEnd = _today.add(const Duration(days: 14));
-  static final DateTime _minWeekStart = _mondayOf(_windowStart);
-  static final DateTime _maxWeekStart = _mondayOf(_windowEnd);
+  DateTime get _windowStart => _today.subtract(const Duration(days: 14));
+  DateTime get _windowEnd => _today.add(const Duration(days: 14));
+  DateTime get _minWeekStart => _mondayOf(_windowStart);
+  DateTime get _maxWeekStart => _mondayOf(_windowEnd);
 
   late DateTime _weekStart = _mondayOf(_today);
   late DateTime _selectedDay = _today;
@@ -63,7 +66,6 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
   Set<String>? _selectedLeagueIds;
   final _dayKeys = <DateTime, GlobalKey>{};
 
-  static DateTime _dateOnly(DateTime d) => DateTime(d.year, d.month, d.day);
   static DateTime _mondayOf(DateTime d) => d.subtract(Duration(days: d.weekday - 1));
 
   // Filtre repris tel quel à l'ouverture (J8) : sans ça, l'écran rouvre
@@ -175,6 +177,14 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Nouveau jour : la semaine et la sélection reprennent aujourd'hui.
+    final today = ref.watch(todayProvider);
+    if (today != _today) {
+      _today = today;
+      _weekStart = _mondayOf(today);
+      _selectedDay = today;
+      _dayKeys.clear();
+    }
     final embedded = widget.leagueIds != null;
     final leagueIds = embedded ? widget.leagueIds!.toSet() : (_category == "esport" ? _selectedLeagueIds : null);
     final query = (from: _windowStart, to: _windowEnd, category: embedded ? null : _category, leagueIds: leagueIds?.isEmpty == true ? null : leagueIds?.join(","));
@@ -230,9 +240,8 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
           const SizedBox(height: AppSpacing.md),
           Expanded(
             child: switch (agenda) {
-              AsyncData(:final value) =>
-                _AgendaList(response: value, scoresHidden: scoresHidden, dayKeys: _dayKeys, today: _today, filterKey: "${query.category}|${query.leagueIds}"),
-              AsyncError() when agenda.hasValue => _AgendaList(
+              // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
+              _ when agenda.hasValue => _AgendaList(
                 response: agenda.value!,
                 scoresHidden: scoresHidden,
                 dayKeys: _dayKeys,

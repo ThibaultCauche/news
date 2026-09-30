@@ -24,8 +24,8 @@ class FollowsScreen extends ConsumerWidget {
       child: RefreshIndicator(
         onRefresh: () => ref.refresh(followsProvider.future),
         child: switch (follows) {
-          AsyncData(:final value) => _FollowsBody(follows: value),
-          AsyncError() when follows.hasValue => _FollowsBody(follows: follows.value!),
+          // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
+          _ when follows.hasValue => _FollowsBody(follows: follows.value!),
           AsyncError() => const Center(child: Text("Impossible de charger tes suivis.", style: TextStyle(color: AppColors.textSecondary))),
           _ => const Center(child: CircularProgressIndicator()),
         },

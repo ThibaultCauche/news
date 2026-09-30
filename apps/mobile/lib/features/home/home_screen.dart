@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
+import "../../core/clock.dart";
 import "../../core/iterable_x.dart";
 import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
@@ -35,8 +36,8 @@ class HomeScreen extends ConsumerWidget {
           slivers: [
             const SliverToBoxAdapter(child: _HomeHeader()),
             switch (home) {
-              AsyncData(:final value) => _HomeBody(home: value, scoresHidden: scoresHidden),
-              AsyncError() when home.hasValue => _HomeBody(home: home.value!, scoresHidden: scoresHidden),
+              // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
+              _ when home.hasValue => _HomeBody(home: home.value!, scoresHidden: scoresHidden),
               AsyncError() => const SliverFillRemaining(child: Center(child: Text("Impossible de charger l'accueil."))),
               _ => const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
             },
@@ -52,7 +53,7 @@ class _HomeHeader extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final date = DateFormat("EEEE d MMMM", "fr_FR").format(DateTime.now());
+    final date = DateFormat("EEEE d MMMM", "fr_FR").format(ref.watch(todayProvider));
     final capitalized = date[0].toUpperCase() + date.substring(1);
     return Padding(
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.sm),

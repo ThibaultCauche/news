@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "core/auto_refresh.dart";
 import "core/navigation.dart";
 import "features/agenda/agenda_screen.dart";
 import "features/competitions/competitions_screen.dart";
@@ -27,7 +28,8 @@ class NewsApp extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(tabIndexProvider);
-    return Scaffold(
+    return AutoRefresh(
+      child: Scaffold(
       extendBody: true,
       body: IndexedStack(
         index: index,
@@ -40,6 +42,7 @@ class NewsApp extends ConsumerWidget {
         ],
       ),
       bottomNavigationBar: GlassTabBar(items: _items, currentIndex: index, onTap: ref.read(tabIndexProvider.notifier).select),
+    ),
     );
   }
 }
