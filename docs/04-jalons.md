@@ -15,7 +15,7 @@
 | J7 | Mise en ligne : NAS, Tailscale Funnel, CI, sauvegardes, bêta testeurs | Des amis utilisent l'appli | **Fait (2026-09-27)** |
 | J8 | Polissage UI/UX Valorant : retour optimiste, repères visuels, navigation Agenda | L'appli est plus lisible et plus réactive pour un néophyte | **Fait (2026-09-28)** |
 | J9 | Onglet Compétitions : navigation catégorie → jeu → compétition, favoris de jeux, recherche | On retrouve n'importe quel jeu ou compétition en 2 taps, sans passer par l'Accueil | **Fait (2026-09-29)** |
-| J10 | Polissage des pages existantes : mise en conformité avec les maquettes et les retours d'usage | Chaque écran existant te correspond, sans nouvelle fonctionnalité | **En cours** |
+| J10 | Polissage des pages existantes et retours d'usage : cartes de match, Suivis, familles de compétitions et « tout sauf une », onglet Ligues, rafraîchissement automatique | Les écrans existants te correspondent et l'appli reste à jour toute seule | **Fait (2026-09-30)** |
 | J11 | Comptes avec pseudo, page de profil (badges, score de pronostics, stats), pronostics en points fictifs, groupes d'amis (façon MPP) | On parie sur ses matchs et on se compare à ses amis, gratuitement | À planifier |
 | J12 | Section apprentissage Valorant : tutos écrits (jeu, rôles, cartes) | Un néophyte comprend comment on joue | À planifier |
 | J13 | Forum par match (bêta fermée) : badge d'équipe selon le jeu/sport du forum, modération de base | On discute d'un match sans que ça dégénère | À planifier |
@@ -259,7 +259,7 @@
 
 ## J10 — Polissage des pages existantes (ajouté)
 
-**Objectif** : affiner les écrans déjà en place pour qu'ils correspondent au porteur du projet, sans nouvelle fonctionnalité. Retours recueillis le 2026-09-29 ; **liste encore incomplète** (d'autres pages seront ajoutées avant le cadrage).
+**Objectif** : affiner les écrans déjà en place pour qu'ils correspondent au porteur du projet. Parti de retours sur l'Accueil et Suivis (2026-09-29), le jalon a absorbé au fil des essais sur téléphone plusieurs ajouts assumés (familles de compétitions et sourdine, onglet Ligues, rafraîchissement automatique, ordre stable des équipes).
 
 **Retours par page**
 
@@ -274,42 +274,48 @@
 - Retirer le « x » qui désabonne directement : le désabonnement se fait depuis la page de la compétition (ou de l'équipe), dont le bouton « Suivi » doit donc y être bien visible (à vérifier sur la fiche d'équipe).
 - État vide : à décider (invitation vers l'onglet Compétitions ou inchangé).
 
-**Candidats reportés des jalons précédents** : fidélité pixel-perfect aux maquettes (J3, J5) ; fluidité de l'arbre à 60 i/s et remplissage en vrai (J5).
+**Candidats reportés des jalons précédents** : fidélité pixel-perfect aux maquettes (J3, J5) — **abandonnée** (voir ci-dessous) ; fluidité de l'arbre à 60 i/s et remplissage en vrai (J5).
 
 **Cadrage (2026-09-29)** : liste des pages figée à Accueil et Suivis (aucune autre page à retoucher pour l'instant). Décisions : l'icône de recherche ouvre l'onglet Compétitions avec le champ de recherche focalisé ; couleur dominante du logo sur les cartes de l'Accueil (comme `EventCard`), sans la bande grise au milieu du dégradé ; bouton cloche (icône seule) directement sur toute carte de match à venir, qui alerte sans ouvrir la page du match ; « Grands rendez-vous » = carte dédiée à la **grande finale de la phase finale uniquement, dans les 7 prochains jours** (avec phrase de contexte), qui disparaît sinon ; page compétition avec bouton « Suivre » (n'existait pas hors onboarding) avant de retirer le « x » de Suivis. **Retrait de « Tes suivis » de l'Accueil** (décidé le 2026-09-30) : les matchs suivis y doublonnaient « À suivre » et l'écran Suivis ; l'Accueil montre le moment (en direct, à suivre, grande finale), Suivis la liste complète. Logos des cartes agrandis (56 px en tuile réduite, 68 px sinon). Compte à rebours en HH:MM:SS à deux-points clignotants (demande du 2026-09-30, dérogation à la règle 13 « pas d'animation sur ce qu'on voit souvent » : limitée au seul compte à rebours de l'Accueil et coupée en mouvement réduit). Couronne dorée du vainqueur sur les matchs terminés (l'or est aussi « mes suivis » : distingué ici par la forme). **Page de ligue** (VCT…) ajoutée le 2026-09-30 (`league_screen.dart`, construite depuis le catalogue, sans nouvel endpoint) : logo, « Suivre »/« Suivi » (c'est là qu'on se désabonne d'une ligue), liste de ses compétitions ; atteinte depuis Suivis et depuis la recherche. Une catégorie ne peut pas être suivie depuis l'appli (l'onboarding ne suit que des équipes) : pas de désabonnement à prévoir. **« Sans spoil » désactivé par défaut** (décidé le 2026-09-30, l'option reste dans Réglages) : nouveau défaut de `user_setting.spoiler_free` (migration `20260930010000`), y compris pour le texte des notifications d'un compte sans réglage. Les comptes existants gardent leur valeur (à basculer dans Réglages) ; l'appli garde `sans spoil` par précaution tant que le réglage n'est pas chargé. **Familles et « tout sauf une »** (demandé le 2026-09-30, ajouté au J10) : « Suivre » sur une page de ligue ouvre un choix (« Toute la ligue » + une case par famille sans l'année : Champions, Masters…, « Valider » suit directement, c'est aussi là qu'on se désabonne). Nouvelle table `competition_family` (nom = nom de la série sans l'année, `Masters <ville>` regroupé en « Masters »), nouveau type d'abonnement `competition_family` (les éditions futures sont couvertes dès leur ingestion), sourdine `subscription.muted` sur une série (**la règle la plus proche du match l'emporte** : série en sourdine > famille > ligue ; la sourdine ne coupe pas une équipe ou un match suivi). Les pages compétition affichent « Suivi via VCT » avec « Ne pas m'alerter » / « Réactiver les alertes ». **Rafraîchissement automatique** (bug remonté le 2026-09-30 : app laissée ouverte la nuit, l'Agenda restait sur la veille et l'Accueil/Suivis gardaient des matchs déjà en direct) : `AutoRefresh` recharge l'Accueil, les Suivis et les pages de match chaque minute au premier plan (l'Agenda aussi quand son onglet est affiché), tout au retour au premier plan et au changement d'onglet ; la date du jour (`todayProvider`) est resynchronisée, l'Agenda n'a plus de dates `static` ; l'ancien contenu reste affiché pendant le rechargement. **Onglet « Ligues »** sur la page jeu (Compétitions · Ligues · Équipes · Agenda, demandé le 2026-09-30) : la page de ligue n'était atteignable que par Suivis et la recherche. Chaque ligne : logo, nom, nombre de compétitions, point rouge « En cours » (`LiveDot`, figé en mouvement réduit) si une compétition de la ligue est en cours (calculé par les dates des séries, le fournisseur ne donne pas de statut de série) ; les ligues en cours d'abord. Le **bouton d'explications des compétitions** (façon guide officiel VCT) est **reporté à un jalon dédié** : contenu éditorial à rédiger avec nos propres phrases (pas de recopie du site officiel, qui ne sert que de source de vérification), stocké en base comme le glossaire, relu avant mise en base. **Ordre des équipes stable** (retour du 2026-09-30 : les équipes changeaient de côté d'une carte à l'autre) : `event_participant.side` (0 = gauche, 1 = droite), jamais écrit jusque-là, est désormais renseigné à l'ingestion (ordre des adversaires du fournisseur) et rattrapé pour l'existant depuis le nom du match ; l'API trie par `side`. **Carte en direct** de l'Accueil refaite sur la carte de match commune (`EventCard(banner: true)` : logos, scores, teinte rouge, « EN DIRECT ») avec la ligne dorée « Ensuite » conservée, seulement si le match suivant a lieu aujourd'hui (un match de demain n'est pas « ensuite »). Fidélité pixel-perfect aux maquettes et fluidité de l'arbre : reportées.
 
 **Critères d'acceptation**
-- [ ] Plus de gris entre les deux couleurs d'une carte de match, y compris dans l'en-tête de l'écran du match (dégradé et logo d'équipe partagés dans `widgets/match_visuals.dart`, logos contenus dans leur case).
-- [ ] Une carte de match à venir a une cloche qui alerte sans ouvrir la page du match (retour optimiste, message d'erreur si l'appel échoue) ; pas de cloche en direct/terminé.
-- [ ] L'Accueil ne répète plus les suivis (section « Tes suivis » retirée) et n'utilise plus de carte maison : « À suivre » basé sur `EventCard`, — compte à rebours HH:MM:SS à la place du « VS », deux-points clignotants (fixes en mouvement réduit, règle 13) — sur **toute carte de match à venir dans les 24 h** (Accueil, Agenda, Suivis…), au-delà le « VS » seul (décidé le 2026-09-30).
-- [ ] « Grands rendez-vous » n'affiche que la grande finale en phase finale, si elle a lieu dans les 7 prochains jours, avec le nom du tournoi, sa phrase « pourquoi ça compte » et « M'alerter » ; « Adversaires à déterminer » si les équipes ne sont pas connues ; section absente hors phase finale.
-- [ ] Suivis : nom de compétition → page compétition, nom d'équipe → fiche, plus de « x » ; le désabonnement se fait depuis la page compétition (bouton « Suivre »/« Suivi » en haut) ou la fiche équipe ; état vide avec bouton « Explorer les compétitions ».
-- [ ] Sur une carte de match terminé, une couronne dorée surmonte le logo du vainqueur ; jamais quand le score est masqué (sans spoil).
-- [ ] Une ligue suivie (VCT) mène à sa page depuis Suivis ; on s'en désabonne depuis cette page.
-- [ ] Le libellé « Compétitions » de la tab bar tient sur une ligne sur un écran de 360 dp.
-- [ ] Suivre une famille (« Champions ») couvre aussi ses éditions futures sans rien refaire ; « Masters » regroupe toutes les villes. Vérifié par les tests du moteur (`notification-dispatch-family.spec.ts`) et de l'API.
-- [ ] « Tout sauf une » : une série en sourdine n'alerte plus alors que la ligue reste suivie ; une équipe suivie continue d'alerter. Sa page affiche « Suivi via VCT » puis « Réactiver les alertes ».
-- [ ] « Suivre » sur la page de ligue ouvre le choix (cases, « Valider » suit directement, décocher tout se désabonne).
-- [ ] Une app laissée ouverte reste à jour : la date de l'Agenda et de l'Accueil change à minuit, un match qui passe en direct est rechargé sans intervention (minuterie de 60 s, retour au premier plan, changement d'onglet), sans spinner.
-- [ ] La page jeu a un onglet « Ligues » : ses ligues, un point rouge « En cours » sur celles qui ont une compétition en cours, un tap ouvre la page de la ligue.
-- [ ] Les équipes d'un match gardent le même côté partout (Accueil, Agenda, Suivis, écran du match, tableau) ; la carte en direct de l'Accueil est une carte de match rouge avec « Ensuite ».
-- [ ] L'icône de recherche de l'Accueil ouvre la recherche de l'onglet Compétitions, clavier ouvert.
+- [x] Plus de gris entre les deux couleurs d'une carte de match, y compris dans l'en-tête de l'écran du match (dégradé et logo d'équipe partagés dans `widgets/match_visuals.dart`, logos contenus dans leur case).
+- [x] Une carte de match à venir a une cloche qui alerte sans ouvrir la page du match (retour optimiste, message d'erreur si l'appel échoue) ; pas de cloche en direct/terminé.
+- [x] L'Accueil ne répète plus les suivis (section « Tes suivis » retirée) et n'utilise plus de carte maison : « À suivre » et le bandeau en direct sont basés sur `EventCard`.
+- [x] Toute carte de match à venir dans les 24 h (Accueil, Agenda, Suivis…) affiche un compte à rebours HH:MM:SS à la place du « VS », deux-points clignotants (fixes en mouvement réduit, règle 13) ; au-delà, le « VS » seul.
+- [x] « Grands rendez-vous » n'affiche que la grande finale en phase finale, si elle a lieu dans les 7 prochains jours, avec le nom du tournoi, sa phrase « pourquoi ça compte » et « M'alerter » ; « Adversaires à déterminer » si les équipes ne sont pas connues ; section absente hors phase finale.
+- [x] Suivis : nom de compétition → page compétition, nom d'équipe → fiche, plus de « x » ; le désabonnement se fait depuis la page compétition (bouton « Suivre »/« Suivi » en haut) ou la fiche équipe ; état vide avec bouton « Explorer les compétitions ».
+- [x] Sur une carte de match terminé, une couronne dorée surmonte le logo du vainqueur ; jamais quand le score est masqué (sans spoil).
+- [x] Une ligue suivie (VCT) mène à sa page depuis Suivis ; on s'en désabonne depuis cette page.
+- [x] Le libellé « Compétitions » de la tab bar tient sur une ligne sur un écran de 360 dp.
+- [x] Suivre une famille (« Champions ») couvre aussi ses éditions futures sans rien refaire ; « Masters » regroupe toutes les villes. Vérifié par les tests du moteur (`notification-dispatch-family.spec.ts`) et de l'API.
+- [x] « Tout sauf une » : une série en sourdine n'alerte plus alors que la ligue reste suivie ; une équipe suivie continue d'alerter. Sa page affiche « Suivi via VCT » puis « Réactiver les alertes ».
+- [x] « Suivre » sur la page de ligue ouvre le choix (cases, « Valider » suit directement, décocher tout se désabonne).
+- [x] Une app laissée ouverte reste à jour : la date de l'Agenda et de l'Accueil change à minuit, un match qui passe en direct est rechargé sans intervention (minuterie de 60 s, retour au premier plan, changement d'onglet), sans spinner.
+- [x] La page jeu a un onglet « Ligues » : ses ligues, un point rouge « En cours » sur celles qui ont une compétition en cours, un tap ouvre la page de la ligue.
+- [x] Les équipes d'un match gardent le même côté partout (Accueil, Agenda, Suivis, écran du match, tableau) ; la carte en direct de l'Accueil est une carte de match rouge avec « Ensuite ».
+- [x] L'icône de recherche de l'Accueil ouvre la recherche de l'onglet Compétitions, clavier ouvert.
 - [x] Vérifié en conditions réelles sur téléphone Android physique (2026-09-30) : Accueil (compte à rebours entre les logos), Suivis, page de ligue, Agenda. Deux défauts trouvés et corrigés : libellé « Compétitions » qui passait à la ligne, compte à rebours trop large qui chevauchait un logo. Couronne du vainqueur non vue à l'écran (aucun match terminé affiché), couverte par test.
 
-**État (2026-09-29)** : tout est implémenté et couvert par des tests (API 26, Flutter `test/widgets`) ; vérifié à l'œil sur l'**émulateur** (Pixel Tablet) avec les vraies données Champions 2026 : Accueil, grande finale « Adversaires à déterminer », recherche, Suivis, page compétition. **Reste** : passage sur le téléphone physique, régénération des goldens en CI (tab bar, J9).
+**Fait (2026-09-30).** Vérifié : lint propre ; tests domaine 50, providers 13, API 33 (suites e2e exécutées l'une après l'autre), worker 12 ; `flutter analyze` propre, 87 tests Flutter ; CI verte, goldens inclus (le golden de la tab bar, reporté du J9, passe sans régénération ; celui d'`EventCard` a été régénéré via la CI). En conditions réelles : téléphone Android physique (Accueil, Suivis, page de ligue, Agenda, cartes de match, couronne du vainqueur, sourdine « tout sauf une », rafraîchissement après une nuit avec l'appli ouverte) et émulateur (fenêtre de choix par famille, onglet Ligues, carte en direct) ; base et API de dev contrôlées (55 participants avec un `side`, aucun inversé ; familles Champions et Masters à 2 éditions).
+
+**Abandonné** : fidélité pixel-perfect aux maquettes (J3, J5) — jamais validable, l'écart se corrige au fil des retours d'usage plutôt que par un jalon.
+
+**Reporté** : guide d'explications des compétitions (jalon dédié : contenu éditorial, textes propres relus avant mise en base) ; fluidité de l'arbre à 60 i/s et remplissage en vrai (J5, attendre les playoffs) ; « Ensuite » = prochain match du jour seulement, pas de notion de « juste après » (à revoir si besoin).
 
 ---
 
 ## Ensuite (par ordre de priorité proposé)
 
-1. **Autres jeux PandaScore** (LoL, CS2, Dota 2, R6, Rocket League…) : même adaptateur, filtrage par tier. Nouveaux formats à dessiner : **phase suisse**, **classement de lobby** (battle royale). Vérifier le gagnant par carte pour CS, Dota 2 et LoL sur du tier S.
-2. **Temps réel V2** : flux SSE `GET /v1/live/events/:id`, **Live Activities** iOS (écran 13).
-3. **Jeu du jour** (écran 16) : « devine le score », pronostics (`prediction`, `quiz_answer`).
-4. **Politique** avant avril 2027 : adaptateurs `assemblee` (zips quotidiens), `senat`, `legifrance` (PISTE), `elections` (data.gouv, rythme rapide le soir d'élection). Écrans 19 (loi façon colis) et 25 (soirée électorale). Jeu « Qui a voté ? » à partir de `politique-quiz/`. Tester le flux de résultats en direct sur un scrutin partiel **avant** la présidentielle.
-5. **Streams** : API Twitch (écran 23).
-6. **Sport par vagues** (`docs/01b`) : football (football-data.org + openfootball), F1 (Jolpica), puis rugby/basket.
-7. **Site web** Next.js (SEO).
-8. **Start.gg** pour les jeux de combat.
+1. **Guide d'explications des compétitions** (idée du 2026-09-30) : page « Comprendre les compétitions » (Kickoff, Stage, Masters, Champions, formats, qualification), ouverte depuis un « ? » de la page jeu. Textes propres écrits pour un néophyte, relus avant mise en base (pas de recopie du site officiel VCT, qui ne sert qu'à vérifier les faits), stockés en base comme le glossaire, avec un petit endpoint.
+2. **Autres jeux PandaScore** (LoL, CS2, Dota 2, R6, Rocket League…) : même adaptateur, filtrage par tier. Nouveaux formats à dessiner : **phase suisse**, **classement de lobby** (battle royale). Vérifier le gagnant par carte pour CS, Dota 2 et LoL sur du tier S.
+3. **Temps réel V2** : flux SSE `GET /v1/live/events/:id`, **Live Activities** iOS (écran 13).
+4. **Jeu du jour** (écran 16) : « devine le score », pronostics (`prediction`, `quiz_answer`).
+5. **Politique** avant avril 2027 : adaptateurs `assemblee` (zips quotidiens), `senat`, `legifrance` (PISTE), `elections` (data.gouv, rythme rapide le soir d'élection). Écrans 19 (loi façon colis) et 25 (soirée électorale). Jeu « Qui a voté ? » à partir de `politique-quiz/`. Tester le flux de résultats en direct sur un scrutin partiel **avant** la présidentielle.
+6. **Streams** : API Twitch (écran 23).
+7. **Sport par vagues** (`docs/01b`) : football (football-data.org + openfootball), F1 (Jolpica), puis rugby/basket.
+8. **Site web** Next.js (SEO).
+9. **Start.gg** pour les jeux de combat.
 
 ## Points ouverts à trancher en chemin
 
