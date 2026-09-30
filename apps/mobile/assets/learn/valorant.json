@@ -1,0 +1,366 @@
+{
+ "name": "Valorant",
+ "articles": [
+  {
+   "id": "le-jeu",
+   "title": "Le jeu en 3 minutes",
+   "summary": "5 contre 5, une bombe, 13 rounds.",
+   "icon": "game",
+   "visual": "duel",
+   "essential": "Une équipe attaque et veut poser une bombe (le « spike »), l'autre défend. La première équipe à 13 rounds gagne la carte. Un joueur éliminé attend le round suivant.",
+   "details": [
+    {
+     "title": "Comment gagner un round",
+     "visual": {
+      "type": "chips",
+      "items": [
+       {
+        "icon": "place",
+        "title": "Poser le spike",
+        "sub": "Attaque"
+       },
+       {
+        "icon": "person_off",
+        "title": "Éliminer l'équipe adverse",
+        "sub": "Attaque et défense"
+       },
+       {
+        "icon": "build",
+        "title": "Désamorcer le spike",
+        "sub": "Défense"
+       },
+       {
+        "icon": "timer_off",
+        "title": "Temps écoulé sans pose",
+        "sub": "Défense"
+       }
+      ]
+     },
+     "body": "Les attaquants gagnent en posant le spike puis en le laissant exploser, ou en éliminant tous les défenseurs. Les défenseurs gagnent en éliminant tous les attaquants, en désamorçant le spike une fois posé, ou en tenant jusqu'à la fin du temps."
+    },
+    {
+     "title": "La mi-temps",
+     "visual": {
+      "type": "flow",
+      "items": [
+       {
+        "icon": "flag",
+        "label": "12 rounds"
+       },
+       {
+        "icon": "swap",
+        "label": "On change de côté"
+       },
+       {
+        "icon": "emoji",
+        "label": "Premier à 13"
+       }
+      ]
+     },
+     "body": "Après 12 rounds, les équipes changent de côté : celle qui attaquait défend, et inversement. La première à 13 rounds gagne la carte."
+    },
+    {
+     "title": "12-12 : la prolongation",
+     "visual": {
+      "type": "flow",
+      "items": [
+       {
+        "icon": "equal",
+        "label": "12–12"
+       },
+       {
+        "icon": "swap",
+        "label": "Rounds alternés"
+       },
+       {
+        "icon": "plus2",
+        "label": "2 rounds d'avance"
+       }
+      ]
+     },
+     "body": "En cas d'égalité à 12-12, on rejoue des rounds en alternant les côtés, jusqu'à ce qu'une équipe ait 2 rounds d'avance."
+    }
+   ],
+   "gradient": 0
+  },
+  {
+   "id": "un-round",
+   "title": "Un round, du début à la fin",
+   "summary": "Acheter, se battre, gagner des crédits.",
+   "icon": "round",
+   "visual": {
+    "type": "flow",
+    "items": [
+     {
+      "icon": "shopping",
+      "label": "Achat"
+     },
+     {
+      "icon": "target",
+      "label": "Combat"
+     },
+     {
+      "icon": "timer",
+      "label": "Spike"
+     }
+    ]
+   },
+   "essential": "Au début de chaque round, on dépense ses crédits en armes et en pouvoirs. Gagner un round rapporte plus de crédits que le perdre : c'est l'économie.",
+   "details": [
+    {
+     "title": "L'économie",
+     "visual": {
+      "type": "chips",
+      "items": [
+       {
+        "icon": "savings",
+        "title": "Éco",
+        "sub": "On n'achète presque rien"
+       },
+       {
+        "icon": "bolt",
+        "title": "Force buy",
+        "sub": "On dépense tout, même peu"
+       },
+       {
+        "icon": "shopping",
+        "title": "Full buy",
+        "sub": "Meilleures armes et tous les pouvoirs"
+       }
+      ]
+     },
+     "body": "Gagner un round rapporte plus de crédits que le perdre, et chaque élimination en rapporte un peu. Un joueur qui survit garde son arme au round suivant. Décider quoi acheter, c'est gérer l'économie."
+    },
+    {
+     "title": "Le pistol round",
+     "body": "Le 1er round de chaque mi-temps est spécial : tout le monde n'a que peu de crédits, donc surtout des pistolets. Le gagnant prend souvent un avantage économique pour la suite."
+    },
+    {
+     "title": "Les pouvoirs",
+     "visual": {
+      "type": "chips",
+      "items": [
+       {
+        "icon": "cloud",
+        "title": "Fumée",
+        "sub": "Bloque la vue"
+       },
+       {
+        "icon": "flash",
+        "title": "Flash",
+        "sub": "Aveugle l'ennemi"
+       },
+       {
+        "icon": "heal",
+        "title": "Soin",
+        "sub": "Soigne un allié"
+       },
+       {
+        "icon": "sensors",
+        "title": "Piège",
+        "sub": "Prévient ou blesse"
+       },
+       {
+        "icon": "star",
+        "title": "Ultime",
+        "sub": "Se recharge, retourne un round"
+       }
+      ]
+     },
+     "body": "Chaque joueur incarne un agent avec ses propres pouvoirs. L'ultime, plus puissante, se recharge avec le temps et les actions réussies."
+    }
+   ],
+   "gradient": 1
+  },
+  {
+   "id": "roles",
+   "title": "Les 4 rôles",
+   "summary": "Chaque agent aide l'équipe à sa façon.",
+   "icon": "roles",
+   "visual": {
+    "type": "chips",
+    "items": [
+     {
+      "icon": "bolt",
+      "title": "Duelliste",
+      "sub": "Ouvre le jeu"
+     },
+     {
+      "icon": "visibility",
+      "title": "Initiateur",
+      "sub": "Trouve l'ennemi"
+     },
+     {
+      "icon": "cloud",
+      "title": "Contrôleur",
+      "sub": "Cache la vue"
+     },
+     {
+      "icon": "shield",
+      "title": "Sentinelle",
+      "sub": "Tient la position"
+     }
+    ]
+   },
+   "essential": "Chaque agent appartient à un rôle, qui décrit sa façon d'aider l'équipe. Une équipe équilibrée mélange les quatre rôles.",
+   "details": [
+    {
+     "title": "Quelques agents",
+     "visual": {
+      "type": "chips",
+      "items": [
+       {
+        "icon": "bolt",
+        "title": "Duelliste",
+        "sub": "Jett, Reyna"
+       },
+       {
+        "icon": "visibility",
+        "title": "Initiateur",
+        "sub": "Sova, Fade"
+       },
+       {
+        "icon": "cloud",
+        "title": "Contrôleur",
+        "sub": "Omen, Brimstone"
+       },
+       {
+        "icon": "shield",
+        "title": "Sentinelle",
+        "sub": "Sage, Killjoy"
+       }
+      ]
+     },
+     "body": "Chaque rôle compte plusieurs agents. Voici quelques exemples."
+    },
+    {
+     "title": "Pourquoi les mélanger ?",
+     "body": "Sans fumées ni informations, l'équipe entre à l'aveugle. Sans duelliste, personne n'ouvre le jeu."
+    }
+   ],
+   "gradient": 2
+  },
+  {
+   "id": "cartes",
+   "title": "Les cartes et les sites",
+   "summary": "Pourquoi une équipe préfère certaines cartes.",
+   "icon": "map",
+   "visual": "map",
+   "essential": "Une carte a des couloirs et, le plus souvent, deux sites (A et B) où poser le spike. Chaque équipe a ses cartes favorites.",
+   "details": [
+    {
+     "title": "Le choix des cartes en match pro",
+     "visual": {
+      "type": "flow",
+      "items": [
+       {
+        "icon": "block",
+        "label": "Chaque équipe élimine (ban)"
+       },
+       {
+        "icon": "check",
+        "label": "Puis choisit (pick)"
+       },
+       {
+        "icon": "flag",
+        "label": "La dernière décide"
+       }
+      ]
+     },
+     "body": "En match pro, aucune carte n'est imposée : les équipes en éliminent (ban) puis en choisissent (pick) à tour de rôle, et la dernière restante sert de décideur si le match va au bout."
+    },
+    {
+     "title": "La liste change",
+     "body": "Les cartes jouées en compétition changent plusieurs fois par an."
+    }
+   ],
+   "gradient": 3
+  },
+  {
+   "id": "regarder-un-match",
+   "title": "Comprendre un match",
+   "summary": "Scores, tournoi, vocabulaire.",
+   "icon": "watch",
+   "visual": "bo3",
+   "essential": "Un match pro se joue en plusieurs cartes, souvent en [[BO3]] : la première équipe à gagner 2 cartes l'emporte.",
+   "details": [
+    {
+     "title": "Deux scores",
+     "visual": {
+      "type": "stats",
+      "items": [
+       {
+        "big": "2–1",
+        "sub": "Série : cartes gagnées"
+       },
+       {
+        "big": "13–9",
+        "sub": "Carte : rounds gagnés"
+       }
+      ]
+     },
+     "body": "Le score de série compte les cartes gagnées (2–1) ; le score de carte compte les rounds d'une seule carte (13–9). L'appli affiche le score de série, et l'équipe gagnante de chaque carte."
+    },
+    {
+     "title": "Lire un tournoi",
+     "visual": {
+      "type": "flow",
+      "items": [
+       {
+        "icon": "flag",
+        "label": "Tableau principal"
+       },
+       {
+        "icon": "arrow_down",
+        "label": "1re défaite"
+       },
+       {
+        "icon": "replay",
+        "label": "Repêchage"
+       },
+       {
+        "icon": "close",
+        "label": "2e défaite : éliminé"
+       }
+      ]
+     },
+     "body": "Beaucoup de tournois sont à double élimination : une défaite dans le [[tableau principal]] envoie l'équipe dans le [[repêchage]], où elle a une seconde chance. Une nouvelle défaite l'élimine."
+    },
+    {
+     "title": "Le vocabulaire",
+     "visual": {
+      "type": "chips",
+      "items": [
+       {
+        "icon": "star",
+        "title": "Ace",
+        "sub": "5 éliminations seul dans un round"
+       },
+       {
+        "icon": "person",
+        "title": "Clutch",
+        "sub": "Seul contre plusieurs, il gagne"
+       },
+       {
+        "icon": "savings",
+        "title": "Éco",
+        "sub": "On économise ses crédits"
+       },
+       {
+        "icon": "replay",
+        "title": "Retake",
+        "sub": "On reprend un site après la pose"
+       }
+      ]
+     },
+     "body": "Des mots qu'on entend souvent pendant un match."
+    },
+    {
+     "title": "Un favori perd un round ?",
+     "body": "Souvent une éco volontaire : il s'équipe mieux au suivant."
+    }
+   ],
+   "gradient": 4
+  }
+ ]
+}

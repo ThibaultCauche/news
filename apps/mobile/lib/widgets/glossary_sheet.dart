@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../core/api_providers.dart";
 import "../theme/tokens.dart";
+import "../features/learn/learn_visuals.dart" show Bo3Example;
 import "section_label.dart";
 
 final glossaryTermProvider = FutureProvider.autoDispose.family<GlossaryTermDto, String>((ref, term) async {
@@ -11,7 +12,7 @@ final glossaryTermProvider = FutureProvider.autoDispose.family<GlossaryTermDto, 
 });
 
 /// Feuille glossaire (écran 04, `docs/02`) : ouverte au toucher d'un mot
-/// souligné dans un texte de contexte (ex. "pourquoi ce match compte").
+/// en gras dans un texte de contexte (ex. "pourquoi ce match compte").
 void showGlossarySheet(BuildContext context, String term) {
   showModalBottomSheet<void>(
     context: context,
@@ -40,6 +41,8 @@ class _GlossarySheetContent extends ConsumerWidget {
             const SizedBox(height: AppSpacing.xs),
             Text(term, style: Theme.of(context).textTheme.titleLarge),
             const SizedBox(height: AppSpacing.md),
+            // Exemple en 3 cartes de la maquette 04.
+            if (term.toLowerCase() == "bo3") ...[const Bo3Example(), const SizedBox(height: AppSpacing.md)],
             switch (entry) {
               AsyncData(:final value) => Text(value.text, style: Theme.of(context).textTheme.bodyMedium),
               AsyncError() => const Text("Définition indisponible.", style: TextStyle(color: AppColors.textSecondary)),

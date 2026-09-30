@@ -12,6 +12,7 @@ import "../../core/date_x.dart";
 import "../../core/settings_provider.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
+import "../learn/learn_screen.dart";
 import "../../widgets/event_card.dart" show entityAccentColorProvider;
 import "../../widgets/match_visuals.dart";
 import "../../widgets/glossary_sheet.dart";
@@ -32,7 +33,7 @@ const _liveRefreshInterval = Duration(seconds: 20);
 const _staleAfter = Duration(minutes: 15);
 
 /// Écran 03/04/15 (`docs/02`) : compte à rebours ou score, "pourquoi ce match
-/// compte" (`context.stakes`, mots soulignés → feuille glossaire écran 04) et
+/// compte" (`context.stakes`, mots en gras → feuille glossaire écran 04) et
 /// forme récente/face-à-face (`context.recentForm`/`headToHead`, J6). Sans
 /// spoil (écran 15) : masqué par défaut selon le réglage du compte, un appui
 /// long sur le score le révèle pour la session (pas de mémorisation).
@@ -96,6 +97,7 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
           ),
         ),
         actions: [
+          const LearnHelpButton(articleId: "regarder-un-match"),
           IconButton(
             icon: Icon(scoresHidden ? Icons.visibility_off_rounded : Icons.visibility_rounded),
             tooltip: "Sans spoil",
@@ -585,7 +587,7 @@ class _MapsSection extends StatelessWidget {
 
 /// "Pourquoi ce match compte" (écran 03/04, `docs/03` §7) : phrase calculée par
 /// des règles côté serveur (`context.stakes`), mots repérés `[[terme]]` rendus
-/// soulignés et ouvrant la feuille glossaire au toucher.
+/// en gras et ouvrant la feuille glossaire au toucher.
 class _StakesSection extends StatelessWidget {
   const _StakesSection({required this.stakes});
 
@@ -602,7 +604,7 @@ class _StakesSection extends StatelessWidget {
           StakesText(text: stakes),
           const SizedBox(height: AppSpacing.sm),
           const Text(
-            "Touche un mot souligné pour l'explication.",
+            "Touche un mot en gras pour l'explication.",
             style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption),
           ),
         ],
@@ -646,7 +648,7 @@ class _StakesTextState extends State<StakesText> {
         TextSpan(
           text: term,
           recognizer: recognizer,
-          style: const TextStyle(decoration: TextDecoration.underline, decorationColor: AppColors.textSecondary),
+          style: const TextStyle(fontWeight: FontWeight.w700),
         ),
       );
       cursor = match.end;

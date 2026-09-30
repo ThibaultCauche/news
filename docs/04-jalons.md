@@ -16,8 +16,8 @@
 | J8 | Polissage UI/UX Valorant : retour optimiste, repères visuels, navigation Agenda | L'appli est plus lisible et plus réactive pour un néophyte | **Fait (2026-09-28)** |
 | J9 | Onglet Compétitions : navigation catégorie → jeu → compétition, favoris de jeux, recherche | On retrouve n'importe quel jeu ou compétition en 2 taps, sans passer par l'Accueil | **Fait (2026-09-29)** |
 | J10 | Polissage des pages existantes et retours d'usage : cartes de match, Suivis, familles de compétitions et « tout sauf une », onglet Ligues, rafraîchissement automatique | Les écrans existants te correspondent et l'appli reste à jour toute seule | **Fait (2026-09-30)** |
-| J11 | Comptes avec pseudo, page de profil (badges, score de pronostics, stats), pronostics en points fictifs, groupes d'amis (façon MPP) | On parie sur ses matchs et on se compare à ses amis, gratuitement | À planifier |
-| J12 | Section apprentissage Valorant : tutos écrits (jeu, rôles, cartes) | Un néophyte comprend comment on joue | À planifier |
+| J11 | Comptes avec pseudo, page de profil (badges, score de pronostics, stats), pronostics en points fictifs, groupes d'amis (façon MPP) | On parie sur ses matchs et on se compare à ses amis, gratuitement | **Fait (2026-09-30)** |
+| J12 | Section apprentissage Valorant : tutos écrits (jeu, rôles, cartes) | Un néophyte comprend comment on joue | **Fait (2026-10-01)** |
 | J13 | Forum par match (bêta fermée) : badge d'équipe selon le jeu/sport du forum, modération de base | On discute d'un match sans que ça dégénère | À planifier |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
@@ -353,7 +353,22 @@
 
 **Hors périmètre (reporté)** : meilleures compositions par carte, stats par arme, stats joueurs. Le plan gratuit PandaScore n'a ni noms de cartes ni stats (règle 6), l'API officielle de Riot exige une clé de production validée, et le scraping est interdit (règle 7). À revoir plus tard, source par source.
 
-**Critères d'acceptation** : à rédiger au cadrage (`/jalon 12`).
+**Décidé au cadrage** : contenu **embarqué dans l'appli** (`apps/mobile/assets/learn/<jeu>.json`), pas en base ; textes **écrits par nous**, vérifiés contre les pages officielles mais **jamais recopiés** ; **aucune image du jeu** (la politique « Legal Jibber Jabber » de Riot exclut les projets publiés sur Google Play ou l'App Store sans licence écrite ou clé d'API Riot) : illustrations dessinées avec des widgets et les tokens du thème.
+
+**Critères d'acceptation**
+- [x] Un onglet « Apprendre » dans la page Valorant liste 5 tutos en français (le jeu, un round, les rôles, les cartes, comprendre un match), chacun avec un résumé visible d'emblée.
+- [x] Un article montre l'essentiel d'abord, puis des sections courtes (texte + schéma) qu'on peut replier ; les mots du glossaire s'ouvrent au toucher.
+- [x] Une icône « ? » jaune mène directement au tuto qui explique la page (page jeu, compétition, écran d'un match), avec un bouton « Toutes les règles · Valorant » vers la liste.
+- [x] Les tuiles d'un schéma ont toutes la même taille ; aucun débordement sur un écran de 360 de large (test automatisé sur chaque article).
+- [x] Le contenu est disponible hors ligne (fichier embarqué).
+- [x] Un nouveau jeu s'ajoute en écrivant son fichier JSON (schémas décrits en données : tuiles, étapes, gros chiffres), sans code Dart de contenu.
+- [x] Exemple en 3 cartes de la maquette 04 dans la feuille glossaire « BO3 » (manquait depuis le J6).
+- [x] **Vérifié en conditions réelles** sur émulateur Android (Pixel Tablet) : liste, articles, « ? », rendu des tuiles validé à l'œil.
+- [ ] *Reporté :* relu par un néophyte externe (seul le compte du projet a testé).
+
+**Fait (2026-10-01).** Vérifié : `flutter analyze` propre ; 96 tests Flutter verts, dont 4 tests du J12 ; les seuls échecs locaux sont 4 goldens (`event_card`, `follow_button` ×2, `glass_tab_bar`), simple écart de rendu Windows déjà connu, sur des widgets non touchés par ce jalon. Aucun changement backend (pas de migration, pas d'endpoint, pas de client Dart à régénérer).
+
+**Reporté** : **relecture par un néophyte externe** ; **vérification sur téléphone Android physique** (émulateur seulement) ; **onglet « Apprendre » et « ? » pour les autres jeux** (`_learnGames` dans `game_screen.dart` est figé sur `valorant`, à déduire de la présence du fichier JSON) ; **images du jeu** (nécessitent une licence ou une clé d'API Riot) ; **guide des compétitions** (Kickoff, Masters, Champions, formats), item suivant d'« Ensuite ».
 
 ---
 

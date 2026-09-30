@@ -13,6 +13,7 @@ import "../../widgets/group_bracket_tree.dart";
 import "../bracket/bracket_provider.dart";
 import "../bracket/bracket_screen.dart";
 import "../bracket/kickoff_lives_screen.dart";
+import "../learn/learn_screen.dart";
 import "../next_match/next_match_screen.dart";
 import "../agenda/agenda_screen.dart";
 import "../team/team_screen.dart";
@@ -21,6 +22,8 @@ import "competitions_data.dart";
 import "leagues_tab.dart";
 
 const _tabs = ["Compétitions", "Ligues", "Équipes", "Agenda"];
+// Tutos écrits seulement pour Valorant pour l'instant (J12) : l'onglet n'apparaît pas ailleurs.
+const _learnGames = {"valorant"};
 
 /// Kickoff se raconte en « 3 vies » (écran 14), les autres étapes à élimination
 /// double en arbre radial + groupes + repêchage (écrans 02/05/06/07) — `docs/02`.
@@ -64,6 +67,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final overview = ref.watch(valorantSeasonProvider);
     final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
     final game = widget.game;
+    final hasLearn = _learnGames.contains(game.slug);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -74,7 +78,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
             Text(game.name),
           ],
         ),
-        actions: [_FavoriteGameButton(game: game.slug)],
+        actions: [
+          if (hasLearn) const LearnHelpButton(articleId: "le-jeu"),
+          _FavoriteGameButton(game: game.slug),
+        ],
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,7 +92,11 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-            child: _SeasonTabs(selectedIndex: _tabIndex, onSelected: (i) => setState(() => _tabIndex = i)),
+            child: _SeasonTabs(
+              labels: [..._tabs, if (hasLearn) "Apprendre"],
+              selectedIndex: _tabIndex,
+              onSelected: (i) => setState(() => _tabIndex = i),
+            ),
           ),
           const SizedBox(height: AppSpacing.md),
           Expanded(
@@ -93,6 +104,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               1 => LeaguesTab(game: game),
               2 => _TeamsTab(game: game),
               3 => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
+              4 => LearnTab(game: game.slug),
               _ => switch (overview) {
                 AsyncData(:final value) =>
                   value == null
@@ -116,8 +128,9 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 /// la police système est agrandie). `FittedBox` réduit le texte au lieu de
 /// le couper, pour rester correct avec les réglages d'accessibilité.
 class _SeasonTabs extends StatelessWidget {
-  const _SeasonTabs({required this.selectedIndex, required this.onSelected});
+  const _SeasonTabs({required this.labels, required this.selectedIndex, required this.onSelected});
 
+  final List<String> labels;
   final int selectedIndex;
   final ValueChanged<int> onSelected;
 
@@ -132,7 +145,7 @@ class _SeasonTabs extends StatelessWidget {
       ),
       child: Row(
         children: [
-          for (final (i, label) in _tabs.indexed)
+          for (final (i, label) in labels.indexed)
             Expanded(
               child: GestureDetector(
                 onTap: () => onSelected(i),
