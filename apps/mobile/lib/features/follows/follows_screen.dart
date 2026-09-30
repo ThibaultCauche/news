@@ -35,12 +35,14 @@ class FollowsScreen extends ConsumerWidget {
 }
 
 class _FollowsBody extends ConsumerWidget {
-  const _FollowsBody({required this.follows});
+  const _FollowsBody({required List<FollowStateDto> follows}) : allFollows = follows;
 
-  final List<FollowStateDto> follows;
+  final List<FollowStateDto> allFollows;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Une sourdine (« sauf cette compétition », J10) n'est pas un suivi : pas de carte.
+    final follows = allFollows.where((f) => !f.muted).toList();
     if (follows.isEmpty) {
       return ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -69,7 +71,7 @@ class _FollowsBody extends ConsumerWidget {
       itemBuilder: (context, i) {
         if (i == 0) return Text("Suivis", style: Theme.of(context).textTheme.headlineLarge);
         final follow = follows[i - 1];
-        return _FollowCard(follow: follow, targetType: FollowTargetType.values.byName(follow.targetType));
+        return _FollowCard(follow: follow, targetType: followTargetTypeFromWire(follow.targetType));
       },
     );
   }
@@ -100,6 +102,13 @@ class _FollowCard extends ConsumerWidget {
       } else {
         openCompetitionPage(context, id: follow.targetId, name: follow.name);
       }
+    },
+    FollowTargetType.competitionFamily => () async {
+      // Une famille appartient à une ligue : on ouvre sa page, où se gère le suivi.
+      final catalog = await ref.read(catalogProvider.future).then<CatalogDto?>((c) => c).catchError((_) => null);
+      if (!context.mounted) return;
+      final found = findLeagueOfFamily(catalog, follow.targetId);
+      if (found != null) openLeaguePage(context, league: found.league, game: found.game);
     },
     FollowTargetType.entity => () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TeamScreen(entityId: follow.targetId, breadcrumb: "Suivis"))),
     FollowTargetType.event => () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: follow.targetId))),
@@ -138,6 +147,8 @@ class _FollowCard extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(follow.name, style: Theme.of(context).textTheme.titleLarge),
+                          if (targetType == FollowTargetType.competitionFamily)
+                            const Text("Toutes les éditions", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
                           if (follow.status != null) _StatusPill(status: follow.status!),
                         ],
                       ),

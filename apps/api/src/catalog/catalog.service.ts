@@ -11,6 +11,14 @@ const TTL_SECONDS = 60;
 export class CatalogChildDto {
   @ApiProperty() id!: string;
   @ApiProperty() name!: string;
+  // Famille de la série (« Champions » pour Champions 2026), `null` sans famille (J10).
+  @ApiProperty({ nullable: true, type: String }) familyId!: string | null;
+}
+
+// Une compétition qui revient d'année en année (J10) : suivre la famille suit toutes ses éditions.
+export class CatalogFamilyDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() name!: string;
 }
 
 export class CatalogLeagueDto {
@@ -18,6 +26,7 @@ export class CatalogLeagueDto {
   @ApiProperty() name!: string;
   @ApiProperty({ nullable: true, type: String }) imageUrl!: string | null;
   @ApiProperty({ type: [CatalogChildDto] }) children!: CatalogChildDto[];
+  @ApiProperty({ type: [CatalogFamilyDto] }) families!: CatalogFamilyDto[];
 }
 
 export class CatalogGameDto {
@@ -52,7 +61,11 @@ export class CatalogService {
 
     const roots = await this.prisma.competition.findMany({
       where: { parentId: null, game: { not: null } },
-      include: { category: true, children: { select: { id: true, name: true }, orderBy: { startsAt: "desc" } } },
+      include: {
+        category: true,
+        children: { select: { id: true, name: true, familyId: true }, orderBy: { startsAt: "desc" } },
+        families: { select: { id: true, name: true }, orderBy: { name: "asc" } },
+      },
       orderBy: { name: "asc" },
     });
 
@@ -69,7 +82,7 @@ export class CatalogService {
         game = { slug, name: GAME_NAMES[slug] ?? slug, leagues: [] };
         category.games.push(game);
       }
-      game.leagues.push({ id: root.id, name: root.name, imageUrl: root.imageUrl, children: root.children });
+      game.leagues.push({ id: root.id, name: root.name, imageUrl: root.imageUrl, children: root.children, families: root.families });
     }
 
     const catalog = { categories: [...categories.values()] };

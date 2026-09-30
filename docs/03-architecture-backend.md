@@ -53,7 +53,7 @@
 | Table | Rôle | Champs clés |
 |---|---|---|
 | `category` | E-sport, Sport, Politique, Élections, Espace… | `slug`, `name`, `icon` |
-| `competition` | Tout ce qui a une structure : saison VCT, Champions, phase finale, Kickoff, Top 14, loi, programme de lancement | `parent_id` (hiérarchie), `category_id`, `kind`, `game` (slug du jeu, J9), `format`, `status`, `starts_at`, `ends_at`, `structure` (JSONB), `importance` |
+| `competition` | Tout ce qui a une structure : saison VCT, Champions, phase finale, Kickoff, Top 14, loi, programme de lancement | `parent_id` (hiérarchie), `family_id` (famille de la série, J10), `category_id`, `kind`, `game` (slug du jeu, J9), `format`, `status`, `starts_at`, `ends_at`, `structure` (JSONB), `importance` |
 | `entity` | Équipe, joueur, streamer, parti/groupe, fusée, studio… | `kind`, `name`, `short_name` (G2, PRX), `parent_id`, `region`, `image_url` |
 | `event` | Le cœur : match, vote, lancement, sortie, stream, keynote | `competition_id`, `kind`, `status`, `starts_at`, `ends_at`, `best_of`, `result` (JSONB), `importance`, `spoiler_sensitive` |
 | `event_participant` | Qui joue / qui est concerné | `event_id`, `entity_id`, `side`, `score`, `is_winner`, `seed` |
@@ -69,7 +69,8 @@
 |---|---|
 | `app_user` | Compte **anonyme par défaut** (créé au premier lancement). Lien optionnel avec Apple / Google pour synchroniser plusieurs appareils |
 | `device` | Jeton push FCM, plateforme, langue, fuseau horaire, jeton Live Activity si actif |
-| `subscription` | Suivi : `target_type` (catégorie, compétition, entité, événement), `target_id`, `level` (tout / grands moments), options (début, résultat, rappel) |
+| `competition_family` | Toutes les éditions d'une même compétition d'une ligue (« Champions » pour Champions 2025, 2026…), J10 : suivre la famille suit les éditions futures dès leur ingestion | `league_id`, `name` (dérivé du nom de la série, `familyNameOf`) |
+| `subscription` | Suivi : `target_type` (catégorie, compétition, **famille de compétition**, entité, événement), `target_id`, `level` (tout / grands moments), options (début, résultat, rappel), `muted` (sourdine d'une compétition : « la ligue, sauf celle-ci » ; **la règle la plus proche du match l'emporte**, J10) |
 | `user_setting` | Sans spoil par catégorie, heures calmes, résumé du matin, mouvement réduit |
 | `notification_log` | Ce qui a été envoyé, avec une **clé de déduplication** (`user`, `event`, `type`) |
 | `prediction` / `quiz_answer` | Jeu du jour (plus tard) |

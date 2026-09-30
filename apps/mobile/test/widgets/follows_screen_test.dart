@@ -28,6 +28,7 @@ FollowStateDto _follow({
       ..notifyReminder = true
       ..notifyStart = true
       ..notifyResult = true
+      ..muted = false
       ..name = name
       ..imageUrl = imageUrl
       ..status = status;

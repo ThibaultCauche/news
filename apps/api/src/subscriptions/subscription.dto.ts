@@ -35,6 +35,13 @@ export class CreateSubscriptionDto extends SubscriptionTargetDto {
   @IsOptional()
   @IsBoolean()
   notifyResult?: boolean;
+
+  // Sourdine (J10) : uniquement pour une compétition ou une famille, « je suis la ligue,
+  // sauf celle-ci ».
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  muted?: boolean;
 }
 
 export class SubscriptionDto {
@@ -45,6 +52,7 @@ export class SubscriptionDto {
   @ApiProperty() notifyReminder!: boolean;
   @ApiProperty() notifyStart!: boolean;
   @ApiProperty() notifyResult!: boolean;
+  @ApiProperty() muted!: boolean;
 }
 
 // Écran Suivis (docs/02) : chaque suivi avec son état en une ligne — l'événement

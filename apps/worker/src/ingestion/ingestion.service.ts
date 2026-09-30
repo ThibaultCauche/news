@@ -14,6 +14,7 @@ import {
   EventDTO,
   EventStateSnapshot,
   EventStatus,
+  familyNameOf,
   GSL_QUALIFIED_COUNT,
   shouldUpsert,
   StandingMatchInput,
@@ -85,9 +86,22 @@ export class IngestionService {
       externalId: dto.externalId,
       raw: dto.raw,
       write: async (existingId) => {
+        // Famille d'une série (J10) : « Champions 2027 » rejoint « Champions » dès son ingestion,
+        // donc les abonnés à la famille la suivent sans rien faire.
+        let familyId: string | null = null;
+        const familyName = dto.kind === "serie" && parentId ? familyNameOf(dto.name) : null;
+        if (familyName && parentId) {
+          const family = await this.prisma.competitionFamily.upsert({
+            where: { leagueId_name: { leagueId: parentId, name: familyName } },
+            create: { id: randomUUID(), leagueId: parentId, name: familyName },
+            update: {},
+          });
+          familyId = family.id;
+        }
         const data = {
           categoryId,
           parentId,
+          familyId,
           kind: dto.kind,
           game: dto.game,
           imageUrl: dto.imageUrl,

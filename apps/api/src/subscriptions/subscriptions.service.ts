@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { Prisma, PrismaClient, Subscription } from "@news/db";
 import { SUBSCRIPTION_LEVELS } from "@news/domain";
 import { PRISMA } from "../db/db.module";
@@ -15,6 +15,7 @@ function toSubscriptionDto(sub: Subscription): SubscriptionDto {
     notifyReminder: sub.notifyReminder,
     notifyStart: sub.notifyStart,
     notifyResult: sub.notifyResult,
+    muted: sub.muted,
   };
 }
 
@@ -29,7 +30,11 @@ export class SubscriptionsService {
   constructor(@Inject(PRISMA) private readonly prisma: PrismaClient) {}
 
   async create(userId: string, dto: CreateSubscriptionDto): Promise<SubscriptionDto> {
+    if (dto.muted && dto.targetType !== "competition" && dto.targetType !== "competition_family") {
+      throw new BadRequestException("Seule une compétition ou une famille peut être mise en sourdine");
+    }
     const data = {
+      muted: dto.muted ?? false,
       level: dto.level ?? defaultLevel(dto.targetType),
       notifyReminder: dto.notifyReminder ?? true,
       notifyStart: dto.notifyStart ?? true,
@@ -95,9 +100,10 @@ export class SubscriptionsService {
 
   private async resolveNames(subs: Subscription[]): Promise<Map<string, string>> {
     const ids = (targetType: string) => subs.filter((s) => s.targetType === targetType).map((s) => s.targetId);
-    const [categories, competitions, entities, events] = await Promise.all([
+    const [categories, competitions, families, entities, events] = await Promise.all([
       this.prisma.category.findMany({ where: { id: { in: ids("category") } }, select: { id: true, name: true } }),
       this.prisma.competition.findMany({ where: { id: { in: ids("competition") } }, select: { id: true, name: true } }),
+      this.prisma.competitionFamily.findMany({ where: { id: { in: ids("competition_family") } }, select: { id: true, name: true } }),
       this.prisma.entity.findMany({ where: { id: { in: ids("entity") } }, select: { id: true, name: true } }),
       this.prisma.event.findMany({ where: { id: { in: ids("event") } }, select: { id: true, name: true } }),
     ]);
@@ -105,6 +111,7 @@ export class SubscriptionsService {
     for (const [type, rows] of [
       ["category", categories],
       ["competition", competitions],
+      ["competition_family", families],
       ["entity", entities],
       ["event", events],
     ] as const) {
@@ -134,14 +141,32 @@ export class SubscriptionsService {
 
   // Une carte par suivi avec son état (docs/02 écran 17/Suivis) : le match en
   // direct s'il y en a un, sinon le plus proche à venir.
-  private async resolveCurrentEvents(subs: Subscription[]): Promise<Map<string, EventSummaryDto>> {
+  private async resolveCurrentEvents(allSubs: Subscription[]): Promise<Map<string, EventSummaryDto>> {
+    // Une sourdine n'est pas un suivi : pas de carte ; elle sert seulement à écarter
+    // ses matchs des suivis de ligue ou de famille (J10).
+    const mutedCompetitionIds = allSubs.filter((s) => s.muted && s.targetType === "competition").map((s) => s.targetId);
+    const subs = allSubs.filter((s) => !s.muted);
     const entityIds = subs.filter((s) => s.targetType === "entity").map((s) => s.targetId);
     const competitionIds = subs.filter((s) => s.targetType === "competition").map((s) => s.targetId);
+    const familyIds = subs.filter((s) => s.targetType === "competition_family").map((s) => s.targetId);
     const eventIds = subs.filter((s) => s.targetType === "event").map((s) => s.targetId);
     const categoryIds = subs.filter((s) => s.targetType === "category").map((s) => s.targetId);
 
     const competitionDescendants = await this.expandCompetitionDescendants(competitionIds);
-    const descendantCompetitionIds = [...competitionDescendants.values()].flatMap((set) => [...set]);
+    // Famille = ses séries (une par édition) et tout ce qu'elles contiennent.
+    const familySeries = familyIds.length
+      ? await this.prisma.competition.findMany({ where: { familyId: { in: familyIds } }, select: { id: true, familyId: true } })
+      : [];
+    const familyDescendants = new Map<string, Set<string>>();
+    for (const serie of familySeries) {
+      const descendants = (await this.expandCompetitionDescendants([serie.id])).get(serie.id) ?? new Set<string>();
+      const set = familyDescendants.get(serie.familyId!) ?? new Set<string>();
+      descendants.forEach((id) => set.add(id));
+      familyDescendants.set(serie.familyId!, set);
+    }
+    const mutedDescendants = new Set<string>();
+    for (const set of (await this.expandCompetitionDescendants(mutedCompetitionIds)).values()) set.forEach((id) => mutedDescendants.add(id));
+    const descendantCompetitionIds = [...competitionDescendants.values(), ...familyDescendants.values()].flatMap((set) => [...set]);
 
     const or: Prisma.EventWhereInput[] = [];
     if (entityIds.length) or.push({ participants: { some: { entityId: { in: entityIds } } } });
@@ -169,7 +194,9 @@ export class SubscriptionsService {
         case "entity":
           return event.participants.some((p) => p.entityId === sub.targetId);
         case "competition":
-          return competitionDescendants.get(sub.targetId)?.has(event.competitionId) ?? false;
+          return !mutedDescendants.has(event.competitionId) && (competitionDescendants.get(sub.targetId)?.has(event.competitionId) ?? false);
+        case "competition_family":
+          return !mutedDescendants.has(event.competitionId) && (familyDescendants.get(sub.targetId)?.has(event.competitionId) ?? false);
         case "event":
           return event.id === sub.targetId;
         case "category":

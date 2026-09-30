@@ -7,3 +7,4 @@ export * from "./notifications";
 export * from "./bracket";
 export * from "./context";
 export * from "./games";
+export * from "./family";

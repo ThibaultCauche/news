@@ -2,13 +2,13 @@
 // base/réseau ici : la résolution des destinataires et l'envoi restent dans le worker.
 import { DomainEventType } from "./events";
 
-export type SubscriptionTargetType = "category" | "competition" | "entity" | "event";
+export type SubscriptionTargetType = "category" | "competition" | "competition_family" | "entity" | "event";
 export type SubscriptionLevel = "all" | "key_moments";
 export type DevicePlatform = "android" | "ios";
 
 export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination";
 
-export const SUBSCRIPTION_TARGET_TYPES: SubscriptionTargetType[] = ["category", "competition", "entity", "event"];
+export const SUBSCRIPTION_TARGET_TYPES: SubscriptionTargetType[] = ["category", "competition", "competition_family", "entity", "event"];
 export const SUBSCRIPTION_LEVELS: SubscriptionLevel[] = ["all", "key_moments"];
 export const DEVICE_PLATFORMS: DevicePlatform[] = ["android", "ios"];
 

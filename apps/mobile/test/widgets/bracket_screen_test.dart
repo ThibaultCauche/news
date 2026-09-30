@@ -160,6 +160,7 @@ Future<void> _pump(WidgetTester tester, {List<String>? calls}) {
             ..notifyReminder = true
             ..notifyStart = true
             ..notifyResult = true
+            ..muted = false
             ..name = "G2"),
         ], calls ?? []),
       ],

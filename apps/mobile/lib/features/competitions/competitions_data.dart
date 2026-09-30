@@ -103,3 +103,33 @@ List<SearchResult> searchCatalog(CatalogDto catalog, String query) {
   }
   return null;
 }
+
+/// Série du catalogue d'identifiant [competitionId] avec sa ligue, son jeu et sa famille
+/// (`null` si ce n'est pas une série du catalogue) : sert à savoir si un suivi de ligue ou
+/// de famille la couvre (docs/04 J10).
+({CatalogChildDto serie, CatalogLeagueDto league, CatalogGameDto game})? findSerie(CatalogDto? catalog, String competitionId) {
+  if (catalog == null) return null;
+  for (final category in catalog.categories) {
+    for (final game in category.games) {
+      for (final league in game.leagues) {
+        for (final serie in league.children) {
+          if (serie.id == competitionId) return (serie: serie, league: league, game: game);
+        }
+      }
+    }
+  }
+  return null;
+}
+
+/// La ligue du catalogue qui possède la famille [familyId].
+({CatalogLeagueDto league, CatalogGameDto game})? findLeagueOfFamily(CatalogDto? catalog, String familyId) {
+  if (catalog == null) return null;
+  for (final category in catalog.categories) {
+    for (final game in category.games) {
+      for (final league in game.leagues) {
+        if (league.families.any((f) => f.id == familyId)) return (league: league, game: game);
+      }
+    }
+  }
+  return null;
+}

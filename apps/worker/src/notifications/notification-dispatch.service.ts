@@ -3,6 +3,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import {
   buildNotificationText,
+  competitionSpecificity,
   createLogger,
   DomainEventMessage,
   DOMAIN_EVENT_NOTIFICATION_TYPES,
@@ -10,6 +11,7 @@ import {
   KEY_MOMENT_MIN_IMPORTANCE,
   localHourFromOffsetMinutes,
   MAX_NOTIFICATIONS_PER_HOUR,
+  nearestCompetitionRule,
   NotificationType,
   shouldNotify,
   SubscriptionLevel,
@@ -47,21 +49,46 @@ export class NotificationDispatchService {
 
     const winnerName = event.participants.find((p) => p.isWinner)?.entity.name ?? null;
     const entityIds = event.participants.map((p) => p.entityId);
-    const competitionIds = await this.getCompetitionAncestorIds(event.competition.id);
+    const chain = await this.getCompetitionChain(event.competition.id);
+    const competitionIds = chain.map((c) => c.id);
+    // Famille de la série du match (J10) : rang dans la chaîne, pour la précision de la règle.
+    const familyIndex = chain.findIndex((c) => c.familyId !== null);
+    const familyId = familyIndex >= 0 ? chain[familyIndex].familyId : null;
 
     // Abonnements directs (événement, équipe) et hiérarchiques (compétition
-    // parente, catégorie) — docs/03 §6.
-    const subscriptions = await this.prisma.subscription.findMany({
+    // parente, famille, catégorie) — docs/03 §6.
+    const candidates = await this.prisma.subscription.findMany({
       where: {
         OR: [
           { targetType: "event", targetId: event.id },
           { targetType: "entity", targetId: { in: entityIds } },
           { targetType: "competition", targetId: { in: competitionIds } },
+          ...(familyId ? [{ targetType: "competition_family", targetId: familyId }] : []),
           { targetType: "category", targetId: event.competition.categoryId },
         ],
       },
       include: { user: { include: { setting: true, devices: true } } },
     });
+
+    // Pour les compétitions et familles, la règle la plus proche du match l'emporte, par
+    // utilisateur (J10) : une série en sourdine coupe l'alerte due à la ligue qu'il suit,
+    // sans toucher à ce qui vient d'une équipe ou d'un match suivi.
+    const subscriptions = candidates.filter((s) => s.targetType !== "competition" && s.targetType !== "competition_family");
+    const rulesByUser = new Map<string, { sub: (typeof candidates)[number]; specificity: number; muted: boolean }[]>();
+    for (const sub of candidates) {
+      if (sub.targetType !== "competition" && sub.targetType !== "competition_family") continue;
+      const specificity =
+        sub.targetType === "competition_family"
+          ? competitionSpecificity("family", familyIndex)
+          : competitionSpecificity("competition", competitionIds.indexOf(sub.targetId));
+      const rules = rulesByUser.get(sub.userId) ?? [];
+      rules.push({ sub, specificity, muted: sub.muted });
+      rulesByUser.set(sub.userId, rules);
+    }
+    for (const rules of rulesByUser.values()) {
+      const nearest = nearestCompetitionRule(rules);
+      if (nearest && !nearest.muted) subscriptions.push(nearest.sub);
+    }
 
     for (const sub of subscriptions) {
       const notifyEnabled = type === "reminder" ? sub.notifyReminder : type === "start" ? sub.notifyStart : sub.notifyResult;
@@ -155,14 +182,19 @@ export class NotificationDispatchService {
     }
   }
 
-  private async getCompetitionAncestorIds(competitionId: string): Promise<string[]> {
-    const ids = [competitionId];
+  // Chaîne de compétitions d'un match, de la sienne (rang 0) jusqu'à la ligue racine.
+  private async getCompetitionChain(competitionId: string): Promise<{ id: string; familyId: string | null }[]> {
+    const chain: { id: string; familyId: string | null }[] = [];
     let currentId: string | null = competitionId;
     while (currentId) {
-      const row: { parentId: string | null } | null = await this.prisma.competition.findUnique({ where: { id: currentId }, select: { parentId: true } });
-      currentId = row?.parentId ?? null;
-      if (currentId) ids.push(currentId);
+      const row: { id: string; parentId: string | null; familyId: string | null } | null = await this.prisma.competition.findUnique({
+        where: { id: currentId },
+        select: { id: true, parentId: true, familyId: true },
+      });
+      if (!row) break;
+      chain.push({ id: row.id, familyId: row.familyId });
+      currentId = row.parentId;
     }
-    return ids;
+    return chain;
   }
 }

@@ -8,7 +8,14 @@ import "../../core/notifications/push_service.dart";
 /// Catégorie/compétition/entité/événement (docs/03 §2) : type applicatif,
 /// converti vers l'énum propre à chaque DTO généré (`CreateSubscriptionDto`,
 /// `SubscriptionTargetDto`) au moment de l'appel.
-enum FollowTargetType { category, competition, entity, event }
+enum FollowTargetType { category, competition, competitionFamily, entity, event }
+
+/// Valeur échangée avec l'API (`competition_family`), différente du nom Dart de l'énum.
+extension FollowTargetTypeWire on FollowTargetType {
+  String get wire => this == FollowTargetType.competitionFamily ? "competition_family" : name;
+}
+
+FollowTargetType followTargetTypeFromWire(String wire) => FollowTargetType.values.firstWhere((t) => t.wire == wire);
 
 /// `AsyncNotifier` plutôt que `FutureProvider` (comme avant le J8) : il faut
 /// pouvoir modifier `state` à la main pour le retour optimiste de
@@ -22,17 +29,18 @@ class FollowsNotifier extends AsyncNotifier<List<FollowStateDto>> {
     return response.data!.toList();
   }
 
-  Future<void> follow(FollowTargetType type, String targetId, {String name = ""}) async {
+  Future<void> follow(FollowTargetType type, String targetId, {String name = "", bool muted = false}) async {
     final previous = state;
     final current = previous.value;
     if (current != null) {
       state = AsyncValue.data([
-        ...current,
+        ...current.where((f) => !(f.targetType == type.wire && f.targetId == targetId)),
         FollowStateDto(
           (b) => b
             ..id = "optimistic-$targetId"
-            ..targetType = type.name
+            ..targetType = type.wire
             ..targetId = targetId
+            ..muted = muted
             ..level = "all"
             ..notifyReminder = true
             ..notifyStart = true
@@ -43,7 +51,7 @@ class FollowsNotifier extends AsyncNotifier<List<FollowStateDto>> {
     }
     try {
       await ref.read(apiClientProvider).getSubscriptionsApi().subscriptionsControllerCreate(
-        createSubscriptionDto: CreateSubscriptionDto((b) => b..targetType = _toCreateEnum(type)..targetId = targetId),
+        createSubscriptionDto: CreateSubscriptionDto((b) => b..targetType = _toCreateEnum(type)..targetId = targetId..muted = muted),
       );
     } catch (_) {
       state = previous;
@@ -57,7 +65,7 @@ class FollowsNotifier extends AsyncNotifier<List<FollowStateDto>> {
     final previous = state;
     final current = previous.value;
     if (current != null) {
-      state = AsyncValue.data(current.where((f) => !(f.targetType == type.name && f.targetId == targetId)).toList());
+      state = AsyncValue.data(current.where((f) => !(f.targetType == type.wire && f.targetId == targetId)).toList());
     }
     try {
       await ref.read(apiClientProvider).getSubscriptionsApi().subscriptionsControllerRemove(
@@ -73,8 +81,14 @@ class FollowsNotifier extends AsyncNotifier<List<FollowStateDto>> {
 
 final followsProvider = AsyncNotifierProvider.autoDispose<FollowsNotifier, List<FollowStateDto>>(FollowsNotifier.new);
 
+/// Suivi actif : une ligne en sourdine (`muted`) n'est pas un suivi.
 bool isFollowing(List<FollowStateDto>? follows, FollowTargetType type, String targetId) {
-  return follows?.any((f) => f.targetType == type.name && f.targetId == targetId) ?? false;
+  return follows?.any((f) => f.targetType == type.wire && f.targetId == targetId && !f.muted) ?? false;
+}
+
+/// Compétition mise en sourdine : « je suis la ligue, sauf celle-ci » (J10).
+bool isMuted(List<FollowStateDto>? follows, FollowTargetType type, String targetId) {
+  return follows?.any((f) => f.targetType == type.wire && f.targetId == targetId && f.muted) ?? false;
 }
 
 /// Un seul point d'entrée pour suivre/ne plus suivre depuis n'importe quel
@@ -85,8 +99,8 @@ class FollowsController {
 
   final Ref _ref;
 
-  Future<void> follow(FollowTargetType type, String targetId, {String name = ""}) =>
-      _ref.read(followsProvider.notifier).follow(type, targetId, name: name);
+  Future<void> follow(FollowTargetType type, String targetId, {String name = "", bool muted = false}) =>
+      _ref.read(followsProvider.notifier).follow(type, targetId, name: name, muted: muted);
 
   Future<void> unfollow(FollowTargetType type, String targetId) => _ref.read(followsProvider.notifier).unfollow(type, targetId);
 }
@@ -96,6 +110,7 @@ final followsControllerProvider = Provider((ref) => FollowsController(ref));
 CreateSubscriptionDtoTargetTypeEnum _toCreateEnum(FollowTargetType t) => switch (t) {
   FollowTargetType.category => CreateSubscriptionDtoTargetTypeEnum.category,
   FollowTargetType.competition => CreateSubscriptionDtoTargetTypeEnum.competition,
+  FollowTargetType.competitionFamily => CreateSubscriptionDtoTargetTypeEnum.competitionFamily,
   FollowTargetType.entity => CreateSubscriptionDtoTargetTypeEnum.entity,
   FollowTargetType.event => CreateSubscriptionDtoTargetTypeEnum.event,
 };
@@ -103,6 +118,7 @@ CreateSubscriptionDtoTargetTypeEnum _toCreateEnum(FollowTargetType t) => switch 
 SubscriptionTargetDtoTargetTypeEnum _toTargetEnum(FollowTargetType t) => switch (t) {
   FollowTargetType.category => SubscriptionTargetDtoTargetTypeEnum.category,
   FollowTargetType.competition => SubscriptionTargetDtoTargetTypeEnum.competition,
+  FollowTargetType.competitionFamily => SubscriptionTargetDtoTargetTypeEnum.competitionFamily,
   FollowTargetType.entity => SubscriptionTargetDtoTargetTypeEnum.entity,
   FollowTargetType.event => SubscriptionTargetDtoTargetTypeEnum.event,
 };

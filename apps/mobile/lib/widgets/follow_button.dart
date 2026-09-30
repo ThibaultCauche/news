@@ -9,9 +9,12 @@ import "../theme/app_theme.dart";
 /// - `following: true` : fond or 14 %, texte or, avec une coche — discret,
 ///   on ne suit déjà plus l'attention.
 class FollowButton extends StatelessWidget {
-  const FollowButton({super.key, required this.following, this.onPressed});
+  const FollowButton({super.key, required this.following, this.onPressed, this.label});
 
   final bool following;
+
+  /// Remplace « Suivre »/« Suivi » (ex. « Suivi via VCT »).
+  final String? label;
   final VoidCallback? onPressed;
 
   @override
@@ -33,7 +36,7 @@ class FollowButton extends StatelessWidget {
                 Icon(Icons.check, size: 14, color: AppColors.gold),
                 const SizedBox(width: 4),
               ],
-              Text(following ? "Suivi" : "Suivre", style: textStyle),
+              Flexible(child: Text(label ?? (following ? "Suivi" : "Suivre"), style: textStyle, maxLines: 1, overflow: TextOverflow.ellipsis)),
             ],
           ),
         ),

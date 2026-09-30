@@ -2,14 +2,15 @@ import "package:flutter/material.dart";
 import "package:news_api_client/news_api_client.dart";
 
 import "../../theme/tokens.dart";
-import "../../widgets/competition_follow_button.dart";
 import "../../widgets/game_logo.dart";
+import "follow_league_sheet.dart";
 import "game_screen.dart";
 
 /// Page d'une ligue (VCT, Esports World Cup…) : son logo, le bouton « Suivre » et la
 /// liste de ses compétitions (docs/04 J10). Construite depuis le catalogue déjà chargé,
-/// sans appel réseau de plus. Suivre une ligue notifie pour tous ses matchs
-/// (abonnement hiérarchique) : c'est ici qu'on s'en désabonne.
+/// sans appel réseau de plus. « Suivre » ouvre le choix de ce qu'on suit (toute la ligue,
+/// qui notifie pour tous ses matchs, ou certaines familles de compétitions) : c'est aussi
+/// ici qu'on s'en désabonne.
 class LeagueScreen extends StatelessWidget {
   const LeagueScreen({super.key, required this.league, required this.game});
 
@@ -27,7 +28,7 @@ class LeagueScreen extends StatelessWidget {
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
           label: Text(game.name, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary)),
         ),
-        actions: [CompetitionFollowButton(competitionId: league.id, name: league.name)],
+        actions: [LeagueFollowButton(league: league)],
       ),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -46,6 +47,11 @@ class LeagueScreen extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: AppSpacing.sm),
+          Text(
+            "Suivre la ligue : toutes ses compétitions, actuelles et futures. Ou seulement certaines, sans l'année.",
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textTertiary),
           ),
           const SizedBox(height: AppSpacing.lg),
           Text("COMPÉTITIONS", style: Theme.of(context).textTheme.labelSmall),

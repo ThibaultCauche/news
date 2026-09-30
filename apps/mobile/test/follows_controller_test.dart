@@ -22,7 +22,7 @@ class _FakeAdapter implements HttpClientAdapter {
   @override
   Future<ResponseBody> fetch(RequestOptions options, Stream<Uint8List>? requestStream, Future<void>? cancelFuture) async {
     final body = options.method == "POST"
-        ? '{"id":"sub-1","targetType":"entity","targetId":"team-a","level":"all","notifyReminder":true,"notifyStart":true,"notifyResult":true}'
+        ? '{"id":"sub-1","targetType":"entity","targetId":"team-a","level":"all","notifyReminder":true,"notifyStart":true,"notifyResult":true,"muted":false}'
         : "";
     return ResponseBody.fromString(
       body,
@@ -79,6 +79,7 @@ void main() {
         ..notifyReminder = true
         ..notifyStart = true
         ..notifyResult = true
+        ..muted = false
         ..name = "G2",
     );
     final container = await _makeContainer(statusCode: 200, initial: [existing]);

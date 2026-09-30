@@ -21,6 +21,20 @@ model Category {
   @@map("category")
 }
 
+// Toutes les éditions d'une même compétition d'une ligue (docs/04 J10) : suivre la
+// famille « Champions » de VCT couvre Champions 2026 et les suivantes. Nom dérivé de
+// celui de la série (`familyNameOf`, packages/domain).
+model CompetitionFamily {
+  id           String        @id @default(uuid())
+  leagueId     String        @map("league_id")
+  league       Competition   @relation("LeagueFamilies", fields: [leagueId], references: [id])
+  name         String
+  competitions Competition[] @relation("FamilyCompetitions")
+
+  @@unique([leagueId, name])
+  @@map("competition_family")
+}
+
 model Competition {
   id         String        @id @default(uuid())
   categoryId String        @map("category_id")
@@ -28,6 +42,11 @@ model Competition {
   parentId   String?       @map("parent_id")
   parent     Competition?  @relation("CompetitionHierarchy", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   children   Competition[] @relation("CompetitionHierarchy")
+  // Famille de la série (« Champions » pour Champions 2025/2026…), null hors série (J10).
+  familyId   String?       @map("family_id")
+  family     CompetitionFamily? @relation("FamilyCompetitions", fields: [familyId], references: [id])
+  // Familles d'une ligue (côté ligue racine).
+  families   CompetitionFamily[] @relation("LeagueFamilies")
   kind       String
   // Slug du jeu (ex. "valorant"), null hors e-sport : sert à regrouper les ligues
   // par jeu dans l'onglet Compétitions (J9). Champ, pas une table (règle 3).
@@ -250,6 +269,9 @@ model Subscription {
   notifyReminder Boolean  @default(true) @map("notify_reminder")
   notifyStart    Boolean  @default(true) @map("notify_start")
   notifyResult   Boolean  @default(true) @map("notify_result")
+  // Sourdine (J10, compétitions seulement) : « je suis la ligue, sauf celle-ci ». La règle
+  // la plus proche du match l'emporte (`nearestCompetitionRule`, packages/domain).
+  muted          Boolean  @default(false)
   createdAt      DateTime @default(now()) @map("created_at")
 
   @@unique([userId, targetType, targetId])

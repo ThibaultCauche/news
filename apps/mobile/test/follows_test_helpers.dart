@@ -28,15 +28,16 @@ class RecordingFollowsNotifier extends FollowsNotifier {
   Future<List<FollowStateDto>> build() async => _initial;
 
   @override
-  Future<void> follow(FollowTargetType type, String targetId, {String name = ""}) async {
-    calls.add("follow ${type.name} $targetId");
+  Future<void> follow(FollowTargetType type, String targetId, {String name = "", bool muted = false}) async {
+    calls.add("${muted ? "mute" : "follow"} ${type.wire} $targetId");
     if (failWith != null) throw failWith!;
     state = AsyncValue.data([
-      ...?state.value,
+      ...?state.value?.where((f) => !(f.targetType == type.wire && f.targetId == targetId)),
       FollowStateDto((b) => b
         ..id = "sub-$targetId"
-        ..targetType = type.name
+        ..targetType = type.wire
         ..targetId = targetId
+        ..muted = muted
         ..level = "all"
         ..notifyReminder = true
         ..notifyStart = true
@@ -47,8 +48,8 @@ class RecordingFollowsNotifier extends FollowsNotifier {
 
   @override
   Future<void> unfollow(FollowTargetType type, String targetId) async {
-    calls.add("unfollow ${type.name} $targetId");
-    state = AsyncValue.data([...?state.value?.where((f) => !(f.targetType == type.name && f.targetId == targetId))]);
+    calls.add("unfollow ${type.wire} $targetId");
+    state = AsyncValue.data([...?state.value?.where((f) => !(f.targetType == type.wire && f.targetId == targetId))]);
   }
 }
 
