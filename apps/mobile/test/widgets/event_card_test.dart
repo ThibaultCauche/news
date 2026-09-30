@@ -46,7 +46,6 @@ Future<void> _pump(
   WidgetTester tester,
   EventSummaryDto event, {
   bool scoresHidden = false,
-  bool showCountdown = false,
   List<String>? calls,
   Object? failWith,
 }) {
@@ -58,7 +57,7 @@ Future<void> _pump(
       ],
       child: MaterialApp(
         theme: ThemeData.dark(),
-        home: Scaffold(body: EventCard(event: event, scoresHidden: scoresHidden, showCountdown: showCountdown)),
+        home: Scaffold(body: EventCard(event: event, scoresHidden: scoresHidden)),
       ),
     ),
   );
@@ -104,10 +103,26 @@ void main() {
   testWidgets("équipes inconnues : le compte à rebours s'affiche sous le nom du match", (tester) async {
     final start = DateTime.now().toUtc().add(const Duration(hours: 5, minutes: 10, seconds: 30));
     final event = _event(status: "scheduled", startsAt: start.toIso8601String()).rebuild((b) => b.participants.clear());
-    await _pump(tester, event, showCountdown: true);
+    await _pump(tester, event);
     await tester.pump();
     expect(find.text("G2 Esports vs Paper Rex"), findsOneWidget);
     expect(find.textContaining("05:10:", findRichText: true), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets("plus de 24 h avant le match : le VS reste, sans décompte ni « dans XhYY »", (tester) async {
+    final start = DateTime.now().toUtc().add(const Duration(hours: 30));
+    await _pump(tester, _event(status: "scheduled", startsAt: start.toIso8601String()));
+    await tester.pump();
+    expect(find.text("VS"), findsOneWidget);
+    expect(find.textContaining("dans "), findsNothing);
+    expect(find.textContaining(":", findRichText: true), findsOneWidget); // seulement l'heure de début, pas de chrono
+  });
+
+  testWidgets("un match en direct ou terminé garde le VS, jamais de compte à rebours", (tester) async {
+    await _pump(tester, _event(status: "live", scoreA: 1, scoreB: 0));
+    await tester.pump();
+    expect(find.text("VS"), findsOneWidget);
     await tester.pumpWidget(const SizedBox());
   });
 
@@ -159,9 +174,9 @@ void main() {
     expect(find.text("Impossible de modifier l'alerte."), findsOneWidget);
   });
 
-  testWidgets("compte à rebours à la place du VS, seulement pour un match à venir (J10)", (tester) async {
+  testWidgets("moins de 24 h avant le match : compte à rebours à la place du VS (J10)", (tester) async {
     final start = DateTime.now().toUtc().add(const Duration(hours: 3, minutes: 10, seconds: 30));
-    await _pump(tester, _event(status: "scheduled", startsAt: start.toIso8601String()), showCountdown: true);
+    await _pump(tester, _event(status: "scheduled", startsAt: start.toIso8601String()));
     await tester.pump();
     expect(find.text("VS"), findsNothing);
     expect(find.textContaining("03:10:", findRichText: true), findsOneWidget);

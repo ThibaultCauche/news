@@ -281,7 +281,7 @@
 **Critères d'acceptation**
 - [ ] Plus de gris entre les deux couleurs d'une carte de match, y compris dans l'en-tête de l'écran du match (dégradé et logo d'équipe partagés dans `widgets/match_visuals.dart`, logos contenus dans leur case).
 - [ ] Une carte de match à venir a une cloche qui alerte sans ouvrir la page du match (retour optimiste, message d'erreur si l'appel échoue) ; pas de cloche en direct/terminé.
-- [ ] L'Accueil ne répète plus les suivis (section « Tes suivis » retirée) et n'utilise plus de carte maison : « À suivre » basé sur `EventCard`, avec un compte à rebours HH:MM:SS à la place du « VS », deux-points clignotants (fixes en mouvement réduit, règle 13).
+- [ ] L'Accueil ne répète plus les suivis (section « Tes suivis » retirée) et n'utilise plus de carte maison : « À suivre » basé sur `EventCard`, — compte à rebours HH:MM:SS à la place du « VS », deux-points clignotants (fixes en mouvement réduit, règle 13) — sur **toute carte de match à venir dans les 24 h** (Accueil, Agenda, Suivis…), au-delà le « VS » seul (décidé le 2026-09-30).
 - [ ] « Grands rendez-vous » n'affiche que la grande finale en phase finale, si elle a lieu dans les 7 prochains jours, avec le nom du tournoi, sa phrase « pourquoi ça compte » et « M'alerter » ; « Adversaires à déterminer » si les équipes ne sont pas connues ; section absente hors phase finale.
 - [ ] Suivis : nom de compétition → page compétition, nom d'équipe → fiche, plus de « x » ; le désabonnement se fait depuis la page compétition (bouton « Suivre »/« Suivi » en haut) ou la fiche équipe ; état vide avec bouton « Explorer les compétitions ».
 - [ ] Sur une carte de match terminé, une couronne dorée surmonte le logo du vainqueur ; jamais quand le score est masqué (sans spoil).

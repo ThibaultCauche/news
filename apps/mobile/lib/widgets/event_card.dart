@@ -40,7 +40,6 @@ class EventCard extends ConsumerWidget {
     required this.scoresHidden,
     this.onTap,
     this.followedEntityIds = const {},
-    this.showCountdown = false,
     this.banner = false,
     this.footer,
   });
@@ -52,10 +51,6 @@ class EventCard extends ConsumerWidget {
   /// Ligne sous la carte, dans son cadre (ex. « Ensuite : … » du bandeau en direct).
   final Widget? footer;
 
-  /// Compte à rebours en gros à la place du "VS" (bannière "À suivre" de l'Accueil,
-  /// J10) : un match à venir seulement, sinon le "VS" habituel.
-  final bool showCountdown;
-
   /// Score d'un match terminé masqué (réglage sans spoil du compte).
   final bool scoresHidden;
 
@@ -66,27 +61,6 @@ class EventCard extends ConsumerWidget {
   /// (`docs/maquettes/specs/01-valorant-saison.md`, `06-groupes.md`), comme
   /// `highlightedEventIds` dans `bracket_screen.dart`.
   final Set<String> followedEntityIds;
-
-  // Un match à venir, mais seulement s'il tombe demain (le "quand" qu'on
-  // retient le moins bien) : pas un décompte qui tourne (`_Countdown` de
-  // l'écran Prochain match, à la seconde) — beaucoup trop lourd à multiplier
-  // sur toute une liste — juste un texte statique, recalculé au prochain
-  // rebuild naturel de la tuile.
-  Widget? _tomorrowCountdown(EventStatusKind status, DateTime startsAt, TextTheme textTheme) {
-    if (status != EventStatusKind.scheduled) return null;
-    final now = DateTime.now();
-    final startDay = DateTime(startsAt.year, startsAt.month, startsAt.day);
-    final tomorrow = DateTime(now.year, now.month, now.day + 1);
-    if (startDay != tomorrow) return null;
-    final remaining = startsAt.difference(now);
-    if (remaining.isNegative) return null;
-    final h = remaining.inHours;
-    final m = remaining.inMinutes % 60;
-    return Padding(
-      padding: const EdgeInsets.only(left: 4),
-      child: Text("· dans ${h}h${m.toString().padLeft(2, "0")}", style: textTheme.bodySmall?.copyWith(color: AppColors.textTertiary)),
-    );
-  }
 
   String? get _scoreLine {
     if (event.participants.length != 2) return null;
@@ -119,7 +93,13 @@ class EventCard extends ConsumerWidget {
     // seulement avant le match), sauf reporté où le statut prime. Fonction
     // plutôt qu'un widget figé : la tuile réduite le veut plus petit, au
     // même niveau visuel que ses logos et scores plus petits eux aussi.
-    final countdownTarget = showCountdown && status == EventStatusKind.scheduled ? event.startsAt.toDateTime : null;
+    // Compte à rebours à la place du "VS" pour un match à venir dans les 24 h (J10) ; plus loin,
+    // le "VS" habituel : l'heure suffit, un décompte de plusieurs jours n'apprend rien.
+    final start = event.startsAt.toDateTime;
+    final untilStart = start?.difference(DateTime.now());
+    final countdownTarget = status == EventStatusKind.scheduled && untilStart != null && untilStart > Duration.zero && untilStart <= const Duration(hours: 24)
+        ? start
+        : null;
     Widget centerBadge(double fontSize) => status == EventStatusKind.postponed
         ? Text(status.label, style: textTheme.bodySmall?.copyWith(color: status.color))
         : countdownTarget != null
@@ -149,7 +129,6 @@ class EventCard extends ConsumerWidget {
               Text("EN DIRECT", style: textTheme.labelSmall?.copyWith(color: AppColors.live))
             else
               Text(DateFormat.Hm("fr_FR").format(startsAt), style: textTheme.bodySmall),
-            if (!showCountdown && !banner) ?_tomorrowCountdown(status, startsAt, textTheme),
           ],
         ),
       );

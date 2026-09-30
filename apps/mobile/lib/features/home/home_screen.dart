@@ -151,7 +151,7 @@ class _LiveBanner extends StatelessWidget {
 }
 
 /// "À suivre" (rien n'est en direct) : le prochain match, sur la même carte que
-/// partout ailleurs (`EventCard`), avec un compte à rebours à la place du "VS".
+/// partout ailleurs (`EventCard`).
 class _UpNextSection extends StatelessWidget {
   const _UpNextSection({required this.event, required this.scoresHidden});
 
@@ -170,7 +170,6 @@ class _UpNextSection extends StatelessWidget {
           EventCard(
             event: event,
             scoresHidden: scoresHidden,
-            showCountdown: true,
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
           ),
         ],
