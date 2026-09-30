@@ -3,7 +3,7 @@ import { INestApplication } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import Redis from "ioredis";
 import request from "supertest";
-import { createTestApp, loginTestUser } from "./test-utils";
+import { createTestApp, deleteTestUsers, loginTestUser } from "./test-utils";
 import { CacheKeys } from "./cache/cache-keys";
 
 // Familles de compétitions et sourdine (docs/04 J10), contre le vrai Postgres/Redis de dev.
@@ -55,6 +55,7 @@ describe("Familles et sourdine (e2e)", () => {
   });
 
   afterAll(async () => {
+    await deleteTestUsers(prisma);
     const serieIds = [champions2026.serieId, champions2027.serieId];
     const tournaments = await prisma.competition.findMany({ where: { parentId: { in: serieIds } }, select: { id: true } });
     const competitionIds = [...serieIds, ...tournaments.map((t) => t.id)];

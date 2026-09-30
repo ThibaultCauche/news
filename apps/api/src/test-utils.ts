@@ -33,6 +33,15 @@ export async function createTestApp(): Promise<INestApplication> {
   return app;
 }
 
+// Comptes créés par `loginTestUser` : supprimés en fin de suite (`deleteTestUsers`), sinon ils
+// s'accumulent dans la base de dev (et leurs groupes avec eux).
+const createdUserIds: string[] = [];
+
+/** À appeler dans `afterAll`, avant `prisma.$disconnect()`. */
+export async function deleteTestUsers(prisma: { appUser: { deleteMany: (args: { where: { id: { in: string[] } } }) => Promise<unknown> } }): Promise<void> {
+  await prisma.appUser.deleteMany({ where: { id: { in: createdUserIds.splice(0) } } });
+}
+
 export interface TestAccount {
   userId: string;
   accessToken: string;
@@ -49,5 +58,6 @@ export async function loginTestUser(app: INestApplication, options: { uid?: stri
     .send({ idToken: `test:${uid}:${options.verified ?? true}` })
     .expect(201);
   const body = res.body as { userId: string; accessToken: string; refreshToken: string };
+  createdUserIds.push(body.userId);
   return { ...body, uid, auth: { Authorization: `Bearer ${body.accessToken}` } };
 }

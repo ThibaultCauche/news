@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { INestApplication } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import request from "supertest";
-import { createTestApp, loginTestUser } from "./test-utils";
+import { createTestApp, deleteTestUsers, loginTestUser } from "./test-utils";
 
 // e2e (Supertest) contre le vrai Postgres de dev (docs/04 J11) : pseudo, pronostics, groupes,
 // suppression RGPD. Le règlement des points est testé côté worker.
@@ -44,6 +44,7 @@ describe("Profil, pronostics, groupes (e2e)", () => {
   });
 
   afterAll(async () => {
+    await deleteTestUsers(prisma);
     await prisma.prediction.deleteMany({ where: { event: { competitionId } } });
     await prisma.eventParticipant.deleteMany({ where: { event: { competitionId } } });
     await prisma.event.deleteMany({ where: { competitionId } });
@@ -204,6 +205,22 @@ describe("Profil, pronostics, groupes (e2e)", () => {
       await request(server()).delete(`/v1/groups/${created.body.id}`).set(owner.auth).expect(204);
       await request(server()).get(`/v1/groups/${created.body.id}`).set(owner.auth).expect(404);
     });
+  });
+
+  it("la suppression du créateur transmet son groupe au membre le plus ancien, et le supprime s'il est seul", async () => {
+    const owner = await accountWithPseudo("Chef");
+    const heir = await accountWithPseudo("Heritier");
+    const group = await request(server()).post("/v1/groups").set(owner.auth).send({ name: "Transmis" }).expect(201);
+    await request(server()).post("/v1/groups/join").set(heir.auth).send({ code: group.body.code }).expect(201);
+    const alone = await request(server()).post("/v1/groups").set(heir.auth).send({ name: "Seul" }).expect(201);
+
+    await request(server()).delete("/v1/me").set(owner.auth).expect(204);
+    const after = await request(server()).get(`/v1/groups/${group.body.id}`).set(heir.auth).expect(200);
+    expect(after.body.isOwner).toBe(true);
+    expect(after.body.ranking.map((r: { pseudo: string }) => r.pseudo)).toEqual([heir.pseudo]);
+
+    await request(server()).delete("/v1/me").set(heir.auth).expect(204);
+    expect(await prisma.friendGroup.count({ where: { id: { in: [group.body.id, alone.body.id] } } })).toBe(0);
   });
 
   it("la suppression du compte (RGPD) emporte pronostics et appartenances, et libère le pseudo", async () => {

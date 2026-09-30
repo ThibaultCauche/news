@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { INestApplication } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import request from "supertest";
-import { createTestApp, FakeFirebaseAuthService, loginTestUser } from "./test-utils";
+import { createTestApp, deleteTestUsers, FakeFirebaseAuthService, loginTestUser } from "./test-utils";
 
 // e2e (Supertest) contre le vrai Postgres de dev, comme `app.e2e.spec.ts` (docs/04 J4) :
 // compte Firebase (faux vérificateur), abonnements, appareil, réglages, suppression RGPD, jusqu'à la
@@ -46,6 +46,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   });
 
   afterAll(async () => {
+    await deleteTestUsers(prisma);
     await prisma.eventParticipant.deleteMany({ where: { event: { competitionId } } });
     await prisma.event.deleteMany({ where: { competitionId } });
     await prisma.standing.deleteMany({ where: { competitionId } });

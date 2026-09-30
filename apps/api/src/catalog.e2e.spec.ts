@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { INestApplication } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import request from "supertest";
-import { createTestApp, loginTestUser } from "./test-utils";
+import { createTestApp, deleteTestUsers, loginTestUser } from "./test-utils";
 import { CacheKeys } from "./cache/cache-keys";
 import { CacheService } from "./cache/cache.service";
 
@@ -56,6 +56,7 @@ describe("Catalogue, favoris de jeu, équipes par jeu (e2e)", () => {
   });
 
   afterAll(async () => {
+    await deleteTestUsers(prisma);
     await prisma.eventParticipant.deleteMany({ where: { eventId } });
     await prisma.event.delete({ where: { id: eventId } });
     await prisma.competition.deleteMany({ where: { id: { in: [serieId, leagueId] } } });

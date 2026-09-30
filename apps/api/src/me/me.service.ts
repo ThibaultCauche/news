@@ -33,11 +33,21 @@ export class MeService {
   }
 
   // RGPD (`DELETE /v1/me`, règle 9 de CLAUDE.md) : suppression en cascade des appareils,
-  // abonnements, réglages, journal de notifications, pronostics et groupes (schéma Prisma),
+  // abonnements, réglages, journal de notifications, pronostics et appartenances aux groupes
+  // (schéma Prisma) ; les groupes qu'il avait créés passent à un autre membre (ci-dessous),
   // puis du compte Firebase (e-mail et mot de passe).
   async deleteAccount(userId: string): Promise<void> {
     const user = await this.prisma.appUser.findUnique({ where: { id: userId }, select: { firebaseUid: true } });
     if (user?.firebaseUid) await this.firebase.deleteUser(user.firebaseUid);
-    await this.prisma.appUser.delete({ where: { id: userId } });
+    await this.prisma.$transaction(async (tx) => {
+      // Un groupe ne disparaît pas avec son créateur : le membre le plus ancien en hérite. Le groupe
+      // n'est supprimé (en cascade) que s'il n'y reste personne d'autre.
+      const owned = await tx.friendGroup.findMany({ where: { ownerId: userId }, select: { id: true } });
+      for (const { id } of owned) {
+        const heir = await tx.friendGroupMember.findFirst({ where: { groupId: id, userId: { not: userId } }, orderBy: { joinedAt: "asc" }, select: { userId: true } });
+        if (heir) await tx.friendGroup.update({ where: { id }, data: { ownerId: heir.userId } });
+      }
+      await tx.appUser.delete({ where: { id: userId } });
+    });
   }
 }
