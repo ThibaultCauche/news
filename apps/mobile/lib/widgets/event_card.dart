@@ -41,7 +41,16 @@ class EventCard extends ConsumerWidget {
     this.onTap,
     this.followedEntityIds = const {},
     this.showCountdown = false,
+    this.banner = false,
+    this.footer,
   });
+
+  /// Bandeau « en direct » de l'Accueil (J10) : même carte que partout, teintée en rouge
+  /// (couleur du direct, règle 12 de `CLAUDE.md`) et libellée « EN DIRECT » à la place de l'heure.
+  final bool banner;
+
+  /// Ligne sous la carte, dans son cadre (ex. « Ensuite : … » du bandeau en direct).
+  final Widget? footer;
 
   /// Compte à rebours en gros à la place du "VS" (bannière "À suivre" de l'Accueil,
   /// J10) : un match à venir seulement, sinon le "VS" habituel.
@@ -136,8 +145,11 @@ class EventCard extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             if (status == EventStatusKind.live) ...[const LiveDot(), const SizedBox(width: 4)],
-            Text(DateFormat.Hm("fr_FR").format(startsAt), style: textTheme.bodySmall),
-            if (!showCountdown) ?_tomorrowCountdown(status, startsAt, textTheme),
+            if (banner && status == EventStatusKind.live)
+              Text("EN DIRECT", style: textTheme.labelSmall?.copyWith(color: AppColors.live))
+            else
+              Text(DateFormat.Hm("fr_FR").format(startsAt), style: textTheme.bodySmall),
+            if (!showCountdown && !banner) ?_tomorrowCountdown(status, startsAt, textTheme),
           ],
         ),
       );
@@ -220,10 +232,10 @@ class EventCard extends ConsumerWidget {
       width: double.infinity,
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       decoration: BoxDecoration(
-        color: AppColors.surface,
+        color: banner ? AppColors.live.withValues(alpha: 0.12) : AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadii.card),
-        border: Border.all(color: AppColors.surfaceBorder),
-        gradient: teamsGradient(colorA, colorB),
+        border: Border.all(color: banner ? AppColors.live.withValues(alpha: 0.4) : AppColors.surfaceBorder),
+        gradient: banner ? null : teamsGradient(colorA, colorB),
       ),
       child: Material(
         type: MaterialType.transparency,
@@ -241,6 +253,10 @@ class EventCard extends ConsumerWidget {
                     teamsRow,
                     const SizedBox(height: 4),
                     Text(subtitle, style: textTheme.bodySmall),
+                    if (footer != null) ...[
+                      const Divider(height: AppSpacing.lg),
+                      footer!,
+                    ],
                   ],
                 ),
                 // Alerte directement sur la carte (J10), seulement avant le match : en

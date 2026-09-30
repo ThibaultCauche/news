@@ -197,12 +197,14 @@ export class IngestionService {
       });
     }
 
-    for (const participant of dto.participants) {
+    // `side` = rang de l'adversaire chez le fournisseur (0 = gauche, 1 = droite) : sans lui, l'ordre
+    // des équipes suivait l'ordre physique des lignes et changeait d'un affichage à l'autre (J10).
+    for (const [side, participant] of dto.participants.entries()) {
       const entityId = await this.upsertEntity(participant.entity);
       await this.prisma.eventParticipant.upsert({
         where: { eventId_entityId: { eventId, entityId } },
-        create: { id: randomUUID(), eventId, entityId, score: participant.score, isWinner: participant.isWinner },
-        update: { score: participant.score, isWinner: participant.isWinner },
+        create: { id: randomUUID(), eventId, entityId, side, score: participant.score, isWinner: participant.isWinner },
+        update: { side, score: participant.score, isWinner: participant.isWinner },
       });
     }
 

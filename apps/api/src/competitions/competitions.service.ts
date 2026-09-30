@@ -1,3 +1,4 @@
+import { PARTICIPANT_ORDER } from "../common/event-summary.mapper";
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
@@ -181,7 +182,13 @@ export class CompetitionsService {
 
     const events = await this.prisma.event.findMany({
       where: { competitionId: id },
-      include: { participants: { include: { entity: { select: { id: true, name: true, shortName: true } } } }, linksTo: true },
+      include: {
+        participants: {
+          include: { entity: { select: { id: true, name: true, shortName: true } } },
+          orderBy: PARTICIPANT_ORDER,
+        },
+        linksTo: true,
+      },
     });
 
     const matchInputs: BracketMatchInput[] = events.map((e) => ({

@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { Entity, Event, EventParticipant } from "@news/db";
+import { Entity, Event, EventParticipant, Prisma } from "@news/db";
 import { buildGroupStakes } from "@news/domain";
 
 type EventWithRelations = Event & {
@@ -70,8 +70,15 @@ export function toEventSummary(event: EventWithRelations): EventSummaryDto {
   };
 }
 
+// Typé explicitement : `as const` rendrait le tableau en lecture seule, refusé par Prisma.
+export const PARTICIPANT_ORDER: Prisma.EventParticipantOrderByWithRelationInput[] = [{ side: { sort: "asc", nulls: "last" } }, { entityId: "asc" }];
+
 // Inclusion Prisma correspondante, partagée pour rester cohérente avec le mapper.
 export const eventSummaryInclude = {
   competition: { select: { id: true, name: true, format: true } },
-  participants: { include: { entity: { select: { id: true, name: true, shortName: true, imageUrl: true } } } },
+  // Ordre stable des équipes (gauche/droite) : `side`, puis l'identifiant pour les anciennes lignes sans côté.
+  participants: {
+    include: { entity: { select: { id: true, name: true, shortName: true, imageUrl: true } } },
+    orderBy: PARTICIPANT_ORDER,
+  },
 } as const;

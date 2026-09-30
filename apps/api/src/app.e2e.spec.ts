@@ -64,8 +64,8 @@ describe("API v1 (e2e)", () => {
         result: { seriesScore: [{ team_id: teamAId, score: 1 }] } as Prisma.InputJsonValue,
         participants: {
           create: [
-            { id: randomUUID(), entityId: teamAId, score: 1, isWinner: null },
-            { id: randomUUID(), entityId: teamBId, score: 0, isWinner: null },
+            { id: randomUUID(), entityId: teamAId, side: 0, score: 1, isWinner: null },
+            { id: randomUUID(), entityId: teamBId, side: 1, score: 0, isWinner: null },
           ],
         },
       },
@@ -142,6 +142,24 @@ describe("API v1 (e2e)", () => {
     await redis.del(CacheKeys.home());
   });
 
+  it("les équipes gardent leur côté (gauche/droite) quel que soit l'ordre des lignes en base — J10", async () => {
+    const event = await prisma.event.create({
+      data: { id: randomUUID(), competitionId, kind: "match", name: "Ordre stable", status: "scheduled", startsAt: new Date(Date.now() + 2 * 3600 * 1000), importance: 1 },
+    });
+    // Lignes insérées dans l'ordre inverse du côté : la droite d'abord.
+    await prisma.eventParticipant.create({ data: { id: randomUUID(), eventId: event.id, entityId: teamBId, side: 1 } });
+    await prisma.eventParticipant.create({ data: { id: randomUUID(), eventId: event.id, entityId: teamAId, side: 0 } });
+    // Une mise à jour déplace la ligne en base : c'était la cause des équipes qui changeaient de place.
+    await prisma.eventParticipant.updateMany({ where: { eventId: event.id, entityId: teamAId }, data: { score: 0 } });
+    await redis.del(CacheKeys.event(event.id));
+
+    const detail = await request(app.getHttpServer()).get(`/v1/events/${event.id}`).expect(200);
+    expect(detail.body.participants.map((p: { entityId: string }) => p.entityId)).toEqual([teamAId, teamBId]);
+
+    await prisma.eventParticipant.deleteMany({ where: { eventId: event.id } });
+    await prisma.event.delete({ where: { id: event.id } });
+  });
+
   it("GET /v1/agenda?from&to renvoie les événements de la fenêtre, 400 sans bornes", async () => {
     const from = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
     const to = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
@@ -190,8 +208,8 @@ describe("API v1 (e2e)", () => {
         } as Prisma.InputJsonValue,
         participants: {
           create: [
-            { id: randomUUID(), entityId: teamAId, score: 1, isWinner: null },
-            { id: randomUUID(), entityId: teamBId, score: 0, isWinner: null },
+            { id: randomUUID(), entityId: teamAId, side: 0, score: 1, isWinner: null },
+            { id: randomUUID(), entityId: teamBId, side: 1, score: 0, isWinner: null },
           ],
         },
       },
@@ -270,8 +288,8 @@ describe("API v1 (e2e)", () => {
         importance: 1,
         participants: {
           create: [
-            { id: randomUUID(), entityId: teamAId, score: 2, isWinner: true },
-            { id: randomUUID(), entityId: teamBId, score: 0, isWinner: false },
+            { id: randomUUID(), entityId: teamAId, side: 0, score: 2, isWinner: true },
+            { id: randomUUID(), entityId: teamBId, side: 1, score: 0, isWinner: false },
           ],
         },
       },
@@ -342,8 +360,8 @@ describe("API v1 (e2e)", () => {
         importance: 1,
         participants: {
           create: [
-            { id: randomUUID(), entityId: teamAId, score: 2, isWinner: true },
-            { id: randomUUID(), entityId: teamBId, score: 0, isWinner: false },
+            { id: randomUUID(), entityId: teamAId, side: 0, score: 2, isWinner: true },
+            { id: randomUUID(), entityId: teamBId, side: 1, score: 0, isWinner: false },
           ],
         },
       },

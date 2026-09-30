@@ -9,7 +9,6 @@ import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
-import "../../widgets/live_dot.dart";
 import "grand_final_card.dart";
 import "../next_match/next_match_screen.dart";
 import "../settings/settings_screen.dart";
@@ -112,7 +111,7 @@ class _HomeBody extends StatelessWidget {
 
     return SliverList(
       delegate: SliverChildListDelegate([
-        if (liveEvent != null) _LiveBanner(event: liveEvent, next: upcoming.firstOrNull),
+        if (liveEvent != null) _LiveBanner(event: liveEvent, scoresHidden: scoresHidden, next: upcoming.firstOrNull),
         if (liveEvent == null && upNextEvent != null) _UpNextSection(event: upNextEvent, scoresHidden: scoresHidden),
         if (grandFinals.isNotEmpty) _GrandFinalsSection(grandFinals: grandFinals),
         const SizedBox(height: AppSpacing.xl),
@@ -121,58 +120,31 @@ class _HomeBody extends StatelessWidget {
   }
 }
 
-/// "Maintenant pour toi" (docs/02, écran 17) : le match en direct, en rouge
-/// (règle 12 de `CLAUDE.md`), avec le suivant en dessous.
+/// "Maintenant pour toi" (docs/02, écran 17) : le match en direct sur la carte de match commune
+/// (`EventCard`, logos et scores), teintée en rouge, avec le match suivant en dessous en or.
 class _LiveBanner extends StatelessWidget {
-  const _LiveBanner({required this.event, this.next});
+  const _LiveBanner({required this.event, required this.scoresHidden, this.next});
 
   final EventSummaryDto event;
+  final bool scoresHidden;
   final EventSummaryDto? next;
 
   @override
   Widget build(BuildContext context) {
-    final textTheme = Theme.of(context).textTheme;
-    final title = event.participants.length == 2
-        ? "${event.participants[0].name} ${event.participants[0].score ?? 0}-${event.participants[1].score ?? 0} ${event.participants[1].name}"
-        : event.name;
-
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppRadii.card),
+      child: EventCard(
+        event: event,
+        scoresHidden: scoresHidden,
+        banner: true,
         onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
-        child: Container(
-          padding: const EdgeInsets.all(AppSpacing.md),
-          decoration: BoxDecoration(
-            color: AppColors.live.withValues(alpha: 0.12),
-            borderRadius: BorderRadius.circular(AppRadii.card),
-            border: Border.all(color: AppColors.live.withValues(alpha: 0.4)),
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                children: [
-                  const LiveDot(),
-                  const SizedBox(width: AppSpacing.xs),
-                  Text("EN DIRECT", style: textTheme.labelSmall?.copyWith(color: AppColors.live)),
-                  const SizedBox(width: AppSpacing.xs),
-                  Expanded(child: Text(event.competition.name, style: textTheme.bodySmall, overflow: TextOverflow.ellipsis)),
-                ],
+        footer: next == null
+            ? null
+            : Text(
+                "Ensuite : ${next!.participants.map((p) => p.shortName ?? p.name).join(" – ")}",
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.gold),
+                overflow: TextOverflow.ellipsis,
               ),
-              const SizedBox(height: AppSpacing.xs),
-              Text(title, style: textTheme.titleLarge),
-              if (next != null) ...[
-                const Divider(height: AppSpacing.lg),
-                Text(
-                  "Ensuite : ${next!.participants.map((p) => p.shortName ?? p.name).join(" – ")}",
-                  style: textTheme.bodySmall?.copyWith(color: AppColors.gold),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ],
-          ),
-        ),
       ),
     );
   }

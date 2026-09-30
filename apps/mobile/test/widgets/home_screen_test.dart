@@ -35,10 +35,38 @@ EventSummaryDto _final({bool withTeams = true}) => EventSummaryDto(
             : <EventParticipantDto>[]),
     );
 
-HomeResponseDto _home({List<GrandFinalDto> grandFinals = const []}) => HomeResponseDto(
+HomeResponseDto _home({List<GrandFinalDto> grandFinals = const [], List<EventSummaryDto> live = const [], List<EventSummaryDto> upcoming = const []}) => HomeResponseDto(
       (b) => b
         ..sourceUpdatedAt = "2026-10-18T10:00:00.000Z"
+        ..liveNow.addAll(live)
+        ..upcoming.addAll(upcoming)
         ..grandFinals.addAll(grandFinals),
+    );
+
+EventSummaryDto _match(String id, String status, String a, String b, {int? scoreA, int? scoreB}) => EventSummaryDto(
+      (e) => e
+        ..id = id
+        ..kind = "match"
+        ..name = "$a vs $b"
+        ..status = status
+        ..startsAt = "2026-10-18T09:00:00.000Z"
+        ..bestOf = 3
+        ..importance = 1
+        ..competition.replace(CompetitionRefDto((c) => c
+          ..id = "c"
+          ..name = "Group B"))
+        ..participants.addAll([
+          EventParticipantDto((p) => p
+            ..entityId = "$id-a"
+            ..name = a
+            ..shortName = a
+            ..score = scoreA),
+          EventParticipantDto((p) => p
+            ..entityId = "$id-b"
+            ..name = b
+            ..shortName = b
+            ..score = scoreB),
+        ]),
     );
 
 Future<ProviderContainer> _pump(WidgetTester tester, HomeResponseDto home, {List<String>? calls}) async {
@@ -63,6 +91,30 @@ Future<ProviderContainer> _pump(WidgetTester tester, HomeResponseDto home, {List
 void main() {
   setUpAll(() async {
     await initializeDateFormatting("fr_FR");
+  });
+
+  testWidgets("match en direct : carte de match commune (logos, scores) en rouge, avec « Ensuite » en dessous", (tester) async {
+    await _pump(
+      tester,
+      _home(live: [_match("live", "live", "VIT", "LOUD", scoreA: 1, scoreB: 0)], upcoming: [_match("next", "scheduled", "FUT", "100T")]),
+    );
+
+    expect(find.text("EN DIRECT"), findsOneWidget);
+    expect(find.text("VIT"), findsOneWidget);
+    expect(find.text("LOUD"), findsOneWidget);
+    expect(find.text("1"), findsOneWidget); // score sous le logo, comme sur toutes les cartes
+    expect(find.text("Group B"), findsOneWidget); // le BO n'apparaît plus une fois le score affiché
+    expect(find.text("Ensuite : FUT – 100T"), findsOneWidget);
+    // Même ordre que l'API : la première équipe à gauche.
+    expect(tester.getTopLeft(find.text("VIT")).dx, lessThan(tester.getTopLeft(find.text("LOUD")).dx));
+
+    await tester.pumpWidget(const SizedBox()); // arrête l'animation du point
+  });
+
+  testWidgets("match en direct sans match ensuite : pas de ligne « Ensuite »", (tester) async {
+    await _pump(tester, _home(live: [_match("live", "live", "VIT", "LOUD", scoreA: 0, scoreB: 0)]));
+    expect(find.textContaining("Ensuite"), findsNothing);
+    await tester.pumpWidget(const SizedBox());
   });
 
   testWidgets("hors phase finale : pas de section « grands rendez-vous »", (tester) async {
