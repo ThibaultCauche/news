@@ -1,9 +1,8 @@
 import { randomUUID } from "node:crypto";
-import { INestApplication, ValidationPipe } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
+import { INestApplication } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import request from "supertest";
-import { AppModule } from "./app.module";
+import { createTestApp, loginTestUser } from "./test-utils";
 import { CacheKeys } from "./cache/cache-keys";
 import { CacheService } from "./cache/cache.service";
 
@@ -23,11 +22,7 @@ describe("Catalogue, favoris de jeu, équipes par jeu (e2e)", () => {
   let eventId: string;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
-    app = moduleRef.createNestApplication();
-    app.setGlobalPrefix("v1", { exclude: ["health"] });
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-    await app.init();
+    app = await createTestApp();
 
     prisma = new PrismaClient();
     categoryId = (await prisma.category.create({ data: { id: randomUUID(), slug: categorySlug, name: "Test catégorie" } })).id;
@@ -71,10 +66,7 @@ describe("Catalogue, favoris de jeu, équipes par jeu (e2e)", () => {
     await app.close();
   });
 
-  async function createAccount() {
-    const res = await request(app.getHttpServer()).post("/v1/auth/anonymous").expect(201);
-    return res.body as { userId: string; accessToken: string };
-  }
+  const createAccount = () => loginTestUser(app);
 
   it("regroupe le catalogue par catégorie puis jeu, et masque les catégories sans compétition", async () => {
     const res = await request(app.getHttpServer()).get("/v1/catalog").expect(200);

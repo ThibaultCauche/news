@@ -7,6 +7,7 @@ import { AgendaModule } from "./agenda/agenda.module";
 import { AuthModule } from "./auth/auth.module";
 import { CacheModule } from "./cache/cache.module";
 import { CatalogModule } from "./catalog/catalog.module";
+import { CommunityModule } from "./community/community.module";
 import { CompetitionsModule } from "./competitions/competitions.module";
 import { DbModule } from "./db/db.module";
 import { DevicesModule } from "./devices/devices.module";
@@ -31,6 +32,7 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     DevicesModule,
     SubscriptionsModule,
     MeModule,
+    CommunityModule,
     HomeModule,
     AgendaModule,
     EventsModule,

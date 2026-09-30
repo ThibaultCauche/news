@@ -1,12 +1,11 @@
 import { randomUUID } from "node:crypto";
-import { INestApplication, ValidationPipe } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
+import { INestApplication } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import request from "supertest";
-import { AppModule } from "./app.module";
+import { createTestApp, FakeFirebaseAuthService, loginTestUser } from "./test-utils";
 
 // e2e (Supertest) contre le vrai Postgres de dev, comme `app.e2e.spec.ts` (docs/04 J4) :
-// compte anonyme, abonnements, appareil, réglages, suppression RGPD, jusqu'à la
+// compte Firebase (faux vérificateur), abonnements, appareil, réglages, suppression RGPD, jusqu'à la
 // notification (dédup + sans spoil testés côté domaine dans `packages/domain`).
 describe("Comptes, abonnements, notifications (e2e)", () => {
   let app: INestApplication;
@@ -19,11 +18,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   let eventId: string;
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
-    app = moduleRef.createNestApplication();
-    app.setGlobalPrefix("v1", { exclude: ["health"] });
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-    await app.init();
+    app = await createTestApp();
 
     prisma = new PrismaClient();
     const category = await prisma.category.create({ data: { id: randomUUID(), slug: categorySlug, name: "Test auth" } });
@@ -61,15 +56,29 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
     await app.close();
   });
 
-  async function createAnonymousAccount() {
-    const res = await request(app.getHttpServer()).post("/v1/auth/anonymous").expect(201);
-    return res.body as { userId: string; accessToken: string; refreshToken: string };
-  }
+  const createAccount = () => loginTestUser(app);
 
-  it("crée un compte anonyme avec des réglages par défaut (sans spoil désactivé)", async () => {
-    const { accessToken } = await createAnonymousAccount();
+  it("crée un compte à la première connexion avec des réglages par défaut (sans spoil désactivé)", async () => {
+    const { accessToken } = await createAccount();
     const res = await request(app.getHttpServer()).get("/v1/me/settings").set("Authorization", `Bearer ${accessToken}`).expect(200);
     expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: null, quietHoursEnd: null });
+  });
+
+  it("se reconnecte au même compte, et met à jour la vérification de l'e-mail", async () => {
+    const first = await loginTestUser(app, { verified: false });
+    const again = await loginTestUser(app, { uid: first.uid, verified: true });
+    expect(again.userId).toBe(first.userId);
+    expect((await prisma.appUser.findUniqueOrThrow({ where: { id: first.userId } })).emailVerified).toBe(true);
+    await request(app.getHttpServer()).post("/v1/auth/firebase").send({ idToken: "n'importe quoi de long" }).expect(401);
+    await request(app.getHttpServer()).post("/v1/auth/anonymous").expect(404);
+  });
+
+  it("l'invité navigue sans compte (lecture) mais ne peut rien faire d'autre", async () => {
+    await request(app.getHttpServer()).get("/v1/home").expect(200);
+    await request(app.getHttpServer()).get("/v1/catalog").expect(200);
+    await request(app.getHttpServer()).post("/v1/subscriptions").send({ targetType: "entity", targetId: teamG2Id }).expect(401);
+    await request(app.getHttpServer()).put("/v1/favorites/games/valorant").expect(401);
+    await request(app.getHttpServer()).put("/v1/predictions").send({}).expect(401);
   });
 
   it("refuse l'accès sans jeton et avec un jeton invalide", async () => {
@@ -78,14 +87,14 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   });
 
   it("rafraîchit un jeton d'accès à partir du jeton de rafraîchissement", async () => {
-    const { refreshToken } = await createAnonymousAccount();
+    const { refreshToken } = await createAccount();
     const res = await request(app.getHttpServer()).post("/v1/auth/refresh").send({ refreshToken }).expect(201);
     expect(res.body.accessToken).toBeTruthy();
     await request(app.getHttpServer()).post("/v1/auth/refresh").send({ refreshToken: "invalide" }).expect(401);
   });
 
   it("Suivre G2 (POST /v1/subscriptions) fonctionne de bout en bout jusqu'à l'écran Suivis", async () => {
-    const { accessToken } = await createAnonymousAccount();
+    const { accessToken } = await createAccount();
     const auth = { Authorization: `Bearer ${accessToken}` };
 
     await request(app.getHttpServer())
@@ -118,7 +127,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   });
 
   it("enregistre un appareil (PUT /v1/devices/me), idempotent sur le même installId", async () => {
-    const { accessToken } = await createAnonymousAccount();
+    const { accessToken } = await createAccount();
     const auth = { Authorization: `Bearer ${accessToken}` };
     const installId = randomUUID();
 
@@ -140,7 +149,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   });
 
   it("modifie les réglages (PATCH /v1/me/settings)", async () => {
-    const { accessToken } = await createAnonymousAccount();
+    const { accessToken } = await createAccount();
     const auth = { Authorization: `Bearer ${accessToken}` };
 
     const res = await request(app.getHttpServer())
@@ -152,10 +161,12 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   });
 
   it("supprime le compte (DELETE /v1/me) : le jeton n'autorise plus rien ensuite", async () => {
-    const { accessToken } = await createAnonymousAccount();
+    const { accessToken, uid } = await createAccount();
     const auth = { Authorization: `Bearer ${accessToken}` };
 
     await request(app.getHttpServer()).delete("/v1/me").set(auth).expect(204);
     await request(app.getHttpServer()).get("/v1/me/settings").set(auth).expect(401);
+    // Le compte Firebase (e-mail, mot de passe) est supprimé aussi.
+    expect(FakeFirebaseAuthService.deletedUids).toContain(uid);
   });
 });

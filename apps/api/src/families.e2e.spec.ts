@@ -1,10 +1,9 @@
 import { randomUUID } from "node:crypto";
-import { INestApplication, ValidationPipe } from "@nestjs/common";
-import { Test } from "@nestjs/testing";
+import { INestApplication } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import Redis from "ioredis";
 import request from "supertest";
-import { AppModule } from "./app.module";
+import { createTestApp, loginTestUser } from "./test-utils";
 import { CacheKeys } from "./cache/cache-keys";
 
 // Familles de compétitions et sourdine (docs/04 J10), contre le vrai Postgres/Redis de dev.
@@ -41,11 +40,7 @@ describe("Familles et sourdine (e2e)", () => {
   const auth = () => ({ Authorization: `Bearer ${token}` });
 
   beforeAll(async () => {
-    const moduleRef = await Test.createTestingModule({ imports: [AppModule] }).compile();
-    app = moduleRef.createNestApplication();
-    app.setGlobalPrefix("v1", { exclude: ["health"] });
-    app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
-    await app.init();
+    app = await createTestApp();
     prisma = new PrismaClient();
     redis = new Redis(process.env.REDIS_URL ?? "redis://localhost:6379");
 
@@ -56,8 +51,7 @@ describe("Familles et sourdine (e2e)", () => {
     champions2027 = await createEdition("Champions 2027", 48);
     await redis.del(CacheKeys.catalog());
 
-    const res = await request(app.getHttpServer()).post("/v1/auth/anonymous").expect(201);
-    token = res.body.accessToken;
+    token = (await loginTestUser(app)).accessToken;
   });
 
   afterAll(async () => {

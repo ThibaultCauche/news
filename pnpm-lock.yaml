@@ -59,6 +59,9 @@ importers:
       express:
         specifier: ^4.22.1
         version: 4.22.1
+      firebase-admin:
+        specifier: ^14.5.0
+        version: 14.5.0
       ioredis:
         specifier: ^5.4.1
         version: 5.11.1

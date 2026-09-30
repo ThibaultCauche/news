@@ -3,6 +3,7 @@ import { JwtModule } from "@nestjs/jwt";
 import { DbModule } from "../db/db.module";
 import { AuthController } from "./auth.controller";
 import { AuthService } from "./auth.service";
+import { FirebaseAuthService } from "./firebase-auth.service";
 import { JwtAuthGuard, OptionalUserGuard } from "./jwt-auth.guard";
 
 // Pas de secret par défaut sur `JwtModule` : `AuthService` signe/vérifie avec
@@ -10,7 +11,7 @@ import { JwtAuthGuard, OptionalUserGuard } from "./jwt-auth.guard";
 @Module({
   imports: [DbModule, JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService, JwtAuthGuard, OptionalUserGuard],
-  exports: [AuthService, JwtAuthGuard, OptionalUserGuard],
+  providers: [AuthService, FirebaseAuthService, JwtAuthGuard, OptionalUserGuard],
+  exports: [AuthService, FirebaseAuthService, JwtAuthGuard, OptionalUserGuard],
 })
 export class AuthModule {}

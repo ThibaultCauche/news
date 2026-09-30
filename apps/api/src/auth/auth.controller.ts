@@ -1,18 +1,19 @@
 import { Body, Controller, Post } from "@nestjs/common";
 import { ApiOkResponse } from "@nestjs/swagger";
 import { AccessTokenDto, AuthService, AuthTokensDto } from "./auth.service";
+import { FirebaseLoginDto } from "./firebase-login.dto";
 import { RefreshDto } from "./refresh.dto";
 
-// POST /v1/auth/anonymous, POST /v1/auth/refresh — compte anonyme au premier
-// lancement, pas d'inscription (docs/03 §4, docs/04 J4).
+// POST /v1/auth/firebase, POST /v1/auth/refresh — inscription possible (J11) : compte
+// Firebase e-mail + mot de passe échangé contre nos JWT ; l'invité navigue sans jeton.
 @Controller("auth")
 export class AuthController {
   constructor(private readonly auth: AuthService) {}
 
-  @Post("anonymous")
+  @Post("firebase")
   @ApiOkResponse({ type: AuthTokensDto })
-  async createAnonymous(): Promise<AuthTokensDto> {
-    return this.auth.createAnonymousUser();
+  async loginWithFirebase(@Body() dto: FirebaseLoginDto): Promise<AuthTokensDto> {
+    return this.auth.loginWithFirebase(dto.idToken);
   }
 
   @Post("refresh")

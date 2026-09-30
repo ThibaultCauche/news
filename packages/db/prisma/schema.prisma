@@ -107,6 +107,7 @@ model Event {
   linksFrom        EventLink[]        @relation("EventLinkFrom")
   linksTo          EventLink[]        @relation("EventLinkTo")
   notificationLogs NotificationLog[]
+  predictions      Prediction[]
   createdAt        DateTime           @default(now()) @map("created_at")
   updatedAt        DateTime           @updatedAt @map("updated_at")
 
@@ -206,18 +207,78 @@ model ProviderPayload {
   @@map("provider_payload")
 }
 
-// Compte anonyme créé au premier lancement (J4, docs/03 §2/§4). Pas d'inscription ;
-// un lien Apple/Google pour synchroniser plusieurs appareils viendra plus tard.
+// Compte Firebase Auth (e-mail + mot de passe), J11 : l'invité navigue sans compte, tout le
+// reste exige d'être connecté. `firebaseUid` est nullable seulement pour les tests qui
+// créent des utilisateurs directement en base. Le pseudo n'existe qu'après « créer mon
+// profil » ; `pseudoKey` (minuscules, sans accents) porte l'unicité.
 model AppUser {
-  id               String            @id @default(uuid())
+  id               String              @id @default(uuid())
+  firebaseUid      String?             @unique @map("firebase_uid")
+  emailVerified    Boolean             @default(false) @map("email_verified")
+  pseudo           String?
+  pseudoKey        String?             @unique @map("pseudo_key")
+  pseudoChangedAt  DateTime?           @map("pseudo_changed_at")
+  // Avatar = logo d'une équipe (`entity`) d'un des jeux de l'appli : pas d'envoi de photo.
+  avatarEntityId   String?             @map("avatar_entity_id")
   devices          Device[]
   subscriptions    Subscription[]
   setting          UserSetting?
   notificationLogs NotificationLog[]
   favoriteGames    FavoriteGame[]
-  createdAt        DateTime          @default(now()) @map("created_at")
+  predictions      Prediction[]
+  ownedGroups      FriendGroup[]
+  groupMemberships FriendGroupMember[]
+  createdAt        DateTime            @default(now()) @map("created_at")
 
   @@map("app_user")
+}
+
+// Pronostic en points fictifs (J11) : vainqueur choisi + score de série optionnel, posé jusqu'au
+// début du match. `points` reste nul tant que le match n'est pas terminé (le worker le remplit
+// une seule fois). Générique : aucune colonne propre à un jeu (règle 3).
+model Prediction {
+  id              String    @id @default(uuid())
+  userId          String    @map("user_id")
+  user            AppUser   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  eventId         String    @map("event_id")
+  event           Event     @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  pickedEntityId  String    @map("picked_entity_id")
+  // Score de série prédit, du point de vue de l'entité choisie (ex. 2-1).
+  pickedScore     Int?      @map("picked_score")
+  otherScore      Int?      @map("other_score")
+  points          Int?
+  settledAt       DateTime? @map("settled_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+  updatedAt       DateTime  @updatedAt @map("updated_at")
+
+  @@unique([userId, eventId])
+  @@index([eventId])
+  @@map("prediction")
+}
+
+// Groupe d'amis (J11) : rejoint par un code de 8 caractères (alphabet sans ambiguïté).
+model FriendGroup {
+  id        String              @id @default(uuid())
+  name      String
+  code      String              @unique
+  ownerId   String              @map("owner_id")
+  owner     AppUser             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
+  members   FriendGroupMember[]
+  createdAt DateTime            @default(now()) @map("created_at")
+
+  @@map("friend_group")
+}
+
+model FriendGroupMember {
+  groupId   String      @map("group_id")
+  group     FriendGroup @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  userId    String      @map("user_id")
+  user      AppUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  joinedAt  DateTime    @default(now()) @map("joined_at")
+
+  @@id([groupId, userId])
+  @@index([userId])
+  @@map("friend_group_member")
 }
 
 // Jeu mis en favori (J9) : simple raccourci d'accès, sans notification. Séparé de

@@ -6,6 +6,7 @@ import { JwtService } from "@nestjs/jwt";
 import { PrismaClient } from "@news/db";
 import { PRISMA } from "../db/db.module";
 import { AuthUser } from "./auth.types";
+import { FirebaseAuthService } from "./firebase-auth.service";
 
 const ACCESS_TOKEN_TTL = "1h";
 const REFRESH_TOKEN_TTL = "180d";
@@ -24,15 +25,16 @@ interface AccessTokenPayload {
   sub: string;
 }
 
-// Compte anonyme créé au premier lancement, JWT court + jeton de rafraîchissement
-// (docs/03 §4, règle "pas d'inscription"). Un même secret JWT vérifie l'appartenance
-// à l'app : pas de mot de passe, la possession du jeton fait foi.
+// Comptes Firebase Auth (e-mail + mot de passe, J11) : l'appli se connecte à Firebase, puis
+// échange l'ID token contre nos JWT (accès court + rafraîchissement, docs/03 §4). Les gardes
+// et le rafraîchissement restent ceux du J4. L'invité n'a ni compte ni jeton.
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(PRISMA) private readonly prisma: PrismaClient,
     private readonly jwt: JwtService,
     private readonly config: ConfigService,
+    private readonly firebase: FirebaseAuthService,
   ) {}
 
   private get accessSecret(): string {
@@ -47,10 +49,16 @@ export class AuthService {
     return this.jwt.sign({ sub: userId }, { secret: this.accessSecret, expiresIn: ACCESS_TOKEN_TTL });
   }
 
-  async createAnonymousUser(): Promise<AuthTokensDto> {
-    // Réglages créés par défaut ici plutôt qu'à la première lecture : `GET
-    // /v1/me/settings` peut alors compter sur leur présence sans upsert.
-    const user = await this.prisma.appUser.create({ data: { id: randomUUID(), setting: { create: { id: randomUUID() } } } });
+  // Crée le compte à la première connexion, le retrouve ensuite ; met à jour `emailVerified`
+  // (l'appli se reconnecte après le clic sur le lien de vérification).
+  async loginWithFirebase(idToken: string): Promise<AuthTokensDto> {
+    const identity = await this.firebase.verifyIdToken(idToken);
+    // Réglages créés avec le compte : `GET /v1/me/settings` peut compter sur leur présence.
+    const user = await this.prisma.appUser.upsert({
+      where: { firebaseUid: identity.uid },
+      update: { emailVerified: identity.emailVerified },
+      create: { id: randomUUID(), firebaseUid: identity.uid, emailVerified: identity.emailVerified, setting: { create: { id: randomUUID() } } },
+    });
     return {
       userId: user.id,
       accessToken: this.issueAccessToken(user.id),

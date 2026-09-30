@@ -5,6 +5,7 @@ import Redis from "ioredis";
 import { AlertsModule } from "./alerts/alerts.module";
 import { IngestionModule } from "./ingestion/ingestion.module";
 import { LiquipediaModule } from "./liquipedia/liquipedia.module";
+import { PredictionsModule } from "./predictions/predictions.module";
 import { NotificationsModule } from "./notifications/notifications.module";
 
 @Module({
@@ -18,6 +19,7 @@ import { NotificationsModule } from "./notifications/notifications.module";
     }),
     IngestionModule,
     NotificationsModule,
+    PredictionsModule,
     LiquipediaModule,
     AlertsModule,
   ],
