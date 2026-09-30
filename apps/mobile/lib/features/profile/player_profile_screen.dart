@@ -1,0 +1,41 @@
+import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "../../theme/tokens.dart";
+import "../../widgets/avatar_circle.dart";
+import "community_providers.dart";
+import "profile_screen.dart";
+
+/// Profil d'un autre joueur (docs/04 J11), ouvert depuis le classement d'un groupe : avatar,
+/// pseudo et stats de pronostics. Visible seulement des membres d'un groupe commun. Les stats
+/// suivent le sans spoil de l'utilisateur (masquées jusqu'à un appui long).
+class PlayerProfileScreen extends ConsumerWidget {
+  const PlayerProfileScreen({super.key, required this.userId});
+
+  final String userId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final profile = ref.watch(publicProfileProvider(userId));
+    return Scaffold(
+      appBar: AppBar(),
+      body: switch (profile) {
+        AsyncData(:final value) => ListView(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          children: [
+            Row(
+              children: [
+                AvatarCircle(avatarUrl: value.avatarUrl, pseudo: value.pseudo, radius: 28),
+                const SizedBox(width: AppSpacing.md),
+                Expanded(child: Text(value.pseudo, style: Theme.of(context).textTheme.headlineLarge)),
+              ],
+            ),
+            const SizedBox(height: AppSpacing.lg),
+            StatsCard(stats: value.stats),
+          ],
+        ),
+        AsyncError() => const Center(child: Text("Impossible de charger ce profil.")),
+        _ => const Center(child: CircularProgressIndicator()),
+      },
+    );
+  }
+}

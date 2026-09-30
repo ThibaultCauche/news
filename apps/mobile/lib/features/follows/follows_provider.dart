@@ -3,7 +3,9 @@ import "dart:async";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
+import "../../core/auth/account.dart";
 import "../../core/notifications/push_service.dart";
+import "../account/account_gate.dart";
 
 /// Catégorie/compétition/entité/événement (docs/03 §2) : type applicatif,
 /// converti vers l'énum propre à chaque DTO généré (`CreateSubscriptionDto`,
@@ -25,6 +27,8 @@ FollowTargetType followTargetTypeFromWire(String wire) => FollowTargetType.value
 class FollowsNotifier extends AsyncNotifier<List<FollowStateDto>> {
   @override
   Future<List<FollowStateDto>> build() async {
+    // Invité : aucun suivi (il faut un compte pour suivre, docs/04 J11).
+    if (!ref.watch(signedInProvider)) return [];
     final response = await ref.watch(apiClientProvider).getSubscriptionsApi().subscriptionsControllerList();
     return response.data!.toList();
   }
@@ -99,10 +103,19 @@ class FollowsController {
 
   final Ref _ref;
 
-  Future<void> follow(FollowTargetType type, String targetId, {String name = "", bool muted = false}) =>
-      _ref.read(followsProvider.notifier).follow(type, targetId, name: name, muted: muted);
+  // Le compte est exigé ici, au point de passage commun de tous les boutons « Suivre » : après
+  // une connexion réussie dans la foulée, le suivi demandé est appliqué.
+  Future<void> follow(FollowTargetType type, String targetId, {String name = "", bool muted = false}) async {
+    // Connecté : on ne cède pas la main avant l'appel, pour que la mise à jour optimiste du
+    // bouton soit immédiate (J8) ; seul l'invité passe par la fenêtre de connexion.
+    if (!_ref.read(signedInProvider) && !await ensureAccount(_ref)) return;
+    await _ref.read(followsProvider.notifier).follow(type, targetId, name: name, muted: muted);
+  }
 
-  Future<void> unfollow(FollowTargetType type, String targetId) => _ref.read(followsProvider.notifier).unfollow(type, targetId);
+  Future<void> unfollow(FollowTargetType type, String targetId) async {
+    if (!_ref.read(signedInProvider) && !await ensureAccount(_ref)) return;
+    await _ref.read(followsProvider.notifier).unfollow(type, targetId);
+  }
 }
 
 final followsControllerProvider = Provider((ref) => FollowsController(ref));

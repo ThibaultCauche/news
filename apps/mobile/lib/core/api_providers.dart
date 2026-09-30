@@ -1,6 +1,7 @@
 import "package:dio/dio.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
+import "auth/account.dart";
 import "auth/auth_interceptor.dart";
 import "auth/auth_store.dart";
 import "cache/app_database.dart";
@@ -42,7 +43,7 @@ final apiClientProvider = Provider<NewsApiClient>((ref) {
   // ajouté, la phase erreur en sens inverse — l'ETag doit d'abord laisser
   // passer un 401 (ce n'est ni un 304 ni une coupure réseau) avant que l'auth
   // tente son rafraîchissement.
-  dio.interceptors.add(AuthInterceptor(auth, baseUrl));
+  dio.interceptors.add(AuthInterceptor(auth, baseUrl, onSignedOut: () => ref.read(signedInProvider.notifier).set(false)));
   dio.interceptors.add(ETagCacheInterceptor(store));
   return NewsApiClient(dio: dio);
 });

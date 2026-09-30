@@ -79,7 +79,8 @@ void main() {
   Future<void> pumpLeague(WidgetTester tester, List<FollowStateDto> follows, List<String> calls) async {
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [overrideFollowsRecording(follows, calls)],
+        overrides: [
+        overrideSignedInForTest(),overrideFollowsRecording(follows, calls)],
         child: MaterialApp(home: LeagueScreen(league: _vct, game: _valorant)),
       ),
     );
@@ -152,7 +153,8 @@ void main() {
   Future<void> pumpSeriePage(WidgetTester tester, List<FollowStateDto> follows, List<String> calls) async {
     await tester.pumpWidget(
       ProviderScope(
-        overrides: [overrideFollowsRecording(follows, calls), catalogProvider.overrideWith((ref) async => _catalog())],
+        overrides: [
+        overrideSignedInForTest(),overrideFollowsRecording(follows, calls), catalogProvider.overrideWith((ref) async => _catalog())],
         child: MaterialApp(
           home: Scaffold(appBar: AppBar(actions: const [CompetitionFollowButton(competitionId: "champions", name: "Champions 2026")])),
         ),
@@ -197,6 +199,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+        overrideSignedInForTest(),
           catalogProvider.overrideWith((ref) async => _catalog()),
           overrideFavoriteGamesWith(const []),
           overrideFollowsRecording(const [], []),
@@ -217,6 +220,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
+        overrideSignedInForTest(),
           overrideFollowsRecording(follows, []),
           catalogProvider.overrideWith((ref) async => _catalog()),
           competitionDetailProvider("champions").overrideWith((ref) async => throw Exception("hors ligne")),

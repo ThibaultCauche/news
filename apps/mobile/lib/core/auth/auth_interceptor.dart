@@ -4,18 +4,18 @@ import "auth_store.dart";
 
 const _retriedFlag = "retriedAfterRefresh";
 
-/// Ajoute `Authorization` sur chaque requête, et sur un 401 rafraîchit le
-/// jeton d'accès avant de rejouer la requête (docs/03 §4). Si le rafraîchissement
-/// échoue aussi (jeton de rafraîchissement expiré, ou compte supprimé côté
-/// serveur — `DELETE /v1/me`), un nouveau compte anonyme est recréé à la volée :
-/// sans ça, l'appli resterait bloquée sur tout appel authentifié jusqu'au
-/// prochain lancement (`ensureAnonymousAccount` ne s'exécute qu'au démarrage).
-/// Un `Dio` nu pour ces deux appels : pas de boucle si l'un d'eux échoue à son tour.
+/// Ajoute `Authorization` quand on est connecté, et sur un 401 rafraîchit le jeton d'accès
+/// avant de rejouer la requête (docs/03 §4). Si le rafraîchissement échoue aussi (jeton
+/// expiré après 180 jours, ou compte supprimé côté serveur — `DELETE /v1/me`), la session
+/// est fermée (`onSignedOut`) : l'appli retombe en mode invité, et l'utilisateur se
+/// reconnecte quand une action l'exige (J11 : plus de compte anonyme recréé à la volée).
+/// Un `Dio` nu pour le rafraîchissement : pas de boucle si l'appel échoue à son tour.
 class AuthInterceptor extends Interceptor {
-  AuthInterceptor(this._store, this._baseUrl);
+  AuthInterceptor(this._store, this._baseUrl, {required this.onSignedOut});
 
   final AuthStore _store;
   final String _baseUrl;
+  final void Function() onSignedOut;
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -27,42 +27,40 @@ class AuthInterceptor extends Interceptor {
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     final alreadyRetried = err.requestOptions.extra[_retriedFlag] == true;
-    if (err.response?.statusCode != 401 || alreadyRetried) {
+    // Invité (aucun jeton) : un 401 n'a rien à rafraîchir.
+    if (err.response?.statusCode != 401 || alreadyRetried || _store.accessToken == null) {
       return handler.next(err);
     }
 
+    final bareDio = Dio(BaseOptions(baseUrl: _baseUrl));
+    final newAccessToken = await _refresh(bareDio);
+    if (newAccessToken == null) {
+      await _store.clear();
+      onSignedOut();
+      return handler.next(err);
+    }
     try {
-      final bareDio = Dio(BaseOptions(baseUrl: _baseUrl));
-      final newAccessToken = await _refreshOrRecreateAccount(bareDio);
-
       final retryOptions = err.requestOptions;
       retryOptions.headers["Authorization"] = "Bearer $newAccessToken";
       retryOptions.extra[_retriedFlag] = true;
-      final retried = await bareDio.fetch(retryOptions);
-      handler.resolve(retried);
+      handler.resolve(await bareDio.fetch(retryOptions));
     } catch (_) {
       handler.next(err);
     }
   }
 
-  Future<String> _refreshOrRecreateAccount(Dio dio) async {
+  Future<String?> _refresh(Dio dio) async {
     final refreshToken = _store.refreshToken;
-    if (refreshToken != null) {
-      try {
-        final refreshed = await NewsApiClient(
-          dio: dio,
-        ).getAuthApi().authControllerRefresh(refreshDto: RefreshDto((b) => b..refreshToken = refreshToken));
-        final newAccessToken = refreshed.data!.accessToken;
-        await _store.saveAccessToken(newAccessToken);
-        return newAccessToken;
-      } catch (_) {
-        // Jeton de rafraîchissement expiré ou compte introuvable : on retombe
-        // sur la recréation ci-dessous plutôt que d'abandonner.
-      }
+    if (refreshToken == null) return null;
+    try {
+      final refreshed = await NewsApiClient(
+        dio: dio,
+      ).getAuthApi().authControllerRefresh(refreshDto: RefreshDto((b) => b..refreshToken = refreshToken));
+      final newAccessToken = refreshed.data!.accessToken;
+      await _store.saveAccessToken(newAccessToken);
+      return newAccessToken;
+    } catch (_) {
+      return null;
     }
-    final created = await NewsApiClient(dio: dio).getAuthApi().authControllerCreateAnonymous();
-    final tokens = created.data!;
-    await _store.saveTokens(accessToken: tokens.accessToken, refreshToken: tokens.refreshToken);
-    return tokens.accessToken;
   }
 }

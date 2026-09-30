@@ -1,3 +1,4 @@
+import "package:mobile/core/auth/account.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:mobile/features/follows/follows_provider.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -56,3 +57,13 @@ class RecordingFollowsNotifier extends FollowsNotifier {
 // ignore: strict_top_level_inference
 overrideFollowsRecording(List<FollowStateDto> initial, List<String> calls, {Object? failWith}) =>
     followsProvider.overrideWith(() => RecordingFollowsNotifier(initial, calls, failWith: failWith));
+
+class _SignedInNotifier extends SignedInNotifier {
+  @override
+  bool build() => true;
+}
+
+/// Connecté (J11) : suivre, favoris et réglages exigent un compte, sinon `ensureAccount` ouvre
+/// la fenêtre « Crée un compte » et l'action n'a pas lieu. Sans `AuthStore` à fournir.
+// ignore: strict_top_level_inference
+overrideSignedInForTest() => signedInProvider.overrideWith(_SignedInNotifier.new);

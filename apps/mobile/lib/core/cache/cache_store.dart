@@ -35,4 +35,7 @@ class CacheStore {
           ),
         );
   }
+
+  /// Déconnexion : les réponses en cache (accueil personnalisé…) appartenaient au compte quitté.
+  Future<void> clear() => _db.delete(_db.cachedResponses).go();
 }

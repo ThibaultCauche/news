@@ -1,3 +1,5 @@
+import "package:firebase_auth/firebase_auth.dart";
+import "package:firebase_core/firebase_core.dart";
 import "package:flutter/material.dart";
 import "package:flutter_localizations/flutter_localizations.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -5,7 +7,6 @@ import "package:intl/date_symbol_data_local.dart";
 import "package:shared_preferences/shared_preferences.dart";
 import "app.dart";
 import "core/api_providers.dart";
-import "core/auth/auth_bootstrap.dart";
 import "core/auth/auth_store.dart";
 import "core/notifications/notification_tap_handler.dart";
 import "features/onboarding/onboarding_flow.dart";
@@ -17,11 +18,12 @@ void main() async {
   final prefs = await SharedPreferences.getInstance();
   final authStore = AuthStore(prefs);
   try {
-    await ensureAnonymousAccount(authStore, resolveApiBaseUrl());
+    await Firebase.initializeApp();
+    // E-mails de vérification et de réinitialisation en français.
+    await FirebaseAuth.instance.setLanguageCode("fr");
   } catch (_) {
-    // Hors ligne au tout premier lancement (docs/03 §11) : l'appli reste
-    // utilisable en lecture (`/v1/home` fonctionne sans compte), un prochain
-    // lancement recréera le compte.
+    // Projet Firebase pas relié côté appli (`google-services.json` absent) : la navigation
+    // reste possible, seule la connexion échouera (message affiché à l'écran de connexion).
   }
   // Démarrage "à froid" depuis une notification : le `Navigator` n'existe pas
   // encore, on programme la navigation pour juste après le premier affichage.

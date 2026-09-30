@@ -4,8 +4,8 @@ import "core/auto_refresh.dart";
 import "core/navigation.dart";
 import "features/agenda/agenda_screen.dart";
 import "features/competitions/competitions_screen.dart";
-import "features/follows/follows_screen.dart";
 import "features/home/home_screen.dart";
+import "features/games/games_screen.dart";
 import "theme/tokens.dart";
 import "widgets/glass_tab_bar.dart";
 
@@ -15,13 +15,14 @@ const _items = [
   GlassTabBarItem(icon: Icons.wb_sunny_outlined, label: "Aujourd'hui"),
   GlassTabBarItem(icon: Icons.calendar_today_outlined, label: "Agenda"),
   GlassTabBarItem(icon: Icons.explore_outlined, label: "Compétitions", featured: true),
-  GlassTabBarItem(icon: Icons.star_outline_rounded, label: "Suivis"),
-  GlassTabBarItem(icon: Icons.casino_outlined, label: "Jeu"),
+  GlassTabBarItem(icon: Icons.hourglass_empty_rounded, label: "Bientôt"),
+  GlassTabBarItem(icon: Icons.casino_outlined, label: "Jeux"),
 ];
 
-/// Tab bar V2 : Aujourd'hui · Agenda · Compétitions · Suivis · Jeu (`docs/02`). Suivis est
-/// connecté aux abonnements depuis le J4 (`docs/04`) ; Jeu reste en
-/// placeholder (hors périmètre).
+/// Tab bar : Aujourd'hui · Agenda · Compétitions · (vide) · Jeux (`docs/02`). L'onglet Suivis a
+/// disparu au J11 : son contenu est revenu sur l'Accueil (« Tes suivis »), le profil s'ouvre
+/// depuis l'avatar de l'Accueil, et le 4ᵉ onglet reste vide en attendant un usage. Jeux ouvre les
+/// jeux de l'appli (pronostics pour l'instant).
 class NewsApp extends ConsumerWidget {
   const NewsApp({super.key});
 
@@ -37,8 +38,8 @@ class NewsApp extends ConsumerWidget {
           HomeScreen(),
           AgendaScreen(),
           CompetitionsScreen(),
-          FollowsScreen(),
-          _ComingSoon(label: "Jeu du jour"),
+          _ComingSoon(label: "Cet onglet"),
+          GamesScreen(),
         ],
       ),
       bottomNavigationBar: GlassTabBar(items: _items, currentIndex: index, onTap: ref.read(tabIndexProvider.notifier).select),

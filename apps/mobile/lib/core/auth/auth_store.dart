@@ -10,9 +10,9 @@ const _compactEventCardsKey = "display.compactEventCards";
 const _agendaCategoryKey = "agenda.category";
 const _agendaLeagueIdsKey = "agenda.leagueIds";
 
-/// Jetons du compte anonyme et identifiant d'installation, en clair dans
-/// `shared_preferences` (docs/04 J4) : le compte est anonyme, sans donnée
-/// personnelle, un stockage sécurisé n'apporterait rien ici.
+/// Jetons du compte et identifiant d'installation, dans `shared_preferences` (docs/04 J4).
+/// Ce sont nos JWT (accès 1 h, rafraîchissement 180 j) : le mot de passe reste chez
+/// Firebase Auth, jamais stocké ici.
 class AuthStore {
   AuthStore(this._prefs);
 

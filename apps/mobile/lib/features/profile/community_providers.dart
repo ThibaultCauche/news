@@ -1,0 +1,96 @@
+import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:news_api_client/news_api_client.dart";
+import "../../core/api_providers.dart";
+import "../../core/auth/account.dart";
+import "../account/account_gate.dart";
+
+/// Profil (pseudo, e-mail vérifié, stats de pronostics) ; `null` pour un invité.
+final profileProvider = FutureProvider.autoDispose<ProfileDto?>((ref) async {
+  if (!ref.watch(signedInProvider)) return null;
+  return (await ref.watch(apiClientProvider).getCommunityApi().communityControllerGetProfile()).data!;
+});
+
+/// Profil d'un autre joueur (membre d'un groupe commun).
+final publicProfileProvider = FutureProvider.autoDispose.family<PublicProfileDto, String>((ref, userId) async {
+  return (await ref.watch(apiClientProvider).getCommunityApi().communityControllerGetPublicProfile(id: userId)).data!;
+});
+
+final groupsProvider = FutureProvider.autoDispose<List<GroupDto>>((ref) async {
+  if (!ref.watch(signedInProvider)) return const [];
+  return (await ref.watch(apiClientProvider).getCommunityApi().communityControllerListGroups()).data!.toList();
+});
+
+final groupDetailProvider = FutureProvider.autoDispose.family<GroupDetailDto, String>((ref, id) async {
+  return (await ref.watch(apiClientProvider).getCommunityApi().communityControllerGetGroup(id: id)).data!;
+});
+
+/// Mes pronostics, par match. Vide pour un invité.
+final predictionsProvider = FutureProvider.autoDispose<Map<String, PredictionDto>>((ref) async {
+  if (!ref.watch(signedInProvider)) return const {};
+  final list = (await ref.watch(apiClientProvider).getCommunityApi().communityControllerListPredictions()).data!;
+  return {for (final p in list) p.eventId: p};
+});
+
+/// Actions communautaires : chacune exige un compte, et un pseudo pour les pronostics et groupes.
+class CommunityController {
+  CommunityController(this._ref);
+
+  final Ref _ref;
+
+  CommunityApi get _api => _ref.read(apiClientProvider).getCommunityApi();
+
+  /// L'avatar est le logo d'une équipe (`entity`).
+  Future<void> setAvatar(String teamEntityId) async {
+    await _api.communityControllerSetProfile(putProfileDto: PutProfileDto((b) => b..avatarEntityId = teamEntityId));
+    _ref.invalidate(profileProvider);
+    _ref.invalidate(groupsProvider);
+  }
+
+  Future<void> setPseudo(String pseudo) async {
+    await _api.communityControllerSetProfile(putProfileDto: PutProfileDto((b) => b..pseudo = pseudo));
+    _ref.invalidate(profileProvider);
+  }
+
+  /// `false` si l'utilisateur a refusé de créer un compte.
+  Future<bool> predict(String eventId, String pickedEntityId, {int? pickedScore, int? otherScore}) async {
+    if (!await ensureAccount(_ref)) return false;
+    await _api.communityControllerPutPrediction(
+      putPredictionDto: PutPredictionDto((b) {
+        b
+          ..eventId = eventId
+          ..pickedEntityId = pickedEntityId;
+        if (pickedScore != null && otherScore != null) {
+          b
+            ..pickedScore = pickedScore
+            ..otherScore = otherScore;
+        }
+      }),
+    );
+    _ref.invalidate(predictionsProvider);
+    return true;
+  }
+
+  Future<GroupDto> createGroup(String name) async {
+    final group = (await _api.communityControllerCreateGroup(createGroupDto: CreateGroupDto((b) => b..name = name))).data!;
+    _ref.invalidate(groupsProvider);
+    return group;
+  }
+
+  Future<GroupDto> joinGroup(String code) async {
+    final group = (await _api.communityControllerJoinGroup(joinGroupDto: JoinGroupDto((b) => b..code = code.trim().toUpperCase()))).data!;
+    _ref.invalidate(groupsProvider);
+    return group;
+  }
+
+  Future<void> leaveGroup(String id) async {
+    await _api.communityControllerLeaveGroup(id: id);
+    _ref.invalidate(groupsProvider);
+  }
+
+  Future<void> deleteGroup(String id) async {
+    await _api.communityControllerDeleteGroup(id: id);
+    _ref.invalidate(groupsProvider);
+  }
+}
+
+final communityControllerProvider = Provider((ref) => CommunityController(ref));

@@ -2,6 +2,8 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 
 import "../../core/api_providers.dart";
+import "../../core/auth/account.dart";
+import "../account/account_gate.dart";
 import "../../core/text_x.dart";
 
 /// Catalogue catégorie → jeu → ligues → séries (`GET /v1/catalog`), chargé une
@@ -22,11 +24,14 @@ final gameTeamsProvider = FutureProvider.autoDispose.family<List<EntityListItemD
 class FavoriteGamesNotifier extends AsyncNotifier<List<String>> {
   @override
   Future<List<String>> build() async {
+    // Invité : pas de favoris (il faut un compte, docs/04 J11).
+    if (!ref.watch(signedInProvider)) return [];
     final response = await ref.watch(apiClientProvider).getFavoritesApi().favoritesControllerList();
     return response.data!.map((f) => f.game).toList();
   }
 
   Future<void> toggle(String game) async {
+    if (!await ensureAccount(ref)) return;
     final previous = state;
     final current = previous.value ?? const <String>[];
     final adding = !current.contains(game);

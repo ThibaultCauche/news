@@ -1,12 +1,16 @@
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../features/account/account_gate.dart";
 import "api_providers.dart";
+import "auth/account.dart";
 
 /// Réglages (écran 22, `docs/04` J6) : sans spoil (global — une seule vraie
 /// catégorie avec des données pour l'instant, la granularité par catégorie de la
 /// maquette attendra une 2e catégorie), résumé du matin (réglage seul, pas
 /// encore envoyé), heures calmes.
 final userSettingProvider = FutureProvider.autoDispose<UserSettingDto>((ref) async {
+  // Invité : réglages par défaut (sans spoil désactivé), modifiables seulement avec un compte.
+  if (!ref.watch(signedInProvider)) return UserSettingDto((b) => b..spoilerFree = false..morningDigest = false);
   final response = await ref.watch(apiClientProvider).getMeApi().meControllerGetSettings();
   return response.data!;
 });
@@ -17,6 +21,7 @@ class SettingsController {
   final Ref _ref;
 
   Future<void> update({bool? spoilerFree, bool? morningDigest, int? quietHoursStart, int? quietHoursEnd}) async {
+    if (!await ensureAccount(_ref)) return;
     await _ref.read(apiClientProvider).getMeApi().meControllerUpdateSettings(
       updateUserSettingDto: UpdateUserSettingDto((b) {
         if (spoilerFree != null) b.spoilerFree = spoilerFree;

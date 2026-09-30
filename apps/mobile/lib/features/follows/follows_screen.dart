@@ -12,23 +12,27 @@ import "../next_match/next_match_screen.dart";
 import "../team/team_screen.dart";
 import "follows_provider.dart";
 
-/// Écran Suivis, remplace le placeholder du J3 (docs/04 J4) : une carte par
-/// suivi avec son état en une ligne (docs/02 §"Architecture de l'accueil").
+/// Écran Suivis (docs/04 J4) : une carte par suivi avec son état en une ligne (docs/02
+/// §"Architecture de l'accueil"). Depuis le J11 ce n'est plus un onglet mais un écran ouvert
+/// depuis « Tes suivis » de l'Accueil, du Profil et des Réglages.
 class FollowsScreen extends ConsumerWidget {
   const FollowsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final follows = ref.watch(followsProvider);
-    return SafeArea(
-      child: RefreshIndicator(
-        onRefresh: () => ref.refresh(followsProvider.future),
-        child: switch (follows) {
-          // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
-          _ when follows.hasValue => _FollowsBody(follows: follows.value!),
-          AsyncError() => const Center(child: Text("Impossible de charger tes suivis.", style: TextStyle(color: AppColors.textSecondary))),
-          _ => const Center(child: CircularProgressIndicator()),
-        },
+    return Scaffold(
+      appBar: AppBar(),
+      body: SafeArea(
+        child: RefreshIndicator(
+          onRefresh: () => ref.refresh(followsProvider.future),
+          child: switch (follows) {
+            // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
+            _ when follows.hasValue => _FollowsBody(follows: follows.value!),
+            AsyncError() => const Center(child: Text("Impossible de charger tes suivis.", style: TextStyle(color: AppColors.textSecondary))),
+            _ => const Center(child: CircularProgressIndicator()),
+          },
+        ),
       ),
     );
   }
@@ -57,7 +61,10 @@ class _FollowsBody extends ConsumerWidget {
           Align(
             alignment: Alignment.centerLeft,
             child: FilledButton(
-              onPressed: () => ref.read(tabIndexProvider.notifier).select(competitionsTabIndex),
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+                ref.read(tabIndexProvider.notifier).select(competitionsTabIndex);
+              },
               child: const Text("Explorer les compétitions"),
             ),
           ),
@@ -71,14 +78,15 @@ class _FollowsBody extends ConsumerWidget {
       itemBuilder: (context, i) {
         if (i == 0) return Text("Suivis", style: Theme.of(context).textTheme.headlineLarge);
         final follow = follows[i - 1];
-        return _FollowCard(follow: follow, targetType: followTargetTypeFromWire(follow.targetType));
+        return FollowCard(follow: follow, targetType: followTargetTypeFromWire(follow.targetType));
       },
     );
   }
 }
 
-class _FollowCard extends ConsumerWidget {
-  const _FollowCard({required this.follow, required this.targetType});
+/// Carte d'un suivi : nom (mène à sa page), état, prochain match.
+class FollowCard extends ConsumerWidget {
+  const FollowCard({super.key, required this.follow, required this.targetType});
 
   final FollowStateDto follow;
   final FollowTargetType targetType;

@@ -20,6 +20,7 @@ import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
 import "../team/team_screen.dart";
+import "../profile/prediction_panel.dart";
 
 final eventProvider = FutureProvider.autoDispose.family<EventDetailResponseDto, String>((ref, id) async {
   final response = await ref.watch(apiClientProvider).getEventsApi().eventsControllerGetById(id: id);
@@ -189,6 +190,8 @@ class _NextMatchBody extends ConsumerWidget {
           _RecentFormSection(event: event),
           const SizedBox(height: AppSpacing.md),
         ],
+        PredictionPanel(event: event, scoresHidden: scoresHidden),
+        const SizedBox(height: AppSpacing.md),
         if (status == EventStatusKind.scheduled) ...[
           _AlertButton(eventId: event.id),
           const SizedBox(height: AppSpacing.sm),

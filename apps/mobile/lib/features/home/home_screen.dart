@@ -3,16 +3,22 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
+import "../../core/auth/account.dart";
 import "../../core/clock.dart";
 import "../../core/date_x.dart";
 import "../../core/iterable_x.dart";
 import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/avatar_circle.dart";
 import "../../widgets/event_card.dart";
+import "../account/auth_screen.dart";
+import "../follows/follows_provider.dart";
+import "../follows/follows_screen.dart";
 import "grand_final_card.dart";
 import "../next_match/next_match_screen.dart";
-import "../settings/settings_screen.dart";
+import "../profile/community_providers.dart";
+import "../profile/profile_screen.dart";
 
 final homeProvider = FutureProvider.autoDispose<HomeResponseDto>((ref) async {
   final response = await ref.watch(apiClientProvider).getHomeApi().homeControllerGetHome();
@@ -55,6 +61,9 @@ class _HomeHeader extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final date = DateFormat("EEEE d MMMM", "fr_FR").format(ref.watch(todayProvider));
     final capitalized = date[0].toUpperCase() + date.substring(1);
+    final profile = ref.watch(profileProvider).value;
+    final pseudo = profile?.pseudo;
+    final avatarUrl = profile?.avatarUrl;
     return Padding(
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.sm),
       child: Row(
@@ -79,12 +88,10 @@ class _HomeHeader extends ConsumerWidget {
             },
             icon: const Icon(Icons.search_rounded),
           ),
+          // Le profil (J11) : initiale du pseudo une fois créé, silhouette pour l'invité.
           GestureDetector(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const SettingsScreen())),
-            child: const CircleAvatar(
-              backgroundColor: AppColors.surface,
-              child: Text("T"),
-            ),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ProfileScreen())),
+            child: AvatarCircle(avatarUrl: avatarUrl, pseudo: pseudo, radius: 20),
           ),
         ],
       ),
@@ -116,6 +123,7 @@ class _HomeBody extends StatelessWidget {
         if (liveEvent != null) _LiveBanner(event: liveEvent, scoresHidden: scoresHidden, next: upcoming.firstOrNull.ifToday),
         if (liveEvent == null && upNextEvent != null) _UpNextSection(event: upNextEvent, scoresHidden: scoresHidden),
         if (grandFinals.isNotEmpty) _GrandFinalsSection(grandFinals: grandFinals),
+        const _FollowsSection(),
         const SizedBox(height: AppSpacing.xl),
       ]),
     );
@@ -209,5 +217,64 @@ extension _NextToday on EventSummaryDto? {
     final start = this?.startsAt.toDateTime?.toLocal();
     if (start == null) return null;
     return dateOnly(start) == dateOnly(DateTime.now()) ? this : null;
+  }
+}
+
+
+/// « Tes suivis » (écran 17, `docs/02`), de retour sur l'Accueil au J11 quand l'onglet Suivis a
+/// disparu : les trois premiers suivis avec leur prochain match, « Tout voir » ouvre l'écran
+/// complet. Pour l'invité, une invitation à créer un compte (suivre exige un compte).
+class _FollowsSection extends ConsumerWidget {
+  const _FollowsSection();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    if (!ref.watch(signedInProvider)) {
+      return Padding(
+        padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, 0),
+        child: Card(
+          margin: EdgeInsets.zero,
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Tes suivis", style: Theme.of(context).textTheme.titleLarge),
+                const SizedBox(height: AppSpacing.xs),
+                const Text("Crée un compte pour suivre tes équipes et compétitions et être alerté.", style: TextStyle(color: AppColors.textSecondary)),
+                const SizedBox(height: AppSpacing.sm),
+                FilledButton(
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const AuthScreen())),
+                  child: const Text("Créer un compte"),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
+    final follows = (ref.watch(followsProvider).value ?? const []).where((f) => !f.muted).toList();
+    if (follows.isEmpty) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, 0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Expanded(child: Text("Tes suivis", style: Theme.of(context).textTheme.titleLarge)),
+              TextButton(
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FollowsScreen())),
+                child: const Text("Tout voir"),
+              ),
+            ],
+          ),
+          for (final follow in follows.take(3)) ...[
+            FollowCard(follow: follow, targetType: followTargetTypeFromWire(follow.targetType)),
+            const SizedBox(height: AppSpacing.sm),
+          ],
+        ],
+      ),
+    );
   }
 }

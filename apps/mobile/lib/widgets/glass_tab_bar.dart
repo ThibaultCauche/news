@@ -158,6 +158,16 @@ class _TabButton extends StatelessWidget {
     final color = item.featured
         ? (selected ? AppColors.gold : AppColors.textSecondary)
         : (selected ? AppColors.textPrimary : AppColors.textSecondary);
+    // Onglet mis en avant : le cercle or suffit, sans libellé (surcharge visuelle) ; le libellé
+    // reste pour les lecteurs d'écran.
+    if (item.featured) {
+      return Semantics(
+        button: true,
+        selected: selected,
+        label: item.label,
+        child: InkWell(onTap: onTap, borderRadius: BorderRadius.circular(AppRadii.pill), child: const SizedBox.expand()),
+      );
+    }
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(AppRadii.pill),
@@ -165,8 +175,7 @@ class _TabButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // L'icône de l'onglet mis en avant est dessinée par le cercle or, au-dessus.
-          if (item.featured) const SizedBox(height: 20) else Icon(item.icon, color: color, size: 20),
+          Icon(item.icon, color: color, size: 20),
           const SizedBox(height: 6),
           // Rétrécit plutôt que de passer à la ligne (« Compétition/s » sur un écran de 360 dp).
           FittedBox(

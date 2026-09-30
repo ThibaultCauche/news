@@ -52,6 +52,7 @@ Future<void> _pump(
   return tester.pumpWidget(
     ProviderScope(
       overrides: [
+        overrideSignedInForTest(),
         overrideCompactEventCardsWith(false),
         overrideFollowsRecording(const [], calls ?? [], failWith: failWith),
       ],

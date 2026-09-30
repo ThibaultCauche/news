@@ -1,3 +1,4 @@
+import "../features/profile/community_providers.dart";
 import "dart:async";
 
 import "package:flutter/widgets.dart";
@@ -73,6 +74,7 @@ class _AutoRefreshState extends ConsumerState<AutoRefresh> with WidgetsBindingOb
     ref.read(todayProvider.notifier).sync();
     ref.invalidate(homeProvider);
     ref.invalidate(followsProvider);
+    ref.invalidate(predictionsProvider);
     ref.invalidate(eventProvider);
     if (ref.read(tabIndexProvider) == _agendaTab) ref.invalidate(agendaProvider);
   }

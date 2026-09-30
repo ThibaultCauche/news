@@ -39,6 +39,7 @@ Future<ProviderContainer> _makeContainer({required int statusCode, required List
   final prefs = await SharedPreferences.getInstance();
   final container = ProviderContainer(
     overrides: [
+        overrideSignedInForTest(),
       overrideFollowsWith(initial),
       apiClientProvider.overrideWithValue(NewsApiClient(dio: dio)),
       authStoreProvider.overrideWithValue(AuthStore(prefs)),

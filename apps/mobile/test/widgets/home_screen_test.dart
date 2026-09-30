@@ -5,6 +5,7 @@ import "package:intl/date_symbol_data_local.dart";
 import "package:mobile/core/navigation.dart";
 import "package:mobile/core/settings_provider.dart";
 import "package:mobile/features/home/home_screen.dart";
+import "package:mobile/features/profile/community_providers.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../follows_test_helpers.dart";
 import "../settings_test_helpers.dart";
@@ -77,6 +78,8 @@ EventSummaryDto _match(String id, String status, String a, String b, {int? score
 
 Future<ProviderContainer> _pump(WidgetTester tester, HomeResponseDto home, {List<String>? calls}) async {
   final container = ProviderContainer(overrides: [
+        overrideSignedInForTest(),
+        profileProvider.overrideWith((ref) async => null),
     homeProvider.overrideWith((ref) async => home),
     userSettingProvider.overrideWith((ref) async => UserSettingDto((b) => b
       ..spoilerFree = false

@@ -137,6 +137,7 @@ Future<void> _pump(WidgetTester tester, {List<String>? calls}) {
   return tester.pumpWidget(
     ProviderScope(
       overrides: [
+        overrideSignedInForTest(),
         competitionDetailProvider("champions").overrideWith((ref) async => _competition(
               id: "champions",
               name: "Champions",
