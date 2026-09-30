@@ -67,13 +67,15 @@
 
 | Table | Rôle |
 |---|---|
-| `app_user` | Compte **anonyme par défaut** (créé au premier lancement). Lien optionnel avec Apple / Google pour synchroniser plusieurs appareils |
+| `app_user` | Compte **Firebase Auth (e-mail + mot de passe)**, créé à l'inscription (J11) ; l'invité navigue sans compte ni jeton. `firebase_uid`, `email_verified`, `pseudo` / `pseudo_key` (unique, insensible à la casse et aux accents), `pseudo_changed_at` (un changement par 30 jours) |
 | `device` | Jeton push FCM, plateforme, langue, fuseau horaire, jeton Live Activity si actif |
 | `competition_family` | Toutes les éditions d'une même compétition d'une ligue (« Champions » pour Champions 2025, 2026…), J10 : suivre la famille suit les éditions futures dès leur ingestion | `league_id`, `name` (dérivé du nom de la série, `familyNameOf`) |
 | `subscription` | Suivi : `target_type` (catégorie, compétition, **famille de compétition**, entité, événement), `target_id`, `level` (tout / grands moments), options (début, résultat, rappel), `muted` (sourdine d'une compétition : « la ligue, sauf celle-ci » ; **la règle la plus proche du match l'emporte**, J10) |
 | `user_setting` | Sans spoil par catégorie, heures calmes, résumé du matin, mouvement réduit |
 | `notification_log` | Ce qui a été envoyé, avec une **clé de déduplication** (`user`, `event`, `type`) |
-| `prediction` / `quiz_answer` | Jeu du jour (plus tard) |
+| `prediction` | Pronostic en points fictifs (J11) : un par (utilisateur, match), vainqueur choisi + score de série optionnel, `points` / `settled_at` remplis une seule fois par le worker à `EventFinished` |
+| `friend_group` / `friend_group_member` | Groupes d'amis (J11) : code d'invitation de 8 caractères sans ambiguïté, 20 membres au plus, le créateur seul peut supprimer le groupe |
+| `quiz_answer` | Jeu du jour (plus tard) |
 
 ### Formats de compétition (`competition.format`)
 
@@ -156,7 +158,10 @@ Les endpoints suivent les écrans, pour que l'appli fasse un seul appel par écr
 | `POST/DELETE /v1/subscriptions` | Partout (« Suivre ») | Abonnement / désabonnement |
 | `PUT /v1/devices/me` | Au lancement | Jeton push, fuseau, langue |
 | `GET/PATCH /v1/me/settings` | 22 Réglages | Sans spoil, heures calmes, résumé du matin |
-| `POST /v1/predictions` | 16 Jeu | Pronostic, verrouillé au coup d'envoi |
+| `POST /v1/auth/firebase`, `POST /v1/auth/refresh` | Connexion (J11) | L'appli se connecte à Firebase Auth, échange l'ID token contre nos JWT (accès 1 h, rafraîchissement 180 j) ; l'API vérifie le jeton avec `firebase-admin` |
+| `GET/PUT /v1/me/profile` | Profil (J11) | Pseudo (e-mail vérifié exigé) et stats de pronostics |
+| `GET/PUT /v1/predictions` | Match, Profil (J11) | Mes pronostics ; `PUT` verrouillé au coup d'envoi (`403 PREDICTION_LOCKED`), pseudo exigé |
+| `GET/POST /v1/groups`, `POST /v1/groups/join`, `GET/DELETE /v1/groups/:id`, `DELETE /v1/groups/:id/members/me` | Profil (J11) | Groupes d'amis et classement ; `join` limité à 10 essais par minute |
 
 **Sans spoil** : l'API renvoie les scores, et c'est l'appli qui les masque selon les réglages (le masquage est instantané, on peut révéler hors ligne). En revanche, **les notifications appliquent le réglage côté serveur** : sans spoil, la notification dit « G2 – PRX est terminé » sans le score.
 

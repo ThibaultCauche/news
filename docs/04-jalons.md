@@ -320,7 +320,22 @@
 
 **Hors périmètre** : forum (J13) ; pronostics sur autre chose que des matchs (compétition entière, etc.) au début.
 
-**Critères d'acceptation** : à rédiger au cadrage (`/jalon 11`).
+**Décisions du cadrage (2026-10-01)** : voir `docs/00` §7. Invité en lecture seule ; compte e-mail + mot de passe (Firebase Auth) ; pseudo unique ; barème 3 + 2 ; groupes à code de 8 caractères ; onglet Suivis retiré ; anciens comptes anonymes supprimés.
+
+**Actions manuelles** : console Firebase → Authentication → Sign-in method → activer **E-mail/Mot de passe** ; `FIREBASE_*` dans le `.env` lu par l'API (en prod, le même `.env` que le worker).
+
+**Critères d'acceptation**
+- [ ] Un invité navigue (Accueil, Agenda, Compétitions, match) sans compte ; toute action réservée (suivre, alerter, favori, réglage, pronostic) propose de créer un compte, puis continue après la connexion.
+- [ ] Inscription par e-mail + mot de passe, e-mail de vérification reçu, connexion, déconnexion, mot de passe oublié.
+- [ ] Pseudo unique (casse et accents ignorés), refusé s'il est trop court, avec caractères spéciaux ou interdit ; changement limité à un par 30 jours ; exige un e-mail vérifié.
+- [ ] Un pronostic se pose et se modifie jusqu'au début du match, puis se verrouille ; les points sont attribués une seule fois à la fin du match (3, +2 avec le score exact).
+- [ ] Deux comptes forment un groupe par code et se voient classés ; groupe complet et code inconnu refusés ; le créateur supprime, les autres quittent.
+- [ ] Sans spoil respecté : points, stats et classements masqués (appui long pour révéler).
+- [ ] Suppression du compte complète (Firebase, pronostics, groupes, suivis), pseudo libéré.
+- [ ] L'avatar est le logo d'une équipe, choisi par jeu ; le profil d'un joueur s'ouvre depuis le classement d'un groupe (membres d'un groupe commun seulement) ; le code d'invitation s'affiche derrière une icône d'invitation, avec un bouton de copie.
+- [ ] L'onglet Jeux mène à Pronostics ; les matchs à pronostiquer se filtrent par jeu du catalogue.
+- [ ] Onglet Suivis retiré (4ᵉ onglet vide) ; « Tes suivis » sur l'Accueil ; profil ouvert depuis l'avatar de l'Accueil, réglages depuis le rouage du profil.
+- [ ] **Vérifié en conditions réelles** sur téléphone Android : inscription, e-mail de vérification reçu, pseudo, pronostic sur un vrai match, points reçus à la fin, groupe à deux comptes.
 
 ---
 
@@ -374,7 +389,8 @@
 |---|---|
 | Compte Apple Developer (99 $/an) | Avant J4 (iOS) |
 | Nom de l'appli (« News » est un nom de travail) — nom de domaine réglé au J7 (Tailscale Funnel, pas de domaine nécessaire pour l'instant) | Avant J7 |
-| Logo et icône d'app définitifs | Avant J7 |
+| Logo et icône d'app définitifs | Avant J7 (reporté, toujours ouvert) |
+| **Identité de l'app** (nom, logo, domaine) → à ce moment-là : modèles d'e-mails Firebase Auth (vérification, réinitialisation : expéditeur, objet, texte en français) et **page de validation « Your email has been verified »**, hébergée par Firebase, à remplacer par une page à nous | Avec le nom et le logo (reporté du J7, pas rattaché à un jalon) |
 | Écrire à PandaScore : usage du plan gratuit et attribution exigée | Avant J7 |
 | Licence open source du code (MIT, AGPL…) | Avant J7 |
 | **Supprimer l'onglet Suivis** (idée du 2026-09-30) : réintégrer les suivis dans l'Accueil (« Tes suivis », prévu par `docs/02` écran 17, retiré au J10 car doublon tant que Suivis existe) pour libérer un onglet quand les options communautaires (J11-J13) en demanderont. Un seul des deux doit exister, pas les deux | À l'arrivée du J11 |
