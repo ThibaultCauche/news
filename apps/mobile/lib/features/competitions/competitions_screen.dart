@@ -2,7 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 
-import "../../theme/app_theme.dart";
+import "../../widgets/page_title.dart";
 import "../../core/navigation.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/game_logo.dart";
@@ -45,7 +45,7 @@ class _CompetitionsScreenState extends ConsumerState<CompetitionsScreen> {
         children: [
           Padding(
             padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.sm),
-            child: Text("Compétitions", style: AppTextStyles.pageTitle),
+            child: const PageTitle("Compétitions"),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),

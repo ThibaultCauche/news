@@ -1,7 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
-import "../../theme/app_theme.dart";
+import "../../widgets/page_title.dart";
 import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
@@ -52,7 +52,7 @@ class _FollowsBody extends ConsumerWidget {
       return ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [
-          Text("Suivis", style: AppTextStyles.pageTitle),
+          const PageTitle("Suivis"),
           const SizedBox(height: AppSpacing.sm),
           const Text(
             "Tu ne suis rien pour l'instant. Suis une compétition ou une équipe pour retrouver ses matchs ici.",
@@ -77,7 +77,7 @@ class _FollowsBody extends ConsumerWidget {
       itemCount: follows.length + 1,
       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
       itemBuilder: (context, i) {
-        if (i == 0) return Text("Suivis", style: AppTextStyles.pageTitle);
+        if (i == 0) return const PageTitle("Suivis");
         final follow = follows[i - 1];
         return FollowCard(follow: follow, targetType: followTargetTypeFromWire(follow.targetType));
       },

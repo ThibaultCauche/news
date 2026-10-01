@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "../theme/tokens.dart";
 
 /// Libellé de section en petites capitales (`docs/maquettes/specs/commun.md`
 /// — style `eyebrow`, 12/600/+4 %, blanc 50 %). Ex. "SAISON 2026", "TOUR 1".
@@ -12,6 +13,6 @@ class SectionLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: Theme.of(context).textTheme.labelSmall);
+    return Text(text, style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.brass));
   }
 }

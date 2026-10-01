@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../../widgets/page_title.dart";
 import "../../theme/app_theme.dart";
 import "../../core/api_providers.dart";
 import "../../core/auth/account.dart";
@@ -78,7 +79,7 @@ class _HomeHeader extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(capitalized, style: const TextStyle(color: AppColors.textSecondary)),
-                Text("Aujourd'hui", style: AppTextStyles.pageTitle),
+                const PageTitle("Aujourd'hui"),
               ],
             ),
           ),

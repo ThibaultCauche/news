@@ -3,7 +3,7 @@ import "package:flutter/rendering.dart" show ScrollCacheExtent;
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
-import "../../theme/app_theme.dart";
+import "../../widgets/page_title.dart";
 import "../../core/api_providers.dart";
 import "../../core/clock.dart";
 import "../../core/date_x.dart";
@@ -200,7 +200,7 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
           if (!embedded) ...[
             Padding(
               padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 0),
-              child: Text("Agenda", style: AppTextStyles.pageTitle),
+              child: const PageTitle("Agenda"),
             ),
             const SizedBox(height: AppSpacing.md),
           ],

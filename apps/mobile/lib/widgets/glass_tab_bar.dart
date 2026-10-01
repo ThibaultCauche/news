@@ -68,7 +68,7 @@ class GlassTabBar extends StatelessWidget {
                               width: _featuredSize,
                               height: _featuredSize,
                               decoration: BoxDecoration(
-                                color: AppColors.gold,
+                                color: AppColors.brass,
                                 shape: BoxShape.circle,
                                 border: Border.all(color: AppColors.background, width: 3),
                               ),
@@ -118,7 +118,8 @@ class GlassTabBar extends StatelessWidget {
                       height: _pillHeight,
                       child: DecoratedBox(
                         decoration: BoxDecoration(
-                          color: Colors.white.withValues(alpha: 0.12),
+                          color: AppColors.brass.withValues(alpha: 0.16),
+                          border: Border.all(color: AppColors.brass.withValues(alpha: 0.5)),
                           borderRadius: BorderRadius.circular(_pillHeight / 2),
                         ),
                       ),
@@ -156,8 +157,8 @@ class _TabButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = item.featured
-        ? (selected ? AppColors.gold : AppColors.textSecondary)
-        : (selected ? AppColors.textPrimary : AppColors.textSecondary);
+        ? (selected ? AppColors.brass : AppColors.textSecondary)
+        : (selected ? AppColors.brass : AppColors.textSecondary);
     // Onglet mis en avant : le cercle or suffit, sans libellé (surcharge visuelle) ; le libellé
     // reste pour les lecteurs d'écran.
     if (item.featured) {
