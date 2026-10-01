@@ -21,6 +21,8 @@
 | J13 | Forum (bêta fermée) : discussion et tchat du direct par match, fils par équipe, compétition, jeu et libres, badge de camp, modération | On discute d'un match sans que ça dégénère | **Fait (2026-10-01)** |
 | J14 | Pronostics entre amis : choix des amis, rappels, classement par jeu, partage | Se comparer à ses amis | **Fait (2026-10-01)** |
 | J15 | Finitions d'interface : skeletons, retour instantané, parcours d'accueil, erreurs lisibles | L'appli paraît plus rapide et ne montre jamais d'erreur technique | À planifier |
+| J16 | Identité de l'app : nom, logo, personnalité visuelle « solennelle » (laiton mat, capitales fines, tampons), icône, écran de lancement | L'app a une vraie personnalité et un nom à elle | À planifier |
+| J17 | Versions Windows et Web de l'app | On suit ses compétitions depuis un ordinateur | À planifier |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -460,6 +462,43 @@
 **À trancher au cadrage** : les écrans où le spinner est volontairement gardé ; si les erreurs doivent partir vers Sentry côté appli.
 
 **Critères d'acceptation** : à rédiger au cadrage (`/jalon 15`).
+
+---
+
+## J16 — Identité de l'app (ajouté)
+
+**Objectif** : donner à l'app un nom, un logo et une personnalité visuelle propres, en reprenant ce qui était resté en suspens depuis J7 (nom, logo et icône définitifs). Direction décidée le 2026-10-01 : **ambiance solennelle** inspirée de l'univers des finales (cérémonie, tension, ferveur), **sans rien reprendre d'une œuvre existante**. Planche de style de départ : `docs/maquettes/planche-de-style.html`.
+
+**Périmètre**
+- **Personnalité** : fond charbon, or mat vieilli, capitales fines et pointues pour les grands titres, filets et cadres en pointes, petits tampons rouges. Solennité plutôt que combat, pour que l'identité tienne aussi pour le sport et la politique (neutralité stricte, règle 9).
+- **Couleurs** : **deux ors, deux rôles**. L'or vif `#FFC940` garde son sens fonctionnel (« mon équipe / mes suivis », règle 12). Un **laiton mat décoratif** (autour de `#B79B62`) sert aux titres, filets et cadres de grandes finales. Rouge direct `#FF4655` et vert `#30D158` inchangés. Contrastes à vérifier (lisibilité sur fond sombre).
+- **Typographie** : police d'affichage fine et pointue **réservée aux grands titres** (candidates : Cinzel, Grenze Gotisch, à confirmer : licence libre, rendu des accents français). Inter reste pour le texte, les scores et les chiffres (lisibilité en 3 secondes).
+- **Nom** : à choisir. **Ne contient ni « Valorant », ni « VCT », ni « Riot »**, ne dépend pas d'un jeu précis, vérifié disponible (Play Store, nom de marque, nom de domaine éventuel).
+- **Logo, icône, écran de lancement** : monogramme ou sceau dans le style tampon, version icône d'appli (Android adaptive icon) et écran de lancement.
+- **Ornements** dessinés pour l'appli (filets, cadres de grande finale, tampons de badges), en SVG embarqués.
+- Mise à jour de `docs/02` (tokens), du thème Flutter (`apps/mobile/lib/theme`), et des goldens à régénérer par la CI (voir « Goldens Flutter » de `CLAUDE.md`).
+
+**À trancher au cadrage** : le nom ; choix de la police d'affichage ; où le laiton remplace l'or actuel (titres de pages, cadre de grande finale…) ; ampleur des ornements (garder la sobriété, règle 13 : pas d'animation sur ce qu'on voit plusieurs fois par jour).
+
+**Hors périmètre** : refonte des écrans ; images, logos ou polices de Riot ou d'un autre éditeur.
+
+**Critères d'acceptation** : à rédiger au cadrage (`/jalon 16`).
+
+---
+
+## J17 — Versions Windows et Web (ajouté)
+
+**Objectif** : permettre de suivre ses compétitions depuis un ordinateur (application Windows et site web).
+
+**Contradiction à lever d'abord** : `docs/00` §7 a décidé qu'il n'y a **pas de plateforme web dans le projet Flutter**, et la feuille de route prévoit un **site Next.js** (SEO) « plus tard ». Deux voies à comparer au cadrage :
+- **Flutter** (Windows + Web) : un seul code, mais le web Flutter est médiocre pour le référencement et pèse au chargement.
+- **Flutter Windows + site Next.js** séparé pour le web : meilleur SEO et chargement, mais deux interfaces à maintenir.
+
+**Points à vérifier au cadrage** : prise en charge de **Firebase Auth** et des **notifications push** sur Windows et sur le web (le plugin `firebase_messaging` n'est pas disponible sur toutes les plateformes) ; cache local **drift** sur le web ; mise en page adaptée aux grands écrans (l'appli est conçue pour 390 px de large) ; distribution Windows (Microsoft Store ou installateur) ; CORS et CSP côté API pour le web.
+
+**Hors périmètre** : macOS et Linux.
+
+**Critères d'acceptation** : à rédiger au cadrage (`/jalon 17`). **À planifier après J16** : le nom et l'identité s'appliquent à toutes les versions.
 
 ---
 

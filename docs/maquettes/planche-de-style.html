@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Planche de style — piste « solennelle »</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Grenze+Gotisch:wght@400;600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #08090B;
+    --surface: #16171B;
+    --line: rgba(255,255,255,.08);
+    --text: #F5F5F7;
+    --text-2: rgba(245,245,247,.55);
+    --text-3: rgba(245,245,247,.30);
+    /* Fonctionnels (inchangés, règle 12) */
+    --gold-live: #FFC940;   /* mon équipe / mes suivis */
+    --live: #FF4655;        /* en direct */
+    --win: #30D158;
+    /* Décoratifs (nouveaux) */
+    --brass: #B79B62;       /* or mat : filets, titres */
+    --brass-hi: #D6BE86;    /* reflet */
+    --brass-lo: #6F5E3A;    /* filets discrets */
+    --seal: #B8333A;        /* tampon rouge */
+    --serif: "Cinzel", "Times New Roman", serif;
+    --gothic: "Grenze Gotisch", "Times New Roman", serif;
+    --sans: "Inter", system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.5; }
+  main { max-width: 980px; margin: 0 auto; padding: 48px 20px 80px; }
+  h1, h2 { font-weight: 600; margin: 0; }
+  .eyebrow { font: 600 11px/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--text-2); }
+  section { margin-top: 64px; }
+  section > .eyebrow { display: block; margin-bottom: 20px; }
+  .note { color: var(--text-2); font-size: 14px; max-width: 62ch; margin: 8px 0 0; }
+  .hero { text-align: center; padding: 56px 0 8px; }
+  .hero .title { font-family: var(--serif); font-weight: 600; font-size: clamp(34px, 7vw, 64px); letter-spacing: .14em; color: var(--brass-hi); margin: 18px 0 6px; }
+  .hero .sub { font: 400 13px var(--sans); letter-spacing: .3em; text-transform: uppercase; color: var(--text-2); }
+  svg.orn { display: block; margin: 0 auto; width: min(420px, 90%); height: auto; }
+
+  .swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+  .sw { border: 1px solid var(--line); border-radius: 14px; overflow: hidden; background: var(--surface); }
+  .sw i { display: block; height: 72px; }
+  .sw b { display: block; padding: 10px 12px 0; font-size: 13px; font-weight: 600; }
+  .sw span { display: block; padding: 0 12px 12px; font-size: 12px; color: var(--text-2); }
+
+  .type { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px; }
+  .card .name { font-size: 12px; color: var(--text-2); margin-bottom: 12px; }
+  .d1 { font-family: var(--serif); font-weight: 700; font-size: 34px; letter-spacing: .08em; color: var(--brass-hi); line-height: 1.15; }
+  .d2 { font-family: var(--gothic); font-weight: 800; font-size: 44px; letter-spacing: .02em; color: var(--brass-hi); line-height: 1.05; text-transform: uppercase; }
+  .body-sample { font-size: 15px; color: var(--text); margin-top: 14px; }
+  .nums { font: 700 40px/1 var(--sans); letter-spacing: -.02em; margin-top: 14px; font-variant-numeric: tabular-nums; }
+
+  .phone { width: 340px; max-width: 100%; margin: 0 auto; background: var(--bg); border: 1px solid var(--line); border-radius: 32px; padding: 20px 16px 28px; }
+  .stage { display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; }
+  .h-title { font-family: var(--serif); font-weight: 600; font-size: 26px; letter-spacing: .1em; color: var(--brass-hi); margin: 10px 4px 14px; }
+  .match { position: relative; background: linear-gradient(160deg, #22201A, #101010); border: 1px solid rgba(183,155,98,.28); border-radius: 20px; padding: 16px; margin-bottom: 12px; }
+  .match .meta { display: flex; justify-content: space-between; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text-2); }
+  .match .row { display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; margin-top: 14px; text-align: center; }
+  .logo { width: 44px; height: 44px; border-radius: 50%; background: #2a2a30; margin: 0 auto 6px; display: grid; place-items: center; font-weight: 700; font-size: 13px; }
+  .tn { font-size: 13px; font-weight: 600; }
+  .cd { font: 700 26px var(--sans); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+  .cd small { display: block; font: 500 10px var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--text-2); margin-top: 2px; }
+  .mine { color: var(--gold-live); }
+  .pill { display: inline-flex; gap: 6px; align-items: center; font: 600 11px var(--sans); border: 1px solid var(--gold-live); color: var(--gold-live); border-radius: 999px; padding: 5px 10px; }
+  .livedot { display: inline-block; width: 7px; height: 7px; border-radius: 50%; background: var(--live); margin-right: 6px; }
+  .final { border-color: var(--brass); background: linear-gradient(170deg, #2b2417, #0f0e0b); text-align: center; }
+  .final .kicker { font-family: var(--serif); letter-spacing: .3em; font-size: 12px; color: var(--brass); }
+  .final .big { font-family: var(--serif); font-weight: 700; font-size: 22px; letter-spacing: .08em; color: var(--brass-hi); margin: 8px 0; }
+  .seal { display: inline-grid; place-items: center; width: 26px; height: 26px; border: 2px solid var(--seal); color: var(--seal); font: 700 12px var(--sans); border-radius: 4px; transform: rotate(-4deg); }
+  .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 560px) { .compare { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<main>
+
+<header class="hero">
+  <span class="eyebrow">Planche de style · piste « solennelle »</span>
+  <svg class="orn" viewBox="0 0 420 24" aria-hidden="true" style="margin-top:22px">
+    <path d="M0 12 L150 12 L172 4 L190 12 L210 0 L230 12 L248 4 L270 12 L420 12" fill="none" stroke="var(--brass)" stroke-width="1"/>
+    <path d="M210 5 L217 12 L210 19 L203 12 Z" fill="var(--brass)"/>
+  </svg>
+  <div class="title">NOM À DÉFINIR</div>
+  <div class="sub">Suivre. Comprendre. Vibrer.</div>
+  <p class="note" style="margin:22px auto 0">Inspiration : ambiance cérémonielle, fond charbon, or mat, capitales fines et pointues, petits tampons rouges. Aucun élément repris d'une œuvre existante : tout ici est dessiné à neuf.</p>
+</header>
+
+<section>
+  <span class="eyebrow">Couleurs</span>
+  <div class="swatches">
+    <div class="sw"><i style="background:#08090B;border-bottom:1px solid var(--line)"></i><b>Fond</b><span>#08090B (inchangé)</span></div>
+    <div class="sw"><i style="background:#16171B"></i><b>Surface</b><span>#16171B (inchangé)</span></div>
+    <div class="sw"><i style="background:var(--brass)"></i><b>Laiton</b><span>#B79B62 · décoratif</span></div>
+    <div class="sw"><i style="background:var(--brass-hi)"></i><b>Laiton clair</b><span>#D6BE86 · titres</span></div>
+    <div class="sw"><i style="background:var(--brass-lo)"></i><b>Laiton sombre</b><span>#6F5E3A · filets discrets</span></div>
+    <div class="sw"><i style="background:var(--seal)"></i><b>Tampon</b><span>#B8333A · accents rares</span></div>
+    <div class="sw"><i style="background:var(--gold-live)"></i><b>Or vif</b><span>#FFC940 · mon équipe (inchangé)</span></div>
+    <div class="sw"><i style="background:var(--live)"></i><b>Direct</b><span>#FF4655 (inchangé)</span></div>
+  </div>
+  <p class="note"><b>Deux ors, deux rôles.</b> L'or vif garde son sens fonctionnel (« c'est mon équipe »). Le laiton mat est purement décoratif : titres, filets, cadres de grandes finales. Ainsi le sens des couleurs ne se brouille pas.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Typographie</span>
+  <div class="type">
+    <div class="card">
+      <div class="name">Option A · Cinzel (classique, élégante)</div>
+      <div class="d1">GRANDE FINALE</div>
+      <div class="d1" style="font-size:22px;opacity:.8">Champions · Shanghai</div>
+    </div>
+    <div class="card">
+      <div class="name">Option B · Grenze Gotisch (anguleuse, plus marquée)</div>
+      <div class="d2">Grande finale</div>
+      <div class="d2" style="font-size:26px;opacity:.8">Champions · Shanghai</div>
+    </div>
+    <div class="card">
+      <div class="name">Texte, scores, interface · Inter (inchangée)</div>
+      <div class="nums">2 – 1 <span style="color:var(--text-2);font-size:20px">BO3</span></div>
+      <div class="body-sample">Les titres solennels s'arrêtent là où commence l'information : chiffres et textes restent dans une police neutre, lisible en 3 secondes.</div>
+    </div>
+  </div>
+  <p class="note">À vérifier avant de choisir : licences (les deux sont libres sur Google Fonts, à confirmer) et rendu des accents français sur petit écran.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Ornements</span>
+  <div class="card" style="display:grid;gap:26px;justify-items:center">
+    <svg class="orn" viewBox="0 0 420 24" aria-hidden="true">
+      <path d="M0 12 L150 12 L172 4 L190 12 L210 0 L230 12 L248 4 L270 12 L420 12" fill="none" stroke="var(--brass)" stroke-width="1"/>
+      <path d="M210 5 L217 12 L210 19 L203 12 Z" fill="var(--brass)"/>
+    </svg>
+    <svg class="orn" viewBox="0 0 420 14" aria-hidden="true">
+      <path d="M0 7 H190 M230 7 H420" stroke="var(--brass-lo)" stroke-width="1"/>
+      <path d="M210 1 L216 7 L210 13 L204 7 Z" fill="none" stroke="var(--brass)" stroke-width="1"/>
+    </svg>
+    <div style="display:flex;gap:18px;align-items:center">
+      <span class="seal">A</span><span class="seal" style="transform:rotate(3deg)">★</span><span class="seal">✕</span>
+      <span class="note" style="margin:0">Tampons rouges : badges d'équipe, statuts rares</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Aperçu en situation</span>
+  <div class="stage">
+    <div class="phone">
+      <div class="eyebrow">Aujourd'hui</div>
+      <div class="h-title">LES RENDEZ-VOUS</div>
+
+      <div class="match final">
+        <div class="kicker">GRANDE FINALE</div>
+        <div class="big">CHAMPIONS 2026</div>
+        <div class="row" style="margin-top:8px">
+          <div><div class="logo">G2</div><div class="tn">G2</div></div>
+          <div class="cd">2 j 04 h<small>avant le match</small></div>
+          <div><div class="logo">KC</div><div class="tn">KC</div></div>
+        </div>
+      </div>
+
+      <div class="match">
+        <div class="meta"><span><i class="livedot"></i>En direct</span><span>BO3 · Groupe A</span></div>
+        <div class="row">
+          <div><div class="logo">PRX</div><div class="tn">PRX</div></div>
+          <div class="cd">1 – 1<small>Carte 3</small></div>
+          <div><div class="logo">NRG</div><div class="tn mine">NRG</div></div>
+        </div>
+        <div style="text-align:center;margin-top:12px"><span class="pill">★ Mon équipe</span></div>
+      </div>
+    </div>
+
+    <div class="compare" style="max-width:520px;flex:1">
+      <div class="card">
+        <div class="name">Actuel</div>
+        <div style="font:700 26px var(--sans);letter-spacing:-.01em">Grande finale</div>
+        <div style="margin-top:10px;color:var(--gold-live);font-weight:600">Or vif partout</div>
+      </div>
+      <div class="card">
+        <div class="name">Piste solennelle</div>
+        <div class="d1" style="font-size:24px">GRANDE FINALE</div>
+        <div style="margin-top:10px;color:var(--brass);font-weight:600">Laiton décoratif + or vif réservé à « mon équipe »</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Ce que je propose de garder</span>
+  <p class="note">Solennité (finales, ferveur) plutôt que combat, pour que l'identité tienne aussi pour le sport et la politique. Capitales fines pour les titres seulement. Laiton mat pour la déco, or vif pour le sens. Rouge en petites touches.</p>
+</section>
+
+</main>
+</body>
+</html>
