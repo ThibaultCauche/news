@@ -38,6 +38,11 @@ export function canPredict(status: string, startsAt: Date | null, now: Date): bo
   return status === "scheduled" && startsAt !== null && startsAt.getTime() > now.getTime();
 }
 
+/** Les choix des amis ne se montrent qu'une fois le pronostic verrouillé : jamais avant le coup d'envoi (J14). */
+export function canSeeFriendsPicks(status: string, startsAt: Date | null, now: Date): boolean {
+  return !canPredict(status, startsAt, now);
+}
+
 export const PSEUDO_MIN_LENGTH = 3;
 export const PSEUDO_MAX_LENGTH = 20;
 export const PSEUDO_CHANGE_DELAY_DAYS = 30;

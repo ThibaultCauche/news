@@ -390,6 +390,12 @@ model UserSetting {
   notifyForumReplies Boolean @default(true) @map("notify_forum_replies")
   // Forum (J13) : nouveaux messages d'une discussion suivie.
   notifyForumThreads Boolean @default(true) @map("notify_forum_threads")
+  // J14 : réglage global par type de notification, en plus des options de chaque suivi.
+  notifyMatchReminder      Boolean @default(true) @map("notify_match_reminder")
+  notifyMatchStart         Boolean @default(true) @map("notify_match_start")
+  notifyMatchResult        Boolean @default(true) @map("notify_match_result")
+  notifyQualification      Boolean @default(true) @map("notify_qualification")
+  notifyPredictionReminders Boolean @default(true) @map("notify_prediction_reminders")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
   @@map("user_setting")

@@ -50,6 +50,7 @@ dependencies:
   url_launcher: ^6.3.2
   flutter_svg: ^2.3.0
   firebase_auth: ^6.7.0
+  share_plus: ^13.3.0
 
 dev_dependencies:
   built_collection: ^5.1.1

@@ -80,6 +80,27 @@ describe("NotificationDispatchService (intégration)", () => {
     expect(fcm.send).toHaveBeenCalledTimes(1);
   });
 
+  it("le réglage global d'un type (J14) coupe ce type seulement", async () => {
+    const quiet = await prisma.appUser.create({ data: { id: randomUUID(), setting: { create: { id: randomUUID(), notifyMatchResult: false } } } });
+    try {
+      await prisma.device.create({ data: { id: randomUUID(), userId: quiet.id, installId: randomUUID(), platform: "android", pushToken: "token-quiet" } });
+      await prisma.subscription.create({ data: { id: randomUUID(), userId: quiet.id, targetType: "entity", targetId: entityId, level: "all" } });
+      const eventId = await createFinishedEvent("Test G2 vs Test PRX (réglage)");
+
+      await dispatch.handle({ type: "EventFinished", eventId, competitionId });
+      expect(await prisma.notificationLog.count({ where: { userId: quiet.id, eventId } })).toBe(0);
+
+      await dispatch.handle({ type: "EventStarted", eventId, competitionId });
+      expect(await prisma.notificationLog.count({ where: { userId: quiet.id, eventId, type: "start" } })).toBe(1);
+    } finally {
+      await prisma.notificationLog.deleteMany({ where: { userId: quiet.id } });
+      await prisma.device.deleteMany({ where: { userId: quiet.id } });
+      await prisma.subscription.deleteMany({ where: { userId: quiet.id } });
+      await prisma.userSetting.deleteMany({ where: { userId: quiet.id } });
+      await prisma.appUser.delete({ where: { id: quiet.id } });
+    }
+  });
+
   it("ignore les types d'événements sans notification associée au J4", async () => {
     const eventId = await createFinishedEvent("Test G2 vs Test PRX (2)");
     const before = await prisma.notificationLog.count({ where: { userId } });

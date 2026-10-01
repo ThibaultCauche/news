@@ -106,6 +106,7 @@ void main() {
                     ..pickedEntityId = "g2"
                     ..points = 5),
                 }),
+            friendsPicksProvider.overrideWith((ref, eventId) async => const []),
           ],
           child: MaterialApp(home: Scaffold(body: PredictionPanel(event: _event(status), scoresHidden: hidden))),
         ));
@@ -116,5 +117,48 @@ void main() {
     await show("finished", hidden: false);
     await tester.pump();
     expect(find.text("Points gagnés : 5"), findsOneWidget);
+  });
+
+  testWidgets("choix des amis : résumé et liste une fois le match commencé, rien avant", (tester) async {
+    FriendPickDto pick(String pseudo, String entityId) => FriendPickDto((b) => b
+      ..userId = pseudo
+      ..pseudo = pseudo
+      ..pickedEntityId = entityId);
+    Future<void> show(String status) => tester.pumpWidget(ProviderScope(
+          overrides: [
+            overrideSignedInForTest(),
+            predictionsProvider.overrideWith((ref) async => <String, PredictionDto>{}),
+            friendsPicksProvider.overrideWith((ref, eventId) async => status == "scheduled" ? const [] : [pick("Lea", "g2"), pick("Tom", "g2"), pick("Zoe", "prx")]),
+          ],
+          child: MaterialApp(home: Scaffold(body: SingleChildScrollView(child: PredictionPanel(event: _event(status), scoresHidden: false)))),
+        ));
+    await show("scheduled");
+    await tester.pump();
+    expect(find.text("Choix de tes amis"), findsNothing);
+    await show("live");
+    await tester.pump();
+    expect(find.text("Choix de tes amis"), findsOneWidget);
+    expect(find.textContaining("2 sur 3 ont choisi G2"), findsOneWidget);
+    expect(find.textContaining("1 sur 3 a choisi PRX"), findsOneWidget);
+    expect(find.text("Lea"), findsOneWidget);
+  });
+
+  testWidgets("choix des amis : un seul ami, formulation au singulier", (tester) async {
+    await tester.pumpWidget(ProviderScope(
+      overrides: [
+        overrideSignedInForTest(),
+        predictionsProvider.overrideWith((ref) async => <String, PredictionDto>{}),
+        friendsPicksProvider.overrideWith((ref, eventId) async => [
+              FriendPickDto((b) => b
+                ..userId = "lea"
+                ..pseudo = "Lea"
+                ..pickedEntityId = "g2")
+            ]),
+      ],
+      child: MaterialApp(home: Scaffold(body: SingleChildScrollView(child: PredictionPanel(event: _event("live"), scoresHidden: false)))),
+    ));
+    await tester.pump();
+    expect(find.text("Ton ami a choisi G2"), findsOneWidget);
+    expect(find.textContaining("sur 1"), findsNothing);
   });
 }

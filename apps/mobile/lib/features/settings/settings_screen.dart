@@ -81,6 +81,41 @@ class _SettingsBody extends ConsumerWidget {
           child: Column(
             children: [
               _ToggleRow(
+                label: "Rappel avant un match",
+                caption: "15 minutes avant le début d'un match que tu suis.",
+                value: setting.notifyMatchReminder,
+                onChanged: (v) => controller.update(notifyMatchReminder: v),
+              ),
+              const Divider(height: AppSpacing.lg),
+              _ToggleRow(
+                label: "Début d'un match",
+                caption: "Quand un match que tu suis commence.",
+                value: setting.notifyMatchStart,
+                onChanged: (v) => controller.update(notifyMatchStart: v),
+              ),
+              const Divider(height: AppSpacing.lg),
+              _ToggleRow(
+                label: "Résultat d'un match",
+                caption: "Quand un match que tu suis se termine (sans le score si « Sans spoil » est actif).",
+                value: setting.notifyMatchResult,
+                onChanged: (v) => controller.update(notifyMatchResult: v),
+              ),
+              const Divider(height: AppSpacing.lg),
+              _ToggleRow(
+                label: "Qualification et élimination",
+                caption: "Quand une équipe que tu suis se qualifie ou est éliminée.",
+                value: setting.notifyQualification,
+                onChanged: (v) => controller.update(notifyQualification: v),
+              ),
+              const Divider(height: AppSpacing.lg),
+              _ToggleRow(
+                label: "Rappel de pronostic",
+                caption: "30 minutes avant un match que tu suis, si tu n'as pas encore pronostiqué.",
+                value: setting.notifyPredictionReminders,
+                onChanged: (v) => controller.update(notifyPredictionReminders: v),
+              ),
+              const Divider(height: AppSpacing.lg),
+              _ToggleRow(
                 label: "Résumé du matin",
                 caption: "L'essentiel en 3 points, 8 h 00.",
                 value: setting.morningDigest,

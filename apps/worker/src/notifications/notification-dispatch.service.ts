@@ -8,6 +8,7 @@ import {
   DomainEventMessage,
   DOMAIN_EVENT_NOTIFICATION_TYPES,
   isQuietHour,
+  isTypeEnabled,
   KEY_MOMENT_MIN_IMPORTANCE,
   localHourFromOffsetMinutes,
   MAX_NOTIFICATIONS_PER_HOUR,
@@ -93,6 +94,7 @@ export class NotificationDispatchService {
     for (const sub of subscriptions) {
       const notifyEnabled = type === "reminder" ? sub.notifyReminder : type === "start" ? sub.notifyStart : sub.notifyResult;
       if (!shouldNotify({ notifyEnabled, subscriptionLevel: sub.level as SubscriptionLevel, eventImportance: event.importance })) continue;
+      if (!isTypeEnabled(type, sub.user.setting)) continue;
 
       // "hors équipe suivie en direct" (docs/03 §6) : un abonnement direct
       // (équipe/événement) n'est jamais plafonné, un abonnement large (catégorie/
@@ -154,6 +156,7 @@ export class NotificationDispatchService {
       // Pas de réglage dédié qualification/élimination au J5 : réutilise "résultat".
       const notifyEnabled = sub.notifyResult;
       if (!shouldNotify({ notifyEnabled, subscriptionLevel: sub.level as SubscriptionLevel, eventImportance: KEY_MOMENT_MIN_IMPORTANCE })) continue;
+      if (!isTypeEnabled(type, sub.user.setting)) continue;
 
       try {
         await this.prisma.notificationLog.create({ data: { id: randomUUID(), userId: sub.userId, entityId, type } });
@@ -183,7 +186,7 @@ export class NotificationDispatchService {
   }
 
   // Chaîne de compétitions d'un match, de la sienne (rang 0) jusqu'à la ligue racine.
-  private async getCompetitionChain(competitionId: string): Promise<{ id: string; familyId: string | null }[]> {
+  async getCompetitionChain(competitionId: string): Promise<{ id: string; familyId: string | null }[]> {
     const chain: { id: string; familyId: string | null }[] = [];
     let currentId: string | null = competitionId;
     while (currentId) {

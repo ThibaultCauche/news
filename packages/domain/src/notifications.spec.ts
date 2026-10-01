@@ -1,4 +1,4 @@
-import { buildNotificationText, isQuietHour, localHourFromOffsetMinutes, shouldNotify } from "./notifications";
+import { buildNotificationText, isTypeEnabled, isQuietHour, localHourFromOffsetMinutes, shouldNotify } from "./notifications";
 
 describe("shouldNotify", () => {
   it("ne notifie jamais si l'option est désactivée", () => {
@@ -65,5 +65,21 @@ describe("buildNotificationText", () => {
   it("qualification et élimination portent le nom de l'entité, pas d'un match (J5)", () => {
     expect(buildNotificationText("qualification", "G2 Esports", true, null).body).toContain("G2 Esports");
     expect(buildNotificationText("elimination", "TYLOO", true, null).body).toContain("TYLOO");
+  });
+});
+
+describe("isTypeEnabled", () => {
+  const all = { notifyMatchReminder: true, notifyMatchStart: true, notifyMatchResult: true, notifyQualification: true, notifyPredictionReminders: true };
+  it("tout passe sans réglages", () => {
+    expect(isTypeEnabled("result", null)).toBe(true);
+  });
+  it("chaque type suit son réglage", () => {
+    expect(isTypeEnabled("start", { ...all, notifyMatchStart: false })).toBe(false);
+    expect(isTypeEnabled("result", { ...all, notifyMatchStart: false })).toBe(true);
+    expect(isTypeEnabled("elimination", { ...all, notifyQualification: false })).toBe(false);
+    expect(isTypeEnabled("prediction_reminder", { ...all, notifyPredictionReminders: false })).toBe(false);
+  });
+  it("le rappel de pronostic annonce 30 minutes", () => {
+    expect(buildNotificationText("prediction_reminder", "G2 vs PRX", true, null).body).toContain("30 minutes");
   });
 });

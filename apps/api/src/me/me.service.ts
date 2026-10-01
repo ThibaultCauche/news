@@ -12,6 +12,11 @@ function toUserSettingDto(setting: UserSetting): UserSettingDto {
     quietHoursEnd: setting.quietHoursEnd,
     notifyForumReplies: setting.notifyForumReplies,
     notifyForumThreads: setting.notifyForumThreads,
+    notifyMatchReminder: setting.notifyMatchReminder,
+    notifyMatchStart: setting.notifyMatchStart,
+    notifyMatchResult: setting.notifyMatchResult,
+    notifyQualification: setting.notifyQualification,
+    notifyPredictionReminders: setting.notifyPredictionReminders,
   };
 }
 

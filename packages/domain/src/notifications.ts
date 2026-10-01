@@ -6,7 +6,37 @@ export type SubscriptionTargetType = "category" | "competition" | "competition_f
 export type SubscriptionLevel = "all" | "key_moments";
 export type DevicePlatform = "android" | "ios";
 
-export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination";
+export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination" | "prediction_reminder";
+
+// Rappel « tu n'as pas pronostiqué » (J14) : 30 minutes avant le coup d'envoi.
+export const PREDICTION_REMINDER_MINUTES = 30;
+
+// Réglages globaux par type de notification (J14, écran Réglages) ; chacun s'ajoute aux options du suivi.
+export interface NotificationTypeSettings {
+  notifyMatchReminder: boolean;
+  notifyMatchStart: boolean;
+  notifyMatchResult: boolean;
+  notifyQualification: boolean;
+  notifyPredictionReminders: boolean;
+}
+
+/** Le réglage global de l'utilisateur laisse-t-il passer ce type ? Sans ligne de réglages : oui. */
+export function isTypeEnabled(type: NotificationType, setting: NotificationTypeSettings | null | undefined): boolean {
+  if (!setting) return true;
+  switch (type) {
+    case "reminder":
+      return setting.notifyMatchReminder;
+    case "start":
+      return setting.notifyMatchStart;
+    case "result":
+      return setting.notifyMatchResult;
+    case "qualification":
+    case "elimination":
+      return setting.notifyQualification;
+    case "prediction_reminder":
+      return setting.notifyPredictionReminders;
+  }
+}
 
 export const SUBSCRIPTION_TARGET_TYPES: SubscriptionTargetType[] = ["category", "competition", "competition_family", "entity", "event"];
 export const SUBSCRIPTION_LEVELS: SubscriptionLevel[] = ["all", "key_moments"];
@@ -79,5 +109,7 @@ export function buildNotificationText(type: NotificationType, subjectName: strin
       return { title: "Qualifiée !", body: `${subjectName} est qualifiée pour la suite.` };
     case "elimination":
       return { title: "Éliminée", body: `${subjectName} est éliminée.` };
+    case "prediction_reminder":
+      return { title: "Pas encore de pronostic", body: `${subjectName} commence dans ${PREDICTION_REMINDER_MINUTES} minutes.` };
   }
 }

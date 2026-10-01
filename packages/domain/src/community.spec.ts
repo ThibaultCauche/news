@@ -1,4 +1,4 @@
-import { generateGroupCode, GROUP_CODE_LENGTH, pseudoChangeWaitDays, pseudoKeyOf, pseudoProblem, scorePrediction } from "./community";
+import { canSeeFriendsPicks, generateGroupCode, GROUP_CODE_LENGTH, pseudoChangeWaitDays, pseudoKeyOf, pseudoProblem, scorePrediction } from "./community";
 
 const outcome = { winnerEntityId: "g2", scoreByEntity: { g2: 2, prx: 1 } };
 
@@ -40,5 +40,17 @@ describe("generateGroupCode", () => {
     const code = generateGroupCode((max) => Math.floor(Math.random() * max));
     expect(code).toHaveLength(GROUP_CODE_LENGTH);
     expect(code).toMatch(/^[2-9A-HJKMNP-Z]+$/);
+  });
+});
+
+describe("canSeeFriendsPicks", () => {
+  const now = new Date("2026-10-03T12:00:00Z");
+  it("jamais avant le coup d'envoi", () => {
+    expect(canSeeFriendsPicks("scheduled", new Date("2026-10-03T12:30:00Z"), now)).toBe(false);
+  });
+  it("une fois le match commencé, en direct ou terminé", () => {
+    expect(canSeeFriendsPicks("live", new Date("2026-10-03T11:00:00Z"), now)).toBe(true);
+    expect(canSeeFriendsPicks("finished", new Date("2026-10-03T09:00:00Z"), now)).toBe(true);
+    expect(canSeeFriendsPicks("scheduled", new Date("2026-10-03T11:59:00Z"), now)).toBe(true);
   });
 });

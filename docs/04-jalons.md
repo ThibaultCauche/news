@@ -406,7 +406,7 @@
 
 ---
 
-## J14 — Pronostics entre amis : choix des amis, rappels, classement par jeu, partage (ajouté)
+## J14 — Pronostics entre amis : choix des amis, rappels, classement par jeu, partage (ajouté) — **Fait (2026-10-01)**
 
 **Objectif** : rendre les pronostics du J11 plus vivants entre amis, sans changer le modèle de données ni le barème. Idées du 2026-10-01 (après la clôture du J11). **Prérequis : J11** (pronostics, groupes), notifications du J4 et du J13 (réponse, heures calmes, sans spoil).
 
@@ -426,7 +426,17 @@
 
 **Hors périmètre** : classement public mondial (modération et pseudos à protéger, la couche communautaire reste optionnelle et apaisée) ; pronostic sur les rounds ou les cartes (le plan gratuit PandaScore n'a ni score par carte ni nom de carte, règle 6 de `CLAUDE.md`) ; quiz des tutos (voir « Ensuite », point 0).
 
-**Critères d'acceptation** : à rédiger au cadrage (`/jalon 14`). Vérification attendue en conditions réelles avec **deux comptes** (choix de l'ami visible seulement après le coup d'envoi, rappel reçu une seule fois, classement filtré, partage).
+**Décisions du cadrage (2026-10-01)** : choix des amis visibles pour les membres d'un groupe commun, jamais avant le coup d'envoi (liste vide côté serveur) ; rappel de pronostic **30 minutes** avant le match, pour les suivis (équipe, match, compétition) sans pronostic ; classement filtré par **jeu** seulement ; partage via `share_plus` ; **réglages de notifications par type** dans Réglages (rappel T-15, début, résultat, qualification/élimination, rappel de pronostic), en plus des options de chaque suivi (`user_setting.notify_*`, migration `j14`). Le lot B est reporté (retour d'usage du lot A d'abord) ; le pronostic sur les cartes de match n'est pas inclus.
+
+**Critères d'acceptation (lot A)**
+- [x] Avant le coup d'envoi, `GET /v1/events/:id/friends-picks` renvoie une liste vide (même en l'appelant directement) ; après, seuls les membres d'un groupe commun apparaissent, sans points (e2e API).
+- [x] Rappel de pronostic envoyé une seule fois, 30 minutes avant, aux suivis sans pronostic ; pas pour qui a déjà pronostiqué, a coupé le rappel ou n'a pas de pseudo (test d'intégration du worker).
+- [x] Réglage par type de notification : chaque interrupteur coupe son type (règle `isTypeEnabled`, test du moteur d'envoi). **Les 5 interrupteurs vérifiés à l'écran** (écrivent en base, remis ensuite).
+- [x] Classement de groupe filtré par jeu : points et bons pronostics recalculés, « Tous » redonne le total (e2e API) ; puces dans l'écran du groupe.
+- [x] Partage natif du code d'invitation (feuille Android vue sur téléphone, avec le message et le code).
+- [x] Tests : domaine 73, API 83 (e2e), worker 19, appli 91 (hors goldens Windows) ; lint et `flutter analyze` propres.
+- [x] **Vérifié en conditions réelles (2026-10-01) avec deux vrais comptes** (Wylfram sur téléphone Android, Chewlin sur émulateur, un match de test créé puis supprimé) : rappel « Pas encore de pronostic… commence dans 30 minutes » reçu avec l'appli en arrière-plan (au premier plan, Android n'affiche pas une notification Firebase) et un tap ouvre l'écran du match ; avant le coup d'envoi aucun choix d'ami n'apparaît, une fois le match en direct chacun voit le choix de l'autre et le pronostic est verrouillé ; feuille de partage ouverte avec le message. Le rappel avait aussi déjà tourné sur un vrai match (XLG–NS) pour les deux comptes.
+- **Reporté** : vérification à l'écran des puces de jeu du classement (une seule catégorie de jeu au catalogue, elles n'apparaissent qu'à partir de deux ; filtre couvert par l'e2e API) ; « TYLOO » qui passe sur deux lignes dans « Forme récente » de l'écran du match (défaut d'affichage antérieur au J14).
 
 ---
 

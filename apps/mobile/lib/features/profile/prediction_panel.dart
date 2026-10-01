@@ -4,8 +4,10 @@ import "package:news_api_client/news_api_client.dart";
 import "../../core/auth/account.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/avatar_circle.dart";
 import "../../widgets/section_card.dart";
 import "community_providers.dart";
+import "player_profile_screen.dart";
 
 /// Pronostic d'un match (docs/04 J11), en points fictifs : on choisit le vainqueur (3 pts) et,
 /// si on veut, le score de série exact (+2 pts) jusqu'au début du match. Chaque choix est
@@ -24,10 +26,12 @@ class PredictionPanel extends ConsumerWidget {
     final finished = event.status == "finished";
     if (!scheduled && !finished && event.status != "live") return const SizedBox.shrink();
     final prediction = ref.watch(predictionsProvider).value?[event.id];
-    // Un match commencé sans pronostic n'a rien à afficher.
-    if (!scheduled && prediction == null) return const SizedBox.shrink();
+    // Un match commencé sans pronostic n'a que les choix des amis à afficher.
+    if (!scheduled && prediction == null) return _FriendsPicks(event: event, first: true);
 
-    return SectionCard(
+    return Column(
+      children: [
+        SectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -56,6 +60,69 @@ class PredictionPanel extends ConsumerWidget {
               ),
             ),
         ],
+      ),
+        ),
+        if (!scheduled) _FriendsPicks(event: event, first: false),
+      ],
+    );
+  }
+}
+
+/// « 3 amis sur 5 ont choisi G2 » (J14) : seulement une fois le match commencé, et seulement les
+/// membres de tes groupes. Le serveur ne renvoie rien avant le coup d'envoi.
+class _FriendsPicks extends ConsumerWidget {
+  const _FriendsPicks({required this.event, required this.first});
+
+  final EventDetailResponseDto event;
+  // Seul bloc du panneau (pas de pronostic au-dessus) : pas de marge en haut.
+  final bool first;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final picks = ref.watch(friendsPicksProvider(event.id)).value ?? const <FriendPickDto>[];
+    if (picks.isEmpty) return const SizedBox.shrink();
+    String teamName(String entityId) {
+      final team = event.participants.where((p) => p.entityId == entityId).firstOrNull;
+      return team == null ? "?" : (team.shortName ?? team.name);
+    }
+
+    final counts = <String, int>{};
+    for (final pick in picks) {
+      counts.update(pick.pickedEntityId, (n) => n + 1, ifAbsent: () => 1);
+    }
+    // Un seul ami : « Ton ami a choisi G2 » ; sinon « 2 sur 3 ont choisi G2 · 1 sur 3 a choisi PRX ».
+    final summary = picks.length == 1
+        ? "Ton ami a choisi ${teamName(picks.first.pickedEntityId)}"
+        : counts.entries.map((e) => "${e.value} sur ${picks.length} ${e.value > 1 ? "ont" : "a"} choisi ${teamName(e.key)}").join(" · ");
+    return Padding(
+      padding: EdgeInsets.only(top: first ? 0 : AppSpacing.md),
+      child: SectionCard(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text("Choix de tes amis", style: AppTextStyles.bodyLargeStrong),
+            Text(summary, style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
+            const SizedBox(height: AppSpacing.sm),
+            for (final pick in picks)
+              InkWell(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PlayerProfileScreen(userId: pick.userId))),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+                  child: Row(
+                    children: [
+                      AvatarCircle(avatarUrl: pick.avatarUrl, pseudo: pick.pseudo, radius: 14),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(child: Text(pick.pseudo, style: AppTextStyles.bodyStrong)),
+                      Text(
+                        pick.pickedScore != null && pick.otherScore != null ? "${teamName(pick.pickedEntityId)} ${pick.pickedScore}-${pick.otherScore}" : teamName(pick.pickedEntityId),
+                        style: const TextStyle(color: AppColors.gold, fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -62,7 +62,19 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   it("crée un compte à la première connexion avec des réglages par défaut (sans spoil désactivé)", async () => {
     const { accessToken } = await createAccount();
     const res = await request(app.getHttpServer()).get("/v1/me/settings").set("Authorization", `Bearer ${accessToken}`).expect(200);
-    expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: null, quietHoursEnd: null, notifyForumReplies: true, notifyForumThreads: true });
+    expect(res.body).toEqual({
+      spoilerFree: false,
+      morningDigest: false,
+      quietHoursStart: null,
+      quietHoursEnd: null,
+      notifyForumReplies: true,
+      notifyForumThreads: true,
+      notifyMatchReminder: true,
+      notifyMatchStart: true,
+      notifyMatchResult: true,
+      notifyQualification: true,
+      notifyPredictionReminders: true,
+    });
   });
 
   it("se reconnecte au même compte, et met à jour la vérification de l'e-mail", async () => {
@@ -156,9 +168,21 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
     const res = await request(app.getHttpServer())
       .patch("/v1/me/settings")
       .set(auth)
-      .send({ spoilerFree: false, quietHoursStart: 22, quietHoursEnd: 7 })
+      .send({ spoilerFree: false, quietHoursStart: 22, quietHoursEnd: 7, notifyPredictionReminders: false })
       .expect(200);
-    expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: 22, quietHoursEnd: 7, notifyForumReplies: true, notifyForumThreads: true });
+    expect(res.body).toEqual({
+      spoilerFree: false,
+      morningDigest: false,
+      quietHoursStart: 22,
+      quietHoursEnd: 7,
+      notifyForumReplies: true,
+      notifyForumThreads: true,
+      notifyMatchReminder: true,
+      notifyMatchStart: true,
+      notifyMatchResult: true,
+      notifyQualification: true,
+      notifyPredictionReminders: false,
+    });
   });
 
   it("supprime le compte (DELETE /v1/me) : le jeton n'autorise plus rien ensuite", async () => {

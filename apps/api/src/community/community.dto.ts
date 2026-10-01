@@ -99,3 +99,17 @@ export class GroupRankingEntryDto {
 export class GroupDetailDto extends GroupDto {
   @ApiProperty({ type: [GroupRankingEntryDto] }) ranking!: GroupRankingEntryDto[];
 }
+
+export class FriendPickDto {
+  @ApiProperty() userId!: string;
+  @ApiProperty() pseudo!: string;
+  @ApiPropertyOptional({ nullable: true, type: String }) avatarUrl!: string | null;
+  @ApiProperty() pickedEntityId!: string;
+  @ApiPropertyOptional({ nullable: true, type: Number }) pickedScore!: number | null;
+  @ApiPropertyOptional({ nullable: true, type: Number }) otherScore!: number | null;
+}
+
+export class FriendsPicksDto {
+  @ApiProperty({ description: "Vide tant que le match n'a pas commencé (masqué côté serveur) ; jamais de points ni de résultat", type: [FriendPickDto] })
+  picks!: FriendPickDto[];
+}

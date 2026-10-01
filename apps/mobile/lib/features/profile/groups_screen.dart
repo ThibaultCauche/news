@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:share_plus/share_plus.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/auth/account.dart";
 import "../../core/settings_provider.dart";
@@ -9,6 +10,8 @@ import "../../widgets/avatar_circle.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
+import "../competitions/competitions_data.dart";
+import "../predictions/predictions_screen.dart";
 import "community_providers.dart";
 import "player_profile_screen.dart";
 
@@ -149,6 +152,8 @@ class GroupScreen extends ConsumerStatefulWidget {
 
 class _GroupScreenState extends ConsumerState<GroupScreen> {
   bool _revealed = false;
+  // Filtre du classement (J14) : `null` = tous les jeux.
+  String? _game;
 
   Future<void> _leaveOrDelete(GroupDetailDto group) async {
     final community = ref.read(communityControllerProvider);
@@ -174,7 +179,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final detail = ref.watch(groupDetailProvider(widget.groupId));
+    final detail = ref.watch(groupDetailProvider((id: widget.groupId, game: _game)));
     final hidden = (ref.watch(userSettingProvider).value?.spoilerFree ?? true) && !_revealed;
     return Scaffold(
       appBar: AppBar(
@@ -211,6 +216,11 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
                 children: [
                   Expanded(child: Text(group.code, style: AppTextStyles.heroScore)),
                   IconButton(
+                    tooltip: "Partager",
+                    icon: const Icon(Icons.ios_share_rounded),
+                    onPressed: () => SharePlus.instance.share(ShareParams(text: "Rejoins mon groupe « ${group.name} » sur News pour comparer nos pronostics. Code d'invitation : ${group.code}")),
+                  ),
+                  IconButton(
                     tooltip: "Copier le code",
                     icon: const Icon(Icons.copy_rounded),
                     onPressed: () {
@@ -237,6 +247,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
         const SizedBox(height: AppSpacing.lg),
         const SectionLabel("CLASSEMENT"),
         const SizedBox(height: AppSpacing.sm),
+        _GameChips(selected: _game, onSelected: (slug) => setState(() => _game = slug)),
         GestureDetector(
           onLongPress: hidden ? () => setState(() => _revealed = true) : null,
           child: SectionCard(
@@ -269,6 +280,36 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
           child: Text(group.isOwner ? "Supprimer le groupe" : "Quitter le groupe", style: const TextStyle(color: AppColors.live)),
         ),
       ],
+    );
+  }
+}
+
+/// Puces « Tous / jeu » du classement, comme sur l'écran Pronostics ; rien à choisir avec un seul jeu.
+class _GameChips extends ConsumerWidget {
+  const _GameChips({required this.selected, required this.onSelected});
+
+  final String? selected;
+  final ValueChanged<String?> onSelected;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final games = catalogGames(ref.watch(catalogProvider).value);
+    if (games.length < 2) return const SizedBox.shrink();
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: SizedBox(
+        height: 40,
+        child: ListView(
+          scrollDirection: Axis.horizontal,
+          children: [
+            ChoiceChip(label: const Text("Tous"), selected: selected == null, onSelected: (_) => onSelected(null)),
+            for (final game in games) ...[
+              const SizedBox(width: AppSpacing.sm),
+              ChoiceChip(label: Text(game.name), selected: selected == game.slug, onSelected: (_) => onSelected(game.slug)),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }

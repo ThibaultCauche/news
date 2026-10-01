@@ -1,10 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, UseGuards } from "@nestjs/common";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { Body, Controller, Delete, Get, HttpCode, Param, ParseUUIDPipe, Post, Put, Query, UseGuards } from "@nestjs/common";
+import { ApiOkResponse, ApiQuery } from "@nestjs/swagger";
 import { Throttle } from "@nestjs/throttler";
 import { AuthUser } from "../auth/auth.types";
 import { CurrentUser } from "../auth/current-user.decorator";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
-import { CreateGroupDto, GroupDetailDto, GroupDto, JoinGroupDto, PredictionDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
+import { CreateGroupDto, FriendsPicksDto, GroupDetailDto, GroupDto, JoinGroupDto, PredictionDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
 import { CommunityService } from "./community.service";
 
 // Profil, pronostics et groupes d'amis (J11, docs/04) : tout exige un compte connecté.
@@ -43,6 +43,12 @@ export class CommunityController {
     return this.community.putPrediction(user.id, dto);
   }
 
+  @Get("events/:id/friends-picks")
+  @ApiOkResponse({ type: FriendsPicksDto })
+  friendsPicks(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<FriendsPicksDto> {
+    return this.community.friendsPicks(user.id, id);
+  }
+
   @Get("groups")
   @ApiOkResponse({ type: [GroupDto] })
   listGroups(@CurrentUser() user: AuthUser): Promise<GroupDto[]> {
@@ -65,8 +71,9 @@ export class CommunityController {
 
   @Get("groups/:id")
   @ApiOkResponse({ type: GroupDetailDto })
-  getGroup(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<GroupDetailDto> {
-    return this.community.getGroup(user.id, id);
+  @ApiQuery({ name: "game", required: false, description: "Slug du jeu : classement limité aux matchs de ce jeu" })
+  getGroup(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string, @Query("game") game?: string): Promise<GroupDetailDto> {
+    return this.community.getGroup(user.id, id, game);
   }
 
   @Delete("groups/:id/members/me")

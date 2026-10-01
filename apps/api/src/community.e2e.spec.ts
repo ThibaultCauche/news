@@ -207,6 +207,51 @@ describe("Profil, pronostics, groupes (e2e)", () => {
     });
   });
 
+  describe("amis et classement (J14)", () => {
+    it("les choix des amis restent cachés avant le coup d'envoi, puis se montrent aux membres d'un groupe commun seulement", async () => {
+      const me = await accountWithPseudo("Moi");
+      const friend = await accountWithPseudo("Ami");
+      const stranger = await accountWithPseudo("Inconnu");
+      const group = await request(server()).post("/v1/groups").set(me.auth).send({ name: "Amis J14" }).expect(201);
+      await request(server()).post("/v1/groups/join").set(friend.auth).send({ code: group.body.code }).expect(201);
+      for (const [eventId, a] of [[futureEventId, friend], [startedEventId, friend], [startedEventId, stranger]] as const) {
+        await prisma.prediction.create({ data: { id: randomUUID(), userId: a.userId, eventId, pickedEntityId: teamAId } });
+      }
+
+      const before = await request(server()).get(`/v1/events/${futureEventId}/friends-picks`).set(me.auth).expect(200);
+      expect(before.body.picks).toEqual([]);
+
+      const after = await request(server()).get(`/v1/events/${startedEventId}/friends-picks`).set(me.auth).expect(200);
+      expect(after.body.picks.map((p: { pseudo: string; pickedEntityId: string }) => [p.pseudo, p.pickedEntityId])).toEqual([[friend.pseudo, teamAId]]);
+      expect(after.body.picks[0]).not.toHaveProperty("points");
+
+      await request(server()).get(`/v1/events/${randomUUID()}/friends-picks`).set(me.auth).expect(404);
+      await request(server()).get(`/v1/events/${startedEventId}/friends-picks`).expect(401);
+    });
+
+    it("le classement d'un groupe se filtre par jeu", async () => {
+      const owner = await accountWithPseudo("Chef");
+      const group = await request(server()).post("/v1/groups").set(owner.auth).send({ name: "Filtre jeu" }).expect(201);
+      const game = `test-game-${suffix}`;
+      const otherCompetition = await prisma.competition.create({ data: { id: randomUUID(), categoryId, kind: "tournament", name: "Test autre jeu", status: "live", game } });
+      const otherEvent = await prisma.event.create({
+        data: { id: randomUUID(), competitionId: otherCompetition.id, kind: "match", name: "Test autre", status: "finished", participants: { create: [{ id: randomUUID(), entityId: teamAId }] } },
+      });
+      await prisma.prediction.create({ data: { id: randomUUID(), userId: owner.userId, eventId: otherEvent.id, pickedEntityId: teamAId, points: 3, settledAt: new Date() } });
+      await prisma.prediction.create({ data: { id: randomUUID(), userId: owner.userId, eventId: futureEventId, pickedEntityId: teamAId, points: 5, settledAt: new Date() } });
+
+      const all = await request(server()).get(`/v1/groups/${group.body.id}`).set(owner.auth).expect(200);
+      expect(all.body.ranking[0].points).toBe(8);
+      const filtered = await request(server()).get(`/v1/groups/${group.body.id}`).query({ game }).set(owner.auth).expect(200);
+      expect(filtered.body.ranking[0]).toMatchObject({ points: 3, correctCount: 1 });
+
+      await prisma.prediction.deleteMany({ where: { eventId: otherEvent.id } });
+      await prisma.eventParticipant.deleteMany({ where: { eventId: otherEvent.id } });
+      await prisma.event.delete({ where: { id: otherEvent.id } });
+      await prisma.competition.delete({ where: { id: otherCompetition.id } });
+    });
+  });
+
   it("la suppression du créateur transmet son groupe au membre le plus ancien, et le supprime s'il est seul", async () => {
     const owner = await accountWithPseudo("Chef");
     const heir = await accountWithPseudo("Heritier");

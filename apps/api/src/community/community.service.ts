@@ -3,6 +3,7 @@ import { BadRequestException, ConflictException, ForbiddenException, Inject, Inj
 import { PrismaClient } from "@news/db";
 import {
   canPredict,
+  canSeeFriendsPicks,
   generateGroupCode,
   GROUP_MAX_MEMBERS,
   normalizeGroupCode,
@@ -11,7 +12,7 @@ import {
   pseudoProblem,
 } from "@news/domain";
 import { PRISMA } from "../db/db.module";
-import { GroupDetailDto, GroupDto, PredictionDto, ProfileCampDto, PredictionStatsDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
+import { FriendsPicksDto, GroupDetailDto, GroupDto, PredictionDto, ProfileCampDto, PredictionStatsDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
 
 const PSEUDO_MESSAGES = {
   length: "Le pseudo doit faire entre 3 et 20 caractères",
@@ -156,6 +157,33 @@ export class CommunityService {
     return toPredictionDto(row);
   }
 
+  /**
+   * Choix des amis (membres d'un groupe en commun) sur un match, une fois le coup d'envoi donné.
+   * Avant : liste vide, décidée ici et non dans l'appli, pour qu'on ne puisse pas copier un ami.
+   */
+  async friendsPicks(userId: string, eventId: string): Promise<FriendsPicksDto> {
+    const event = await this.prisma.event.findUnique({ where: { id: eventId }, select: { status: true, startsAt: true } });
+    if (!event) throw new NotFoundException("Match introuvable");
+    if (!canSeeFriendsPicks(event.status, event.startsAt, new Date())) return { picks: [] };
+    const rows = await this.prisma.prediction.findMany({
+      where: { eventId, userId: { not: userId }, user: { pseudo: { not: null }, groupMemberships: { some: { group: { members: { some: { userId } } } } } } },
+      include: { user: { select: { pseudo: true, avatarEntityId: true } } },
+      orderBy: { createdAt: "asc" },
+    });
+    const avatarIds = rows.map((r) => r.user.avatarEntityId).filter((id): id is string => id !== null);
+    const avatars = new Map((await this.prisma.entity.findMany({ where: { id: { in: avatarIds } }, select: { id: true, imageUrl: true } })).map((e) => [e.id, e.imageUrl]));
+    return {
+      picks: rows.map((r) => ({
+        userId: r.userId,
+        pseudo: r.user.pseudo ?? "?",
+        avatarUrl: r.user.avatarEntityId ? (avatars.get(r.user.avatarEntityId) ?? null) : null,
+        pickedEntityId: r.pickedEntityId,
+        pickedScore: r.pickedScore,
+        otherScore: r.otherScore,
+      })),
+    };
+  }
+
   // ---- Groupes ----
 
   async createGroup(userId: string, name: string): Promise<GroupDto> {
@@ -196,13 +224,13 @@ export class CommunityService {
     return groups.map((g) => ({ id: g.id, name: g.name, code: g.code, memberCount: g._count.members, isOwner: g.ownerId === userId }));
   }
 
-  async getGroup(userId: string, groupId: string): Promise<GroupDetailDto> {
+  async getGroup(userId: string, groupId: string, game?: string): Promise<GroupDetailDto> {
     const group = await this.prisma.friendGroup.findFirst({
       where: { id: groupId, members: { some: { userId } } },
       include: { members: { include: { user: { select: { pseudo: true, avatarEntityId: true } } } } },
     });
     if (!group) throw new NotFoundException("Groupe introuvable");
-    const predictions = await this.prisma.prediction.findMany({ where: { userId: { in: group.members.map((m) => m.userId) } }, select: { userId: true, points: true } });
+    const predictions = await this.prisma.prediction.findMany({ where: { userId: { in: group.members.map((m) => m.userId) }, ...(game ? { event: { competition: { game } } } : {}) }, select: { userId: true, points: true } });
     const avatarEntityIds = group.members.map((m) => m.user.avatarEntityId).filter((id): id is string => id !== null);
     const avatars = new Map((await this.prisma.entity.findMany({ where: { id: { in: avatarEntityIds } }, select: { id: true, imageUrl: true } })).map((e) => [e.id, e.imageUrl]));
     const entries = group.members.map((m) => {

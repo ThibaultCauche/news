@@ -20,8 +20,15 @@ final groupsProvider = FutureProvider.autoDispose<List<GroupDto>>((ref) async {
   return (await ref.watch(apiClientProvider).getCommunityApi().communityControllerListGroups()).data!.toList();
 });
 
-final groupDetailProvider = FutureProvider.autoDispose.family<GroupDetailDto, String>((ref, id) async {
-  return (await ref.watch(apiClientProvider).getCommunityApi().communityControllerGetGroup(id: id)).data!;
+/// Classement d'un groupe ; `game` (slug) limite les points aux matchs de ce jeu, `null` = tous (J14).
+final groupDetailProvider = FutureProvider.autoDispose.family<GroupDetailDto, ({String id, String? game})>((ref, key) async {
+  return (await ref.watch(apiClientProvider).getCommunityApi().communityControllerGetGroup(id: key.id, game: key.game)).data!;
+});
+
+/// Choix des amis sur un match : vide tant que le match n'a pas commencé (masqué par le serveur, J14).
+final friendsPicksProvider = FutureProvider.autoDispose.family<List<FriendPickDto>, String>((ref, eventId) async {
+  if (!ref.watch(signedInProvider)) return const [];
+  return (await ref.watch(apiClientProvider).getCommunityApi().communityControllerFriendsPicks(id: eventId)).data!.picks.toList();
 });
 
 /// Mes pronostics, par match. Vide pour un invité.

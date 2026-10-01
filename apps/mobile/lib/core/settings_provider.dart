@@ -10,7 +10,7 @@ import "auth/account.dart";
 /// encore envoyé), heures calmes.
 final userSettingProvider = FutureProvider.autoDispose<UserSettingDto>((ref) async {
   // Invité : réglages par défaut (sans spoil désactivé), modifiables seulement avec un compte.
-  if (!ref.watch(signedInProvider)) return UserSettingDto((b) => b..spoilerFree = false..morningDigest = false..notifyForumReplies = true..notifyForumThreads = true);
+  if (!ref.watch(signedInProvider)) return UserSettingDto((b) => b..spoilerFree = false..morningDigest = false..notifyForumReplies = true..notifyForumThreads = true..notifyMatchReminder = true..notifyMatchStart = true..notifyMatchResult = true..notifyQualification = true..notifyPredictionReminders = true);
   final response = await ref.watch(apiClientProvider).getMeApi().meControllerGetSettings();
   return response.data!;
 });
@@ -20,7 +20,7 @@ class SettingsController {
 
   final Ref _ref;
 
-  Future<void> update({bool? spoilerFree, bool? morningDigest, bool? notifyForumReplies, bool? notifyForumThreads, int? quietHoursStart, int? quietHoursEnd}) async {
+  Future<void> update({bool? spoilerFree, bool? morningDigest, bool? notifyForumReplies, bool? notifyForumThreads, bool? notifyMatchReminder, bool? notifyMatchStart, bool? notifyMatchResult, bool? notifyQualification, bool? notifyPredictionReminders, int? quietHoursStart, int? quietHoursEnd}) async {
     if (!await ensureAccount(_ref)) return;
     await _ref.read(apiClientProvider).getMeApi().meControllerUpdateSettings(
       updateUserSettingDto: UpdateUserSettingDto((b) {
@@ -28,6 +28,11 @@ class SettingsController {
         if (morningDigest != null) b.morningDigest = morningDigest;
         if (notifyForumReplies != null) b.notifyForumReplies = notifyForumReplies;
         if (notifyForumThreads != null) b.notifyForumThreads = notifyForumThreads;
+        if (notifyMatchReminder != null) b.notifyMatchReminder = notifyMatchReminder;
+        if (notifyMatchStart != null) b.notifyMatchStart = notifyMatchStart;
+        if (notifyMatchResult != null) b.notifyMatchResult = notifyMatchResult;
+        if (notifyQualification != null) b.notifyQualification = notifyQualification;
+        if (notifyPredictionReminders != null) b.notifyPredictionReminders = notifyPredictionReminders;
         if (quietHoursStart != null) b.quietHoursStart = quietHoursStart;
         if (quietHoursEnd != null) b.quietHoursEnd = quietHoursEnd;
       }),
