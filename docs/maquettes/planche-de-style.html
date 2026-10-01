@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Planche de style — piste « solennelle »</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Grenze+Gotisch:wght@400;600;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Grenze+Gotisch:wght@400;600;800&family=Inter:wght@400;500;600;700&family=Cinzel+Decorative:wght@700&family=Cormorant+SC:wght@700&family=Marcellus&family=Forum&family=Italiana&family=Bodoni+Moda:wght@700&family=Metamorphous&family=Almendra:wght@700&family=Texturina:wght@700&family=Pirata+One&family=New+Rocker&family=UnifrakturCook:wght@700&family=UnifrakturMaguntia&family=MedievalSharp&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #08090B;
@@ -73,6 +73,26 @@
   .seal { display: inline-grid; place-items: center; width: 26px; height: 26px; border: 2px solid var(--seal); color: var(--seal); font: 700 12px var(--sans); border-radius: 4px; transform: rotate(-4deg); }
   .compare { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
   @media (max-width: 560px) { .compare { grid-template-columns: 1fr; } }
+  .fgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 14px; }
+  .fcard { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .fcard .fn { font: 600 12px var(--sans); color: var(--text-2); }
+  .fcard .fd { font: 400 11px var(--sans); color: var(--text-3); margin-bottom: 12px; }
+  .fcard .t1 { color: var(--brass-hi); font-size: 30px; line-height: 1.15; text-transform: uppercase; letter-spacing: .05em; }
+  .fcard .t2 { color: var(--brass-hi); font-size: 19px; margin-top: 8px; }
+  .fcard .t3 { color: var(--text); font-size: 14px; margin-top: 8px; opacity: .85; }
+  .sub-h { font: 600 13px var(--sans); color: var(--text); margin: 26px 0 12px; }
+  .p390 { width: 390px; max-width: 100%; }
+  .pir { font-family: "Pirata One", serif; font-weight: 400; }
+  .cin { font-family: "Cinzel", serif; }
+  .ptitle { font-size: 40px; line-height: 1; color: var(--brass-hi); letter-spacing: .04em; text-transform: uppercase; margin: 8px 4px 16px; }
+  .ptitle.c { font-family: "Cinzel", serif; font-weight: 600; font-size: 28px; letter-spacing: .1em; }
+  .sec-h { font-size: 17px; color: var(--brass); letter-spacing: .12em; text-transform: uppercase; margin: 18px 4px 10px; }
+  .sec-h.i { font-family: "Inter", sans-serif; font-weight: 600; font-size: 12px; color: var(--text-2); letter-spacing: .18em; }
+  .final .big.pir { font-family: "Pirata One", serif; font-size: 34px; letter-spacing: .04em; font-weight: 400; text-transform: uppercase; }
+  .final .kick-pir { font-family: "Pirata One", serif; font-size: 18px; letter-spacing: .18em; color: var(--brass); }
+  .sizes { display: grid; gap: 8px; margin-top: 10px; }
+  .sizes div { color: var(--brass-hi); font-family: "Pirata One", serif; }
+  .tag { font: 600 11px var(--sans); letter-spacing: .12em; text-transform: uppercase; color: var(--text-2); margin: 0 0 10px; }
 </style>
 </head>
 <body>
@@ -184,6 +204,124 @@
         <div style="margin-top:10px;color:var(--brass);font-weight:600">Laiton décoratif + or vif réservé à « mon équipe »</div>
       </div>
     </div>
+  </div>
+</section>
+
+<section>
+  <span class="eyebrow">Comparatif de polices pour les titres</span>
+  <div class="sub-h">Capitales fines et élégantes</div>
+  <div class="fgrid">
+    <div class="fcard"><div class="fn">Cinzel</div><div class="fd">Référence actuelle</div>
+      <div class="t1" style="font-family:'Cinzel',serif;font-weight:700">Grande finale</div>
+      <div class="t2" style="font-family:'Cinzel',serif;font-weight:700">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Cinzel',serif;font-weight:700">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Cinzel Decorative</div><div class="fd">Même famille, plus de fioritures</div>
+      <div class="t1" style="font-family:'Cinzel Decorative',serif;font-weight:700">Grande finale</div>
+      <div class="t2" style="font-family:'Cinzel Decorative',serif;font-weight:700">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Cinzel Decorative',serif;font-weight:700">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Cormorant SC</div><div class="fd">Très fine, empattements aigus</div>
+      <div class="t1" style="font-family:'Cormorant SC',serif;font-weight:700">Grande finale</div>
+      <div class="t2" style="font-family:'Cormorant SC',serif;font-weight:700">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Cormorant SC',serif;font-weight:700">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Marcellus</div><div class="fd">Capitales sobres, plus douces</div>
+      <div class="t1" style="font-family:'Marcellus',serif;font-weight:400">Grande finale</div>
+      <div class="t2" style="font-family:'Marcellus',serif;font-weight:400">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Marcellus',serif;font-weight:400">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Forum</div><div class="fd">Capitales romaines, élancées</div>
+      <div class="t1" style="font-family:'Forum',serif;font-weight:400">Grande finale</div>
+      <div class="t2" style="font-family:'Forum',serif;font-weight:400">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Forum',serif;font-weight:400">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Italiana</div><div class="fd">Très fine, élégante</div>
+      <div class="t1" style="font-family:'Italiana',serif;font-weight:400">Grande finale</div>
+      <div class="t2" style="font-family:'Italiana',serif;font-weight:400">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Italiana',serif;font-weight:400">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Bodoni Moda</div><div class="fd">Fort contraste, déliés très fins</div>
+      <div class="t1" style="font-family:'Bodoni Moda',serif;font-weight:700">Grande finale</div>
+      <div class="t2" style="font-family:'Bodoni Moda',serif;font-weight:700">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Bodoni Moda',serif;font-weight:700">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Metamorphous</div><div class="fd">Fantasy, pointes marquées</div>
+      <div class="t1" style="font-family:'Metamorphous',serif;font-weight:400">Grande finale</div>
+      <div class="t2" style="font-family:'Metamorphous',serif;font-weight:400">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Metamorphous',serif;font-weight:400">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Almendra</div><div class="fd">Calligraphique, médiéval doux</div>
+      <div class="t1" style="font-family:'Almendra',serif;font-weight:700">Grande finale</div>
+      <div class="t2" style="font-family:'Almendra',serif;font-weight:700">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Almendra',serif;font-weight:700">Qualifiée · Repêchage · Phase à élimination</div></div>
+  </div>
+  <div class="sub-h">Styles gothiques</div>
+  <div class="fgrid">
+    <div class="fcard"><div class="fn">Texturina</div><div class="fd">Gothique léger, lisible</div>
+      <div class="t1" style="font-family:'Texturina',serif;font-weight:700">Grande finale</div>
+      <div class="t2" style="font-family:'Texturina',serif;font-weight:700">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Texturina',serif;font-weight:700">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">Pirata One</div><div class="fd">Gothique condensé, affirmé</div>
+      <div class="t1" style="font-family:'Pirata One',serif;font-weight:400">Grande finale</div>
+      <div class="t2" style="font-family:'Pirata One',serif;font-weight:400">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'Pirata One',serif;font-weight:400">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">New Rocker</div><div class="fd">Gothique anguleux, plus agressif</div>
+      <div class="t1" style="font-family:'New Rocker',serif;font-weight:400">Grande finale</div>
+      <div class="t2" style="font-family:'New Rocker',serif;font-weight:400">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'New Rocker',serif;font-weight:400">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">UnifrakturCook</div><div class="fd">Fraktur classique</div>
+      <div class="t1" style="font-family:'UnifrakturCook',serif;font-weight:700">Grande finale</div>
+      <div class="t2" style="font-family:'UnifrakturCook',serif;font-weight:700">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'UnifrakturCook',serif;font-weight:700">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">UnifrakturMaguntia</div><div class="fd">Fraktur plus ouverte</div>
+      <div class="t1" style="font-family:'UnifrakturMaguntia',serif;font-weight:400">Grande finale</div>
+      <div class="t2" style="font-family:'UnifrakturMaguntia',serif;font-weight:400">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'UnifrakturMaguntia',serif;font-weight:400">Qualifiée · Repêchage · Phase à élimination</div></div>
+    <div class="fcard"><div class="fn">MedievalSharp</div><div class="fd">Médiéval pointu</div>
+      <div class="t1" style="font-family:'MedievalSharp',serif;font-weight:400">Grande finale</div>
+      <div class="t2" style="font-family:'MedievalSharp',serif;font-weight:400">Champions 2026 · Éliminée</div>
+      <div class="t3" style="font-family:'MedievalSharp',serif;font-weight:400">Qualifiée · Repêchage · Phase à élimination</div></div>
+  </div>
+  <p class="note">Chaque carte montre le même texte avec accents français : majuscules (titre), puis casse normale. Si une police s'affiche en serif générique, elle n'a pas pu se charger (connexion). Licences à confirmer avant adoption.</p>
+</section>
+
+<section>
+  <span class="eyebrow">Test d'association à taille réelle (390 px)</span>
+  <div class="stage">
+    <div class="phone p390">
+      <p class="tag">Pirata One + Cinzel + Inter</p>
+      <div class="ptitle pir">Aujourd'hui</div>
+      <div class="sec-h cin">Les rendez-vous</div>
+      <div class="match final"><div class="kick-pir">Grande finale</div><div class="big pir">Champions 2026</div>
+        <div class="row" style="margin-top:8px">
+          <div><div class="logo">G2</div><div class="tn">G2</div></div>
+          <div class="cd">2 j 04 h<small>avant le match</small></div>
+          <div><div class="logo">KC</div><div class="tn">KC</div></div>
+        </div></div>
+      <div class="match"><div class="meta"><span><i class="livedot"></i>En direct</span><span>BO3 · Groupe A</span></div>
+        <div class="row"><div><div class="logo">PRX</div><div class="tn">PRX</div></div><div class="cd">1 – 1<small>Carte 3</small></div><div><div class="logo">NRG</div><div class="tn mine">NRG</div></div></div></div>
+      <div class="sec-h cin">Mes compétitions</div>
+      <div class="match" style="padding:12px 16px"><div class="cin" style="color:var(--brass-hi);font-size:15px;letter-spacing:.06em">VCT Champions Shanghai 2026 · Phase à élimination</div><div style="font-size:12px;color:var(--text-2);margin-top:4px">Éliminée · Repêchage · 3 matchs restants</div></div>
+    </div>
+    <div class="phone p390">
+      <p class="tag">Cinzel + Inter seulement</p>
+      <div class="ptitle c">Aujourd'hui</div>
+      <div class="sec-h cin">Les rendez-vous</div>
+      <div class="match final"><div class="kicker">GRANDE FINALE</div><div class="big">CHAMPIONS 2026</div>
+        <div class="row" style="margin-top:8px">
+          <div><div class="logo">G2</div><div class="tn">G2</div></div>
+          <div class="cd">2 j 04 h<small>avant le match</small></div>
+          <div><div class="logo">KC</div><div class="tn">KC</div></div>
+        </div></div>
+      <div class="match"><div class="meta"><span><i class="livedot"></i>En direct</span><span>BO3 · Groupe A</span></div>
+        <div class="row"><div><div class="logo">PRX</div><div class="tn">PRX</div></div><div class="cd">1 – 1<small>Carte 3</small></div><div><div class="logo">NRG</div><div class="tn mine">NRG</div></div></div></div>
+      <div class="sec-h cin">Mes compétitions</div>
+      <div class="match" style="padding:12px 16px"><div class="cin" style="color:var(--brass-hi);font-size:15px;letter-spacing:.06em">VCT Champions Shanghai 2026 · Phase à élimination</div><div style="font-size:12px;color:var(--text-2);margin-top:4px">Éliminée · Repêchage · 3 matchs restants</div></div>
+    </div>
+  </div>
+  <div class="card" style="margin-top:20px">
+    <p class="tag">Test de lisibilité de Pirata One selon la taille</p>
+    <div class="sizes">
+      <div style="font-size:14px">14 px — Phase à élimination · Qualifiée · Éliminée</div>
+      <div style="font-size:18px">18 px — Phase à élimination · Qualifiée · Éliminée</div>
+      <div style="font-size:24px">24 px — Phase à élimination · Qualifiée</div>
+      <div style="font-size:32px">32 px — Grande finale</div>
+      <div style="font-size:44px;text-transform:uppercase">44 px — Aujourd'hui</div>
+    </div>
+    <p class="note">Seuil de lisibilité à juger à l'œil sur ton écran : en dessous de quelle taille Pirata One te gêne ?</p>
   </div>
 </section>
 
