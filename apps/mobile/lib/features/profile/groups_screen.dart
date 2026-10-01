@@ -3,6 +3,7 @@ import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:share_plus/share_plus.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../../widgets/page_title.dart";
 import "../../core/auth/account.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/app_theme.dart";
@@ -242,7 +243,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
-        Text(group.name, style: AppTextStyles.pageTitle),
+        PageTitle(group.name),
         const SizedBox(height: AppSpacing.md),
         const SizedBox(height: AppSpacing.lg),
         const SectionLabel("CLASSEMENT"),

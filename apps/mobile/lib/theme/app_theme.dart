@@ -69,9 +69,9 @@ ThemeData buildAppTheme() {
     // doit laisser passer une couleur hors palette (règle 12 de CLAUDE.md).
     colorScheme: base.colorScheme.copyWith(
       surface: AppColors.background,
-      primary: AppColors.gold,
+      primary: AppColors.brass,
       onPrimary: AppColors.background,
-      secondary: AppColors.gold,
+      secondary: AppColors.brass,
       onSecondary: AppColors.background,
       error: AppColors.live,
     ),
@@ -89,6 +89,18 @@ ThemeData buildAppTheme() {
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AppRadii.card))),
     ),
     dividerColor: AppColors.brass.withValues(alpha: 0.25),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: AppColors.brass,
+        side: const BorderSide(color: AppColors.brass),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.chip)),
+      ),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.background : AppColors.textSecondary),
+      trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.brass : AppColors.surface),
+      trackOutlineColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.brass : AppColors.textTertiary),
+    ),
     checkboxTheme: CheckboxThemeData(
       side: const BorderSide(color: AppColors.brass, width: 1.2),
       checkColor: const WidgetStatePropertyAll(AppColors.background),
