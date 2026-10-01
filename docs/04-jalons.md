@@ -19,6 +19,8 @@
 | J11 | Comptes avec pseudo, page de profil (badges, score de pronostics, stats), pronostics en points fictifs, groupes d'amis (façon MPP) | On parie sur ses matchs et on se compare à ses amis, gratuitement | **Fait (2026-09-30)** |
 | J12 | Section apprentissage Valorant : tutos écrits (jeu, rôles, cartes) | Un néophyte comprend comment on joue | **Fait (2026-10-01)** |
 | J13 | Forum (bêta fermée) : discussion et tchat du direct par match, fils par équipe, compétition, jeu et libres, badge de camp, modération | On discute d'un match sans que ça dégénère | **Fait (2026-10-01)** |
+| J14 | Pronostics entre amis : choix des amis, rappels, classement par jeu, partage | Se comparer à ses amis | **Fait (2026-10-01)** |
+| J15 | Finitions d'interface : skeletons, retour instantané, parcours d'accueil, erreurs lisibles | L'appli paraît plus rapide et ne montre jamais d'erreur technique | À planifier |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -437,6 +439,27 @@
 - [x] Tests : domaine 73, API 83 (e2e), worker 19, appli 91 (hors goldens Windows) ; lint et `flutter analyze` propres.
 - [x] **Vérifié en conditions réelles (2026-10-01) avec deux vrais comptes** (Wylfram sur téléphone Android, Chewlin sur émulateur, un match de test créé puis supprimé) : rappel « Pas encore de pronostic… commence dans 30 minutes » reçu avec l'appli en arrière-plan (au premier plan, Android n'affiche pas une notification Firebase) et un tap ouvre l'écran du match ; avant le coup d'envoi aucun choix d'ami n'apparaît, une fois le match en direct chacun voit le choix de l'autre et le pronostic est verrouillé ; feuille de partage ouverte avec le message. Le rappel avait aussi déjà tourné sur un vrai match (XLG–NS) pour les deux comptes.
 - **Reporté** : vérification à l'écran des puces de jeu du classement (une seule catégorie de jeu au catalogue, elles n'apparaissent qu'à partir de deux ; filtre couvert par l'e2e API) ; « TYLOO » qui passe sur deux lignes dans « Forme récente » de l'écran du match (défaut d'affichage antérieur au J14).
+
+---
+
+## J15 — Finitions d'interface : cinq défauts à éviter (ajouté)
+
+**Objectif** : passer l'appli au crible de cinq défauts courants d'interface, décidés le 2026-10-01 après lecture d'une liste de bonnes pratiques. Aucune nouvelle fonctionnalité : on **audite d'abord** chaque écran, puis on corrige.
+
+**Périmètre**
+1. **Skeletons plutôt que spinners** : l'appli compte aujourd'hui une trentaine de `CircularProgressIndicator`, sur la plupart des écrans, et aucun skeleton. Remplacer, là où on sait ce qui va s'afficher (cartes de match, listes, profil, forum, classements), par un gabarit qui reprend la mise en page réelle. Le spinner reste acceptable pour une action ponctuelle (envoi d'un message). Mouvement : pas d'animation, ou un fondu discret (règle 13), jamais d'effet qui tourne en continu sur ce qu'on voit plusieurs fois par jour.
+2. **Pas de « dark patterns »** : l'appli n'a pas d'abonnement payant, donc rien à corriger aujourd'hui. Ça devient une **règle à tenir** : se désabonner, quitter un groupe, supprimer son compte ou masquer un utilisateur ne doivent jamais demander plus qu'une confirmation claire. À vérifier lors de l'audit.
+3. **Retour instantané sur chaque bouton** : le bouton « Suivre » le fait depuis J8. Auditer les autres (favori de jeu, pronostic, réaction et envoi dans le forum, rejoindre un groupe, révéler un spoil, modération) : état visuel immédiat au tap, retour arrière propre si l'appel échoue, pas de double envoi possible.
+4. **Actions principales toujours à la même place** dans l'onboarding, la connexion, la création de compte et les étapes de profil : le bouton « Continuer » ne change pas d'emplacement d'un écran à l'autre.
+5. **Jamais d'erreur technique à l'écran** : aucun code HTTP, message brut, trace ni texte d'exception visible (y compris les erreurs de Firebase Auth, de l'API et du forum). Message simple en français qui dit quoi faire, avec un bouton « Réessayer », et l'erreur réelle journalisée (Sentry côté appli à envisager). Le repli hors ligne de J3/J7 reste la référence.
+
+**Méthode** : un audit écran par écran (liste dans le plan), puis corrections par lot, avec un test widget pour chaque nouveau composant partagé (skeleton, état d'erreur). Pas de composant en plus du strict nécessaire (règle 14) : un skeleton générique configurable, un seul widget d'erreur.
+
+**Hors périmètre** : fidélité aux maquettes, nouvelles fonctionnalités, refonte des écrans.
+
+**À trancher au cadrage** : les écrans où le spinner est volontairement gardé ; si les erreurs doivent partir vers Sentry côté appli.
+
+**Critères d'acceptation** : à rédiger au cadrage (`/jalon 15`).
 
 ---
 
