@@ -490,13 +490,11 @@
 
 **Objectif** : permettre de suivre ses compétitions depuis un ordinateur (application Windows et site web).
 
-**Contradiction à lever d'abord** : `docs/00` §7 a décidé qu'il n'y a **pas de plateforme web dans le projet Flutter**, et la feuille de route prévoit un **site Next.js** (SEO) « plus tard ». Deux voies à comparer au cadrage :
-- **Flutter** (Windows + Web) : un seul code, mais le web Flutter est médiocre pour le référencement et pèse au chargement.
-- **Flutter Windows + site Next.js** séparé pour le web : meilleur SEO et chargement, mais deux interfaces à maintenir.
+**Décision (2026-10-01)** : tout en **Flutter**, une seule base de code pour Android, Windows et Web. Cela **lève la décision antérieure** « pas de plateforme web dans le projet Flutter » (`docs/00` §7) : les plateformes `windows` et `web` sont ajoutées au projet. Le **site Next.js** pour le référencement (pages publiques en lecture seule : résultats, compétitions, classements) reste prévu **plus tard, comme jalon séparé** (voir « Ensuite »), pas dans J17. Limite connue de Flutter web : très peu visible sur Google et chargement initial lourd ; assumé pour J17.
 
 **Points à vérifier au cadrage** : prise en charge de **Firebase Auth** et des **notifications push** sur Windows et sur le web (le plugin `firebase_messaging` n'est pas disponible sur toutes les plateformes) ; cache local **drift** sur le web ; mise en page adaptée aux grands écrans (l'appli est conçue pour 390 px de large) ; distribution Windows (Microsoft Store ou installateur) ; CORS et CSP côté API pour le web.
 
-**Hors périmètre** : macOS et Linux.
+**Hors périmètre** : macOS et Linux ; le site Next.js pour le SEO.
 
 **Critères d'acceptation** : à rédiger au cadrage (`/jalon 17`). **À planifier après J16** : le nom et l'identité s'appliquent à toutes les versions.
 
@@ -513,7 +511,7 @@
 5. **Politique** avant avril 2027 : adaptateurs `assemblee` (zips quotidiens), `senat`, `legifrance` (PISTE), `elections` (data.gouv, rythme rapide le soir d'élection). Écrans 19 (loi façon colis) et 25 (soirée électorale). Jeu « Qui a voté ? » à partir de `politique-quiz/`. Tester le flux de résultats en direct sur un scrutin partiel **avant** la présidentielle.
 6. **Streams** : API Twitch (écran 23).
 7. **Sport par vagues** (`docs/01b`) : football (football-data.org + openfootball), F1 (Jolpica), puis rugby/basket.
-8. **Site web** Next.js (SEO).
+8. **Site web Next.js (SEO)** : pages publiques en lecture seule (résultats, compétitions, classements), à côté de l'appli Flutter web du J17 ; vise surtout à être trouvé sur Google.
 9. **Start.gg** pour les jeux de combat.
 
 ## Points ouverts à trancher en chemin

@@ -46,14 +46,14 @@ Ne lis que ce dont la tâche a besoin.
 - **Mobile** : Flutter, Riverpod, cache local **drift**, `CustomPainter` pour l'arbre radial, `firebase_messaging`.
 - **Push** : Firebase Cloud Messaging (APNs pour iOS). **Comptes** : Firebase Auth (e-mail + mot de passe, J11).
 - **Hébergement** : Docker Compose sur un NAS, exposé par Tailscale Funnel (décision du J7 ; Cloudflare Tunnel envisagé au départ dans `docs/03`). GitHub Actions → GHCR.
-- **Web (plus tard)** : Next.js.
+- **Web et Windows** : Flutter, même code que le mobile (J17, décision du 2026-10-01). Site **Next.js** pour le SEO plus tard, jalon séparé.
 
 ## Structure cible
 
 ```
 apps/api            NestJS — contrôleurs /v1, auth, cache, OpenAPI
 apps/worker         NestJS — jobs BullMQ, ingestion, moteur de notifications
-apps/mobile         Flutter (Android/iOS ; pas de cible web pour ce projet)
+apps/mobile         Flutter (Android/iOS ; Windows et Web prévus au J17)
 packages/domain     types et règles métier partagés (statuts, formats, calculs de bracket)
 packages/db         schéma Prisma, migrations, client
 packages/providers  un adaptateur par fournisseur (pandascore, liquipedia, …)
