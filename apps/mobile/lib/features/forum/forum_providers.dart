@@ -101,6 +101,32 @@ class ForumMessagesNotifier extends AsyncNotifier<ForumMessagesState> {
     state = AsyncData(ForumMessagesState(thread: page.thread, messages: [...fresh, ...older], nextBefore: older.isEmpty ? page.nextBefore : current.nextBefore));
   }
 
+  /// Réaction affichée tout de suite (J15), avant la réponse du serveur : le compteur et « ma réaction »
+  /// sont recalculés localement ; `refresh()` remet la vérité du serveur ensuite (ou après un échec).
+  void showReaction(String messageId, String emojiName, {required bool remove}) {
+    final current = state.value;
+    if (current == null) return;
+    state = AsyncData(ForumMessagesState(thread: current.thread, messages: [for (final m in current.messages) _withReaction(m, messageId, remove ? null : emojiName)], nextBefore: current.nextBefore));
+  }
+
+  static ForumMessageDto _withReaction(ForumMessageDto m, String id, String? next) {
+    final replies = m.replies.map((r) => _withReaction(r, id, next)).toList();
+    if (m.id != id) return m.rebuild((b) => b.replies.replace(replies));
+    final counts = {for (final r in m.reactions) r.emoji.name: r.count.toInt()};
+    final previous = m.myReaction;
+    if (previous != null) counts[previous] = (counts[previous] ?? 1) - 1;
+    if (next != null) counts[next] = (counts[next] ?? 0) + 1;
+    final reactions = ReactionCountDtoEmojiEnum.values
+        .where((e) => (counts[e.name] ?? 0) > 0)
+        .map((e) => ReactionCountDto((b) => b..emoji = e..count = counts[e.name]!))
+        .toList();
+    return m.rebuild((b) {
+      b.reactions.replace(reactions);
+      b.replies.replace(replies);
+      b.myReaction = next;
+    });
+  }
+
   Future<void> loadMore() async {
     final current = state.value;
     final before = current?.nextBefore;
@@ -195,12 +221,21 @@ class ForumController {
 
   Future<void> react(String threadId, ForumMessageDto message, PutReactionDtoEmojiEnum emoji) async {
     if (!await ensureAccount(_ref)) return;
-    if (message.myReaction == emoji.name) {
-      await _api.forumControllerDeleteReaction(id: message.id);
-    } else {
-      await _api.forumControllerPutReaction(id: message.id, putReactionDto: PutReactionDto((b) => b..emoji = emoji));
+    final notifier = _ref.read(forumMessagesProvider(threadId).notifier);
+    final remove = message.myReaction == emoji.name;
+    notifier.showReaction(message.id, emoji.name, remove: remove);
+    try {
+      if (remove) {
+        await _api.forumControllerDeleteReaction(id: message.id);
+      } else {
+        await _api.forumControllerPutReaction(id: message.id, putReactionDto: PutReactionDto((b) => b..emoji = emoji));
+      }
+    } catch (_) {
+      // Échec : on remet l'affichage du serveur avant de signaler l'erreur.
+      await notifier.refresh().catchError((_) {});
+      rethrow;
     }
-    await _ref.read(forumMessagesProvider(threadId).notifier).refresh();
+    await notifier.refresh();
   }
 
   Future<void> report(String threadId, String messageId, ReportMessageDtoReasonEnum reason) async {

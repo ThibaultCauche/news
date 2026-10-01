@@ -76,7 +76,12 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: ListView(
+      // Le bouton principal est ancré en bas, à la même place en connexion et en inscription ; il est dans
+      // le corps (et non en `bottomNavigationBar`) pour rester au-dessus du clavier (J15).
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
         children: [
           PageTitle(_signUp ? "Créer un compte" : "Se connecter"),
@@ -118,23 +123,37 @@ class _AuthScreenState extends ConsumerState<AuthScreen> {
             const SizedBox(height: AppSpacing.md),
             Text(_info!, style: const TextStyle(color: AppColors.textSecondary)),
           ],
-          const SizedBox(height: AppSpacing.lg),
-          FilledButton(
-            onPressed: _busy ? null : _submit,
-            child: _busy
-                ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                : Text(_signUp ? "Créer mon compte" : "Me connecter"),
+          if (!_signUp) Align(alignment: Alignment.centerLeft, child: TextButton(onPressed: _busy ? null : _forgotPassword, child: const Text("Mot de passe oublié"))),
+        ],
+            ),
           ),
-          const SizedBox(height: AppSpacing.sm),
-          TextButton(
-            onPressed: _busy ? null : () => setState(() {
-              _signUp = !_signUp;
-              _error = null;
-              _info = null;
-            }),
-            child: Text(_signUp ? "J'ai déjà un compte" : "Pas encore de compte ? Créer un compte"),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  SizedBox(
+                    width: double.infinity,
+                    child: FilledButton(
+                      onPressed: _busy ? null : _submit,
+                      child: _busy
+                          ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2))
+                          : Text(_signUp ? "Créer mon compte" : "Me connecter"),
+                    ),
+                  ),
+                  TextButton(
+                    onPressed: _busy ? null : () => setState(() {
+                      _signUp = !_signUp;
+                      _error = null;
+                      _info = null;
+                    }),
+                    child: Text(_signUp ? "J'ai déjà un compte" : "Pas encore de compte ? Créer un compte"),
+                  ),
+                ],
+              ),
+            ),
           ),
-          if (!_signUp) TextButton(onPressed: _busy ? null : _forgotPassword, child: const Text("Mot de passe oublié")),
         ],
       ),
     );

@@ -9,6 +9,7 @@ import "../../widgets/page_title.dart";
 import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/event_card.dart";
 import "../competitions/competitions_data.dart";
 import "../competitions/game_screen.dart";
@@ -34,8 +35,8 @@ class FollowsScreen extends ConsumerWidget {
           child: switch (follows) {
             // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
             _ when follows.hasValue => _FollowsBody(follows: follows.value!),
-            AsyncError() => const Center(child: Text("Impossible de charger tes suivis.", style: TextStyle(color: AppColors.textSecondary))),
-            _ => const Center(child: CircularProgressIndicator()),
+            AsyncError() => ErrorState(message: "Impossible de charger tes suivis.", onRetry: () => ref.invalidate(followsProvider)),
+            _ => const SkeletonCards(),
           },
         ),
       ),

@@ -5,7 +5,9 @@ import "../../core/auth/account.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
+import "../../widgets/confirm_dialog.dart";
 import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
@@ -116,12 +118,14 @@ class _AccountSections extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final profile = ref.watch(profileProvider);
-    return switch (profile) {
-      AsyncData(:final value) when value != null => _profile(context, ref, value),
-      AsyncError() when profile.hasValue && profile.value != null => _profile(context, ref, profile.value!),
-      AsyncError() => const Text("Impossible de charger ton profil.", style: TextStyle(color: AppColors.textSecondary)),
-      _ => const Padding(padding: EdgeInsets.all(AppSpacing.lg), child: Center(child: CircularProgressIndicator())),
-    };
+    return AsyncView(
+      value: profile,
+      errorMessage: "Impossible de charger ton profil.",
+      compactError: true,
+      onRetry: () => ref.invalidate(profileProvider),
+      skeleton: const SkeletonCards(count: 2, height: 90, padding: EdgeInsets.zero),
+      builder: (value) => value == null ? const SizedBox.shrink() : _profile(context, ref, value),
+    );
   }
 
   Widget _profile(BuildContext context, WidgetRef ref, ProfileDto profile) {
@@ -148,8 +152,24 @@ class _VerifyEmailCard extends ConsumerStatefulWidget {
 
 class _VerifyEmailCardState extends ConsumerState<_VerifyEmailCard> {
   String? _message;
+  bool _busy = false;
 
-  Future<void> _check() async {
+  // Un seul appel à la fois : « Renvoyer » deux fois de suite fait refuser Firebase (trop de demandes).
+  Future<void> _guarded(Future<void> Function() action) async {
+    if (_busy) return;
+    setState(() => _busy = true);
+    try {
+      await action();
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  Future<void> _check() => _guarded(_doCheck);
+
+  Future<void> _resend() => _guarded(_doResend);
+
+  Future<void> _doCheck() async {
     try {
       final verified = await ref.read(accountServiceProvider).refreshVerification();
       if (!mounted) return;
@@ -163,7 +183,7 @@ class _VerifyEmailCardState extends ConsumerState<_VerifyEmailCard> {
     }
   }
 
-  Future<void> _resend() async {
+  Future<void> _doResend() async {
     try {
       await ref.read(accountServiceProvider).resendVerification();
       if (mounted) setState(() => _message = "E-mail renvoyé.");
@@ -186,9 +206,9 @@ class _VerifyEmailCardState extends ConsumerState<_VerifyEmailCard> {
           const SizedBox(height: AppSpacing.md),
           Row(
             children: [
-              FilledButton(onPressed: _check, child: const Text("J'ai vérifié")),
+              FilledButton(onPressed: _busy ? null : _check, child: const Text("J'ai vérifié")),
               const SizedBox(width: AppSpacing.sm),
-              TextButton(onPressed: _resend, child: const Text("Renvoyer")),
+              TextButton(onPressed: _busy ? null : _resend, child: const Text("Renvoyer")),
             ],
           ),
         ],
@@ -249,12 +269,13 @@ class _PseudoFormState extends ConsumerState<_PseudoForm> {
         ),
         const SizedBox(height: AppSpacing.md),
         TextField(controller: _controller, maxLength: 20, decoration: const InputDecoration(labelText: "Pseudo"), onSubmitted: (_) => _submit()),
-        if (_error != null) Text(_error!, style: const TextStyle(color: AppColors.live)),
         const SizedBox(height: AppSpacing.sm),
         FilledButton(
           onPressed: _busy ? null : _submit,
           child: _busy ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2)) : const Text("Valider"),
         ),
+        // Sous le bouton, dans une zone de hauteur fixe : un message d'erreur ne le déplace pas.
+        SizedBox(height: 64, child: _error == null ? null : Padding(padding: const EdgeInsets.only(top: AppSpacing.sm), child: Text(_error!, style: const TextStyle(color: AppColors.live)))),
       ],
     );
     return widget.first ? SectionCard(child: content) : Padding(padding: EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, MediaQuery.viewInsetsOf(context).bottom + AppSpacing.md), child: content);
@@ -300,24 +321,31 @@ class _AvatarPicker extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final games = catalogGames(ref.watch(catalogProvider).value);
+    final catalog = ref.watch(catalogProvider);
     return SizedBox(
       height: MediaQuery.sizeOf(context).height * 0.6,
-      child: games.isEmpty
-          ? const Center(child: CircularProgressIndicator())
-          : DefaultTabController(
-              length: games.length,
-              child: Column(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
-                    child: Align(alignment: Alignment.centerLeft, child: Text("Choisis ton avatar", style: AppTextStyles.sectionTitle)),
-                  ),
-                  TabBar(isScrollable: true, tabAlignment: TabAlignment.start, tabs: [for (final game in games) Tab(text: game.name)]),
-                  Expanded(child: TabBarView(children: [for (final game in games) _TeamLogos(game: game.slug)])),
-                ],
-              ),
+      child: AsyncView(
+        value: catalog,
+        errorMessage: "Impossible de charger les équipes.",
+        onRetry: () => ref.invalidate(catalogProvider),
+        builder: (data) {
+          final games = catalogGames(data);
+          if (games.isEmpty) return const Center(child: Text("Aucun jeu disponible.", style: TextStyle(color: AppColors.textSecondary)));
+          return DefaultTabController(
+            length: games.length,
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
+                  child: Align(alignment: Alignment.centerLeft, child: Text("Choisis ton avatar", style: AppTextStyles.sectionTitle)),
+                ),
+                TabBar(isScrollable: true, tabAlignment: TabAlignment.start, tabs: [for (final game in games) Tab(text: game.name)]),
+                Expanded(child: TabBarView(children: [for (final game in games) _TeamLogos(game: game.slug)])),
+              ],
             ),
+          );
+        },
+      ),
     );
   }
 }
@@ -331,8 +359,11 @@ class _TeamLogos extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final current = ref.watch(profileProvider).value?.avatarUrl;
     final teams = ref.watch(gameTeamsProvider(game));
-    return switch (teams) {
-      AsyncData(:final value) => GridView.count(
+    return AsyncView(
+      value: teams,
+      errorMessage: "Impossible de charger les équipes.",
+      onRetry: () => ref.invalidate(gameTeamsProvider(game)),
+      builder: (value) => GridView.count(
         padding: const EdgeInsets.all(AppSpacing.md),
         crossAxisCount: 4,
         mainAxisSpacing: AppSpacing.md,
@@ -345,7 +376,7 @@ class _TeamLogos extends ConsumerWidget {
                 try {
                   await ref.read(communityControllerProvider).setAvatar(team.id);
                 } catch (e) {
-                  if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(apiErrorMessage(e) ?? accountErrorMessage(e))));
+                  if (context.mounted) showErrorSnackBar(context, e);
                 }
               },
               child: Container(
@@ -356,9 +387,7 @@ class _TeamLogos extends ConsumerWidget {
             ),
         ],
       ),
-      AsyncError() => const Center(child: Text("Impossible de charger les équipes.")),
-      _ => const Center(child: CircularProgressIndicator()),
-    };
+    );
   }
 }
 
@@ -453,38 +482,44 @@ class _NavRow extends StatelessWidget {
   }
 }
 
-class _AccountActions extends ConsumerWidget {
+class _AccountActions extends ConsumerStatefulWidget {
   const _AccountActions();
 
+  @override
+  ConsumerState<_AccountActions> createState() => _AccountActionsState();
+}
+
+class _AccountActionsState extends ConsumerState<_AccountActions> {
+  bool _deleting = false;
+
   Future<void> _delete(BuildContext context, WidgetRef ref) async {
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text("Supprimer mon compte ?"),
-        content: const Text("Ton compte, tes suivis, tes pronostics et tes groupes seront supprimés définitivement."),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text("Annuler")),
-          TextButton(onPressed: () => Navigator.pop(context, true), child: const Text("Supprimer", style: TextStyle(color: AppColors.live))),
-        ],
-      ),
+    if (_deleting) return;
+    final confirmed = await confirmAction(
+      context,
+      title: "Supprimer mon compte ?",
+      body: "Ton compte, tes suivis, tes pronostics et tes groupes seront supprimés définitivement.",
+      confirmLabel: "Supprimer",
     );
-    if (confirmed != true) return;
+    if (!confirmed || !context.mounted) return;
+    setState(() => _deleting = true);
     try {
       await ref.read(accountServiceProvider).deleteAccount();
     } catch (e) {
-      if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(apiErrorMessage(e) ?? accountErrorMessage(e))));
+      if (context.mounted) showErrorSnackBar(context, e);
+    } finally {
+      if (mounted) setState(() => _deleting = false);
     }
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final email = ref.read(accountServiceProvider).email;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         if (email != null) Text("Connecté : $email", style: const TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption)),
         TextButton(onPressed: () => ref.read(accountServiceProvider).signOut(), child: const Text("Se déconnecter")),
-        TextButton(onPressed: () => _delete(context, ref), child: const Text("Supprimer mon compte", style: TextStyle(color: AppColors.live))),
+        TextButton(onPressed: _deleting ? null : () => _delete(context, ref), child: const Text("Supprimer mon compte", style: TextStyle(color: AppColors.live))),
       ],
     );
   }

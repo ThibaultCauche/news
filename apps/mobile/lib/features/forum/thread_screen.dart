@@ -9,7 +9,9 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
+import "../../widgets/confirm_dialog.dart";
 import "../../widgets/spoiler_hold.dart";
 import "../profile/player_profile_screen.dart";
 import "forum_providers.dart";
@@ -43,6 +45,10 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
   bool _spoiler = false;
   // Spoilers annoncés par leur auteur que l'utilisateur a choisi d'afficher.
   final _revealedSpoilers = <String>{};
+  // Cloche « suivre la discussion » : valeur choisie, affichée tout de suite le temps de l'appel.
+  bool? _followPending;
+  // Actions du menu d'un message en cours : pas de double envoi (signaler deux fois, bloquer deux fois).
+  bool _acting = false;
 
   @override
   void initState() {
@@ -83,6 +89,17 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
     if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(forumErrorMessage(error))));
   }
 
+  Future<void> _toggleFollow(bool current) async {
+    setState(() => _followPending = !current);
+    try {
+      await ref.read(forumControllerProvider).setFollow(widget.threadId, !current);
+    } catch (e) {
+      _toast(e);
+    } finally {
+      if (mounted) setState(() => _followPending = null);
+    }
+  }
+
   Future<void> _send() async {
     final text = _input.text.trim();
     if (text.isEmpty || _sending) return;
@@ -119,9 +136,9 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
         actions: [
           if (thread != null)
             IconButton(
-              tooltip: thread.following ? "Ne plus suivre cette discussion" : "Suivre cette discussion",
-              icon: Icon(thread.following ? Icons.notifications_active_rounded : Icons.notifications_none_rounded),
-              onPressed: () => ref.read(forumControllerProvider).setFollow(widget.threadId, !thread.following).catchError(_toast),
+              tooltip: (_followPending ?? thread.following) ? "Ne plus suivre cette discussion" : "Suivre cette discussion",
+              icon: Icon((_followPending ?? thread.following) ? Icons.notifications_active_rounded : Icons.notifications_none_rounded),
+              onPressed: _followPending != null ? null : () => _toggleFollow(thread.following),
             ),
           if (status?.isModerator == true && thread != null)
             PopupMenuButton<bool>(
@@ -144,9 +161,9 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
           children: [
             Expanded(
               child: switch (messages) {
-                AsyncData(:final value) => _list(context, value, status, spoilerFree && !_revealed),
-                AsyncError() when !messages.hasValue => const Center(child: Text("Impossible de charger la discussion.")),
-                _ => const Center(child: CircularProgressIndicator()),
+                _ when messages.hasValue => _list(context, messages.value!, status, spoilerFree && !_revealed),
+                AsyncError() => ErrorState(message: "Impossible de charger la discussion.", onRetry: () => ref.invalidate(forumMessagesProvider(widget.threadId))),
+                _ => const SkeletonCards(count: 5, height: 72),
               },
             ),
             _Composer(
@@ -240,7 +257,8 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
         ),
       ),
     );
-    if (action == null || !mounted) return;
+    if (action == null || !mounted || _acting) return;
+    _acting = true;
     try {
       switch (action) {
         case "report":
@@ -256,10 +274,13 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
           await controller.hideMessage(message.id);
           await _refresh();
         case "ban":
+          if (!await confirmAction(context, title: "Exclure ${author.pseudo} ?", body: "${author.pseudo} ne pourra plus écrire sur le forum.", confirmLabel: "Exclure")) return;
           await controller.setBan(author.userId, banned: true);
       }
     } catch (e) {
       _toast(e);
+    } finally {
+      _acting = false;
     }
   }
 
@@ -475,11 +496,17 @@ class _MessageTile extends ConsumerWidget {
   final ValueChanged<ForumMessageDto> onEdit;
   final int depth;
 
+  // Une action à la fois par message : un double appui ne réagit/signale/bloque pas deux fois.
+  static final _inFlight = <String>{};
+
   Future<void> _run(BuildContext context, Future<void> Function() action) async {
+    if (!_inFlight.add(message.id)) return;
     try {
       await action();
     } catch (e) {
       if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(forumErrorMessage(e))));
+    } finally {
+      _inFlight.remove(message.id);
     }
   }
 
@@ -658,7 +685,8 @@ class _MessageTile extends ConsumerWidget {
                       await controller.hideMessage(message.id);
                       await ref.read(forumMessagesProvider(threadId).notifier).refresh();
                     }),
-                    "ban" => _run(context, () => controller.setBan(author!.userId, banned: true)),
+                    "ban" => confirmAction(context, title: "Exclure ${author!.pseudo} ?", body: "${author.pseudo} ne pourra plus écrire sur le forum.", confirmLabel: "Exclure")
+                        .then((ok) => ok && context.mounted ? _run(context, () => controller.setBan(author.userId, banned: true)) : null),
                     _ => null,
                   },
                   itemBuilder: (_) => [

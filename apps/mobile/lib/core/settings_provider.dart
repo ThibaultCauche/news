@@ -37,7 +37,9 @@ class SettingsController {
         if (quietHoursEnd != null) b.quietHoursEnd = quietHoursEnd;
       }),
     );
+    // On attend le rechargement : l'interrupteur ne repasse à la valeur serveur qu'une fois à jour.
     _ref.invalidate(userSettingProvider);
+    await _ref.read(userSettingProvider.future);
   }
 }
 

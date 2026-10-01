@@ -10,6 +10,7 @@ import "package:news_api_client/news_api_client.dart";
 import "../../core/settings_provider.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/event_card.dart";
 import "../../widgets/game_logo.dart";
 import "../../widgets/group_bracket_tree.dart";
@@ -110,16 +111,16 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               3 => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
               4 when forumEnabled => ForumThreadsTab(game: game.slug, gameName: game.name),
               4 || 5 => LearnTab(game: game.slug),
-              _ => switch (overview) {
-                AsyncData(:final value) =>
-                  value == null
-                      ? Center(
-                          child: Text("Aucune compétition ${game.name} en cours.", style: const TextStyle(color: AppColors.textSecondary)),
-                        )
-                      : _SeasonBody(overview: value, scoresHidden: scoresHidden),
-                AsyncError() => const Center(child: Text("Impossible de charger la saison.")),
-                _ => const Center(child: CircularProgressIndicator()),
-              },
+              _ => AsyncView(
+                value: overview,
+                errorMessage: "Impossible de charger la saison.",
+                onRetry: () => ref.invalidate(valorantSeasonProvider),
+                builder: (value) => value == null
+                    ? Center(
+                        child: Text("Aucune compétition ${game.name} en cours.", style: const TextStyle(color: AppColors.textSecondary)),
+                      )
+                    : _SeasonBody(overview: value, scoresHidden: scoresHidden),
+              ),
             },
           ),
         ],
@@ -198,7 +199,7 @@ class _FavoriteGameButton extends ConsumerWidget {
     final favorite = ref.watch(favoriteGamesProvider).value?.contains(game) ?? false;
     return IconButton(
       tooltip: favorite ? "Retirer des favoris" : "Ajouter aux favoris",
-      onPressed: () => ref.read(favoriteGamesProvider.notifier).toggle(game),
+      onPressed: () => runOrShowError(context, () => ref.read(favoriteGamesProvider.notifier).toggle(game)),
       icon: Icon(favorite ? Icons.star_rounded : Icons.star_outline_rounded, color: favorite ? AppColors.gold : AppColors.textSecondary),
     );
   }
@@ -212,32 +213,32 @@ class _TeamsTab extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return switch (ref.watch(gameTeamsProvider(game.slug))) {
-      AsyncData(:final value) =>
-        value.isEmpty
-            ? const Center(
-                child: Text("Aucune équipe pour l'instant.", style: TextStyle(color: AppColors.textSecondary)),
-              )
-            : ListView(
-                padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xl),
-                children: [
-                  for (final team in value)
-                    ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: _TeamLogo(team: team),
-                      title: Text(team.name),
-                      trailing: const Icon(Icons.chevron_right, color: AppColors.textTertiary),
-                      onTap: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => TeamScreen(entityId: team.id, breadcrumb: game.name),
-                        ),
+    return AsyncView(
+      value: ref.watch(gameTeamsProvider(game.slug)),
+      errorMessage: "Impossible de charger les équipes.",
+      onRetry: () => ref.invalidate(gameTeamsProvider(game.slug)),
+      builder: (value) => value.isEmpty
+          ? const Center(
+              child: Text("Aucune équipe pour l'instant.", style: TextStyle(color: AppColors.textSecondary)),
+            )
+          : ListView(
+              padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xl),
+              children: [
+                for (final team in value)
+                  ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: _TeamLogo(team: team),
+                    title: Text(team.name),
+                    trailing: const Icon(Icons.chevron_right, color: AppColors.textTertiary),
+                    onTap: () => Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => TeamScreen(entityId: team.id, breadcrumb: game.name),
                       ),
                     ),
-                ],
-              ),
-      AsyncError() => const Center(child: Text("Impossible de charger les équipes.")),
-      _ => const Center(child: CircularProgressIndicator()),
-    };
+                  ),
+              ],
+            ),
+    );
   }
 }
 

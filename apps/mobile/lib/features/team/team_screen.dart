@@ -7,6 +7,7 @@ import "../../core/api_providers.dart";
 import "../../core/date_x.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/event_card.dart";
 import "../../widgets/follow_button.dart";
 import "../../widgets/section_card.dart";
@@ -44,10 +45,9 @@ class TeamScreen extends ConsumerWidget {
         actions: const [LearnHelpButton(articleId: "fiche-equipe", game: "app")],
       ),
       body: switch (entity) {
-        AsyncData(:final value) => _TeamBody(entity: value, scoresHidden: scoresHidden),
-        AsyncError() when entity.hasValue => _TeamBody(entity: entity.value!, scoresHidden: scoresHidden),
-        AsyncError() => const Center(child: Text("Impossible de charger cette équipe.")),
-        _ => const Center(child: CircularProgressIndicator()),
+        _ when entity.hasValue => _TeamBody(entity: entity.value!, scoresHidden: scoresHidden),
+        AsyncError() => ErrorState(message: "Impossible de charger cette équipe.", onRetry: () => ref.invalidate(entityProvider(entityId))),
+        _ => const SkeletonCards(count: 3, height: 120),
       },
     );
   }

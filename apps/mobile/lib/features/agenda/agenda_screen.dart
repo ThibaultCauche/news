@@ -10,6 +10,7 @@ import "../../core/clock.dart";
 import "../../core/date_x.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/event_card.dart";
 import "../next_match/next_match_screen.dart";
 
@@ -250,8 +251,8 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
                 today: _today,
                 filterKey: "${query.category}|${query.leagueIds}",
               ),
-              AsyncError() => const Center(child: Text("Impossible de charger l'agenda.")),
-              _ => const Center(child: CircularProgressIndicator()),
+              AsyncError() => ErrorState(message: "Impossible de charger l'agenda.", onRetry: () => ref.invalidate(agendaProvider(query))),
+              _ => const SkeletonCards(count: 6, height: 84),
             },
           ),
         ],

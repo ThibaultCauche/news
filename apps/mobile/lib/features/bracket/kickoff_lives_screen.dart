@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/competition_follow_button.dart";
 import "bracket_provider.dart";
 
@@ -32,11 +33,12 @@ class KickoffLivesScreen extends ConsumerWidget {
         ),
         actions: [ForumActionButton(kind: "competition", targetId: competitionId), CompetitionFollowButton(competitionId: competitionId, name: title)],
       ),
-      body: switch (detail) {
-        AsyncData(:final value) => _LivesBody(title: title, subtitle: subtitle, standings: value.standings.toList()),
-        AsyncError() => const Center(child: Text("Impossible de charger ce tournoi.")),
-        _ => const Center(child: CircularProgressIndicator()),
-      },
+      body: AsyncView(
+        value: detail,
+        errorMessage: "Impossible de charger ce tournoi.",
+        onRetry: () => ref.invalidate(competitionDetailProvider(competitionId)),
+        builder: (value) => _LivesBody(title: title, subtitle: subtitle, standings: value.standings.toList()),
+      ),
     );
   }
 }

@@ -3,6 +3,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 
+import "../../widgets/async_view.dart";
 import "../../widgets/page_title.dart";
 import "../../core/navigation.dart";
 import "../../theme/tokens.dart";
@@ -66,11 +67,12 @@ class _CompetitionsScreenState extends ConsumerState<CompetitionsScreen> {
           ),
           const SizedBox(height: AppSpacing.md),
           Expanded(
-            child: switch (catalog) {
-              AsyncData(:final value) => _query.trim().isEmpty ? _Browse(catalog: value) : _Results(results: searchCatalog(value, _query)),
-              AsyncError() => const Center(child: Text("Impossible de charger les compétitions.")),
-              _ => const Center(child: CircularProgressIndicator()),
-            },
+            child: AsyncView(
+              value: catalog,
+              errorMessage: "Impossible de charger les compétitions.",
+              onRetry: () => ref.invalidate(catalogProvider),
+              builder: (value) => _query.trim().isEmpty ? _Browse(catalog: value) : _Results(results: searchCatalog(value, _query)),
+            ),
           ),
         ],
       ),

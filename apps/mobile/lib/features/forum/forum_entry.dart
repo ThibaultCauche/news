@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/live_dot.dart";
 import "../../widgets/section_card.dart";
 import "forum_providers.dart";
@@ -136,14 +137,16 @@ class _ForumThreadsTabState extends ConsumerState<ForumThreadsTab> {
             ],
           ),
           const SizedBox(height: AppSpacing.md),
-          switch (threads) {
-            AsyncData(:final value) =>
-              value.isEmpty
-                  ? const Padding(padding: EdgeInsets.all(AppSpacing.lg), child: Center(child: Text("Aucune discussion pour l'instant.", style: TextStyle(color: AppColors.textSecondary))))
-                  : Column(children: [for (final t in value) _ThreadTile(thread: t)]),
-            AsyncError() => const Center(child: Text("Impossible de charger les discussions.")),
-            _ => const Center(child: CircularProgressIndicator()),
-          },
+          AsyncView(
+            value: threads,
+            errorMessage: "Impossible de charger les discussions.",
+            compactError: true,
+            onRetry: () => ref.invalidate(forumThreadsProvider(key)),
+            skeleton: const SkeletonCards(count: 4, height: 56, padding: EdgeInsets.zero),
+            builder: (value) => value.isEmpty
+                ? const Padding(padding: EdgeInsets.all(AppSpacing.lg), child: Center(child: Text("Aucune discussion pour l'instant.", style: TextStyle(color: AppColors.textSecondary))))
+                : Column(children: [for (final t in value) _ThreadTile(thread: t)]),
+          ),
         ],
       ),
     );

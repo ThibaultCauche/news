@@ -38,6 +38,27 @@ final predictionsProvider = FutureProvider.autoDispose<Map<String, PredictionDto
   return {for (final p in list) p.eventId: p};
 });
 
+/// Choix affiché tout de suite pendant l'envoi d'un pronostic (J15), par match ; retiré à la fin de
+/// l'appel (réussi ou non : en cas d'échec, l'affichage revient au pronostic enregistré).
+typedef PendingPick = ({String entityId, int? picked, int? other});
+
+class PendingPicksNotifier extends Notifier<Map<String, PendingPick>> {
+  @override
+  Map<String, PendingPick> build() => const {};
+
+  void set(String eventId, PendingPick? pick) {
+    final next = {...state};
+    if (pick == null) {
+      next.remove(eventId);
+    } else {
+      next[eventId] = pick;
+    }
+    state = next;
+  }
+}
+
+final pendingPicksProvider = NotifierProvider<PendingPicksNotifier, Map<String, PendingPick>>(PendingPicksNotifier.new);
+
 /// Actions communautaires : chacune exige un compte, et un pseudo pour les pronostics et groupes.
 class CommunityController {
   CommunityController(this._ref);
@@ -73,7 +94,10 @@ class CommunityController {
         }
       }),
     );
+    // On attend le rechargement : le choix affiché tout de suite (`pendingPicksProvider`) n'est retiré
+    // qu'une fois la vraie valeur en place.
     _ref.invalidate(predictionsProvider);
+    await _ref.read(predictionsProvider.future);
     return true;
   }
 

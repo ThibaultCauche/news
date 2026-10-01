@@ -6,6 +6,7 @@ import "../../core/auth/account.dart";
 import "../../core/clock.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/event_card.dart";
 import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
@@ -126,8 +127,9 @@ class _UpcomingSectionState extends ConsumerState<_UpcomingSection> {
             ),
           ),
         const SizedBox(height: AppSpacing.sm),
-        if (agenda.isLoading && events.isEmpty) const Center(child: CircularProgressIndicator()),
-        if (!agenda.isLoading && events.isEmpty) const Text("Aucun match à venir cette semaine.", style: TextStyle(color: AppColors.textSecondary)),
+        if (!agenda.hasValue && !agenda.hasError) const SkeletonCards(count: 3, height: 84, padding: EdgeInsets.zero),
+        if (agenda.hasError && !agenda.hasValue) ErrorState(message: "Impossible de charger les matchs.", compact: true, onRetry: () => ref.invalidate(agendaProvider(query))),
+        if (agenda.hasValue && events.isEmpty) const Text("Aucun match à venir cette semaine.", style: TextStyle(color: AppColors.textSecondary)),
         for (final event in events) ...[
           EventCard(
             event: event,

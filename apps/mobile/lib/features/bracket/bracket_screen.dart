@@ -7,6 +7,7 @@ import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
 import "../forum/forum_entry.dart";
 import "../learn/learn_screen.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/competition_follow_button.dart";
 import "../../widgets/group_bracket_tree.dart";
 import "../follows/follows_provider.dart";
@@ -57,17 +58,18 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
           ForumActionButton(kind: "competition", targetId: widget.competitionId),
           CompetitionFollowButton(competitionId: widget.competitionId, name: widget.title)],
       ),
-      body: switch (detail) {
-        AsyncData(:final value) => _BracketBody(
-            title: widget.title,
-            subtitle: widget.subtitle,
-            children: value.children.toList(),
-            tabIndex: _tabIndex,
-            onTabSelected: (i) => setState(() => _tabIndex = i),
-          ),
-        AsyncError() => const Center(child: Text("Impossible de charger cette compétition.")),
-        _ => const Center(child: CircularProgressIndicator()),
-      },
+      body: AsyncView(
+        value: detail,
+        errorMessage: "Impossible de charger cette compétition.",
+        onRetry: () => ref.invalidate(competitionDetailProvider(widget.competitionId)),
+        builder: (value) => _BracketBody(
+          title: widget.title,
+          subtitle: widget.subtitle,
+          children: value.children.toList(),
+          tabIndex: _tabIndex,
+          onTabSelected: (i) => setState(() => _tabIndex = i),
+        ),
+      ),
     );
   }
 }
@@ -206,11 +208,13 @@ class _FinalsTab extends ConsumerWidget {
     final bracket = ref.watch(bracketProvider(competitionId));
     final follows = ref.watch(followsProvider).value;
 
-    return switch (bracket) {
-      AsyncData(:final value) => _RadialTree(bracket: value, follows: follows),
-      AsyncError() => const _EmptyMessage("Impossible de charger l'arbre."),
-      _ => const Center(child: CircularProgressIndicator()),
-    };
+    return AsyncView(
+      value: bracket,
+      errorMessage: "Impossible de charger l'arbre.",
+      onRetry: () => ref.invalidate(bracketProvider(competitionId)),
+      skeleton: const Center(child: Skeleton(width: 280, height: 280, radius: 140)),
+      builder: (value) => _RadialTree(bracket: value, follows: follows),
+    );
   }
 }
 
@@ -265,11 +269,12 @@ class _RepechageTab extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final bracket = ref.watch(bracketProvider(competitionId));
-    return switch (bracket) {
-      AsyncData(:final value) => _RepechageList(bracket: value),
-      AsyncError() => const _EmptyMessage("Impossible de charger le repêchage."),
-      _ => const Center(child: CircularProgressIndicator()),
-    };
+    return AsyncView(
+      value: bracket,
+      errorMessage: "Impossible de charger le repêchage.",
+      onRetry: () => ref.invalidate(bracketProvider(competitionId)),
+      builder: (value) => _RepechageList(bracket: value),
+    );
   }
 }
 

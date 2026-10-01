@@ -1,4 +1,5 @@
 import "../../theme/app_theme.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/live_badge.dart";
 import "../../widgets/ornate_frame.dart";
 import "dart:async";
@@ -112,8 +113,8 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
         // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
         _ when event.hasValue =>
           _NextMatchBody(event: event.value!, scoresHidden: scoresHidden, onReveal: () => setState(() => _scoresHiddenOverride = false)),
-        AsyncError() => const Center(child: Text("Impossible de charger ce match.")),
-        _ => const Center(child: CircularProgressIndicator()),
+        AsyncError() => ErrorState(message: "Impossible de charger ce match.", onRetry: () => ref.invalidate(eventProvider(widget.eventId))),
+        _ => const SkeletonCards(count: 3, height: 140),
       },
     );
   }

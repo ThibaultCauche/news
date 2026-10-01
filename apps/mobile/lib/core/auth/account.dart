@@ -1,5 +1,6 @@
 import "package:dio/dio.dart";
 import "package:firebase_auth/firebase_auth.dart";
+import "package:flutter/foundation.dart" show debugPrint;
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../api_providers.dart";
@@ -94,16 +95,32 @@ String accountErrorMessage(Object error) {
       "weak-password" => "Mot de passe trop court (6 caractères minimum).",
       "too-many-requests" => "Trop de tentatives, réessaie dans quelques minutes.",
       "network-request-failed" => "Pas de connexion. Réessaie une fois en ligne.",
-      _ => "Connexion impossible (${error.code}).",
+      _ => _unknown(error),
     };
   }
-  if (error is DioException) return "Serveur injoignable. Réessaie plus tard.";
+  if (error is DioException) {
+    return switch (error.response?.statusCode) {
+      null => "Pas de connexion au serveur. Vérifie ton réseau puis réessaie.",
+      401 => "Ta session a expiré. Reconnecte-toi.",
+      429 => "Trop de demandes. Réessaie dans un instant.",
+      >= 500 => "Le service a un souci. Réessaie dans un instant.",
+      _ => _unknown(error),
+    };
+  }
+  return _unknown(error);
+}
+
+/// L'erreur réelle est journalisée, jamais affichée (J15).
+String _unknown(Object error) {
+  debugPrint("Erreur : $error");
   return "Une erreur est survenue. Réessaie.";
 }
 
-/// Message d'une erreur métier de l'API (`code` stable dans le corps, docs/04 J11), ou `null`.
+/// Message d'une erreur métier de l'API, ou `null`. Seuls les statuts de refus voulus par nos
+/// services (400, 403, 404, 409) portent un texte français à montrer ; les erreurs génériques de
+/// NestJS (401, 429, 5xx, validation) restent anglaises ou techniques : on laisse `accountErrorMessage`.
 String? apiErrorMessage(Object error) {
-  if (error is DioException) {
+  if (error is DioException && const {400, 403, 404, 409}.contains(error.response?.statusCode)) {
     final data = error.response?.data;
     if (data is Map && data["message"] is String) return data["message"] as String;
   }

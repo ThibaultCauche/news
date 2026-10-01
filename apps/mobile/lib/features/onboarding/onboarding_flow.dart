@@ -1,10 +1,12 @@
 import "../../theme/app_theme.dart";
+import "package:dio/dio.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/follow_button.dart";
 import "../../widgets/page_subtitle.dart";
 import "../../widgets/page_title.dart";
@@ -30,9 +32,11 @@ final suggestedTeamsProvider = FutureProvider.autoDispose<List<(EntityResponseDt
       final res = await api.entitiesControllerGetByShortName(shortName: team.shortName);
       final data = res.data;
       if (data != null) results.add((data, team.reason));
-    } catch (_) {
-      // Équipe pas encore ingérée dans cet environnement : on l'ignore plutôt
-      // que de casser l'onboarding.
+    } on DioException catch (e) {
+      // Équipe pas encore ingérée dans cet environnement (404) : on l'ignore plutôt que de casser
+      // l'onboarding. Toute autre erreur (réseau, serveur) remonte pour afficher « Réessayer » au
+      // lieu d'un faux « Aucune suggestion ».
+      if (e.response?.statusCode != 404) rethrow;
     }
   }
   return results;
@@ -203,8 +207,8 @@ class _TeamsPage extends ConsumerWidget {
                       separatorBuilder: (_, _) => const SizedBox(height: AppSpacing.sm),
                       itemBuilder: (context, i) => _TeamSuggestionCard(entity: value[i].$1, reason: value[i].$2),
                     ),
-              AsyncError() => const Center(child: Text("Impossible de charger les suggestions.", style: TextStyle(color: AppColors.textSecondary))),
-              _ => const Center(child: CircularProgressIndicator()),
+              AsyncError() => ErrorState(message: "Impossible de charger les suggestions.", onRetry: () => ref.invalidate(suggestedTeamsProvider)),
+              _ => const SkeletonCards(count: 3, height: 100, padding: EdgeInsets.zero),
             },
           ),
           const Text("Tu seras prévenu avant chaque match. Modifiable à tout moment.", style: TextStyle(color: AppColors.textTertiary)),
@@ -258,9 +262,12 @@ class _TeamSuggestionCard extends ConsumerWidget {
           const SizedBox(width: AppSpacing.sm),
           FollowButton(
             following: following,
-            onPressed: () => following
-                ? ref.read(followsControllerProvider).unfollow(FollowTargetType.entity, entity.id)
-                : ref.read(followsControllerProvider).follow(FollowTargetType.entity, entity.id),
+            onPressed: () => runOrShowError(
+              context,
+              () => following
+                  ? ref.read(followsControllerProvider).unfollow(FollowTargetType.entity, entity.id)
+                  : ref.read(followsControllerProvider).follow(FollowTargetType.entity, entity.id),
+            ),
           ),
         ],
       ),

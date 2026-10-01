@@ -1,9 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
-import "../../core/auth/account.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
 import "../../widgets/section_card.dart";
 import "community_providers.dart";
@@ -26,6 +26,11 @@ class PredictionPanel extends ConsumerWidget {
     final finished = event.status == "finished";
     if (!scheduled && !finished && event.status != "live") return const SizedBox.shrink();
     final prediction = ref.watch(predictionsProvider).value?[event.id];
+    // Le choix en cours d'envoi s'affiche tout de suite, sans attendre le serveur.
+    final pending = ref.watch(pendingPicksProvider)[event.id];
+    final pickedEntityId = pending?.entityId ?? prediction?.pickedEntityId;
+    final pickedScore = pending != null ? pending.picked : prediction?.pickedScore?.toInt();
+    final otherScore = pending != null ? pending.other : prediction?.otherScore?.toInt();
     // Un match commencé sans pronostic n'a que les choix des amis à afficher.
     if (!scheduled && prediction == null) return _FriendsPicks(event: event, first: true);
 
@@ -46,11 +51,11 @@ class PredictionPanel extends ConsumerWidget {
             children: [
               for (final (i, p) in event.participants.indexed) ...[
                 if (i > 0) const SizedBox(width: AppSpacing.sm),
-                Expanded(child: _TeamChoice(event: event, participant: p, prediction: prediction, enabled: scheduled)),
+                Expanded(child: _TeamChoice(event: event, participant: p, pickedEntityId: pickedEntityId, enabled: scheduled)),
               ],
             ],
           ),
-          if (scheduled && prediction != null) _ScoreChoices(event: event, prediction: prediction),
+          if (scheduled && pickedEntityId != null) _ScoreChoices(event: event, pickedEntityId: pickedEntityId, pickedScore: pickedScore, otherScore: otherScore),
           if (finished && prediction?.points != null)
             Padding(
               padding: const EdgeInsets.only(top: AppSpacing.md),
@@ -128,25 +133,34 @@ class _FriendsPicks extends ConsumerWidget {
   }
 }
 
+// Un pronostic à la fois par match : un double appui n'envoie pas deux fois.
+final _saving = <String>{};
+
 Future<void> _save(BuildContext context, WidgetRef ref, String eventId, String entityId, {int? pickedScore, int? otherScore}) async {
+  if (!_saving.add(eventId)) return;
+  final pending = ref.read(pendingPicksProvider.notifier);
+  pending.set(eventId, (entityId: entityId, picked: pickedScore, other: otherScore));
   try {
     await ref.read(communityControllerProvider).predict(eventId, entityId, pickedScore: pickedScore, otherScore: otherScore);
   } catch (e) {
-    if (context.mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(apiErrorMessage(e) ?? accountErrorMessage(e))));
+    if (context.mounted) showErrorSnackBar(context, e);
+  } finally {
+    pending.set(eventId, null);
+    _saving.remove(eventId);
   }
 }
 
 class _TeamChoice extends ConsumerWidget {
-  const _TeamChoice({required this.event, required this.participant, required this.prediction, required this.enabled});
+  const _TeamChoice({required this.event, required this.participant, required this.pickedEntityId, required this.enabled});
 
   final EventDetailResponseDto event;
   final EventParticipantDto participant;
-  final PredictionDto? prediction;
+  final String? pickedEntityId;
   final bool enabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final picked = prediction?.pickedEntityId == participant.entityId;
+    final picked = pickedEntityId == participant.entityId;
     return OutlinedButton(
       onPressed: enabled && !picked ? () => _save(context, ref, event.id, participant.entityId) : null,
       style: OutlinedButton.styleFrom(
@@ -162,10 +176,12 @@ class _TeamChoice extends ConsumerWidget {
 
 /// Score de série exact, en option : « 2-0 », « 2-1 »… selon le format (BO3 → 2 victoires).
 class _ScoreChoices extends ConsumerWidget {
-  const _ScoreChoices({required this.event, required this.prediction});
+  const _ScoreChoices({required this.event, required this.pickedEntityId, required this.pickedScore, required this.otherScore});
 
   final EventDetailResponseDto event;
-  final PredictionDto prediction;
+  final String pickedEntityId;
+  final int? pickedScore;
+  final int? otherScore;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -180,8 +196,8 @@ class _ScoreChoices extends ConsumerWidget {
           for (var lost = 0; lost < wins; lost++)
             ChoiceChip(
               label: Text("$wins-$lost"),
-              selected: prediction.pickedScore?.toInt() == wins && prediction.otherScore?.toInt() == lost,
-              onSelected: (_) => _save(context, ref, event.id, prediction.pickedEntityId, pickedScore: wins, otherScore: lost),
+              selected: pickedScore == wins && otherScore == lost,
+              onSelected: (_) => _save(context, ref, event.id, pickedEntityId, pickedScore: wins, otherScore: lost),
             ),
         ],
       ),

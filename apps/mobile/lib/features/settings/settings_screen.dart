@@ -5,6 +5,7 @@ import "package:news_api_client/news_api_client.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
@@ -31,12 +32,12 @@ class SettingsScreen extends ConsumerWidget {
           label: const Text("Aujourd'hui", style: TextStyle(color: AppColors.textSecondary)),
         ),
       ),
-      body: switch (setting) {
-        AsyncData(:final value) => _SettingsBody(setting: value),
-        AsyncError() when setting.hasValue => _SettingsBody(setting: setting.value!),
-        AsyncError() => const Center(child: Text("Impossible de charger les réglages.")),
-        _ => const Center(child: CircularProgressIndicator()),
-      },
+      body: AsyncView(
+        value: setting,
+        errorMessage: "Impossible de charger les réglages.",
+        onRetry: () => ref.invalidate(userSettingProvider),
+        builder: (value) => _SettingsBody(setting: value),
+      ),
     );
   }
 }
@@ -158,7 +159,7 @@ class _SettingsBody extends ConsumerWidget {
                 label: "Tuiles de match compactes",
                 caption: "Logo, score, logo — sans le nom des équipes.",
                 value: ref.watch(compactEventCardsProvider),
-                onChanged: (v) => ref.read(compactEventCardsProvider.notifier).set(v),
+                onChanged: (v) async => ref.read(compactEventCardsProvider.notifier).set(v),
               ),
               const Divider(height: AppSpacing.lg),
               const _StaticRow(label: "Mouvement réduit", caption: "Comme l'iPhone : suit le réglage du système."),
@@ -193,16 +194,38 @@ class _SettingsBody extends ConsumerWidget {
   }
 }
 
-class _ToggleRow extends StatelessWidget {
+/// Interrupteur à retour instantané (J15) : la valeur choisie s'affiche tout de suite, l'interrupteur
+/// est bloqué le temps de l'appel (pas de double envoi) et revient en arrière avec un message si ça échoue.
+class _ToggleRow extends StatefulWidget {
   const _ToggleRow({required this.label, required this.caption, required this.value, required this.onChanged});
 
   final String label;
   final String caption;
   final bool value;
-  final ValueChanged<bool> onChanged;
+  final Future<void> Function(bool) onChanged;
+
+  @override
+  State<_ToggleRow> createState() => _ToggleRowState();
+}
+
+class _ToggleRowState extends State<_ToggleRow> {
+  bool? _pending;
+
+  Future<void> _change(bool v) async {
+    setState(() => _pending = v);
+    try {
+      await widget.onChanged(v);
+    } catch (e) {
+      if (mounted) showErrorSnackBar(context, e);
+    } finally {
+      if (mounted) setState(() => _pending = null);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final label = widget.label;
+    final caption = widget.caption;
     return Row(
       children: [
         Expanded(
@@ -214,7 +237,7 @@ class _ToggleRow extends StatelessWidget {
             ],
           ),
         ),
-        Switch(value: value, onChanged: onChanged),
+        Switch(value: _pending ?? widget.value, onChanged: _pending == null ? _change : null),
       ],
     );
   }
@@ -302,14 +325,14 @@ class _QuietHoursRow extends StatelessWidget {
           value: setting.quietHoursStart?.toInt(),
           hint: const Text("—"),
           items: [for (final h in hours) DropdownMenuItem(value: h, child: Text("${h}h"))],
-          onChanged: (v) => v != null ? controller.update(quietHoursStart: v) : null,
+          onChanged: (v) => v != null ? runOrShowError(context, () => controller.update(quietHoursStart: v)) : null,
         ),
         const Text(" – "),
         DropdownButton<int>(
           value: setting.quietHoursEnd?.toInt(),
           hint: const Text("—"),
           items: [for (final h in hours) DropdownMenuItem(value: h, child: Text("${h}h"))],
-          onChanged: (v) => v != null ? controller.update(quietHoursEnd: v) : null,
+          onChanged: (v) => v != null ? runOrShowError(context, () => controller.update(quietHoursEnd: v)) : null,
         ),
       ],
     );

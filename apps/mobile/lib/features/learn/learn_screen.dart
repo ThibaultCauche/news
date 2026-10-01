@@ -11,6 +11,7 @@ import "package:url_launcher/url_launcher.dart";
 import "../../core/api_providers.dart";
 import "../../core/auth/account.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/section_label.dart";
 import "../next_match/next_match_screen.dart" show StakesText;
 import "learn_visuals.dart";
@@ -209,8 +210,11 @@ class LearnTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final progress = learnProgress(ref, game);
     final read = ref.watch(learnReadProvider).value?.read ?? const <String>{};
-    return switch (ref.watch(learnGuideProvider(game))) {
-      AsyncData(:final value) => ListView(
+    return AsyncView(
+      value: ref.watch(learnGuideProvider(game)),
+      errorMessage: "Impossible de charger les tutos.",
+      onRetry: () => ref.invalidate(learnGuideProvider(game)),
+      builder: (value) => ListView(
         padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xl),
         children: [
           if (progress != null) ...[
@@ -248,9 +252,7 @@ class LearnTab extends ConsumerWidget {
             ),
         ],
       ),
-      AsyncError() => const Center(child: Text("Impossible de charger les tutos.")),
-      _ => const Center(child: CircularProgressIndicator()),
-    };
+    );
   }
 }
 
@@ -335,7 +337,7 @@ class _LearnArticleScreenState extends ConsumerState<LearnArticleScreen> {
     return Scaffold(
       appBar: AppBar(),
       body: article == null
-          ? const Center(child: CircularProgressIndicator())
+          ? const SkeletonCards(count: 3, height: 120)
           : ListView(
               padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xl),
               children: [

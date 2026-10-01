@@ -4,7 +4,9 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
+import "../../widgets/confirm_dialog.dart";
 import "../../widgets/section_card.dart";
 import "../competitions/competitions_data.dart";
 import "../follows/follows_provider.dart";
@@ -88,8 +90,13 @@ class CampsScreen extends ConsumerWidget {
               style: TextStyle(color: AppColors.textSecondary),
             ),
             const SizedBox(height: AppSpacing.lg),
-            switch (catalog) {
-              AsyncData(:final value) => Column(
+            AsyncView(
+              value: catalog,
+              errorMessage: "Impossible de charger les jeux.",
+              compactError: true,
+              onRetry: () => ref.invalidate(catalogProvider),
+              skeleton: const SkeletonCards(count: 2, height: 72, padding: EdgeInsets.zero),
+              builder: (value) => Column(
                 children: [
                   for (final game in value.categories.expand((c) => c.games))
                     _GameCamp(
@@ -99,9 +106,7 @@ class CampsScreen extends ConsumerWidget {
                     ),
                 ],
               ),
-              AsyncError() => const Text("Impossible de charger les jeux."),
-              _ => const Center(child: CircularProgressIndicator()),
-            },
+            ),
           ],
         ),
       ),
@@ -165,7 +170,7 @@ class _GameCamp extends ConsumerWidget {
               IconButton(
                 tooltip: "Retirer mon camp",
                 icon: const Icon(Icons.close_rounded, size: 20),
-                onPressed: () => ref.read(forumControllerProvider).clearCamp(game.slug),
+                onPressed: () => runOrShowError(context, () => ref.read(forumControllerProvider).clearCamp(game.slug)),
               ),
             TextButton(onPressed: wait > 0 ? null : () => _pick(context, ref), child: Text(current == null ? "Choisir" : "Changer")),
           ],
@@ -184,8 +189,11 @@ class BlockedUsersScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Utilisateurs bloqués")),
       body: SafeArea(
-        child: switch (blocks) {
-          AsyncData(:final value) =>
+        child: AsyncView(
+          value: blocks,
+          errorMessage: "Impossible de charger la liste.",
+          onRetry: () => ref.invalidate(forumBlocksProvider),
+          builder: (value) =>
             value.isEmpty
                 ? const Center(child: Text("Tu n'as bloqué personne.", style: TextStyle(color: AppColors.textSecondary)))
                 : ListView(
@@ -193,13 +201,11 @@ class BlockedUsersScreen extends ConsumerWidget {
                       for (final user in value)
                         ListTile(
                           title: Text(user.pseudo),
-                          trailing: TextButton(onPressed: () => ref.read(forumControllerProvider).unblock(user.userId), child: const Text("Débloquer")),
+                          trailing: TextButton(onPressed: () => runOrShowError(context, () => ref.read(forumControllerProvider).unblock(user.userId)), child: const Text("Débloquer")),
                         ),
                     ],
                   ),
-          AsyncError() => const Center(child: Text("Impossible de charger la liste.")),
-          _ => const Center(child: CircularProgressIndicator()),
-        },
+        ),
       ),
     );
   }
@@ -236,8 +242,11 @@ class ModerationScreen extends ConsumerWidget {
         ],
       ),
       body: SafeArea(
-        child: switch (reports) {
-          AsyncData(:final value) =>
+        child: AsyncView(
+          value: reports,
+          errorMessage: "Impossible de charger la file.",
+          onRetry: () => ref.invalidate(moderationReportsProvider),
+          builder: (value) =>
             value.isEmpty
                 ? const Center(child: Text("Aucun signalement à traiter.", style: TextStyle(color: AppColors.textSecondary)))
                 : ListView(
@@ -263,10 +272,14 @@ class ModerationScreen extends ConsumerWidget {
                                     TextButton(onPressed: () => _run(context, () => controller.dismissReports(report.messageId)), child: const Text("Rejeter")),
                                     TextButton(onPressed: () => _run(context, () => controller.hideMessage(report.messageId)), child: const Text("Masquer")),
                                     TextButton(
-                                      onPressed: () => _run(context, () async {
-                                        await controller.hideMessage(report.messageId);
-                                        await controller.setBan(report.authorId, banned: true);
-                                      }),
+                                      onPressed: () async {
+                                        if (!await confirmAction(context, title: "Exclure ${report.authorPseudo} ?", body: "Le message est masqué et ${report.authorPseudo} ne peut plus écrire sur le forum.", confirmLabel: "Exclure")) return;
+                                        if (!context.mounted) return;
+                                        await _run(context, () async {
+                                          await controller.hideMessage(report.messageId);
+                                          await controller.setBan(report.authorId, banned: true);
+                                        });
+                                      },
                                       child: const Text("Masquer et exclure", style: TextStyle(color: AppColors.live)),
                                     ),
                                     TextButton(
@@ -281,9 +294,7 @@ class ModerationScreen extends ConsumerWidget {
                         ),
                     ],
                   ),
-          AsyncError() => const Center(child: Text("Impossible de charger la file.")),
-          _ => const Center(child: CircularProgressIndicator()),
-        },
+        ),
       ),
     );
   }
@@ -310,8 +321,11 @@ class ModerationLogScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text("Journal de modération")),
       body: SafeArea(
-        child: switch (log) {
-          AsyncData(:final value) =>
+        child: AsyncView(
+          value: log,
+          errorMessage: "Impossible de charger le journal.",
+          onRetry: () => ref.invalidate(moderationLogProvider),
+          builder: (value) =>
             value.isEmpty
                 ? const Center(child: Text("Aucune décision pour l'instant.", style: TextStyle(color: AppColors.textSecondary)))
                 : ListView(
@@ -337,9 +351,7 @@ class ModerationLogScreen extends ConsumerWidget {
                         ),
                     ],
                   ),
-          AsyncError() => const Center(child: Text("Impossible de charger le journal.")),
-          _ => const Center(child: CircularProgressIndicator()),
-        },
+        ),
       ),
     );
   }

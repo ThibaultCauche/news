@@ -7,7 +7,9 @@ import "../../widgets/page_title.dart";
 import "../../core/auth/account.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/app_theme.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
+import "../../widgets/confirm_dialog.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
@@ -126,7 +128,6 @@ class _GroupPromptState extends ConsumerState<_GroupPrompt> {
             decoration: InputDecoration(labelText: widget.create ? "Nom du groupe" : "Code d'invitation"),
             onSubmitted: (_) => _submit(),
           ),
-          if (_error != null) Text(_error!, style: const TextStyle(color: AppColors.live)),
           const SizedBox(height: AppSpacing.sm),
           SizedBox(
             width: double.infinity,
@@ -135,6 +136,8 @@ class _GroupPromptState extends ConsumerState<_GroupPrompt> {
               child: _busy ? const SizedBox(height: 18, width: 18, child: CircularProgressIndicator(strokeWidth: 2)) : Text(widget.create ? "Créer" : "Rejoindre"),
             ),
           ),
+          // Sous le bouton, dans une zone de hauteur fixe : un message d'erreur ne le déplace pas.
+          SizedBox(height: 64, child: _error == null ? null : Padding(padding: const EdgeInsets.only(top: AppSpacing.sm), child: Text(_error!, style: const TextStyle(color: AppColors.live)))),
         ],
       ),
     );
@@ -155,26 +158,24 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
   bool _revealed = false;
   // Filtre du classement (J14) : `null` = tous les jeux.
   String? _game;
+  bool _leaving = false;
 
   Future<void> _leaveOrDelete(GroupDetailDto group) async {
     final community = ref.read(communityControllerProvider);
-    final confirmed = await showDialog<bool>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(group.isOwner ? "Supprimer le groupe ?" : "Quitter le groupe ?"),
-        content: Text(group.isOwner ? "Le groupe et son classement disparaissent pour tous ses membres." : "Tu pourras le rejoindre à nouveau avec son code."),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context, false), child: const Text("Annuler")),
-          TextButton(onPressed: () => Navigator.pop(context, true), child: Text(group.isOwner ? "Supprimer" : "Quitter")),
-        ],
-      ),
+    final confirmed = await confirmAction(
+      context,
+      title: group.isOwner ? "Supprimer le groupe ?" : "Quitter le groupe ?",
+      body: group.isOwner ? "Le groupe et son classement disparaissent pour tous ses membres." : "Tu pourras le rejoindre à nouveau avec son code.",
+      confirmLabel: group.isOwner ? "Supprimer" : "Quitter",
     );
-    if (confirmed != true) return;
+    if (!confirmed || !mounted || _leaving) return;
+    _leaving = true;
     try {
       await (group.isOwner ? community.deleteGroup(group.id) : community.leaveGroup(group.id));
       if (mounted) Navigator.of(context).pop();
     } catch (e) {
-      if (mounted) ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(apiErrorMessage(e) ?? accountErrorMessage(e))));
+      _leaving = false;
+      if (mounted) showErrorSnackBar(context, e);
     }
   }
 
@@ -190,11 +191,12 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
             IconButton(tooltip: "Inviter", icon: const Icon(Icons.person_add_alt_1_outlined), onPressed: () => _showInvite(detail.value!)),
         ],
       ),
-      body: switch (detail) {
-        AsyncData(:final value) => _body(context, value, hidden),
-        AsyncError() => const Center(child: Text("Impossible de charger ce groupe.")),
-        _ => const Center(child: CircularProgressIndicator()),
-      },
+      body: AsyncView(
+        value: detail,
+        errorMessage: "Impossible de charger ce groupe.",
+        onRetry: () => ref.invalidate(groupDetailProvider((id: widget.groupId, game: _game))),
+        builder: (value) => _body(context, value, hidden),
+      ),
     );
   }
 

@@ -1,3 +1,4 @@
+import "async_view.dart";
 import "ornate_frame.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -35,9 +36,9 @@ class GroupBracketTree extends ConsumerWidget {
           padding: const EdgeInsets.all(AppSpacing.sm),
           decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.chip)),
           child: switch (bracket) {
-            AsyncData(:final value) => _Tree(name: name, bracket: value),
-            AsyncError() => const Text("—", style: TextStyle(color: AppColors.textTertiary)),
-            _ => const SizedBox(height: 40, child: Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)))),
+            _ when bracket.hasValue => _Tree(name: name, bracket: bracket.value!),
+            AsyncError() => ErrorState(message: "Poule indisponible.", compact: true, onRetry: () => ref.invalidate(bracketProvider(competitionId))),
+            _ => const Skeleton(height: 120, radius: AppRadii.chip),
           },
         ),
       ),

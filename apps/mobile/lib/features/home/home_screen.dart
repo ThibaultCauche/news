@@ -14,6 +14,7 @@ import "../../core/iterable_x.dart";
 import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
 import "../../widgets/event_card.dart";
 import "../account/auth_screen.dart";
@@ -50,8 +51,8 @@ class HomeScreen extends ConsumerWidget {
             switch (home) {
               // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
               _ when home.hasValue => _HomeBody(home: home.value!, scoresHidden: scoresHidden),
-              AsyncError() => const SliverFillRemaining(child: Center(child: Text("Impossible de charger l'accueil."))),
-              _ => const SliverFillRemaining(child: Center(child: CircularProgressIndicator())),
+              AsyncError() => SliverFillRemaining(hasScrollBody: false, child: ErrorState(message: "Impossible de charger l'accueil.", onRetry: () => ref.invalidate(homeProvider))),
+              _ => const SliverToBoxAdapter(child: SkeletonCards(count: 5)),
             },
           ],
         ),

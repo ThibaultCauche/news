@@ -444,7 +444,7 @@
 
 ---
 
-## J15 — Finitions d'interface : cinq défauts à éviter (ajouté)
+## J15 — Finitions d'interface : cinq défauts à éviter (ajouté) — **Fait (2026-10-02)**
 
 **Objectif** : passer l'appli au crible de cinq défauts courants d'interface, décidés le 2026-10-01 après lecture d'une liste de bonnes pratiques. Aucune nouvelle fonctionnalité : on **audite d'abord** chaque écran, puis on corrige.
 
@@ -461,7 +461,88 @@
 
 **À trancher au cadrage** : les écrans où le spinner est volontairement gardé ; si les erreurs doivent partir vers Sentry côté appli.
 
-**Critères d'acceptation** : à rédiger au cadrage (`/jalon 15`).
+**Critères d'acceptation** (cadrage du 2026-10-02)
+*Code écrit puis **vérifié sur émulateur Android le 2026-10-02** (voir « Vérification sur émulateur » plus bas). Une partie du jalon reste à voir sur un téléphone physique (voir la dernière case).*
+- [x] Audit écran par écran ci-dessous.
+- [x] Plus de spinner d'écran ni de liste, sauf exceptions : boutons en cours d'envoi et feuille du glossaire (`glossary_sheet`, court, sans mise en page connue). `Skeleton`/`SkeletonCards`/`AsyncView` (`widgets/async_view.dart`) : laiton à 10 %, sans animation, jamais affiché pendant un rechargement quand une valeur existe (test). Dans une zone de hauteur limitée, seules les cartes qui tiennent s'affichent (débordement trouvé par les tests de l'Agenda). Vu à l'écran (onboarding, Pronostics, page Valorant).
+- [x] Un seul `ErrorState` avec « Réessayer » sur chaque écran et liste ; `accountErrorMessage` sans code ni texte brut (l'erreur réelle part dans `debugPrint`), `apiErrorMessage` limité aux refus voulus (400, 403, 404, 409) (tests). **Sentry côté appli non ajouté** (décision du plan : jalon à part).
+- [x] Boutons : retour instantané + retour arrière + message pour Suivre, favori de jeu (échec silencieux corrigé), cloche de discussion, interrupteurs des Réglages (`_ToggleRow`), carte de suggestion de l'onboarding, **pronostic** (`pendingPicksProvider`, choix et score affichés tout de suite) et **réactions du forum** (`ForumMessagesNotifier.showReaction`, compteur recalculé en local puis resynchronisé) ; garde contre le double envoi pour les actions du forum (par message), la vérification e-mail, la suppression de compte et « quitter/supprimer un groupe ».
+- [x] Bouton principal : connexion/inscription ancré en bas (`bottomNavigationBar`), mêmes éléments dans les deux modes, « Mot de passe oublié » remonté sous le champ ; messages d'erreur sous le bouton dans les feuilles « pseudo » et « créer/rejoindre un groupe ». Onboarding déjà conforme. Vu à l'écran, clavier ouvert (voir ci-dessous).
+- [x] Confirmations : une seule partout ; ajout de `confirmAction` avant « Exclure du forum » (menu du fil, tchat du direct, « Masquer et exclure » de la file).
+- [x] Tests : `async_view_test` (skeleton, rechargement, échec avec valeur, erreur + « Réessayer »), `error_messages_test` ; `flutter analyze` propre ; `flutter test` : tout passe sauf les goldens (rendu Windows, voir `CLAUDE.md`). Vérifié sur émulateur avec l'API coupée et avec une API ralentie à 4 s.
+
+- [ ] **Reportés** (avec raison) : Sentry côté appli (nouvelle dépendance, RGPD) ; suggestions d'onboarding demandées en parallèle (aujourd'hui l'une après l'autre, jusqu'à 24 s avant l'erreur sans API) ; écran de lancement qui attend jusqu'à 8 s quand l'API est coupée ; bouton « Ajouter à l'agenda » de l'écran du match (« bientôt disponible », à retirer ou à faire) ; vérification sur téléphone physique et des notifications ; goldens à régénérer par la CI si un widget couvert change (aucun ne l'a été ici).
+
+### Audit (2026-10-02, lecture du code ; rien vérifié à l'écran)
+
+**1. Chargement et erreurs.** 33 `CircularProgressIndicator` dans 22 fichiers, 0 skeleton. 5 sont des boutons en cours d'envoi (garder) : `auth_screen`, `groups_screen` (`_GroupPrompt`), `profile_screen` (`_PseudoForm`), plus 2 petits indicateurs de liste à vérifier (`group_bracket_tree`, `learn_screen:338`). Les ~28 autres sont des chargements d'écran. **Aucun écran n'a de bouton « Réessayer »** : toutes les branches d'erreur sont un `Text("Impossible de charger …")` isolé, réécrit à chaque écran (25 variantes). Aucune fuite de texte technique dans ces branches (le texte est fixe).
+
+| Écran | Chargement | Erreur |
+|---|---|---|
+| Accueil, Agenda | spinner plein écran | texte seul |
+| Match (`next_match`), Équipe, Réglages, Profil | spinner | texte seul (Équipe/Réglages/Profil gardent la valeur si elle existe) |
+| Compétition, arbre, repêchage, Kickoff 3 vies | spinner | texte seul (arbre/repêchage : `_EmptyMessage`) |
+| Page jeu (saison, équipes), Compétitions | spinner | texte seul |
+| Suivis, Onboarding (suggestions) | spinner | texte seul |
+| Forum (liste, fil), Groupes, Profil joueur | spinner | texte seul |
+| Tutos (liste), Glossaire (feuille) | spinner | texte seul (glossaire : « Définition indisponible. ») |
+| Modération (file, journal, liste), choix de jeu/avatar | spinner | texte seul |
+| Pronostics | spinner si la liste est vide | aucune branche d'erreur visible |
+
+**Piège à traiter avec les skeletons** : `AutoRefresh` (`core/auto_refresh.dart`) invalide chaque minute et au retour au premier plan `homeProvider`, `followsProvider`, `predictionsProvider`, `eventProvider`, `agendaProvider`, `catalogProvider`, `competitionDetailProvider`, `bracketProvider`, `entityProvider`, `valorantSeasonProvider`, `gameTeamsProvider`. Seuls 8 écrans testent `hasValue` pour garder l'ancien contenu ; les autres (arbre, compétitions, page jeu, Kickoff…) n'ont qu'un `_ =>` et **repassent donc en spinner à chaque rechargement**. Le skeleton ne doit s'afficher que si `isLoading && !hasValue`. À vérifier à l'écran, le Réglages l'a aussi : `SettingsController.update` fait `invalidate(userSettingProvider)` après chaque interrupteur, donc probable flash de tout l'écran.
+
+**2. Messages d'erreur (texte technique).**
+- `accountErrorMessage` (`core/auth/account.dart:97`) : le cas par défaut affiche `Connexion impossible (${error.code})` → code Firebase brut visible.
+- `apiErrorMessage` renvoie le `message` du corps de l'API quel qu'il soit : les messages métier du J11/J13 sont en français, mais les erreurs génériques de NestJS (« Unauthorized », « Forbidden resource », 429 du limiteur, « Internal server error ») sortiraient en anglais.
+- Toute `DioException` donne « Serveur injoignable » (`account.dart:100`), même pour un 400, un 403 ou un 500 : message faux et sans action.
+- `forumErrorMessage` empile les deux. Les 4 `catch (_) {}` de `learn_screen` avalent l'erreur sans rien dire (acceptable : la progression est secondaire, à journaliser).
+- Rien n'est journalisé : aucun `debugPrint` sur ces erreurs (Sentry non présent côté appli).
+
+**3. Retour instantané des boutons.**
+
+| Bouton | Optimiste | Retour arrière + message | Double envoi | Écart |
+|---|---|---|---|---|
+| Suivre (`FollowsNotifier`) | oui | oui | non géré | OK. Carte d'équipe de l'onboarding : `follow` appelé sans `catch` → échec silencieux |
+| Cloche « M'alerter », suivi de compétition | oui | snackbar | non géré | OK |
+| Favori de jeu (étoile) | oui | **restaure puis `rethrow` sans `catch` à l'appel** | non géré | échec silencieux (l'étoile revient, aucun message) |
+| Pronostic (`_TeamChoice`, score) | **non** (attend le réseau puis recharge) | snackbar | **non** | le choix n'apparaît qu'après l'aller-retour |
+| Réaction forum | **non** (attend + recharge le fil) | snackbar | **non** | latence visible, double tap = bascule deux fois |
+| Envoi/édition d'un message | n/a | texte conservé, snackbar | oui (`_sending`) | OK |
+| Suivre une discussion (cloche) | **non** | `catchError(_toast)` | **non** | latence |
+| Signaler, bloquer, supprimer son message | n/a | snackbar | **non** | pas de retour avant la fin de l'appel |
+| Modération (masquer, exclure, verrouiller) | n/a | snackbar | **non** | **« Exclure du forum » s'exécute sans confirmation** |
+| Créer/rejoindre un groupe, pseudo, connexion | n/a | message en ligne | oui (`_busy`) | OK |
+| Quitter/supprimer un groupe, supprimer le compte | n/a | snackbar | **non** | pas de garde pendant l'appel |
+| Vérification e-mail (« J'ai vérifié », « Renvoyer ») | n/a | message | **non** | « Renvoyer » deux fois → `too-many-requests` Firebase |
+| Interrupteurs des Réglages (`SettingsController.update`) | **non** | **aucun `catch`** | **non** | échec silencieux : l'interrupteur ne bouge simplement pas |
+| Révéler un spoil | local | n/a | n/a | OK |
+
+**4. Bouton principal.** Onboarding : « Continuer » (page 1) et « C'est parti » (page 2) sont collés en bas, pleine largeur, au même emplacement ; « Passer » en haut à droite sur les deux. **OK.** À l'inverse :
+- **Connexion / inscription (`auth_screen`)** : le bouton est dans un `ListView`, juste sous les champs, **pas ancré en bas**. Il bouge entre les deux modes (le texte d'aide « 6 caractères minimum » n'existe qu'à l'inscription) et chaque fois qu'un message d'erreur ou d'info apparaît. **Écart à corriger.**
+- **Pseudo, créer/rejoindre un groupe** (feuilles) : bouton sous le champ, déplacé par le message d'erreur. Mineur.
+- **Vérification e-mail (carte du Profil)** : boutons sous un message qui change. Mineur.
+- Conditions du forum (`forum_terms`) : à voir à l'écran.
+
+**5. « Dark patterns ».** Rien d'anormal : se désabonner et masquer ne demandent aucune confirmation, quitter/supprimer un groupe et supprimer le compte en demandent **une** (dialogue clair, « Annuler » aussi visible que « Supprimer »), se déconnecter n'en demande pas, bloquer n'en demande pas (annulable via la liste des blocages). Le seul point sensible est l'inverse : « Exclure du forum » sans aucune confirmation. Hors périmètre sans rapport : le bouton « Ajouter à l'agenda » de l'écran du match (`next_match_screen:224`) affiche « bientôt disponible », à retirer ou à implémenter.
+
+### Vérification sur émulateur (2026-10-02, Pixel 7 API 35, appli en debug)
+
+Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou ralentie par un petit proxy à 4 s, session de test locale injectée dans les préférences de l'appli (utilisateur créé en base de dev, jetons signés avec le secret local, **aucun compte Firebase réel créé** ; utilisateurs et discussion de test supprimés ensuite).
+- **Skeletons** : 3 cartes laiton à l'onboarding, 3 cartes sous « Matchs à pronostiquer », aucun spinner. Le cache hors ligne affiche toujours les données déjà vues (Agenda, Compétitions) quand l'API est coupée.
+- **ErrorState** : « Impossible de charger la saison. Vérifie ta connexion, puis réessaie. » avec monogramme sur la page Valorant (API coupée), « Impossible de charger les suggestions. » à l'onboarding ; « Réessayer » recharge bien les données une fois l'API rétablie.
+- **Messages d'erreur** : « E-mail ou mot de passe incorrect. » (identifiants faux, vrai Firebase), « Pas de connexion au serveur. Vérifie ton réseau puis réessaie. » partout ailleurs, jamais de code.
+- **Boutons** : interrupteur des Réglages qui se déplace tout de suite avec l'API lente, retour arrière + message avec l'API coupée ; étoile de favori de jeu : retour arrière + message ; cloche de discussion : état actif tout de suite ; création de groupe : message sous le bouton.
+- **Confirmations** : « Exclure Troll… ? » (menu d'un message, « Masquer et exclure » de la file) avec Annuler aussi visible ; « Supprimer mon compte ? » en une seule étape, puis retour en invité.
+- **Bouton principal** : « Créer mon compte » / « Me connecter » à la même hauteur (y identique sur les deux captures), au-dessus du clavier.
+
+**Deuxième passe avec un vrai compte de test (Chewlin, connecté par l'utilisateur ; données réelles gardées intactes, tout ce qui a été créé a été supprimé)** : pronostic changé pendant que l'API répond en 4 s → le nouveau choix et le score s'affichent à 0,7 s (avant : 8 s) et le pronostic d'origine (KC 2-1) a été remis ; réaction 👍 retirée à 0,8 s avec l'API lente, puis resynchronisée ; message posté puis supprimé via son menu ; groupe créé (message d'erreur sous le bouton sans le déplacer avec l'API coupée) puis supprimé avec une seule confirmation ; Suivis, page équipe et écran du match chargent. Deux écarts trouvés et corrigés : le pronostic et les réactions n'étaient pas instantanés (voir la case « Boutons »), et les dialogues « supprimer un groupe/mon compte » n'utilisaient pas le même composant (`confirmAction`) que les autres.
+
+**Trois bugs trouvés grâce à l'émulateur (corrigés)** :
+1. Onboarding : avec l'API coupée, la liste affichait « Aucune suggestion pour l'instant » (les erreurs réseau étaient avalées par le `catch` de chaque équipe) ; seules les 404 sont maintenant ignorées, le reste affiche l'erreur avec « Réessayer ».
+2. Connexion : le bouton ancré en `bottomNavigationBar` passait sous le clavier ; il est maintenant dans le corps de l'écran.
+3. Feuilles « pseudo » et « créer un groupe » : l'erreur sous le bouton le faisait monter ; zone d'erreur de hauteur fixe.
+
+**Pas vérifié** : l'envoi réel d'un compte (création Firebase), l'apparence sur un petit téléphone physique, les notifications. L'écran de démarrage reste affiché tant que le premier appel API n'a pas abouti ou échoué (8 s si l'API est coupée) : hors périmètre, à noter. Les 3 suggestions de l'onboarding sont demandées l'une après l'autre (jusqu'à 24 s avant l'erreur avec l'API coupée) : à passer en parallèle un jour.
 
 ---
 

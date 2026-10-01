@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
 import "community_providers.dart";
 import "profile_screen.dart";
@@ -20,8 +21,11 @@ class PlayerProfileScreen extends ConsumerWidget {
     final profile = ref.watch(publicProfileProvider(userId));
     return Scaffold(
       appBar: AppBar(),
-      body: switch (profile) {
-        AsyncData(:final value) => ListView(
+      body: AsyncView(
+        value: profile,
+        errorMessage: "Impossible de charger ce profil.",
+        onRetry: () => ref.invalidate(publicProfileProvider(userId)),
+        builder: (value) => ListView(
           padding: const EdgeInsets.all(AppSpacing.md),
           children: [
             Row(
@@ -49,9 +53,7 @@ class PlayerProfileScreen extends ConsumerWidget {
             StatsCard(stats: value.stats),
           ],
         ),
-        AsyncError() => const Center(child: Text("Impossible de charger ce profil.")),
-        _ => const Center(child: CircularProgressIndicator()),
-      },
+      ),
     );
   }
 }
