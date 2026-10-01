@@ -28,8 +28,9 @@ abstract final class AppTextStyles {
   static TextStyle get pageTitle => _cinzel(AppTypography.display, FontWeight.w700);
   static TextStyle get sectionTitle => _cinzel(AppTypography.title, FontWeight.w600);
   static TextStyle versus(double size) => _cinzel(size, FontWeight.w700);
-  static TextStyle get heroScore =>
-      _inter(AppTypography.heroScore, FontWeight.w700, AppTypography.trackingHeroScore);
+  /// Scores et gros chiffres (J16) : Cinzel en blanc, pour rester lisibles en 3 secondes.
+  static TextStyle score(double size) => _cinzel(size, FontWeight.w700).copyWith(color: AppColors.textPrimary);
+  static TextStyle get heroScore => score(AppTypography.heroScore);
   static TextStyle get cardTitle =>
       _inter(AppTypography.cardTitle, FontWeight.w700, AppTypography.trackingCardTitle);
   static TextStyle get bodyLargeStrong =>

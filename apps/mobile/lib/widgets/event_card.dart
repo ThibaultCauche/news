@@ -159,7 +159,7 @@ class EventCard extends ConsumerWidget {
         ? null
         : SpoilerBlur(
             sigma: sigma,
-            child: Text("${value.toInt()}", style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: 22, fontWeight: FontWeight.w800)),
+            child: Text("${value.toInt()}", style: AppTextStyles.score(22)),
           );
 
     final compactRow = compact && hasTwoTeams

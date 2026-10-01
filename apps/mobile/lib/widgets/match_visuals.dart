@@ -82,7 +82,7 @@ class TeamBadge extends StatelessWidget {
               "${score!.toInt()}",
               // Taille de score proportionnelle au logo (44 → 26, la tuile
               // réduite a un logo plus petit donc un score plus petit aussi).
-              style: AppTextStyles.bodyLargeStrong.copyWith(fontSize: AppTypography.heroScore * diameter / 44, fontWeight: FontWeight.w800),
+              style: AppTextStyles.score(AppTypography.heroScore * diameter / 44),
             ),
           ),
         ],
