@@ -449,7 +449,7 @@
 **Objectif** : passer l'appli au crible de cinq défauts courants d'interface, décidés le 2026-10-01 après lecture d'une liste de bonnes pratiques. Aucune nouvelle fonctionnalité : on **audite d'abord** chaque écran, puis on corrige.
 
 **Périmètre**
-1. **Skeletons plutôt que spinners** : l'appli compte aujourd'hui une trentaine de `CircularProgressIndicator`, sur la plupart des écrans, et aucun skeleton. Remplacer, là où on sait ce qui va s'afficher (cartes de match, listes, profil, forum, classements), par un gabarit qui reprend la mise en page réelle. Le spinner reste acceptable pour une action ponctuelle (envoi d'un message). Mouvement : pas d'animation, ou un fondu discret (règle 13), jamais d'effet qui tourne en continu sur ce qu'on voit plusieurs fois par jour.
+1. **Skeletons plutôt que spinners** : l'appli compte aujourd'hui une trentaine de `CircularProgressIndicator`, sur la plupart des écrans, et aucun skeleton. Remplacer, là où on sait ce qui va s'afficher (cartes de match, listes, profil, forum, classements), par un gabarit qui reprend la mise en page réelle. Le spinner reste acceptable pour une action ponctuelle (envoi d'un message). Mouvement : pas d'animation, ou un fondu discret (règle 13), jamais d'effet qui tourne en continu sur ce qu'on voit plusieurs fois par jour. **Teinte (J16)** : skeletons en laiton très atténué plutôt qu'en gris, pour rester dans l'identité Keryx.
 2. **Pas de « dark patterns »** : l'appli n'a pas d'abonnement payant, donc rien à corriger aujourd'hui. Ça devient une **règle à tenir** : se désabonner, quitter un groupe, supprimer son compte ou masquer un utilisateur ne doivent jamais demander plus qu'une confirmation claire. À vérifier lors de l'audit.
 3. **Retour instantané sur chaque bouton** : le bouton « Suivre » le fait depuis J8. Auditer les autres (favori de jeu, pronostic, réaction et envoi dans le forum, rejoindre un groupe, révéler un spoil, modération) : état visuel immédiat au tap, retour arrière propre si l'appel échoue, pas de double envoi possible.
 4. **Actions principales toujours à la même place** dans l'onboarding, la connexion, la création de compte et les étapes de profil : le bouton « Continuer » ne change pas d'emplacement d'un écran à l'autre.
@@ -512,6 +512,15 @@
 ## Ensuite (par ordre de priorité proposé)
 
 0. **Quiz des tutos avec points et classement** (idée du 2026-10-01, version « plus grosse » du compteur du J12) : points pour les quiz réussis, éventuellement dans les classements de groupe. Demande que **le serveur connaisse les bonnes réponses** (aujourd'hui dans les JSON embarqués de l'appli, donc « quiz réussi » est déclaré par le client), une règle claire pour ne pas mélanger ces points à ceux des pronostics (classement séparé ?), un seul passage compté par question, et une table de résultats par question plutôt que par tuto.
+
+0 bis. **Suite de l'identité Keryx** (idées du 2026-10-02, après le J16), à piocher par petits lots :
+   - **Icône de notification Android** : silhouette blanche monochrome (K dans un losange) + couleur d'accent laiton, à la place de l'icône par défaut (sinon carré blanc dans la barre). Rapide, visible dès la première notification.
+   - **Visuels de la fiche Google Play** (bêta) : icône, bandeau et captures d'écran dans l'identité.
+   - **Podium des classements de groupe** : médailles / tampons laiton, argent, bronze pour le top 3.
+   - **Cérémonie du vainqueur** : quand une équipe suivie gagne, carte « proclamée vainqueur » au cadre renforcé, affichée une seule fois (règle 13).
+   - **Carte de partage** : image du résultat ou du pronostic aux couleurs de Keryx, à envoyer à un ami.
+   - **Skeletons teintés laiton** : à intégrer dans le J15 (skeletons à la place des spinners), pas un lot à part.
+   - Vérifier plus tard : le « 1 » de Cinzel ressemble à un « I » (lisibilité des scores) ; contraste du laiton sur les cartes colorées ; glossaire et icône du lanceur à voir à l'écran.
 
 1. **Guide d'explications des compétitions** (idée du 2026-09-30) : page « Comprendre les compétitions » (Kickoff, Stage, Masters, Champions, formats, qualification), ouverte depuis un « ? » de la page jeu. Textes propres écrits pour un néophyte, relus avant mise en base (pas de recopie du site officiel VCT, qui ne sert qu'à vérifier les faits), stockés en base comme le glossaire, avec un petit endpoint.
 2. **Autres jeux PandaScore** (LoL, CS2, Dota 2, R6, Rocket League…) : même adaptateur, filtrage par tier. Nouveaux formats à dessiner : **phase suisse**, **classement de lobby** (battle royale). Vérifier le gagnant par carte pour CS, Dota 2 et LoL sur du tier S.
