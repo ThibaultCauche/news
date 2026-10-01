@@ -6,11 +6,12 @@ import "live_dot.dart";
 /// Tampon (J16) : capitales Cinzel dans un cadre fin, légèrement incliné,
 /// pour « EN DIRECT », « TERMINÉ »… Statique.
 class Stamp extends StatelessWidget {
-  const Stamp(this.text, {super.key, this.color = AppColors.live, this.dot = false});
+  const Stamp(this.text, {super.key, this.color = AppColors.live, this.dot = false, this.fontSize = 11});
 
   final String text;
   final Color color;
   final bool dot;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +31,7 @@ class Stamp extends StatelessWidget {
               if (dot) ...[LiveDot(size: 6, color: color), const SizedBox(width: 6)],
               Text(
                 text,
-                style: TextStyle(fontFamily: "Cinzel", fontSize: 11, fontWeight: FontWeight.w700, letterSpacing: 11 * 0.12, color: color),
+                style: TextStyle(fontFamily: "Cinzel", fontSize: fontSize, fontWeight: FontWeight.w700, letterSpacing: fontSize * 0.12, color: color),
               ),
             ],
           ),

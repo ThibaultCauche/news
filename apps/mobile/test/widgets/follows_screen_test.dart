@@ -1,6 +1,7 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
+import "package:mobile/widgets/match_visuals.dart";
 import "package:mobile/core/navigation.dart";
 import "package:mobile/core/settings_provider.dart";
 import "package:mobile/features/bracket/bracket_provider.dart";
@@ -103,25 +104,24 @@ void main() {
     // test (pas de réseau) : attendu, seule l'URL demandée nous intéresse.
     tester.takeException();
 
-    expect(find.text("Encore en course"), findsOneWidget);
-    final avatar = tester.widget<CircleAvatar>(find.byType(CircleAvatar));
-    expect((avatar.foregroundImage as NetworkImage?)?.url, "https://example.test/g2.png");
+    expect(find.text("ENCORE EN COURSE"), findsOneWidget);
+    final logo = tester.widget<Image>(find.byType(Image));
+    expect((logo.image as NetworkImage).url, "https://example.test/g2.png");
   });
 
   testWidgets("équipe éliminée : statut affiché, pas de logo sans imageUrl", (tester) async {
     await _pump(tester, [_follow(targetType: "entity", targetId: "team-a", name: "Test G2", status: FollowStateDtoStatusEnum.eliminated)]);
     await tester.pumpAndSettle();
 
-    expect(find.text("Éliminée"), findsOneWidget);
-    final avatar = tester.widget<CircleAvatar>(find.byType(CircleAvatar));
-    expect(avatar.foregroundImage, isNull);
+    expect(find.text("ÉLIMINÉE"), findsOneWidget);
+    expect(find.byType(Image), findsNothing);
   });
 
   testWidgets("suivi d'une compétition : pas de logo ni de statut d'équipe", (tester) async {
     await _pump(tester, [_follow(targetType: "competition", targetId: "comp-1", name: "VCT 2026")]);
     await tester.pumpAndSettle();
 
-    expect(find.byType(CircleAvatar), findsNothing);
+    expect(find.byType(TeamBadge), findsNothing);
   });
 
   testWidgets("plus de « x » : le désabonnement se fait depuis la page (J10)", (tester) async {

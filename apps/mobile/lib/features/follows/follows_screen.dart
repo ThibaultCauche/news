@@ -1,3 +1,5 @@
+import "../../widgets/live_badge.dart";
+import "../../widgets/match_visuals.dart";
 import "../../widgets/ornate_frame.dart";
 import "../../widgets/empty_mark.dart";
 import "package:flutter/material.dart";
@@ -145,11 +147,10 @@ class FollowCard extends ConsumerWidget {
                 child: Row(
                   children: [
                     if (targetType == FollowTargetType.entity) ...[
-                      CircleAvatar(
-                        radius: 18,
-                        backgroundColor: AppColors.surface,
-                        foregroundImage: follow.imageUrl != null ? NetworkImage(follow.imageUrl!) : null,
-                        child: Text(_initials, style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 12)),
+                      TeamBadge(
+                        imageUrl: follow.imageUrl,
+                        diameter: 40,
+                        fallback: _initials,
                       ),
                       const SizedBox(width: AppSpacing.sm),
                     ],
@@ -160,7 +161,7 @@ class FollowCard extends ConsumerWidget {
                           Text(follow.name, style: Theme.of(context).textTheme.titleLarge),
                           if (targetType == FollowTargetType.competitionFamily)
                             const Text("Toutes les éditions", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
-                          if (follow.status != null) _StatusPill(status: follow.status!),
+                          if (follow.status != null) Padding(padding: const EdgeInsets.only(top: 6, bottom: 8), child: _StatusPill(status: follow.status!)),
                         ],
                       ),
                     ),
@@ -172,6 +173,7 @@ class FollowCard extends ConsumerWidget {
             if (event != null)
               EventCard(
                 event: event,
+                framed: false,
                 scoresHidden: scoresHidden,
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
               )
@@ -199,6 +201,6 @@ class _StatusPill extends StatelessWidget {
   Widget build(BuildContext context) {
     final qualified = status == FollowStateDtoStatusEnum.qualified;
     final color = qualified ? AppColors.win : AppColors.loss;
-    return Text(qualified ? "Encore en course" : "Éliminée", style: TextStyle(color: color, fontSize: AppTypography.caption, fontWeight: FontWeight.w600));
+    return Align(alignment: Alignment.centerLeft, child: Stamp(qualified ? "ENCORE EN COURSE" : "ÉLIMINÉE", color: color, fontSize: 9));
   }
 }

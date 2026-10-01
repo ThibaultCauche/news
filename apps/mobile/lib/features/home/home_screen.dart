@@ -72,33 +72,32 @@ class _HomeHeader extends ConsumerWidget {
     final avatarUrl = profile?.avatarUrl;
     return Padding(
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.sm),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.end,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(capitalized, style: const TextStyle(color: AppColors.textSecondary)),
-                const PageTitle("Aujourd'hui"),
-              ],
-            ),
+          Text(capitalized, style: const TextStyle(color: AppColors.textSecondary)),
+          Row(
+            children: [
+              Expanded(child: Text("Aujourd'hui", style: AppTextStyles.pageTitle)),
+              // Ouvre l'onglet Compétitions avec le curseur dans sa recherche (J10) : pas
+              // de second écran de recherche.
+              IconButton(
+                tooltip: "Rechercher",
+                onPressed: () {
+                  ref.read(tabIndexProvider.notifier).select(competitionsTabIndex);
+                  ref.read(searchFocusRequestProvider.notifier).request();
+                },
+                icon: const Icon(Icons.search_rounded),
+              ),
+              // Le profil (J11) : initiale du pseudo une fois créé, silhouette pour l'invité.
+              GestureDetector(
+                onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ProfileScreen())),
+                child: AvatarCircle(avatarUrl: avatarUrl, pseudo: pseudo, radius: 20),
+              ),
+            ],
           ),
-          // Ouvre l'onglet Compétitions avec le curseur dans sa recherche (J10) : pas
-          // de second écran de recherche.
-          IconButton(
-            tooltip: "Rechercher",
-            onPressed: () {
-              ref.read(tabIndexProvider.notifier).select(competitionsTabIndex);
-              ref.read(searchFocusRequestProvider.notifier).request();
-            },
-            icon: const Icon(Icons.search_rounded),
-          ),
-          // Le profil (J11) : initiale du pseudo une fois créé, silhouette pour l'invité.
-          GestureDetector(
-            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const ProfileScreen())),
-            child: AvatarCircle(avatarUrl: avatarUrl, pseudo: pseudo, radius: 20),
-          ),
+          const SizedBox(height: 6),
+          const BrassRule(),
         ],
       ),
     );
@@ -262,7 +261,10 @@ class _FollowsSection extends ConsumerWidget {
         ),
       );
     }
-    final follows = (ref.watch(followsProvider).value ?? const []).where((f) => !f.muted).toList();
+    // Un match suivi déjà terminé n'a plus rien à montrer ici (pas de « prochain match »).
+    final follows = (ref.watch(followsProvider).value ?? const [])
+        .where((f) => !f.muted && !(f.targetType == "event" && f.currentEvent?.status != "scheduled" && f.currentEvent?.status != "live"))
+        .toList();
     if (follows.isEmpty) return const SizedBox.shrink();
     return Padding(
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, 0),

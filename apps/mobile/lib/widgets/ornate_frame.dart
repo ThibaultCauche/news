@@ -11,15 +11,17 @@ bool isHighStakes(String eventName) => RegExp("final|elimination|decider|décisi
 /// et ajoute un second filet intérieur. Dessiné par-dessus l'enfant, sans
 /// toucher à sa mise en page ni intercepter les appuis.
 class OrnateFrame extends StatelessWidget {
-  const OrnateFrame({super.key, required this.child, this.radius = AppRadii.card, this.strong = false, this.color = AppColors.brass});
+  const OrnateFrame({super.key, required this.child, this.radius = AppRadii.card, this.strong = false, this.color = AppColors.brass, this.enabled = true});
 
   final Widget child;
+  final bool enabled;
   final double radius;
   final bool strong;
   final Color color;
 
   @override
   Widget build(BuildContext context) {
+    if (!enabled) return child;
     return CustomPaint(foregroundPainter: _FramePainter(radius, strong, color), child: child);
   }
 }

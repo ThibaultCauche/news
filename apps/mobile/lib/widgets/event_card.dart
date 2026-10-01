@@ -44,7 +44,11 @@ class EventCard extends ConsumerWidget {
     this.followedEntityIds = const {},
     this.banner = false,
     this.footer,
+    this.framed = true,
   });
+
+  /// Cadre fin à pointes ; désactivé quand la carte est déjà dans une carte cadrée (« Tes suivis »).
+  final bool framed;
 
   /// Bandeau « en direct » de l'Accueil (J10) : même carte que partout, teintée en rouge
   /// (couleur du direct, règle 12 de `CLAUDE.md`) et libellée « EN DIRECT » à la place de l'heure.
@@ -224,6 +228,7 @@ class EventCard extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: OrnateFrame(
+      enabled: framed,
       radius: AppRadii.card,
       strong: strong,
       color: banner ? AppColors.live : AppColors.brass,
