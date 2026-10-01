@@ -1,3 +1,4 @@
+import "../../widgets/ornate_frame.dart";
 import "../forum/forum_entry.dart";
 import "../forum/forum_providers.dart";
 import "dart:math" as math;
@@ -146,9 +147,9 @@ class _SeasonTabs extends StatelessWidget {
       onTap: () => onSelected(i),
       child: AnimatedContainer(
         duration: AppMotion.microDuration,
-        padding: EdgeInsets.symmetric(vertical: AppSpacing.sm, horizontal: fixed ? 0 : AppSpacing.md),
+        padding: EdgeInsets.symmetric(vertical: AppSpacing.sm, horizontal: fixed ? 6 : AppSpacing.md),
         decoration: BoxDecoration(
-          color: i == selectedIndex ? AppColors.textPrimary : Colors.transparent,
+          color: i == selectedIndex ? AppColors.brass : Colors.transparent,
           borderRadius: BorderRadius.circular(AppRadii.pill),
         ),
         child: FittedBox(
@@ -175,7 +176,7 @@ class _SeasonTabs extends StatelessWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadii.pill),
-        border: Border.all(color: AppColors.surfaceBorder),
+        border: Border.all(color: AppColors.brass.withValues(alpha: 0.4), width: 0.8),
       ),
       child: fixed
           ? Row(children: [for (final (i, label) in labels.indexed) Expanded(child: _tab(i, label, fixed: true))])
@@ -281,7 +282,7 @@ class _SeasonBody extends StatelessWidget {
           const SizedBox(height: AppSpacing.md),
           Text("DÉJÀ JOUÉ", style: Theme.of(context).textTheme.labelSmall),
           const SizedBox(height: AppSpacing.xs),
-          Card(
+          FramedCard(
             margin: EdgeInsets.zero,
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),
@@ -311,7 +312,7 @@ class _SeasonCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
+    return FramedCard(
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -676,7 +677,7 @@ class _NowCard extends ConsumerWidget {
     final children = ref.watch(competitionDetailProvider(step.id)).value?.children;
     final groupIds = groupCompetitionIds(children?.toList() ?? const []);
 
-    return Card(
+    return FramedCard(
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),

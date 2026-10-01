@@ -1,3 +1,4 @@
+import "../../widgets/ornate_frame.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_svg/flutter_svg.dart";
@@ -240,7 +241,7 @@ class _FollowsSection extends ConsumerWidget {
     if (!ref.watch(signedInProvider)) {
       return Padding(
         padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, 0),
-        child: Card(
+        child: FramedCard(
           margin: EdgeInsets.zero,
           child: Padding(
             padding: const EdgeInsets.all(AppSpacing.md),
@@ -299,7 +300,7 @@ class _LearnCard extends ConsumerWidget {
     final started = progress.read > 0;
     return Padding(
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 0),
-      child: Card(
+      child: FramedCard(
         margin: EdgeInsets.zero,
         child: ListTile(
           leading: const LearnIconTile(icon: Icons.sports_esports_rounded, gradient: 0),

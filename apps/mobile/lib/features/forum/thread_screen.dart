@@ -1,3 +1,4 @@
+import "../../widgets/ornate_frame.dart";
 import "dart:async";
 
 import "package:flutter/material.dart";
@@ -319,7 +320,7 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
               left: AppSpacing.md,
               right: AppSpacing.md,
               child: IgnorePointer(
-                child: Card(
+                child: FramedCard(
                   child: Padding(
                     padding: EdgeInsets.all(AppSpacing.sm),
                     child: Text("Sans spoil : discussion floutée. Appui long pour l'afficher.", textAlign: TextAlign.center, style: TextStyle(color: AppColors.textSecondary)),

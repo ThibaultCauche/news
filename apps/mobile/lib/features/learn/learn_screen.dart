@@ -1,3 +1,4 @@
+import "../../widgets/ornate_frame.dart";
 import "dart:convert";
 
 import "package:flutter/material.dart";
@@ -233,7 +234,7 @@ class LearnTab extends ConsumerWidget {
             const SizedBox(height: AppSpacing.md),
           ],
           for (final article in value.articles)
-            Card(
+            FramedCard(
               margin: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: ListTile(
                 leading: LearnIconTile(icon: learnIcons[article.icon] ?? Icons.school_rounded, gradient: article.gradient),
@@ -275,7 +276,7 @@ class LearnHelpButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return IconButton(
       tooltip: "Comprendre",
-      icon: const Icon(Icons.help_rounded, color: AppColors.gold),
+      icon: const Icon(Icons.help_rounded, color: AppColors.brass),
       onPressed: () => openLearnArticle(context, game: game, articleId: articleId),
     );
   }
@@ -415,7 +416,7 @@ class _LearnQuizState extends State<LearnQuiz> {
   @override
   Widget build(BuildContext context) {
     final q = widget.question;
-    return Card(
+    return FramedCard(
       margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       child: Padding(
         padding: const EdgeInsets.all(AppSpacing.md),

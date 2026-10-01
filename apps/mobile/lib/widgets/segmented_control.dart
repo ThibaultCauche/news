@@ -36,7 +36,8 @@ class SegmentedControl extends StatelessWidget {
                   width: segmentWidth - 4,
                   child: DecoratedBox(
                     decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.16),
+                      color: AppColors.brass.withValues(alpha: 0.25),
+                      border: Border.all(color: AppColors.brass.withValues(alpha: 0.6), width: 0.8),
                       borderRadius: BorderRadius.circular(8),
                     ),
                   ),

@@ -274,7 +274,7 @@ class _CategoryPill extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.sm),
         decoration: BoxDecoration(
-          color: selected ? AppColors.textPrimary : AppColors.surface,
+          color: selected ? AppColors.brass : AppColors.surface,
           borderRadius: BorderRadius.circular(AppRadii.pill),
           border: selected ? null : Border.all(color: AppColors.surfaceBorder),
         ),
@@ -409,7 +409,7 @@ class _WeekDay extends StatelessWidget {
         width: 36,
         padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
         decoration: BoxDecoration(
-          color: selected ? AppColors.textPrimary : null,
+          color: selected ? AppColors.brass : null,
           borderRadius: BorderRadius.circular(AppRadii.pill),
         ),
         child: Column(

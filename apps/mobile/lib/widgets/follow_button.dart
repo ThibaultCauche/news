@@ -19,12 +19,13 @@ class FollowButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final textStyle = AppTextStyles.captionStrong.copyWith(color: following ? AppColors.gold : AppColors.background);
+    final textStyle = AppTextStyles.captionStrong.copyWith(color: following ? AppColors.gold : AppColors.brass);
     return GestureDetector(
       onTap: onPressed,
       child: DecoratedBox(
         decoration: BoxDecoration(
-          color: following ? AppColors.gold.withValues(alpha: 0.14) : Colors.white.withValues(alpha: 0.9),
+          color: following ? AppColors.gold.withValues(alpha: 0.14) : AppColors.brass.withValues(alpha: 0.12),
+          border: Border.all(color: following ? AppColors.gold.withValues(alpha: 0.6) : AppColors.brass),
           borderRadius: BorderRadius.circular(AppRadii.pill),
         ),
         child: Padding(

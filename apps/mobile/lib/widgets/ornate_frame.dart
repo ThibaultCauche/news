@@ -49,7 +49,7 @@ class _FramePainter extends CustomPainter {
       ..strokeWidth = strong ? 1.8 : 1.4
       ..color = bright;
     final fill = Paint()..color = bright;
-    final tail = (strong ? 44.0 : 34.0).clamp(0.0, (w - 2 * r) / 2);
+    final tail = (strong ? 44.0 : 34.0).clamp(0.0, (w - 2 * r) / 2).clamp(0.0, size.shortestSide * 0.3);
     final t = strong ? 2.4 : 2.0;
     for (final (cx, cy, sx, sy) in [(0.0, 0.0, 1.0, 1.0), (w, 0.0, -1.0, 1.0), (0.0, h, 1.0, -1.0), (w, h, -1.0, -1.0)]) {
       final rect = Rect.fromLTWH(cx == 0 ? 0 : w - 2 * r, cy == 0 ? 0 : h - 2 * r, 2 * r, 2 * r);
@@ -103,4 +103,20 @@ class _FramePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_FramePainter old) => old.radius != radius || old.strong != strong || old.color != color;
+}
+
+/// `Card` entouré d'un [OrnateFrame] (J16) ; [margin] s'applique autour du cadre.
+class FramedCard extends StatelessWidget {
+  const FramedCard({super.key, this.margin = EdgeInsets.zero, required this.child});
+
+  final EdgeInsetsGeometry margin;
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: margin,
+      child: OrnateFrame(child: Card(margin: EdgeInsets.zero, child: child)),
+    );
+  }
 }

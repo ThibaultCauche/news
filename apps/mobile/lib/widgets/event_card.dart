@@ -222,7 +222,7 @@ class EventCard extends ConsumerWidget {
 
     final strong = isHighStakes(event.name);
     return Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      padding: const EdgeInsets.only(bottom: 14),
       child: OrnateFrame(
       radius: AppRadii.card,
       strong: strong,

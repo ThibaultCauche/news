@@ -48,6 +48,8 @@ abstract final class AppTextStyles {
 ThemeData buildAppTheme() {
   final base = ThemeData.dark(useMaterial3: true);
   final textTheme = base.textTheme.apply(fontFamily: "Inter").copyWith(
+    headlineMedium: _cinzel(28, FontWeight.w700),
+    headlineSmall: _cinzel(22, FontWeight.w600),
     headlineLarge: _inter(AppTypography.display, FontWeight.w700, AppTypography.trackingDisplay),
     titleLarge: _inter(AppTypography.title, FontWeight.w700, AppTypography.trackingTitle),
     bodyMedium: _inter(AppTypography.bodyLarge, FontWeight.w400, AppTypography.trackingBodyLarge),
@@ -56,7 +58,7 @@ ThemeData buildAppTheme() {
       AppTypography.eyebrow,
       FontWeight.w600,
       AppTypography.trackingEyebrow,
-      color: AppColors.textSecondary,
+      color: AppColors.brass,
     ),
   );
 
@@ -74,7 +76,8 @@ ThemeData buildAppTheme() {
       error: AppColors.live,
     ),
     textTheme: textTheme,
-    appBarTheme: const AppBarThemeData(
+    appBarTheme: AppBarThemeData(
+      titleTextStyle: AppTextStyles.sectionTitle,
       backgroundColor: AppColors.background,
       surfaceTintColor: Colors.transparent,
       elevation: 0,
@@ -83,12 +86,16 @@ ThemeData buildAppTheme() {
     cardTheme: const CardThemeData(
       color: AppColors.surface,
       surfaceTintColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(AppRadii.card)),
-        side: BorderSide(color: AppColors.surfaceBorder),
-      ),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(AppRadii.card))),
     ),
     dividerColor: AppColors.brass.withValues(alpha: 0.25),
+    checkboxTheme: CheckboxThemeData(
+      side: const BorderSide(color: AppColors.brass, width: 1.2),
+      checkColor: const WidgetStatePropertyAll(AppColors.background),
+      fillColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.brass : Colors.transparent),
+    ),
+    textButtonTheme: TextButtonThemeData(style: TextButton.styleFrom(foregroundColor: AppColors.brass)),
+    expansionTileTheme: const ExpansionTileThemeData(iconColor: AppColors.brass, collapsedIconColor: AppColors.textSecondary),
     filledButtonTheme: FilledButtonThemeData(
       style: FilledButton.styleFrom(
         backgroundColor: AppColors.brass.withValues(alpha: 0.12),

@@ -1,3 +1,4 @@
+import "../../widgets/ornate_frame.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -111,8 +112,8 @@ class _Browse extends ConsumerWidget {
           const SizedBox(height: AppSpacing.md),
         ],
         for (final category in catalog.categories)
-          Card(
-            margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+          FramedCard(
+            margin: const EdgeInsets.only(bottom: 14),
             child: Theme(
               data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(

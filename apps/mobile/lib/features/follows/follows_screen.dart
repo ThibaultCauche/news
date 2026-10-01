@@ -1,3 +1,4 @@
+import "../../widgets/ornate_frame.dart";
 import "../../widgets/empty_mark.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -129,7 +130,7 @@ class FollowCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final event = follow.currentEvent;
     final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
-    return Card(
+    return FramedCard(
       margin: EdgeInsets.zero,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm, vertical: AppSpacing.xs),

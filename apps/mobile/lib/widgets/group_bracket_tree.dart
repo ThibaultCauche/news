@@ -1,3 +1,4 @@
+import "ornate_frame.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -25,20 +26,21 @@ class GroupBracketTree extends ConsumerWidget {
     final name = ref.watch(competitionDetailProvider(competitionId)).value?.name ?? "";
     final bracket = ref.watch(bracketProvider(competitionId));
 
-    return Container(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
-      padding: const EdgeInsets.all(AppSpacing.sm),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(AppRadii.chip),
-        border: Border.all(color: AppColors.surfaceBorder),
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 14),
+      child: OrnateFrame(
+        radius: AppRadii.chip,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(AppSpacing.sm),
+          decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.chip)),
+          child: switch (bracket) {
+            AsyncData(:final value) => _Tree(name: name, bracket: value),
+            AsyncError() => const Text("—", style: TextStyle(color: AppColors.textTertiary)),
+            _ => const SizedBox(height: 40, child: Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)))),
+          },
+        ),
       ),
-      child: switch (bracket) {
-        AsyncData(:final value) => _Tree(name: name, bracket: value),
-        AsyncError() => const Text("—", style: TextStyle(color: AppColors.textTertiary)),
-        _ => const SizedBox(height: 40, child: Center(child: SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2)))),
-      },
     );
   }
 }
