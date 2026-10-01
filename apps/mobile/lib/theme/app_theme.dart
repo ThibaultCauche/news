@@ -101,6 +101,11 @@ ThemeData buildAppTheme() {
       trackColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.brass : AppColors.surface),
       trackOutlineColor: WidgetStateProperty.resolveWith((s) => s.contains(WidgetState.selected) ? AppColors.brass : AppColors.textTertiary),
     ),
+    chipTheme: ChipThemeData(
+      selectedColor: AppColors.brass.withValues(alpha: 0.25),
+      checkmarkColor: AppColors.brass,
+      side: BorderSide(color: AppColors.brass.withValues(alpha: 0.5)),
+    ),
     checkboxTheme: CheckboxThemeData(
       side: const BorderSide(color: AppColors.brass, width: 1.2),
       checkColor: const WidgetStatePropertyAll(AppColors.background),

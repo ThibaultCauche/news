@@ -1,3 +1,5 @@
+import "../../theme/app_theme.dart";
+import "../../widgets/empty_mark.dart";
 import "../../widgets/ornate_frame.dart";
 import "dart:async";
 
@@ -191,7 +193,7 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
         if (i == count - 1) {
           return Padding(
             padding: const EdgeInsets.only(bottom: AppSpacing.sm),
-            child: Text(state.thread.title, style: Theme.of(context).textTheme.titleMedium),
+            child: Text(state.thread.title, style: AppTextStyles.sectionTitle),
           );
         }
         if (empty) {
@@ -265,7 +267,7 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
     // Le titre complet est en tête de la liste (la barre est trop étroite pour un titre de 80 caractères).
     final header = Padding(
       padding: const EdgeInsets.only(bottom: AppSpacing.md),
-      child: Text(state.thread.title, style: Theme.of(context).textTheme.titleLarge),
+      child: Text(state.thread.title, style: AppTextStyles.sectionTitle),
     );
     final list = state.thread.kind == ForumThreadDtoKindEnum.live
         ? _liveListView(state, status)
@@ -280,7 +282,7 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
           if (state.messages.isEmpty) {
             return const Padding(
               padding: EdgeInsets.all(AppSpacing.xl),
-              child: Center(child: Text("Aucun message pour l'instant. Lance la discussion !", textAlign: TextAlign.center, style: TextStyle(color: AppColors.textSecondary))),
+              child: Center(child: EmptyMark("Aucun message pour l'instant. Lance la discussion !")),
             );
           }
           if (i == state.messages.length + 1) {

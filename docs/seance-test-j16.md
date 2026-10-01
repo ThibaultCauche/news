@@ -45,6 +45,12 @@ Prérequis : `FORUM_OPEN=true` dans `.env` (redémarrer l'API), ou `app_user.for
 - [ ] Notification reçue : nom de l'appli « Keryx » dans la barre.
 - [ ] Icône « Keryx » dans le lanceur d'applications (icône adaptative, mode icône thématique).
 
+## Résultat de la séance faite par Claude (2026-10-01, émulateur Android)
+- Vérifié : tampon « EN DIRECT » (écran du match et bandeau de l'Accueil), cadre renforcé, « Qui sera proclamé vainqueur ? », cartes « Direct » et « Discussion », fil de discussion vide (monogramme), écran des conditions du forum.
+- Corrigé pendant la séance : point rouge en double à côté du tampon « EN DIRECT », titre de fil du forum en Inter blanc, puces de score du pronostic en violet Material (thème des puces).
+- Non fait : acceptation des conditions du forum et envoi de message (écrit sur le compte, à faire à la main), onboarding (demande d'effacer les données et de se reconnecter), « Direct » du forum, glossaire, grande finale en carte de l'Accueil (« Les grands rendez-vous »).
+- Constaté : un événement sans `result` (donnée de test incomplète) fait charger l'écran du match indéfiniment, car le client généré déclare `result` non nul. Les vrais matchs PandaScore en ont toujours un.
+
 ## Défauts trouvés
 À noter ici au fil de la séance (écran, ce qui ne va pas, capture).
 

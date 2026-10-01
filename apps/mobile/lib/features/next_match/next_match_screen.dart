@@ -19,7 +19,6 @@ import "../learn/learn_screen.dart";
 import "../../widgets/event_card.dart" show entityAccentColorProvider;
 import "../../widgets/match_visuals.dart";
 import "../../widgets/glossary_sheet.dart";
-import "../../widgets/live_dot.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
@@ -339,14 +338,7 @@ class _StatusDisplay extends StatelessWidget {
       EventStatusKind.scheduled when event.startsAt.toDateTime != null => _Countdown(target: event.startsAt.toDateTime!.toLocal()),
       EventStatusKind.live => Column(
         children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const LiveDot(size: 12),
-              const SizedBox(width: AppSpacing.sm),
-              const Stamp("EN DIRECT"),
-            ],
-          ),
+          const Stamp("EN DIRECT", dot: true),
           if (_score != null) ...[
             const SizedBox(height: AppSpacing.sm),
             _AnimatedSpoiler(hidden: scoresHidden, sigma: sigma, child: Text(_score!, style: AppTextStyles.pageTitle.copyWith(color: AppColors.textPrimary))),
