@@ -1,31 +1,39 @@
 import "package:firebase_core/firebase_core.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
+import "../../features/forum/thread_screen.dart";
 import "../../features/next_match/next_match_screen.dart";
 
 /// Clé du `Navigator` racine : accessible en dehors de l'arbre de widgets,
 /// pour naviguer depuis un tap sur une notification (docs/04 J4).
 final navigatorKey = GlobalKey<NavigatorState>();
 
+/// Données d'une notification ouverte : `eventId` (match) ou `threadId` (réponse du forum).
+typedef NotificationTarget = Map<String, dynamic>;
+
 /// Configure Firebase (si possible) et écoute les taps sur une notification
 /// reçue pendant que l'appli tourne. Renvoie l'id du match concerné si
 /// l'appli a été ouverte *depuis* une notification (démarrage à froid) —
 /// à traiter après le premier affichage, le `Navigator` n'existe pas encore
 /// à cet instant. Échoue sans bruit tant que Firebase n'est pas configuré.
-Future<String?> setupNotificationTapHandling() async {
+Future<NotificationTarget?> setupNotificationTapHandling() async {
   try {
     await Firebase.initializeApp();
   } catch (_) {
     return null;
   }
-  FirebaseMessaging.onMessageOpenedApp.listen(_openMatchFromMessage);
+  FirebaseMessaging.onMessageOpenedApp.listen((message) => openFromNotification(message.data));
   final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
-  return initialMessage?.data["eventId"];
+  return initialMessage?.data;
 }
 
-void _openMatchFromMessage(RemoteMessage message) {
-  final eventId = message.data["eventId"];
-  if (eventId != null) openMatch(eventId);
+void openFromNotification(NotificationTarget data) {
+  final threadId = data["threadId"];
+  if (threadId is String) {
+    navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => ForumThreadScreen(threadId: threadId)));
+  } else if (data["eventId"] is String) {
+    openMatch(data["eventId"] as String);
+  }
 }
 
 void openMatch(String eventId) {

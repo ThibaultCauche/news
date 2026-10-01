@@ -22,6 +22,7 @@ import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
 import "../team/team_screen.dart";
 import "../../widgets/spoiler_hold.dart";
+import "../forum/forum_entry.dart";
 import "../profile/prediction_panel.dart";
 
 final eventProvider = FutureProvider.autoDispose.family<EventDetailResponseDto, String>((ref, id) async {
@@ -203,6 +204,9 @@ class _NextMatchBody extends ConsumerWidget {
         ],
         PredictionPanel(event: event, scoresHidden: scoresHidden),
         const SizedBox(height: AppSpacing.md),
+        // Fil du direct (pendant et après le match) à côté de la discussion d'avant et d'après match.
+        if (event.status == "live" || event.status == "finished") ForumEntryCard(kind: "live", targetId: event.id, label: "Direct", liveDot: event.status == "live"),
+        ForumEntryCard(kind: "event", targetId: event.id),
         if (status == EventStatusKind.scheduled) ...[
           _AlertButton(eventId: event.id),
           const SizedBox(height: AppSpacing.sm),

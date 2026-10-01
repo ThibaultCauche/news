@@ -29,6 +29,11 @@ export class CacheService implements OnModuleDestroy {
     if (keys.length) await this.redis.del(keys);
   }
 
+  /** Signal Pub/Sub transitoire vers le worker (ex. réponse au forum, J13). */
+  async publish(channel: string, payload: unknown): Promise<void> {
+    await this.redis.publish(channel, JSON.stringify(payload));
+  }
+
   async onModuleDestroy(): Promise<void> {
     this.redis.disconnect();
   }

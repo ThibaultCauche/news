@@ -5,8 +5,9 @@ import "../../widgets/avatar_circle.dart";
 import "community_providers.dart";
 import "profile_screen.dart";
 
-/// Profil d'un autre joueur (docs/04 J11), ouvert depuis le classement d'un groupe : avatar,
-/// pseudo et stats de pronostics. Visible seulement des membres d'un groupe commun. Les stats
+/// Profil d'un autre joueur (docs/04 J11, J13), ouvert depuis le classement d'un groupe ou depuis son
+/// pseudo dans un fil du forum : avatar, pseudo, camps et stats de pronostics. Visible des membres d'un
+/// groupe commun et de quiconque écrit sur le forum. Les stats
 /// suivent le sans spoil de l'utilisateur (masquées jusqu'à un appui long).
 class PlayerProfileScreen extends ConsumerWidget {
   const PlayerProfileScreen({super.key, required this.userId});
@@ -29,6 +30,20 @@ class PlayerProfileScreen extends ConsumerWidget {
                 Expanded(child: Text(value.pseudo, style: Theme.of(context).textTheme.headlineLarge)),
               ],
             ),
+            if (value.camps.isNotEmpty) ...[
+              const SizedBox(height: AppSpacing.md),
+              Wrap(
+                spacing: AppSpacing.sm,
+                runSpacing: AppSpacing.sm,
+                children: [
+                  for (final camp in value.camps)
+                    Chip(
+                      avatar: camp.imageUrl == null ? null : AvatarCircle(avatarUrl: camp.imageUrl, radius: 10),
+                      label: Text("${camp.name} · ${camp.game[0].toUpperCase()}${camp.game.substring(1)}"),
+                    ),
+                ],
+              ),
+            ],
             const SizedBox(height: AppSpacing.lg),
             StatsCard(stats: value.stats),
           ],

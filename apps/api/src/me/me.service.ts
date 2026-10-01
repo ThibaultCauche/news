@@ -10,6 +10,8 @@ function toUserSettingDto(setting: UserSetting): UserSettingDto {
     morningDigest: setting.morningDigest,
     quietHoursStart: setting.quietHoursStart,
     quietHoursEnd: setting.quietHoursEnd,
+    notifyForumReplies: setting.notifyForumReplies,
+    notifyForumThreads: setting.notifyForumThreads,
   };
 }
 

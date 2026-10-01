@@ -14,6 +14,7 @@ import { DevicesModule } from "./devices/devices.module";
 import { EntitiesModule } from "./entities/entities.module";
 import { EventsModule } from "./events/events.module";
 import { FavoritesModule } from "./favorites/favorites.module";
+import { ForumModule } from "./forum/forum.module";
 import { GlossaryModule } from "./glossary/glossary.module";
 import { HealthController } from "./health/health.controller";
 import { HomeModule } from "./home/home.module";
@@ -25,7 +26,8 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     // `../../.env` : cas des tests/e2e lancés depuis apps/api (cwd du package),
     // `.env` : cas où le process a déjà pour cwd la racine du dépôt.
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ["../../.env", ".env"] }),
-    ThrottlerModule.forRoot([{ ttl: 60_000, limit: 60 }]),
+    // 60 requêtes par minute et par IP ; `THROTTLE_LIMIT` relève la limite pour les tests e2e (suites longues).
+    ThrottlerModule.forRootAsync({ useFactory: () => [{ ttl: 60_000, limit: Number(process.env.THROTTLE_LIMIT ?? 60) }] }),
     DbModule,
     CacheModule,
     AuthModule,
@@ -33,6 +35,7 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     SubscriptionsModule,
     MeModule,
     CommunityModule,
+    ForumModule,
     HomeModule,
     AgendaModule,
     EventsModule,

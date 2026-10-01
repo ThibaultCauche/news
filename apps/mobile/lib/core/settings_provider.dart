@@ -10,7 +10,7 @@ import "auth/account.dart";
 /// encore envoyé), heures calmes.
 final userSettingProvider = FutureProvider.autoDispose<UserSettingDto>((ref) async {
   // Invité : réglages par défaut (sans spoil désactivé), modifiables seulement avec un compte.
-  if (!ref.watch(signedInProvider)) return UserSettingDto((b) => b..spoilerFree = false..morningDigest = false);
+  if (!ref.watch(signedInProvider)) return UserSettingDto((b) => b..spoilerFree = false..morningDigest = false..notifyForumReplies = true..notifyForumThreads = true);
   final response = await ref.watch(apiClientProvider).getMeApi().meControllerGetSettings();
   return response.data!;
 });
@@ -20,12 +20,14 @@ class SettingsController {
 
   final Ref _ref;
 
-  Future<void> update({bool? spoilerFree, bool? morningDigest, int? quietHoursStart, int? quietHoursEnd}) async {
+  Future<void> update({bool? spoilerFree, bool? morningDigest, bool? notifyForumReplies, bool? notifyForumThreads, int? quietHoursStart, int? quietHoursEnd}) async {
     if (!await ensureAccount(_ref)) return;
     await _ref.read(apiClientProvider).getMeApi().meControllerUpdateSettings(
       updateUserSettingDto: UpdateUserSettingDto((b) {
         if (spoilerFree != null) b.spoilerFree = spoilerFree;
         if (morningDigest != null) b.morningDigest = morningDigest;
+        if (notifyForumReplies != null) b.notifyForumReplies = notifyForumReplies;
+        if (notifyForumThreads != null) b.notifyForumThreads = notifyForumThreads;
         if (quietHoursStart != null) b.quietHoursStart = quietHoursStart;
         if (quietHoursEnd != null) b.quietHoursEnd = quietHoursEnd;
       }),

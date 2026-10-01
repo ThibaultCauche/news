@@ -11,6 +11,7 @@ import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../account/auth_screen.dart";
 import "../follows/follows_screen.dart";
+import "../forum/forum_account_screens.dart";
 import "../settings/settings_screen.dart";
 import "../competitions/competitions_data.dart";
 import "../predictions/predictions_screen.dart";
@@ -58,6 +59,7 @@ class ProfileScreen extends ConsumerWidget {
                 ),
               ),
               const SizedBox(height: AppSpacing.lg),
+              const ForumProfileSection(),
               const _AccountActions(),
             ],
             const SizedBox(height: AppSpacing.xl * 2),

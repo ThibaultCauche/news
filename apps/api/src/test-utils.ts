@@ -22,6 +22,7 @@ export class FakeFirebaseAuthService {
 }
 
 export async function createTestApp(): Promise<INestApplication> {
+  process.env.THROTTLE_LIMIT = "100000";
   const moduleRef = await Test.createTestingModule({ imports: [AppModule] })
     .overrideProvider(FirebaseAuthService)
     .useClass(FakeFirebaseAuthService)

@@ -62,7 +62,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
   it("crée un compte à la première connexion avec des réglages par défaut (sans spoil désactivé)", async () => {
     const { accessToken } = await createAccount();
     const res = await request(app.getHttpServer()).get("/v1/me/settings").set("Authorization", `Bearer ${accessToken}`).expect(200);
-    expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: null, quietHoursEnd: null });
+    expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: null, quietHoursEnd: null, notifyForumReplies: true, notifyForumThreads: true });
   });
 
   it("se reconnecte au même compte, et met à jour la vérification de l'e-mail", async () => {
@@ -158,7 +158,7 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
       .set(auth)
       .send({ spoilerFree: false, quietHoursStart: 22, quietHoursEnd: 7 })
       .expect(200);
-    expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: 22, quietHoursEnd: 7 });
+    expect(res.body).toEqual({ spoilerFree: false, morningDigest: false, quietHoursStart: 22, quietHoursEnd: 7, notifyForumReplies: true, notifyForumThreads: true });
   });
 
   it("supprime le compte (DELETE /v1/me) : le jeton n'autorise plus rien ensuite", async () => {

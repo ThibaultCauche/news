@@ -11,7 +11,7 @@ import {
   pseudoProblem,
 } from "@news/domain";
 import { PRISMA } from "../db/db.module";
-import { GroupDetailDto, GroupDto, PredictionDto, PredictionStatsDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
+import { GroupDetailDto, GroupDto, PredictionDto, ProfileCampDto, PredictionStatsDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
 
 const PSEUDO_MESSAGES = {
   length: "Le pseudo doit faire entre 3 et 20 caractères",
@@ -83,11 +83,25 @@ export class CommunityService {
   async getPublicProfile(viewerId: string, userId: string): Promise<PublicProfileDto> {
     if (viewerId !== userId) {
       const shared = await this.prisma.friendGroupMember.findFirst({ where: { userId, group: { members: { some: { userId: viewerId } } } }, select: { userId: true } });
-      if (!shared) throw new NotFoundException("Joueur introuvable");
+      // Un joueur qui écrit sur le forum (J13) y est déjà public sous son pseudo : son profil s'ouvre depuis le fil.
+      const postedOnForum = shared ? null : await this.prisma.forumMessage.findFirst({ where: { userId }, select: { id: true } });
+      if (!shared && !postedOnForum) throw new NotFoundException("Joueur introuvable");
     }
     const user = await this.prisma.appUser.findUnique({ where: { id: userId } });
     if (!user?.pseudo) throw new NotFoundException("Joueur introuvable");
-    return { userId, pseudo: user.pseudo, avatarUrl: await this.avatarUrlOf(user.avatarEntityId), stats: await this.getStats(userId) };
+    return { userId, pseudo: user.pseudo, avatarUrl: await this.avatarUrlOf(user.avatarEntityId), stats: await this.getStats(userId), camps: await this.campsOf(userId) };
+  }
+
+  /** Camps du forum encore valables (équipe toujours suivie). */
+  private async campsOf(userId: string): Promise<ProfileCampDto[]> {
+    const camps = await this.prisma.forumCamp.findMany({ where: { userId } });
+    if (camps.length === 0) return [];
+    const follows = await this.prisma.subscription.findMany({ where: { userId, targetType: "entity", targetId: { in: camps.map((c) => c.entityId) } }, select: { targetId: true } });
+    const entities = await this.prisma.entity.findMany({ where: { id: { in: follows.map((f) => f.targetId) } }, select: { id: true, name: true, imageUrl: true } });
+    return camps.flatMap((c) => {
+      const team = entities.find((e) => e.id === c.entityId);
+      return team ? [{ game: c.game, name: team.name, imageUrl: team.imageUrl }] : [];
+    });
   }
 
   private async requirePseudo(userId: string): Promise<void> {

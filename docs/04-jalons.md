@@ -18,7 +18,7 @@
 | J10 | Polissage des pages existantes et retours d'usage : cartes de match, Suivis, familles de compétitions et « tout sauf une », onglet Ligues, rafraîchissement automatique | Les écrans existants te correspondent et l'appli reste à jour toute seule | **Fait (2026-09-30)** |
 | J11 | Comptes avec pseudo, page de profil (badges, score de pronostics, stats), pronostics en points fictifs, groupes d'amis (façon MPP) | On parie sur ses matchs et on se compare à ses amis, gratuitement | **Fait (2026-09-30)** |
 | J12 | Section apprentissage Valorant : tutos écrits (jeu, rôles, cartes) | Un néophyte comprend comment on joue | **Fait (2026-10-01)** |
-| J13 | Forum par match (bêta fermée) : badge d'équipe selon le jeu/sport du forum, modération de base | On discute d'un match sans que ça dégénère | À planifier |
+| J13 | Forum (bêta fermée) : discussion et tchat du direct par match, fils par équipe, compétition, jeu et libres, badge de camp, modération | On discute d'un match sans que ça dégénère | **Fait (2026-10-01)** |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -372,7 +372,7 @@
 
 ---
 
-## J13 — Forum par match, bêta fermée (ajouté)
+## J13 — Forum par match, bêta fermée (ajouté) — **Fait (2026-10-01)**
 
 **Objectif** : permettre de discuter d'un match sans que ça dégénère. Optionnel, comme le reste de la couche communautaire. **Prérequis : J11** (comptes avec pseudo).
 
@@ -386,7 +386,21 @@
 
 **Hors périmètre (étapes suivantes)** : fils par équipe, tournoi et jeu, puis création libre de discussions ; autres jeux (Valorant doit être complet d'abord).
 
-**Critères d'acceptation** : à rédiger au cadrage (`/jalon 13`).
+**Décisions du cadrage (2026-10-01)** : pas de mode lent (inutile) ; conditions d'utilisation rédigées dès maintenant (`apps/mobile/lib/features/forum/forum_terms.dart`, version 1, à relire avant l'ouverture publique) ; étapes suivantes construites d'emblée : **réponses** (une profondeur), **réactions** (5, une par personne), **notification de réponse**, **fils par match, équipe, compétition, jeu** et **discussions libres** (5 par jour et par compte). **Réponses imbriquées** (profondeur 6 max, une réponse à une réponse crée un niveau de plus ; supprimer un message du milieu fait remonter ses réponses), **repli par appui long** (« Voir les N réponses ») avec repère vertical façon Reddit, **titre complet** en tête du fil, **pseudo cliquable** vers le profil du joueur (ouvert à qui écrit sur le forum, avec ses camps). **Fil du direct** distinct de la discussion d'avant et d'après match (écriture ouverte seulement pendant le match), qui se comporte comme un **tchat à la Twitch** : liste à plat, avatar + pseudo + texte, un tap pour répondre en citant le message (pas de fil), appui long pour signaler, bloquer ou modérer, rechargement toutes les 5 s, ni réactions ni spoiler ni épingle, **modification** dans les 5 minutes, **spoiler par message**, **plafond de 10 messages par minute**, **journal de modération**, **mentions @pseudo** et **discussions suivies** avec notifications, **tri** des discussions (récentes, actives, populaires) et **messages épinglés** (2 au plus, modérateurs). **Pas de pièces jointes** (contredit « texte seul », demanderait stockage et modération d'images). Bêta fermée : `FORUM_OPEN=true` ouvre à tous, sinon `app_user.forum_beta` posé à la main ; modérateur = `app_user.is_moderator` posé à la main.
+
+**Critères d'acceptation**
+- [x] Fil créé automatiquement à la première ouverture (match, équipe, compétition, jeu), un seul par cible ; discussions libres créables.
+- [x] Texte seul : liens, mots interdits, messages vides ou trop longs refusés (code d'erreur stable).
+- [x] Écrire exige compte + pseudo + conditions acceptées + 24 h d'ancienneté + non exclu ; lire est ouvert aux invités une fois le forum ouvert.
+- [x] Badge de camp par jeu, choisi parmi les équipes suivies, un changement par semaine, retiré si l'équipe n'est plus suivie.
+- [x] Signalement (3 signalements distincts masquent), blocage, suppression de son message, file et outils de modération (masquer, rejeter, exclure, verrouiller).
+- [x] Suppression du compte : ses messages disparaissent (RGPD), les réponses des autres restent.
+- [x] Sans spoil : fil flouté, appui long pour afficher.
+- [x] Notification « quelqu'un t'a répondu » (réglable, heures calmes, sans aperçu si sans spoil).
+- [x] Tests : 10 unitaires (domaine) et 27 e2e API (forum), 14 (profil, groupes).
+- [x] Vérifié en conditions réelles sur téléphone Android (2026-10-01) : ouverture des fils, conditions, envoi, réponses imbriquées et repli, réaction, flou sans spoil, spoiler par message, modification, épingle, mention, camp (badge), signalement, blocage et déblocage, file de modération (« Rejeter »), tchat du direct (affichage, réponse par tap), notifications (réponse et discussion suivie, appli en arrière-plan, un tap ouvre le fil), barre de la page tournoi sur 360 px. Deux vrais bugs trouvés en route : récursion infinie dans le flou (appli figée) et onglets de la page jeu illisibles à six onglets (capsule désormais défilable).
+- **Reporté** (vérifié par les tests e2e de l'API seulement, pas à l'écran) : « Masquer » et « Exclure » depuis l'appli, tri et filtres de l'onglet Discussions, journal de modération, appui long et rechargement toutes les 5 s du tchat, flou sans spoil sur le tchat.
+- [ ] **Reporté à l'ouverture publique** : conditions d'utilisation relues, contact de modération indiqué (les conditions renvoient vers « la fiche de l'application »), exigences des stores (contenu généré par les utilisateurs) vérifiées.
 
 ---
 

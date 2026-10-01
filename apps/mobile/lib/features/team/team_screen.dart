@@ -10,6 +10,7 @@ import "../../widgets/follow_button.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
+import "../forum/forum_entry.dart";
 import "../next_match/next_match_screen.dart";
 
 final entityProvider = FutureProvider.autoDispose.family<EntityResponseDto, String>((ref, id) async {
@@ -130,6 +131,8 @@ class _TeamBody extends ConsumerWidget {
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: entity.nextEvent!.id))),
           ),
         ],
+        const SizedBox(height: AppSpacing.lg),
+        ForumEntryCard(kind: "entity", targetId: entity.id),
       ],
     );
   }

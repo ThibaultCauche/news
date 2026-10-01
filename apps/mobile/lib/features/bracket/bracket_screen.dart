@@ -4,6 +4,7 @@ import "package:news_api_client/news_api_client.dart";
 import "../../core/iterable_x.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
+import "../forum/forum_entry.dart";
 import "../learn/learn_screen.dart";
 import "../../widgets/competition_follow_button.dart";
 import "../../widgets/group_bracket_tree.dart";
@@ -44,7 +45,7 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 160,
+        leadingWidth: 120,
         leading: TextButton.icon(
           onPressed: () => Navigator.of(context).maybePop(),
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
@@ -52,6 +53,7 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
         ),
         actions: [
           const LearnHelpButton(articleId: "regarder-un-match"),
+          ForumActionButton(kind: "competition", targetId: widget.competitionId),
           CompetitionFollowButton(competitionId: widget.competitionId, name: widget.title)],
       ),
       body: switch (detail) {

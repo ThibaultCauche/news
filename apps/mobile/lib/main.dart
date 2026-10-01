@@ -27,10 +27,10 @@ void main() async {
   }
   // Démarrage "à froid" depuis une notification : le `Navigator` n'existe pas
   // encore, on programme la navigation pour juste après le premier affichage.
-  final initialMatchId = await setupNotificationTapHandling();
+  final initialTarget = await setupNotificationTapHandling();
   runApp(ProviderScope(overrides: [authStoreProvider.overrideWithValue(authStore)], child: const NewsRoot()));
-  if (initialMatchId != null) {
-    WidgetsBinding.instance.addPostFrameCallback((_) => openMatch(initialMatchId));
+  if (initialTarget != null) {
+    WidgetsBinding.instance.addPostFrameCallback((_) => openFromNotification(initialTarget));
   }
 }
 

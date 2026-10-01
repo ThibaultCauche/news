@@ -1,3 +1,4 @@
+import "../forum/forum_providers.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -75,6 +76,22 @@ class _SettingsBody extends ConsumerWidget {
                 value: setting.morningDigest,
                 onChanged: (v) => controller.update(morningDigest: v),
               ),
+              if (ref.watch(forumEnabledProvider)) ...[
+                const Divider(height: AppSpacing.lg),
+                _ToggleRow(
+                  label: "Réponses et mentions",
+                  caption: "Quand quelqu'un te répond ou te cite avec @pseudo.",
+                  value: setting.notifyForumReplies,
+                  onChanged: (v) => controller.update(notifyForumReplies: v),
+                ),
+                const Divider(height: AppSpacing.lg),
+                _ToggleRow(
+                  label: "Discussions suivies",
+                  caption: "Nouveaux messages, au plus un rappel toutes les 10 minutes.",
+                  value: setting.notifyForumThreads,
+                  onChanged: (v) => controller.update(notifyForumThreads: v),
+                ),
+              ],
               const Divider(height: AppSpacing.lg),
               _QuietHoursRow(setting: setting, controller: controller),
               const Divider(height: AppSpacing.lg),

@@ -228,6 +228,22 @@ model AppUser {
   predictions      Prediction[]
   ownedGroups      FriendGroup[]
   groupMemberships FriendGroupMember[]
+  // Forum (J13) : modérateur et bêta fermée (posés à la main en base), exclusion du forum,
+  // acceptation des conditions d'utilisation (version du texte embarqué dans l'appli).
+  isModerator      Boolean             @default(false) @map("is_moderator")
+  forumBeta        Boolean             @default(false) @map("forum_beta")
+  forumBannedAt    DateTime?           @map("forum_banned_at")
+  termsAcceptedAt  DateTime?           @map("terms_accepted_at")
+  termsVersion     Int?                @map("terms_version")
+  forumThreads     ForumThread[]
+  forumMessages    ForumMessage[]
+  forumReactions   ForumReaction[]
+  forumReports     ForumReport[]
+  forumCamps       ForumCamp[]
+  forumFollows     ForumThreadFollow[]
+  moderationLogs   ModerationLog[]
+  blocking         UserBlock[]         @relation("Blocker")
+  blockedBy        UserBlock[]         @relation("Blocked")
   createdAt        DateTime            @default(now()) @map("created_at")
 
   @@map("app_user")
@@ -353,6 +369,10 @@ model UserSetting {
   morningDigest   Boolean  @default(false) @map("morning_digest")
   quietHoursStart Int?     @map("quiet_hours_start")
   quietHoursEnd   Int?     @map("quiet_hours_end")
+  // Forum (J13) : notification quand on répond à un de ses messages.
+  notifyForumReplies Boolean @default(true) @map("notify_forum_replies")
+  // Forum (J13) : nouveaux messages d'une discussion suivie.
+  notifyForumThreads Boolean @default(true) @map("notify_forum_threads")
   updatedAt       DateTime @updatedAt @map("updated_at")
 
   @@map("user_setting")
@@ -378,4 +398,139 @@ model NotificationLog {
   @@unique([userId, eventId, type])
   @@unique([userId, entityId, type])
   @@map("notification_log")
+}
+
+// Fil de discussion (J13). Créé à la demande : un fil par match (`event`), équipe (`entity`),
+// compétition, jeu (`targetId` = slug), ou libre (`free`, créé par un utilisateur). `game` (slug)
+// sert au badge de camp et au filtre. Générique : aucune colonne propre à un jeu (règle 3).
+model ForumThread {
+  id            String         @id @default(uuid())
+  kind          String
+  targetId      String?        @map("target_id")
+  game          String?
+  title         String
+  createdById   String?        @map("created_by_id")
+  createdBy     AppUser?       @relation(fields: [createdById], references: [id], onDelete: SetNull)
+  lockedAt      DateTime?      @map("locked_at")
+  lastMessageAt DateTime?      @map("last_message_at")
+  messages      ForumMessage[]
+  followers     ForumThreadFollow[]
+  createdAt     DateTime       @default(now()) @map("created_at")
+
+  @@unique([kind, targetId])
+  @@index([game, lastMessageAt])
+  @@map("forum_thread")
+}
+
+// Message texte seul. Une seule profondeur de réponse : `parentId` désigne toujours un message
+// racine. `hiddenAt` masque sans supprimer (signalements ou modérateur) ; la suppression du compte
+// supprime ses messages (RGPD), les réponses des autres restent (parent mis à null).
+model ForumMessage {
+  id           String          @id @default(uuid())
+  threadId     String          @map("thread_id")
+  thread       ForumThread     @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  userId       String          @map("user_id")
+  user         AppUser         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  parentId     String?         @map("parent_id")
+  parent       ForumMessage?   @relation("Replies", fields: [parentId], references: [id], onDelete: SetNull)
+  replies      ForumMessage[]  @relation("Replies")
+  body         String
+  hiddenAt     DateTime?       @map("hidden_at")
+  hiddenReason String?         @map("hidden_reason")
+  // Modification dans les 5 minutes, spoiler annoncé par l'auteur (flouté pour tous), épinglé (modérateur).
+  editedAt     DateTime?       @map("edited_at")
+  isSpoiler    Boolean         @default(false) @map("is_spoiler")
+  pinnedAt     DateTime?       @map("pinned_at")
+  reactions    ForumReaction[]
+  reports      ForumReport[]
+  createdAt    DateTime        @default(now()) @map("created_at")
+
+  @@index([threadId, createdAt])
+  @@index([userId])
+  @@map("forum_message")
+}
+
+// Une réaction par personne et par message (changer de réaction remplace la précédente).
+model ForumReaction {
+  messageId String       @map("message_id")
+  message   ForumMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  userId    String       @map("user_id")
+  user      AppUser      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  emoji     String
+  createdAt DateTime     @default(now()) @map("created_at")
+
+  @@id([messageId, userId])
+  @@map("forum_reaction")
+}
+
+model ForumReport {
+  id         String       @id @default(uuid())
+  messageId  String       @map("message_id")
+  message    ForumMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  reporterId String       @map("reporter_id")
+  reporter   AppUser      @relation(fields: [reporterId], references: [id], onDelete: Cascade)
+  reason     String
+  resolvedAt DateTime?    @map("resolved_at")
+  createdAt  DateTime     @default(now()) @map("created_at")
+
+  @@unique([messageId, reporterId])
+  @@index([resolvedAt])
+  @@map("forum_report")
+}
+
+// Blocage : les messages du bloqué disparaissent pour celui qui bloque.
+model UserBlock {
+  blockerId String   @map("blocker_id")
+  blocker   AppUser  @relation("Blocker", fields: [blockerId], references: [id], onDelete: Cascade)
+  blockedId String   @map("blocked_id")
+  blocked   AppUser  @relation("Blocked", fields: [blockedId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@id([blockerId, blockedId])
+  @@map("user_block")
+}
+
+// Camp (badge du forum) : une équipe par jeu, changeable tous les 7 jours (`changedAt`).
+model ForumCamp {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  user      AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  game      String
+  entityId  String   @map("entity_id")
+  changedAt DateTime @default(now()) @map("changed_at")
+
+  @@unique([userId, game])
+  @@map("forum_camp")
+}
+
+// Discussion suivie (J13) : notification des nouveaux messages, au plus une toutes les 10 minutes
+// par discussion (`lastNotifiedAt`), pour ne pas inonder un fil du direct.
+model ForumThreadFollow {
+  threadId       String      @map("thread_id")
+  thread         ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  userId         String      @map("user_id")
+  user           AppUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastNotifiedAt DateTime?   @map("last_notified_at")
+  createdAt      DateTime    @default(now()) @map("created_at")
+
+  @@id([threadId, userId])
+  @@index([userId])
+  @@map("forum_thread_follow")
+}
+
+// Journal de modération (J13) : qui a fait quoi, quand. `detail` garde un extrait du message
+// concerné (il peut être supprimé ensuite) ; le modérateur supprimé laisse une ligne anonyme.
+model ModerationLog {
+  id           String    @id @default(uuid())
+  moderatorId  String?   @map("moderator_id")
+  moderator    AppUser?  @relation(fields: [moderatorId], references: [id], onDelete: SetNull)
+  action       String
+  targetUserId String?   @map("target_user_id")
+  messageId    String?   @map("message_id")
+  threadId     String?   @map("thread_id")
+  detail       String?
+  createdAt    DateTime  @default(now()) @map("created_at")
+
+  @@index([createdAt])
+  @@map("moderation_log")
 }

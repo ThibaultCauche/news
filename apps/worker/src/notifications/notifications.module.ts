@@ -3,6 +3,7 @@ import { Module } from "@nestjs/common";
 import { DbModule } from "../db/db.module";
 import { EventBusModule } from "../events/event-bus.module";
 import { FcmService } from "./fcm.service";
+import { ForumRepliesSubscriber } from "./forum-replies.subscriber";
 import { NotificationDispatchService } from "./notification-dispatch.service";
 import { NotificationsSubscriber } from "./notifications.subscriber";
 import { STARTING_SOON_QUEUE_NAME } from "./starting-soon.constants";
@@ -12,7 +13,7 @@ import { StartingSoonService } from "./starting-soon.service";
 
 @Module({
   imports: [DbModule, EventBusModule, BullModule.registerQueue({ name: STARTING_SOON_QUEUE_NAME })],
-  providers: [FcmService, NotificationDispatchService, NotificationsSubscriber, StartingSoonService, StartingSoonScheduler, StartingSoonProcessor],
+  providers: [FcmService, ForumRepliesSubscriber, NotificationDispatchService, NotificationsSubscriber, StartingSoonService, StartingSoonScheduler, StartingSoonProcessor],
   exports: [FcmService],
 })
 export class NotificationsModule {}

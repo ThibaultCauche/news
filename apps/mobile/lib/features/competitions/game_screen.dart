@@ -1,3 +1,5 @@
+import "../forum/forum_entry.dart";
+import "../forum/forum_providers.dart";
 import "dart:math" as math;
 
 import "package:flutter/material.dart";
@@ -68,6 +70,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
     final game = widget.game;
     final hasLearn = _learnGames.contains(game.slug);
+    final forumEnabled = ref.watch(forumEnabledProvider);
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -93,7 +96,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             child: _SeasonTabs(
-              labels: [..._tabs, if (hasLearn) "Apprendre"],
+              labels: [..._tabs, if (forumEnabled) "Discussions", if (hasLearn) "Apprendre"],
               selectedIndex: _tabIndex,
               onSelected: (i) => setState(() => _tabIndex = i),
             ),
@@ -104,7 +107,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               1 => LeaguesTab(game: game),
               2 => _TeamsTab(game: game),
               3 => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
-              4 => LearnTab(game: game.slug),
+              4 when forumEnabled => ForumThreadsTab(game: game.slug, gameName: game.name),
+              4 || 5 => LearnTab(game: game.slug),
               _ => switch (overview) {
                 AsyncData(:final value) =>
                   value == null
@@ -134,8 +138,38 @@ class _SeasonTabs extends StatelessWidget {
   final int selectedIndex;
   final ValueChanged<int> onSelected;
 
+  // Au-delà de cinq onglets (Discussions, Apprendre…), le texte ne tient plus : la capsule défile.
+  static const _maxFixed = 5;
+
+  Widget _tab(int i, String label, {required bool fixed}) {
+    return GestureDetector(
+      onTap: () => onSelected(i),
+      child: AnimatedContainer(
+        duration: AppMotion.microDuration,
+        padding: EdgeInsets.symmetric(vertical: AppSpacing.sm, horizontal: fixed ? 0 : AppSpacing.md),
+        decoration: BoxDecoration(
+          color: i == selectedIndex ? AppColors.textPrimary : Colors.transparent,
+          borderRadius: BorderRadius.circular(AppRadii.pill),
+        ),
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            label,
+            maxLines: 1,
+            style: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: 13,
+              color: i == selectedIndex ? AppColors.background : AppColors.textSecondary,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final fixed = labels.length <= _maxFixed;
     return Container(
       padding: const EdgeInsets.all(3),
       decoration: BoxDecoration(
@@ -143,36 +177,9 @@ class _SeasonTabs extends StatelessWidget {
         borderRadius: BorderRadius.circular(AppRadii.pill),
         border: Border.all(color: AppColors.surfaceBorder),
       ),
-      child: Row(
-        children: [
-          for (final (i, label) in labels.indexed)
-            Expanded(
-              child: GestureDetector(
-                onTap: () => onSelected(i),
-                child: AnimatedContainer(
-                  duration: AppMotion.microDuration,
-                  padding: const EdgeInsets.symmetric(vertical: AppSpacing.sm),
-                  decoration: BoxDecoration(
-                    color: i == selectedIndex ? AppColors.textPrimary : Colors.transparent,
-                    borderRadius: BorderRadius.circular(AppRadii.pill),
-                  ),
-                  child: FittedBox(
-                    fit: BoxFit.scaleDown,
-                    child: Text(
-                      label,
-                      maxLines: 1,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w600,
-                        fontSize: 13,
-                        color: i == selectedIndex ? AppColors.background : AppColors.textSecondary,
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],
-      ),
+      child: fixed
+          ? Row(children: [for (final (i, label) in labels.indexed) Expanded(child: _tab(i, label, fixed: true))])
+          : SingleChildScrollView(scrollDirection: Axis.horizontal, child: Row(children: [for (final (i, label) in labels.indexed) _tab(i, label, fixed: false)])),
     );
   }
 }

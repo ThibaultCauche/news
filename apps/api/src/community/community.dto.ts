@@ -31,12 +31,19 @@ export class ProfileDto {
   @ApiProperty({ type: PredictionStatsDto }) stats!: PredictionStatsDto;
 }
 
-/** Profil d'un autre joueur, visible seulement par les membres d'un groupe commun. */
+export class ProfileCampDto {
+  @ApiProperty() game!: string;
+  @ApiProperty() name!: string;
+  @ApiPropertyOptional({ nullable: true, type: String }) imageUrl!: string | null;
+}
+
+/** Profil d'un autre joueur, visible des membres d'un groupe commun et de tous pour qui écrit sur le forum. */
 export class PublicProfileDto {
   @ApiProperty() userId!: string;
   @ApiProperty() pseudo!: string;
   @ApiPropertyOptional({ nullable: true, type: String }) avatarUrl!: string | null;
   @ApiProperty({ type: PredictionStatsDto }) stats!: PredictionStatsDto;
+  @ApiProperty({ type: [ProfileCampDto], description: "Camps du forum (une équipe par jeu)" }) camps!: ProfileCampDto[];
 }
 
 export class PutPredictionDto {

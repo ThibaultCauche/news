@@ -8,6 +8,9 @@ export class UserSettingDto {
   @ApiProperty() morningDigest!: boolean;
   @ApiProperty({ nullable: true, type: Number }) quietHoursStart!: number | null;
   @ApiProperty({ nullable: true, type: Number }) quietHoursEnd!: number | null;
+  // Forum (J13) : notification quand on répond à un de ses messages.
+  @ApiProperty() notifyForumReplies!: boolean;
+  @ApiProperty() notifyForumThreads!: boolean;
 }
 
 // `null` explicite pour effacer des heures calmes déjà réglées : `undefined` (champ
@@ -22,6 +25,16 @@ export class UpdateUserSettingDto {
   @IsOptional()
   @IsBoolean()
   morningDigest?: boolean;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  notifyForumReplies?: boolean;
+
+  @ApiPropertyOptional()
+  @IsOptional()
+  @IsBoolean()
+  notifyForumThreads?: boolean;
 
   @ApiPropertyOptional({ nullable: true, type: Number })
   @IsOptional()
