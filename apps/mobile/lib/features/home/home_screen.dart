@@ -15,6 +15,8 @@ import "../../widgets/event_card.dart";
 import "../account/auth_screen.dart";
 import "../follows/follows_provider.dart";
 import "../follows/follows_screen.dart";
+import "../learn/learn_screen.dart";
+import "../learn/learn_visuals.dart";
 import "grand_final_card.dart";
 import "../next_match/next_match_screen.dart";
 import "../profile/community_providers.dart";
@@ -124,6 +126,7 @@ class _HomeBody extends StatelessWidget {
         if (liveEvent == null && upNextEvent != null) _UpNextSection(event: upNextEvent, scoresHidden: scoresHidden),
         if (grandFinals.isNotEmpty) _GrandFinalsSection(grandFinals: grandFinals),
         const _FollowsSection(),
+        const _LearnCard(),
         const SizedBox(height: AppSpacing.xl),
       ]),
     );
@@ -274,6 +277,35 @@ class _FollowsSection extends ConsumerWidget {
             const SizedBox(height: AppSpacing.sm),
           ],
         ],
+      ),
+    );
+  }
+}
+
+/// Invitation à découvrir Valorant tant que tous les tutos ne sont pas lus : « Nouveau sur
+/// Valorant ? » au départ, puis la progression. Disparaît une fois tout lu.
+class _LearnCard extends ConsumerWidget {
+  const _LearnCard();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final progress = learnProgress(ref, "valorant");
+    if (progress == null || progress.read >= progress.total) return const SizedBox.shrink();
+    final started = progress.read > 0;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, 0),
+      child: Card(
+        margin: EdgeInsets.zero,
+        child: ListTile(
+          leading: const LearnIconTile(icon: Icons.sports_esports_rounded, gradient: 0),
+          title: Text(started ? "Continue d'apprendre Valorant" : "Nouveau sur Valorant ?", style: const TextStyle(fontWeight: FontWeight.w600)),
+          subtitle: Text(
+            started ? "${progress.read}/${progress.total} tutos lus" : "Comprends un match en quelques minutes.",
+            style: const TextStyle(color: AppColors.textSecondary),
+          ),
+          trailing: const Icon(Icons.chevron_right, color: AppColors.textTertiary),
+          onTap: () => openLearnGuide(context, "valorant"),
+        ),
       ),
     );
   }

@@ -226,6 +226,7 @@ model AppUser {
   notificationLogs NotificationLog[]
   favoriteGames    FavoriteGame[]
   predictions      Prediction[]
+  learnProgress    LearnProgress[]
   ownedGroups      FriendGroup[]
   groupMemberships FriendGroupMember[]
   // Forum (J13) : modérateur et bêta fermée (posés à la main en base), exclusion du forum,
@@ -247,6 +248,22 @@ model AppUser {
   createdAt        DateTime            @default(now()) @map("created_at")
 
   @@map("app_user")
+}
+
+// Progression dans les tutos (J12) : un tuto ouvert, et son quiz réussi ou non. Générique : `guide`
+// est le nom du fichier de tutos (`valorant`, `app`…), aucune colonne propre à un jeu (règle 3).
+// Pas de points : un simple compteur affiché sur le profil.
+model LearnProgress {
+  userId      String   @map("user_id")
+  user        AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  guide       String
+  articleId   String   @map("article_id")
+  quizPassed  Boolean  @default(false) @map("quiz_passed")
+  firstReadAt DateTime @default(now()) @map("first_read_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  @@id([userId, guide, articleId])
+  @@map("learn_progress")
 }
 
 // Pronostic en points fictifs (J11) : vainqueur choisi + score de série optionnel, posé jusqu'au

@@ -39,6 +39,13 @@ const learnIcons = <String, IconData>{
   "arrow_down": Icons.south_rounded,
   "replay": Icons.replay_rounded,
   "close": Icons.close_rounded,
+  "public": Icons.public_rounded,
+  "computer": Icons.computer_rounded,
+  "touch": Icons.touch_app_rounded,
+  "lock": Icons.lock_rounded,
+  "notifications": Icons.notifications_rounded,
+  "history": Icons.history_rounded,
+  "calendar": Icons.calendar_month_rounded,
 };
 
 /// Bandeau en haut d'un article : dégradé + grande icône.
@@ -178,7 +185,10 @@ class _Flow extends StatelessWidget {
     children: [
       for (final (i, item) in items.indexed) ...[
         Expanded(
-          child: Column(
+          child: Semantics(
+            label: "Étape ${i + 1} sur ${items.length} : ${item["label"]}",
+            excludeSemantics: true,
+            child: Column(
             children: [
               Container(
                 width: 48,
@@ -193,6 +203,7 @@ class _Flow extends StatelessWidget {
                 style: const TextStyle(fontWeight: FontWeight.w600, fontSize: AppTypography.caption),
               ),
             ],
+          ),
           ),
         ),
         if (i < items.length - 1)
@@ -210,7 +221,10 @@ class _Chips extends StatelessWidget {
 
   final List<Map<String, dynamic>> items;
 
-  Widget _tile(Map<String, dynamic> item) => Container(
+  Widget _tile(Map<String, dynamic> item) => Semantics(
+    label: "${item["title"]} : ${item["sub"]}",
+    excludeSemantics: true,
+    child: Container(
     padding: const EdgeInsets.all(AppSpacing.sm + 2),
     decoration: BoxDecoration(color: AppColors.surfaceHighlight, borderRadius: BorderRadius.circular(AppRadii.chip)),
     child: Row(
@@ -229,7 +243,7 @@ class _Chips extends StatelessWidget {
         ),
       ],
     ),
-  );
+  ));
 
   @override
   Widget build(BuildContext context) => Column(

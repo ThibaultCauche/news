@@ -35,6 +35,17 @@ const GLOSSARY_TERMS: { term: string; text: string }[] = [
     term: "groupes GSL",
     text: "Format de poule à 4 équipes emprunté à la Global StarCraft League : deux matchs gagnant-gagnant/perdant-perdant puis un match décisif (« decider match ») pour départager les deux dernières places.",
   },
+  { term: "spike", text: "La bombe du jeu. Les attaquants doivent la poser sur un site puis la protéger jusqu'à son explosion ; les défenseurs peuvent la désamorcer." },
+  { term: "éco", text: "« Économie » : un round où une équipe n'achète presque rien pour garder ses crédits et être mieux équipée au round suivant. Elle perd souvent ce round volontairement." },
+  { term: "force buy", text: "Acheter avec tout ce qu'on a, même si l'équipement reste moyen, pour surprendre l'adversaire au lieu d'économiser." },
+  { term: "full buy", text: "Un achat complet : les meilleures armes, des boucliers et tous les pouvoirs." },
+  { term: "pistol round", text: "Le 1er round de chaque mi-temps : tout le monde commence avec peu de crédits, donc surtout des pistolets." },
+  { term: "ultime", text: "Le pouvoir le plus puissant d'un agent. Il se recharge avec le temps et les actions réussies, et peut retourner un round." },
+  { term: "ace", text: "Un joueur élimine seul les 5 adversaires pendant un même round." },
+  { term: "clutch", text: "Un joueur, seul contre plusieurs adversaires, gagne quand même le round." },
+  { term: "retake", text: "Les défenseurs reprennent un site après que les attaquants y ont posé le spike." },
+  { term: "ban", text: "Dans le choix des cartes d'un match pro, une équipe élimine une carte qu'elle ne veut pas jouer." },
+  { term: "pick", text: "Dans le choix des cartes d'un match pro, une équipe choisit une carte qu'elle veut jouer." },
 ];
 
 async function main() {

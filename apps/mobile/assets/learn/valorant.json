@@ -7,7 +7,7 @@
    "summary": "5 contre 5, une bombe, 13 rounds.",
    "icon": "game",
    "visual": "duel",
-   "essential": "Une équipe attaque et veut poser une bombe (le « spike »), l'autre défend. La première équipe à 13 rounds gagne la carte. Un joueur éliminé attend le round suivant.",
+   "essential": "Une équipe attaque et veut poser une bombe (le [[spike]]), l'autre défend. La première équipe à 13 rounds gagne la carte. Un joueur éliminé attend le round suivant.",
    "details": [
     {
      "title": "Comment gagner un round",
@@ -81,7 +81,29 @@
      "body": "En cas d'égalité à 12-12, on rejoue des rounds en alternant les côtés, jusqu'à ce qu'une équipe ait 2 rounds d'avance."
     }
    ],
-   "gradient": 0
+   "gradient": 0,
+   "quiz": [
+    {
+     "q": "Combien de rounds faut-il gagner pour remporter une carte ?",
+     "choices": [
+      "10",
+      "13",
+      "15"
+     ],
+     "answer": 1,
+     "why": "13 rounds, avec une prolongation en cas d'égalité à 12-12."
+    },
+    {
+     "q": "Que doit faire l'équipe qui attaque ?",
+     "choices": [
+      "Protéger un site",
+      "Poser le spike",
+      "Désamorcer le spike"
+     ],
+     "answer": 1,
+     "why": "Les attaquants posent le spike ; les défenseurs l'en empêchent ou le désamorcent."
+    }
+   ]
   },
   {
    "id": "un-round",
@@ -129,11 +151,11 @@
        }
       ]
      },
-     "body": "Gagner un round rapporte plus de crédits que le perdre, et chaque élimination en rapporte un peu. Un joueur qui survit garde son arme au round suivant. Décider quoi acheter, c'est gérer l'économie."
+     "body": "Gagner un round rapporte plus de crédits que le perdre, et chaque élimination en rapporte un peu. Un joueur qui survit garde son arme au round suivant. Une équipe à court de crédits peut faire l'[[éco]] ; une autre peut tenter un [[force buy]] ; avec assez d'argent, elle fait un [[full buy]]."
     },
     {
      "title": "Le pistol round",
-     "body": "Le 1er round de chaque mi-temps est spécial : tout le monde n'a que peu de crédits, donc surtout des pistolets. Le gagnant prend souvent un avantage économique pour la suite."
+     "body": "Le 1er round de chaque mi-temps est un [[pistol round]] : tout le monde n'a que peu de crédits, donc surtout des pistolets. Le gagnant prend souvent un avantage économique pour la suite."
     },
     {
      "title": "Les pouvoirs",
@@ -167,10 +189,22 @@
        }
       ]
      },
-     "body": "Chaque joueur incarne un agent avec ses propres pouvoirs. L'ultime, plus puissante, se recharge avec le temps et les actions réussies."
+     "body": "Chaque joueur incarne un agent avec ses propres pouvoirs. L'[[ultime]], plus puissant, se recharge avec le temps et les actions réussies."
     }
    ],
-   "gradient": 1
+   "gradient": 1,
+   "quiz": [
+    {
+     "q": "Que fait une équipe qui « fait l'éco » ?",
+     "choices": [
+      "Elle n'achète presque rien pour garder ses crédits",
+      "Elle achète tout ce qu'elle peut",
+      "Elle abandonne la carte"
+     ],
+     "answer": 0,
+     "why": "Elle accepte de perdre ce round pour être mieux équipée au suivant."
+    }
+   ]
   },
   {
    "id": "roles",
@@ -238,7 +272,19 @@
      "body": "Sans fumées ni informations, l'équipe entre à l'aveugle. Sans duelliste, personne n'ouvre le jeu."
     }
    ],
-   "gradient": 2
+   "gradient": 2,
+   "quiz": [
+    {
+     "q": "Quel rôle cache la vue de l'ennemi avec des fumées ?",
+     "choices": [
+      "Duelliste",
+      "Contrôleur",
+      "Sentinelle"
+     ],
+     "answer": 1,
+     "why": "Les contrôleurs posent des fumées pour bloquer la vision."
+    }
+   ]
   },
   {
    "id": "cartes",
@@ -267,14 +313,26 @@
        }
       ]
      },
-     "body": "En match pro, aucune carte n'est imposée : les équipes en éliminent (ban) puis en choisissent (pick) à tour de rôle, et la dernière restante sert de décideur si le match va au bout."
+     "body": "En match pro, aucune carte n'est imposée : les équipes en éliminent ([[ban]]) puis en choisissent ([[pick]]) à tour de rôle, et la dernière restante sert de décideur si le match va au bout."
     },
     {
      "title": "La liste change",
      "body": "Les cartes jouées en compétition changent plusieurs fois par an."
     }
    ],
-   "gradient": 3
+   "gradient": 3,
+   "quiz": [
+    {
+     "q": "Combien de sites de pose a la plupart des cartes ?",
+     "choices": [
+      "1",
+      "2",
+      "4"
+     ],
+     "answer": 1,
+     "why": "Deux sites, A et B (quelques cartes en ont trois)."
+    }
+   ]
   },
   {
    "id": "regarder-un-match",
@@ -353,14 +411,149 @@
        }
       ]
      },
-     "body": "Des mots qu'on entend souvent pendant un match."
+     "body": "Des mots qu'on entend souvent pendant un match : un [[ace]], un [[clutch]], une [[éco]], un [[retake]]."
     },
     {
      "title": "Un favori perd un round ?",
      "body": "Souvent une éco volontaire : il s'équipe mieux au suivant."
     }
    ],
-   "gradient": 4
+   "gradient": 4,
+   "quiz": [
+    {
+     "q": "Un score de série de 2–1, ça veut dire…",
+     "choices": [
+      "2 rounds contre 1",
+      "2 cartes gagnées contre 1",
+      "Une prolongation"
+     ],
+     "answer": 1,
+     "why": "Le score de série compte les cartes gagnées, pas les rounds."
+    }
+   ]
+  },
+  {
+   "id": "circuit",
+   "title": "Le circuit pro (VCT)",
+   "summary": "Régions, étapes et tournois internationaux.",
+   "icon": "emoji",
+   "visual": {
+    "type": "chips",
+    "items": [
+     {
+      "icon": "public",
+      "title": "Americas",
+      "sub": "Région"
+     },
+     {
+      "icon": "public",
+      "title": "EMEA",
+      "sub": "Europe, Moyen-Orient, Afrique"
+     },
+     {
+      "icon": "public",
+      "title": "Pacific",
+      "sub": "Région"
+     },
+     {
+      "icon": "public",
+      "title": "Chine",
+      "sub": "Région"
+     }
+    ]
+   },
+   "essential": "Le circuit pro de Valorant, le VCT, se joue chaque année dans quatre régions. Les meilleures équipes de chacune se qualifient pour des tournois internationaux, jusqu'aux Champions, où le champion du monde est couronné.",
+   "details": [
+    {
+     "title": "Les grandes étapes",
+     "body": "Une saison alterne des compétitions régionales et des tournois internationaux. Le format change d'une année à l'autre : la page de chaque compétition l'explique.",
+     "visual": {
+      "type": "chips",
+      "items": [
+       {
+        "icon": "flag",
+        "title": "Kickoff",
+        "sub": "Ouverture de la saison, par région"
+       },
+       {
+        "icon": "calendar",
+        "title": "Stage",
+        "sub": "Compétition régionale de plusieurs semaines"
+       },
+       {
+        "icon": "public",
+        "title": "Masters",
+        "sub": "Tournoi international"
+       },
+       {
+        "icon": "emoji",
+        "title": "Champions",
+        "sub": "La finale du monde"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Comment on se qualifie",
+     "body": "Les équipes gagnent leur place dans les tournois internationaux grâce à leurs résultats régionaux. Dans l'appli, l'arbre d'une compétition montre qui est qualifié et qui est éliminé."
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Quelle compétition couronne le champion du monde ?",
+     "choices": [
+      "Kickoff",
+      "Masters",
+      "Champions"
+     ],
+     "answer": 2,
+     "why": "Champions est la finale mondiale de la saison."
+    }
+   ],
+   "gradient": 5
+  },
+  {
+   "id": "essayer",
+   "title": "Envie d'essayer ?",
+   "summary": "Ce qu'il faut pour jouer, et c'est gratuit.",
+   "icon": "game",
+   "visual": {
+    "type": "chips",
+    "items": [
+     {
+      "icon": "check",
+      "title": "Gratuit",
+      "sub": "Aucun achat nécessaire"
+     },
+     {
+      "icon": "computer",
+      "title": "PC et consoles",
+      "sub": "PlayStation 5, Xbox Series"
+     },
+     {
+      "icon": "person",
+      "title": "Compte Riot",
+      "sub": "Gratuit à créer"
+     },
+     {
+      "icon": "target",
+      "title": "Zone d'entraînement",
+      "sub": "Pour tester les armes seul"
+     }
+    ]
+   },
+   "essential": "Valorant est gratuit. Pour jouer, il faut un compte Riot et le jeu, qui se télécharge depuis le site officiel.",
+   "details": [
+    {
+     "title": "Pour commencer",
+     "body": "Regarde d'abord les tutos de cette section : tu connaîtras déjà les règles. Ensuite, la zone d'entraînement permet de prendre en main les armes sans pression."
+    }
+   ],
+   "link": {
+    "label": "Site officiel de Valorant",
+    "url": "https://playvalorant.com/"
+   },
+   "gradient": 6
   }
  ]
 }

@@ -1,0 +1,178 @@
+{
+ "name": "L'appli",
+ "listTitle": "Comprendre l'appli",
+ "allLabel": "Tous les tutos de l'appli",
+ "articles": [
+  {
+   "id": "pronostics",
+   "title": "Les pronostics",
+   "summary": "Devine, gagne des points fictifs, compare-toi.",
+   "icon": "emoji",
+   "gradient": 0,
+   "visual": {
+    "type": "stats",
+    "items": [
+     {
+      "big": "3",
+      "sub": "points : bon vainqueur"
+     },
+     {
+      "big": "+2",
+      "sub": "points : score de série exact"
+     }
+    ]
+   },
+   "essential": "Avant un match, tu choisis le gagnant et, si tu veux, le score de la série. Les points sont fictifs : il n'y a pas d'argent en jeu.",
+   "details": [
+    {
+     "title": "Quand pronostiquer ?",
+     "body": "Jusqu'au début du match. Ensuite, le pronostic se verrouille. Les points sont comptés une seule fois, à la fin du match.",
+     "visual": {
+      "type": "flow",
+      "items": [
+       {
+        "icon": "person",
+        "label": "Je choisis"
+       },
+       {
+        "icon": "lock",
+        "label": "Verrouillé au début"
+       },
+       {
+        "icon": "emoji",
+        "label": "Points à la fin"
+       }
+      ]
+     }
+    },
+    {
+     "title": "Entre amis",
+     "body": "Crée un groupe, partage son code de 8 caractères, et comparez vos points dans le classement.",
+     "visual": {
+      "type": "chips",
+      "items": [
+       {
+        "icon": "roles",
+        "title": "Groupe",
+        "sub": "Entre amis"
+       },
+       {
+        "icon": "emoji",
+        "title": "Classement",
+        "sub": "Qui a le plus de points"
+       }
+      ]
+     }
+    }
+   ],
+   "quiz": [
+    {
+     "q": "Combien de points rapporte le bon vainqueur seul ?",
+     "choices": [
+      "1",
+      "3",
+      "5"
+     ],
+     "answer": 1,
+     "why": "3 points, plus 2 si le score de série est exact."
+    }
+   ]
+  },
+  {
+   "id": "sans-spoil",
+   "title": "Le mode sans spoil",
+   "summary": "Ne rien apprendre avant d'avoir regardé.",
+   "icon": "watch",
+   "gradient": 1,
+   "visual": {
+    "type": "flow",
+    "items": [
+     {
+      "icon": "visibility",
+      "label": "Score flouté"
+     },
+     {
+      "icon": "touch",
+      "label": "Appui long"
+     },
+     {
+      "icon": "check",
+      "label": "Score révélé"
+     }
+    ]
+   },
+   "essential": "Avec « Sans spoil », les scores des matchs terminés sont floutés pour que tu ne découvres rien avant d'avoir regardé.",
+   "details": [
+    {
+     "title": "Révéler un score",
+     "body": "Maintiens ton doigt sur un score flouté pour le révéler, seulement celui-là."
+    },
+    {
+     "title": "Les notifications aussi",
+     "body": "Quand le réglage est actif, les notifications annoncent qu'un match est terminé sans en donner le résultat.",
+     "visual": {
+      "type": "chips",
+      "items": [
+       {
+        "icon": "notifications",
+        "title": "Début du match",
+        "sub": "Annoncé normalement"
+       },
+       {
+        "icon": "lock",
+        "title": "Résultat",
+        "sub": "Non annoncé"
+       }
+      ]
+     }
+    }
+   ]
+  },
+  {
+   "id": "fiche-equipe",
+   "title": "La fiche d'une équipe",
+   "summary": "Sa forme du moment et ses confrontations.",
+   "icon": "roles",
+   "gradient": 2,
+   "visual": {
+    "type": "chips",
+    "items": [
+     {
+      "icon": "history",
+      "title": "Forme récente",
+      "sub": "5 derniers matchs"
+     },
+     {
+      "icon": "swap",
+      "title": "Face-à-face",
+      "sub": "Bilan contre un adversaire"
+     }
+    ]
+   },
+   "essential": "La fiche d'une équipe résume comment elle joue en ce moment et comment elle s'en sort contre ses adversaires.",
+   "details": [
+    {
+     "title": "Forme récente",
+     "body": "V pour une victoire, D pour une défaite : plus il y a de V, mieux l'équipe se porte."
+    },
+    {
+     "title": "Suivre une équipe",
+     "body": "En suivant une équipe, tu es prévenu avant ses matchs. Elle passe en jaune dans l'appli, comme « mon équipe ».",
+     "visual": {
+      "type": "flow",
+      "items": [
+       {
+        "icon": "star",
+        "label": "Je suis l'équipe"
+       },
+       {
+        "icon": "notifications",
+        "label": "Alerte avant le match"
+       }
+      ]
+     }
+    }
+   ]
+  }
+ ]
+}

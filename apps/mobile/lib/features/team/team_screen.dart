@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "../learn/learn_screen.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
@@ -39,6 +40,7 @@ class TeamScreen extends ConsumerWidget {
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
           label: Text(breadcrumb ?? "", overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary)),
         ),
+        actions: const [LearnHelpButton(articleId: "fiche-equipe", game: "app")],
       ),
       body: switch (entity) {
         AsyncData(:final value) => _TeamBody(entity: value, scoresHidden: scoresHidden),

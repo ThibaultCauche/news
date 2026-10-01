@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import "../learn/learn_screen.dart";
 import "package:news_api_client/news_api_client.dart";
 
 import "../../theme/tokens.dart";
@@ -28,7 +29,7 @@ class LeagueScreen extends StatelessWidget {
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
           label: Text(game.name, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary)),
         ),
-        actions: [LeagueFollowButton(league: league)],
+        actions: [const LearnHelpButton(articleId: "circuit"), LeagueFollowButton(league: league)],
       ),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),

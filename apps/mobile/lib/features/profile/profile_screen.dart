@@ -11,6 +11,7 @@ import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../account/auth_screen.dart";
 import "../follows/follows_screen.dart";
+import "../learn/learn_screen.dart";
 import "../forum/forum_account_screens.dart";
 import "../settings/settings_screen.dart";
 import "../competitions/competitions_data.dart";
@@ -58,6 +59,8 @@ class ProfileScreen extends ConsumerWidget {
                   onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FollowsScreen())),
                 ),
               ),
+              const SizedBox(height: AppSpacing.md),
+              const _LearnRow(),
               const SizedBox(height: AppSpacing.lg),
               const ForumProfileSection(),
               const _AccountActions(),
@@ -483,6 +486,25 @@ class _AccountActions extends ConsumerWidget {
         TextButton(onPressed: () => ref.read(accountServiceProvider).signOut(), child: const Text("Se déconnecter")),
         TextButton(onPressed: () => _delete(context, ref), child: const Text("Supprimer mon compte", style: TextStyle(color: AppColors.live))),
       ],
+    );
+  }
+}
+
+/// « Mes tutos » : tutos lus et quiz réussis (J12), avec accès à la liste des tutos de Valorant.
+class _LearnRow extends ConsumerWidget {
+  const _LearnRow();
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final progress = ref.watch(learnReadProvider).value;
+    final read = progress?.read.length ?? 0;
+    final passed = progress?.passed.length ?? 0;
+    return SectionCard(
+      child: _NavRow(
+        icon: Icons.school_outlined,
+        label: "Mes tutos · $read lus, $passed quiz réussis",
+        onTap: () => openLearnGuide(context, "valorant"),
+      ),
     );
   }
 }

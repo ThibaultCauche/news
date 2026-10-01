@@ -9,6 +9,7 @@ import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../follows/follows_screen.dart";
+import "../learn/learn_screen.dart";
 
 /// Écran 22 (`docs/02`, J6). Sans spoil et résumé du matin restent globaux
 /// (une seule vraie catégorie avec des données pour l'instant : la granularité
@@ -54,7 +55,16 @@ class _SettingsBody extends ConsumerWidget {
       children: [
         const PageTitle("Réglages"),
         const SizedBox(height: AppSpacing.lg),
-        const SectionLabel("SANS SPOIL"),
+        Row(
+          children: [
+            const Expanded(child: SectionLabel("SANS SPOIL")),
+            TextButton.icon(
+              onPressed: () => openLearnArticle(context, game: "app", articleId: "sans-spoil"),
+              icon: const Icon(Icons.help_rounded, size: 18, color: AppColors.gold),
+              label: const Text("Comment ça marche ?"),
+            ),
+          ],
+        ),
         const SizedBox(height: AppSpacing.sm),
         SectionCard(
           child: _ToggleRow(

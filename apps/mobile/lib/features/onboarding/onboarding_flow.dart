@@ -8,6 +8,7 @@ import "../../widgets/page_subtitle.dart";
 import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
 import "../follows/follows_provider.dart";
+import "../learn/learn_screen.dart";
 
 // Éditorial, écrit à la main comme le glossaire (`docs/03` §7) : pas une règle
 // calculée, une suggestion pour démarrer. Champions 2026 réunit les trois
@@ -100,6 +101,13 @@ class _SubjectsPage extends StatelessWidget {
             ),
           ),
           const Spacer(),
+          Center(
+            child: TextButton.icon(
+              onPressed: () => openLearnArticle(context, game: "valorant", articleId: "le-jeu"),
+              icon: const Icon(Icons.help_rounded, size: 18, color: AppColors.gold),
+              label: const Text("Je ne connais pas Valorant"),
+            ),
+          ),
           SizedBox(
             width: double.infinity,
             child: FilledButton(onPressed: onContinue, child: const Padding(padding: EdgeInsets.all(AppSpacing.sm), child: Text("Continuer"))),

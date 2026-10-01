@@ -12,6 +12,7 @@ import "../../widgets/section_label.dart";
 import "../account/auth_screen.dart";
 import "../agenda/agenda_screen.dart";
 import "../competitions/competitions_data.dart";
+import "../learn/learn_screen.dart";
 import "../next_match/next_match_screen.dart";
 import "../profile/community_providers.dart";
 import "../profile/groups_screen.dart";
@@ -27,7 +28,7 @@ class PredictionsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final signedIn = ref.watch(signedInProvider);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(actions: const [LearnHelpButton(articleId: "pronostics", game: "app")]),
       body: SafeArea(
         child: RefreshIndicator(
           onRefresh: () async {

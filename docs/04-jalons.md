@@ -364,6 +364,8 @@
 - [x] Un nouveau jeu s'ajoute en écrivant son fichier JSON (schémas décrits en données : tuiles, étapes, gros chiffres), sans code Dart de contenu.
 - [x] Exemple en 3 cartes de la maquette 04 dans la feuille glossaire « BO3 » (manquait depuis le J6).
 - [x] **Vérifié en conditions réelles** sur émulateur Android (Pixel Tablet) : liste, articles, « ? », rendu des tuiles validé à l'œil.
+- [x] **Complément du 2026-10-01** : glossaire étendu (11 termes cliquables dans les tutos), 7 tutos Valorant (+ « Le circuit pro », « Envie d'essayer ? »), guide `app` (pronostics, sans spoil, fiche équipe), « ? » sur la page ligue / fiche équipe / Pronostics / Réglages, carte « Nouveau sur Valorant ? » sur l'Accueil et bouton dans l'onboarding, mini-quiz « Teste-toi », libellés d'accessibilité sur les schémas.
+- [x] **Progression liée au compte** : table `learn_progress`, `GET /v1/me/learn` et `PUT /v1/me/learn/:guide/:articleId` ; tutos lus et quiz réussis, synchronisés (et gardés en local pour l'invité), affichés sur le profil (« Mes tutos »). Simple compteur, **sans points**.
 - [ ] *Reporté :* relu par un néophyte externe (seul le compte du projet a testé).
 
 **Fait (2026-10-01).** Vérifié : `flutter analyze` propre ; 96 tests Flutter verts, dont 4 tests du J12 ; les seuls échecs locaux sont 4 goldens (`event_card`, `follow_button` ×2, `glass_tab_bar`), simple écart de rendu Windows déjà connu, sur des widgets non touchés par ce jalon. Aucun changement backend (pas de migration, pas d'endpoint, pas de client Dart à régénérer).
@@ -405,6 +407,8 @@
 ---
 
 ## Ensuite (par ordre de priorité proposé)
+
+0. **Quiz des tutos avec points et classement** (idée du 2026-10-01, version « plus grosse » du compteur du J12) : points pour les quiz réussis, éventuellement dans les classements de groupe. Demande que **le serveur connaisse les bonnes réponses** (aujourd'hui dans les JSON embarqués de l'appli, donc « quiz réussi » est déclaré par le client), une règle claire pour ne pas mélanger ces points à ceux des pronostics (classement séparé ?), un seul passage compté par question, et une table de résultats par question plutôt que par tuto.
 
 1. **Guide d'explications des compétitions** (idée du 2026-09-30) : page « Comprendre les compétitions » (Kickoff, Stage, Masters, Champions, formats, qualification), ouverte depuis un « ? » de la page jeu. Textes propres écrits pour un néophyte, relus avant mise en base (pas de recopie du site officiel VCT, qui ne sert qu'à vérifier les faits), stockés en base comme le glossaire, avec un petit endpoint.
 2. **Autres jeux PandaScore** (LoL, CS2, Dota 2, R6, Rocket League…) : même adaptateur, filtrage par tier. Nouveaux formats à dessiner : **phase suisse**, **classement de lobby** (battle royale). Vérifier le gagnant par carte pour CS, Dota 2 et LoL sur du tier S.

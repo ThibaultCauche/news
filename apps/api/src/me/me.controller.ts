@@ -1,8 +1,10 @@
-import { Body, Controller, Delete, Get, HttpCode, Patch, UseGuards } from "@nestjs/common";
+import { Body, Controller, Delete, Get, HttpCode, Param, Patch, Put, UseGuards } from "@nestjs/common";
 import { ApiOkResponse } from "@nestjs/swagger";
 import { AuthUser } from "../auth/auth.types";
 import { CurrentUser } from "../auth/current-user.decorator";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
+import { LearnProgressDto, LearnProgressEntryDto, PutLearnProgressDto } from "./learn.dto";
+import { LearnService } from "./learn.service";
 import { MeService } from "./me.service";
 import { UpdateUserSettingDto, UserSettingDto } from "./user-setting.dto";
 
@@ -10,7 +12,10 @@ import { UpdateUserSettingDto, UserSettingDto } from "./user-setting.dto";
 @Controller("me")
 @UseGuards(JwtAuthGuard)
 export class MeController {
-  constructor(private readonly me: MeService) {}
+  constructor(
+    private readonly me: MeService,
+    private readonly learn: LearnService,
+  ) {}
 
   @Get("settings")
   @ApiOkResponse({ type: UserSettingDto })
@@ -22,6 +27,24 @@ export class MeController {
   @ApiOkResponse({ type: UserSettingDto })
   async updateSettings(@CurrentUser() user: AuthUser, @Body() dto: UpdateUserSettingDto): Promise<UserSettingDto> {
     return this.me.updateSettings(user.id, dto);
+  }
+
+  // Progression dans les tutos (J12) : écran Profil.
+  @Get("learn")
+  @ApiOkResponse({ type: LearnProgressDto })
+  async getLearn(@CurrentUser() user: AuthUser): Promise<LearnProgressDto> {
+    return this.learn.get(user.id);
+  }
+
+  @Put("learn/:guide/:articleId")
+  @ApiOkResponse({ type: LearnProgressEntryDto })
+  async putLearn(
+    @CurrentUser() user: AuthUser,
+    @Param("guide") guide: string,
+    @Param("articleId") articleId: string,
+    @Body() dto: PutLearnProgressDto,
+  ): Promise<LearnProgressEntryDto> {
+    return this.learn.put(user.id, guide, articleId, dto.quizPassed);
   }
 
   @Delete()
