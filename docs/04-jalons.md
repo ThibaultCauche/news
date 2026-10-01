@@ -489,7 +489,7 @@
 - [x] Carte de grande finale en laiton avec coins de cadre, filet sous « Les grands rendez-vous » ; l'or reste réservé à « mes suivis ».
 - [x] Nom « Keryx », icône adaptative (losange laiton, K) et écran de lancement vus sur émulateur Android.
 - [x] Modèles d'e-mails Firebase (validation, mot de passe, changement d'adresse) aux couleurs de Keryx : `docs/emails/` (à coller dans la console, voir le README).
-- [ ] Goldens régénérés par la CI (branche jetable `regen-goldens`).
+- [x] Goldens régénérés par la CI (branche jetable `regen-goldens`, 8 images sur 9 changées). Séance de test des écrans non encore vus : `docs/seance-test-j16.md`.
 - [ ] **Reporté** : marque (INPI, EUIPO) et nom de domaine à vérifier par l'utilisateur ; icône iOS.
 
 ---
