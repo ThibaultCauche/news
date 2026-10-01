@@ -81,10 +81,7 @@ class GrandFinalCard extends ConsumerWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _FinalTeam(participant: teams[0]),
-                      const Text(
-                        "VS",
-                        style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontStyle: FontStyle.italic, fontSize: 22),
-                      ),
+                      Text("VS", style: AppTextStyles.versus(22)),
                       _FinalTeam(participant: teams[1]),
                     ],
                   )

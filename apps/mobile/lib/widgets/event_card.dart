@@ -112,7 +112,7 @@ class EventCard extends ConsumerWidget {
         ? MatchCountdown(startsAt: countdownTarget, fontSize: fontSize * 0.72)
         : Text(
             "VS",
-            style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800, fontStyle: FontStyle.italic, fontSize: fontSize),
+            style: AppTextStyles.versus(fontSize),
           );
 
     // BOx redevient utile en l'absence de score (personne à départager encore) ;

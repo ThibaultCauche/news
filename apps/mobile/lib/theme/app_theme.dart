@@ -15,10 +15,10 @@ TextStyle _inter(double size, FontWeight weight, double trackingEm, {Color? colo
   );
 }
 
-/// Cinzel, police d'affichage réservée aux titres (J16) ; le texte, les scores
+/// Cinzel, police d'affichage réservée aux titres et au « VS » (J16), toujours en laiton ; le texte, les scores
 /// et les chiffres restent en Inter.
 TextStyle _cinzel(double size, FontWeight weight) {
-  return TextStyle(fontFamily: "Cinzel", fontSize: size, fontWeight: weight, height: AppTypography.lineHeight, color: AppColors.textPrimary);
+  return TextStyle(fontFamily: "Cinzel", fontSize: size, fontWeight: weight, height: AppTypography.lineHeight, color: AppColors.brass);
 }
 
 /// Styles texte mesurés sur les maquettes sans équivalent direct dans le
@@ -27,6 +27,7 @@ TextStyle _cinzel(double size, FontWeight weight) {
 abstract final class AppTextStyles {
   static TextStyle get pageTitle => _cinzel(AppTypography.display, FontWeight.w700);
   static TextStyle get sectionTitle => _cinzel(AppTypography.title, FontWeight.w600);
+  static TextStyle versus(double size) => _cinzel(size, FontWeight.w700);
   static TextStyle get heroScore =>
       _inter(AppTypography.heroScore, FontWeight.w700, AppTypography.trackingHeroScore);
   static TextStyle get cardTitle =>
