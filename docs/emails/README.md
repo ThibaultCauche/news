@@ -8,7 +8,11 @@ Trois modèles HTML à coller dans la console Firebase, **Authentication → Mod
 | Réinitialisation du mot de passe | `reinitialisation.html` | `Nouveau mot de passe pour Keryx` |
 | Modification de l'adresse e-mail | `changement-adresse.html` | `Ton adresse e-mail Keryx a changé` |
 
-## Pas à pas
+## Contrainte constatée (2026-10-01)
+
+Dans la console Firebase, le champ **Message** est grisé : « pour éviter le spam, le message ne peut pas être modifié dans ce modèle d'e-mail ». Tant que les e-mails partent des serveurs de Firebase avec l'adresse `noreply@…firebaseapp.com`, seuls le **nom de l'expéditeur**, l'**objet** et l'**adresse de réponse** se changent. Ces modèles HTML ne servent donc qu'après l'une de ces voies : **SMTP personnalisé** (menu « Paramètres SMTP » de la même page) ou **domaine personnalisé** (« Personnaliser le domaine »). Voie à choisir avec l'utilisateur ; en attendant, ne régler que l'objet, le nom d'expéditeur et le nom public du projet (Paramètres du projet → Nom public, qui remplace `%APP_NAME%`).
+
+## Pas à pas (une fois le message modifiable)
 
 1. Console Firebase → **Authentication** → onglet **Modèles** → choisir le modèle.
 2. Clic sur le crayon : **Nom de l'expéditeur** `Keryx`, **Objet** (colonne ci-dessus). Laisser « De » en `noreply@…firebaseapp.com`.
