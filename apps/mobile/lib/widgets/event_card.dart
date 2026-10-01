@@ -7,6 +7,7 @@ import "../core/date_x.dart";
 import "../core/settings_provider.dart";
 import "../domain/event_status.dart";
 import "../theme/app_theme.dart";
+import "ornate_frame.dart";
 import "../features/follows/follows_provider.dart";
 import "../theme/tokens.dart";
 import "live_dot.dart";
@@ -219,16 +220,21 @@ class EventCard extends ConsumerWidget {
         ? SpoilerHold(builder: (context, sigma) => buildTeams(sigma), onReveal: () => ref.read(revealedEventsProvider.notifier).reveal(event.id))
         : buildTeams(0);
 
-    return Container(
+    final strong = isHighStakes(event.name);
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: OrnateFrame(
+      radius: AppRadii.card,
+      strong: strong,
+      color: banner ? AppColors.live : AppColors.brass,
+      child: Container(
       // Largeur pleine forcée : la ligne compacte (`compactRow`) se dimensionne
       // à son contenu (`MainAxisSize.min`), et le `Column` englobant côté
       // appelant (`_AgendaList`, ...) ne l'étire pas tout seul.
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       decoration: BoxDecoration(
         color: banner ? AppColors.live.withValues(alpha: 0.12) : AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadii.card),
-        border: Border.all(color: banner ? AppColors.live.withValues(alpha: 0.4) : AppColors.surfaceBorder),
         gradient: banner ? null : teamsGradient(colorA, colorB),
       ),
       child: Material(
@@ -265,6 +271,8 @@ class EventCard extends ConsumerWidget {
           ),
         ),
       ),
+    ),
+    ),
     );
   }
 }

@@ -1,3 +1,4 @@
+import "../theme/app_theme.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -39,7 +40,7 @@ class _GlossarySheetContent extends ConsumerWidget {
           children: [
             const SectionLabel("GLOSSAIRE"),
             const SizedBox(height: AppSpacing.xs),
-            Text(term, style: Theme.of(context).textTheme.titleLarge),
+            Text(term, style: AppTextStyles.sectionTitle),
             const SizedBox(height: AppSpacing.md),
             // Exemple en 3 cartes de la maquette 04.
             if (term.toLowerCase() == "bo3") ...[const Bo3Example(), const SizedBox(height: AppSpacing.md)],

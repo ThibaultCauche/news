@@ -1,3 +1,5 @@
+import "../../theme/app_theme.dart";
+import "package:flutter_svg/flutter_svg.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -75,6 +77,14 @@ class _SubjectsPage extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            children: [
+              SvgPicture.asset("assets/ornaments/monogram.svg", width: 40, height: 40),
+              const SizedBox(width: AppSpacing.sm),
+              Text("KERYX", style: AppTextStyles.sectionTitle.copyWith(letterSpacing: 4)),
+            ],
+          ),
+          const SizedBox(height: AppSpacing.md),
           const PageTitle("Qu'est-ce qui t'intéresse ?"),
           const SizedBox(height: AppSpacing.xs),
           const PageSubtitle("Choisis au moins un sujet. Tu pourras changer plus tard."),

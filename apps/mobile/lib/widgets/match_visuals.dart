@@ -108,7 +108,7 @@ class _CrownPainter extends CustomPainter {
       ..lineTo(w, h * 0.15)
       ..lineTo(w, h * 0.85)
       ..close();
-    canvas.drawPath(path, Paint()..color = AppColors.gold);
+    canvas.drawPath(path, Paint()..color = AppColors.brass);
     canvas.drawRect(Rect.fromLTWH(0, h * 0.88, w, h * 0.12), Paint()..color = AppColors.gold);
   }
 

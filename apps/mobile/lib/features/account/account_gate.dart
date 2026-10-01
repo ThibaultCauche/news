@@ -1,3 +1,4 @@
+import "../../theme/app_theme.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "../../core/auth/account.dart";
@@ -35,7 +36,7 @@ class _AccountRequiredSheet extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Crée un compte pour continuer", style: Theme.of(context).textTheme.titleLarge),
+            Text("Crée un compte pour continuer", style: AppTextStyles.sectionTitle),
             const SizedBox(height: AppSpacing.sm),
             const Text(
               "Naviguer reste libre. Un compte sert à suivre, être alerté, pronostiquer et retrouver tout ça sur un autre téléphone.",

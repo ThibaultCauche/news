@@ -32,14 +32,32 @@ class NewsApp extends ConsumerWidget {
     return AutoRefresh(
       child: Scaffold(
       extendBody: true,
-      body: IndexedStack(
-        index: index,
-        children: const [
-          HomeScreen(),
-          AgendaScreen(),
-          CompetitionsScreen(),
-          _ComingSoon(label: "Cet onglet"),
-          GamesScreen(),
+      body: Stack(
+        children: [
+          // Lueur laiton en haut de chaque onglet (J16), statique.
+          Positioned(
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 320,
+            child: IgnorePointer(
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(begin: Alignment.topCenter, end: Alignment.bottomCenter, colors: [AppColors.brass.withValues(alpha: 0.12), Colors.transparent]),
+                ),
+              ),
+            ),
+          ),
+          IndexedStack(
+            index: index,
+            children: const [
+              HomeScreen(),
+              AgendaScreen(),
+              CompetitionsScreen(),
+              _ComingSoon(label: "Cet onglet"),
+              GamesScreen(),
+            ],
+          ),
         ],
       ),
       bottomNavigationBar: GlassTabBar(items: _items, currentIndex: index, onTap: ref.read(tabIndexProvider.notifier).select),

@@ -115,7 +115,7 @@ class _GroupPromptState extends ConsumerState<_GroupPrompt> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(widget.create ? "Créer un groupe" : "Rejoindre un groupe", style: Theme.of(context).textTheme.titleLarge),
+          Text(widget.create ? "Créer un groupe" : "Rejoindre un groupe", style: AppTextStyles.sectionTitle),
           const SizedBox(height: AppSpacing.md),
           TextField(
             controller: _controller,
@@ -208,7 +208,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Inviter des amis", style: Theme.of(context).textTheme.titleLarge),
+              Text("Inviter des amis", style: AppTextStyles.sectionTitle),
               const SizedBox(height: AppSpacing.xs),
               const Text("Ils saisissent ce code dans « Rejoindre ».", style: TextStyle(color: AppColors.textSecondary)),
               const SizedBox(height: AppSpacing.md),

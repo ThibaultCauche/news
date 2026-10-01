@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "../theme/tokens.dart";
+import "ornate_frame.dart";
 
 /// Carte de section (`docs/maquettes/specs/commun.md`) : surface `#16171B`,
 /// rayon 22 (`AppRadii.card`), contour blanc 8 % (10 % si [highlight], pour
@@ -15,12 +16,9 @@ class SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final borderRadius = BorderRadius.circular(AppRadii.card);
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: borderRadius,
-        border: Border.all(color: highlight ? AppColors.surfaceBorderHighlight : AppColors.surfaceBorder),
-      ),
+    return OrnateFrame(
+      child: Container(
+      decoration: BoxDecoration(color: AppColors.surface, borderRadius: borderRadius),
       child: ClipRRect(
         borderRadius: borderRadius,
         child: Stack(
@@ -30,6 +28,7 @@ class SectionCard extends StatelessWidget {
           ],
         ),
       ),
+    ),
     );
   }
 }

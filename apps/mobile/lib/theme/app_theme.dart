@@ -88,6 +88,25 @@ ThemeData buildAppTheme() {
         side: BorderSide(color: AppColors.surfaceBorder),
       ),
     ),
-    dividerColor: AppColors.surfaceBorder,
+    dividerColor: AppColors.brass.withValues(alpha: 0.25),
+    filledButtonTheme: FilledButtonThemeData(
+      style: FilledButton.styleFrom(
+        backgroundColor: AppColors.brass.withValues(alpha: 0.12),
+        foregroundColor: AppColors.brass,
+        side: const BorderSide(color: AppColors.brass),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadii.chip)),
+        textStyle: const TextStyle(fontFamily: "Inter", fontWeight: FontWeight.w600),
+      ),
+    ),
+    bottomSheetTheme: const BottomSheetThemeData(
+      backgroundColor: AppColors.surface,
+      surfaceTintColor: Colors.transparent,
+      showDragHandle: true,
+      dragHandleColor: AppColors.brass,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(AppRadii.card)),
+        side: BorderSide(color: AppColors.brass, width: 0.8),
+      ),
+    ),
   );
 }

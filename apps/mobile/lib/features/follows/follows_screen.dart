@@ -1,3 +1,4 @@
+import "../../widgets/empty_mark.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -175,8 +176,8 @@ class FollowCard extends ConsumerWidget {
               )
             else
               const Padding(
-                padding: EdgeInsets.fromLTRB(AppSpacing.xs, 0, AppSpacing.xs, AppSpacing.sm),
-                child: Text("Rien de prévu pour l'instant.", style: TextStyle(color: AppColors.textSecondary)),
+                padding: EdgeInsets.fromLTRB(AppSpacing.xs, AppSpacing.sm, AppSpacing.xs, AppSpacing.sm),
+                child: Center(child: EmptyMark("Rien de prévu pour l'instant.")),
               ),
           ],
         ),

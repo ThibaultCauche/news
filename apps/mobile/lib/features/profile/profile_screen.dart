@@ -83,7 +83,7 @@ class _GuestCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Tu navigues en invité", style: Theme.of(context).textTheme.titleLarge),
+          Text("Tu navigues en invité", style: AppTextStyles.sectionTitle),
           const SizedBox(height: AppSpacing.xs),
           const Text(
             "Crée un compte pour suivre des équipes, recevoir des alertes, pronostiquer les matchs et te comparer à tes amis.",
@@ -179,7 +179,7 @@ class _VerifyEmailCardState extends ConsumerState<_VerifyEmailCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Vérifie ton e-mail", style: Theme.of(context).textTheme.titleLarge),
+          Text("Vérifie ton e-mail", style: AppTextStyles.sectionTitle),
           const SizedBox(height: AppSpacing.xs),
           Text("Un lien de confirmation a été envoyé à $email. Il faut le valider pour créer ton pseudo et jouer.", style: const TextStyle(color: AppColors.textSecondary)),
           if (_message != null) ...[const SizedBox(height: AppSpacing.sm), Text(_message!, style: const TextStyle(color: AppColors.textSecondary))],
@@ -239,7 +239,7 @@ class _PseudoFormState extends ConsumerState<_PseudoForm> {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(widget.first ? "Choisis ton pseudo" : "Changer de pseudo", style: Theme.of(context).textTheme.titleLarge),
+        Text(widget.first ? "Choisis ton pseudo" : "Changer de pseudo", style: AppTextStyles.sectionTitle),
         const SizedBox(height: AppSpacing.xs),
         Text(
           widget.first
@@ -282,7 +282,7 @@ class _PseudoHeader extends StatelessWidget {
           ),
         ),
         const SizedBox(width: AppSpacing.md),
-        Expanded(child: Text(pseudo, style: Theme.of(context).textTheme.titleLarge)),
+        Expanded(child: Text(pseudo, style: AppTextStyles.sectionTitle)),
         if (profile.pseudoChangeWaitDays == 0)
           IconButton(
             tooltip: "Changer de pseudo",
@@ -311,7 +311,7 @@ class _AvatarPicker extends ConsumerWidget {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
-                    child: Align(alignment: Alignment.centerLeft, child: Text("Choisis ton avatar", style: Theme.of(context).textTheme.titleLarge)),
+                    child: Align(alignment: Alignment.centerLeft, child: Text("Choisis ton avatar", style: AppTextStyles.sectionTitle)),
                   ),
                   TabBar(isScrollable: true, tabAlignment: TabAlignment.start, tabs: [for (final game in games) Tab(text: game.name)]),
                   Expanded(child: TabBarView(children: [for (final game in games) _TeamLogos(game: game.slug)])),

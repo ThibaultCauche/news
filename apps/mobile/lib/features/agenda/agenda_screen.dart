@@ -1,3 +1,4 @@
+import "../../theme/app_theme.dart";
 import "package:flutter/material.dart";
 import "package:flutter/rendering.dart" show ScrollCacheExtent;
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -123,7 +124,7 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("E-sport", style: Theme.of(sheetContext).textTheme.titleLarge),
+                Text("E-sport", style: AppTextStyles.sectionTitle),
                 const SizedBox(height: AppSpacing.sm),
                 CheckboxListTile(
                   contentPadding: EdgeInsets.zero,

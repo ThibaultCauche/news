@@ -46,7 +46,7 @@ abstract final class AppGradients {
 abstract final class AppRadii {
   /// Rayon dominant, mesuré 21 fois sur les cartes pleine largeur (358 px)
   /// des écrans 01/03/06/09/17 (docs/maquettes/specs/commun.md).
-  static const card = 22.0;
+  static const card = 16.0;
   static const chip = 14.0;
   static const pill = 999.0;
 }

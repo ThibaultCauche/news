@@ -114,7 +114,7 @@ void main() {
     expect(find.byType(ImageFiltered), findsOneWidget);
     expect(find.text("Maintiens pour révéler le score"), findsOneWidget);
 
-    final gesture = await tester.startGesture(tester.getCenter(find.text("Terminé")));
+    final gesture = await tester.startGesture(tester.getCenter(find.text("TERMINÉ")));
     // Le premier `pump` ne fait que démarrer l'horloge de l'animation : d'où la durée en plus.
     await tester.pump(const Duration(milliseconds: 100));
     await tester.pump(const Duration(milliseconds: 600));

@@ -1,12 +1,12 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
-import "package:flutter_svg/flutter_svg.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/date_x.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/event_card.dart";
+import "../../widgets/ornate_frame.dart";
 import "../../widgets/match_visuals.dart";
 import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
@@ -44,13 +44,15 @@ class GrandFinalCard extends ConsumerWidget {
     final colorB = hasTwoTeams ? accentOf(teams[1]) : null;
     final active = isFollowing(ref.watch(followsProvider).value, FollowTargetType.event, event.id);
 
-    return Container(
+    return Padding(
+      padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: OrnateFrame(
+      strong: true,
+      child: Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadii.card),
-        border: Border.all(color: AppColors.brass.withValues(alpha: 0.5)),
         gradient: teamsGradient(colorA, colorB),
       ),
       child: Stack(children: [
@@ -98,8 +100,8 @@ class GrandFinalCard extends ConsumerWidget {
                   width: double.infinity,
                   child: FilledButton.icon(
                     style: FilledButton.styleFrom(
-                      backgroundColor: active ? AppColors.gold.withValues(alpha: 0.14) : AppColors.textPrimary,
-                      foregroundColor: active ? AppColors.gold : AppColors.background,
+                      backgroundColor: active ? AppColors.gold.withValues(alpha: 0.14) : AppColors.brass.withValues(alpha: 0.12),
+                      foregroundColor: active ? AppColors.gold : AppColors.brass,
                     ),
                     icon: Icon(active ? Icons.notifications_active_rounded : Icons.notifications_none_rounded, size: 18),
                     label: Text(active ? "Alerte activée" : "M'alerter au début du match"),
@@ -111,25 +113,9 @@ class GrandFinalCard extends ConsumerWidget {
           ),
         ),
       ),
-      // Coins du cadre : décor statique (J16), ignoré par le toucher.
-      const Positioned(top: 6, left: 6, child: _Corner(turns: 0)),
-      const Positioned(bottom: 6, right: 6, child: _Corner(turns: 2)),
       ]),
-    );
-  }
-}
-
-class _Corner extends StatelessWidget {
-  const _Corner({required this.turns});
-
-  final int turns;
-
-  @override
-  Widget build(BuildContext context) {
-    return IgnorePointer(
-      child: ExcludeSemantics(
-        child: RotatedBox(quarterTurns: turns, child: SvgPicture.asset("assets/ornaments/corner.svg", width: 14, height: 14)),
-      ),
+    ),
+    ),
     );
   }
 }

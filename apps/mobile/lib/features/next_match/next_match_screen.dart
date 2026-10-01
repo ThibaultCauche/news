@@ -1,3 +1,6 @@
+import "../../theme/app_theme.dart";
+import "../../widgets/live_badge.dart";
+import "../../widgets/ornate_frame.dart";
 import "dart:async";
 
 import "package:flutter/gestures.dart";
@@ -146,7 +149,9 @@ class _NextMatchBody extends ConsumerWidget {
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
         if (isStale) const _StaleBanner(),
-        Container(
+        OrnateFrame(
+          strong: isHighStakes(event.name),
+          child: Container(
           padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppRadii.card),
@@ -157,12 +162,17 @@ class _NextMatchBody extends ConsumerWidget {
               Text(
                 [event.competition.name, if (event.bestOf != null) "BO${event.bestOf}"].join(" · ").toUpperCase(),
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.labelSmall,
+                style: AppTextStyles.sectionTitle.copyWith(fontSize: 14, letterSpacing: 1.2),
               ),
+              if (RegExp("final", caseSensitive: false).hasMatch(event.name) && status != EventStatusKind.finished) ...[
+                const SizedBox(height: AppSpacing.xs),
+                Text("Qui sera proclamé vainqueur ?", textAlign: TextAlign.center, style: AppTextStyles.body.copyWith(color: AppColors.textSecondary)),
+              ],
               const SizedBox(height: AppSpacing.lg),
               _Participants(event: event, scoresHidden: scoresHidden),
             ],
           ),
+        ),
         ),
         const SizedBox(height: AppSpacing.lg),
         Center(
@@ -334,19 +344,19 @@ class _StatusDisplay extends StatelessWidget {
             children: [
               const LiveDot(size: 12),
               const SizedBox(width: AppSpacing.sm),
-              Text("EN DIRECT", style: textTheme.titleLarge?.copyWith(color: AppColors.live)),
+              const Stamp("EN DIRECT"),
             ],
           ),
           if (_score != null) ...[
             const SizedBox(height: AppSpacing.sm),
-            _AnimatedSpoiler(hidden: scoresHidden, sigma: sigma, child: Text(_score!, style: textTheme.headlineLarge)),
+            _AnimatedSpoiler(hidden: scoresHidden, sigma: sigma, child: Text(_score!, style: AppTextStyles.pageTitle.copyWith(color: AppColors.textPrimary))),
           ],
         ],
       ),
       EventStatusKind.finished => Column(
         children: [
-          Text("Terminé", style: textTheme.bodyMedium),
-          if (_score != null) _AnimatedSpoiler(hidden: scoresHidden, sigma: sigma, child: Text(_score!, style: textTheme.headlineLarge)),
+          const Stamp("TERMINÉ", color: AppColors.textSecondary),
+          if (_score != null) _AnimatedSpoiler(hidden: scoresHidden, sigma: sigma, child: Text(_score!, style: AppTextStyles.pageTitle.copyWith(color: AppColors.textPrimary))),
         ],
       ),
       EventStatusKind.postponed => Text("Reporté", style: textTheme.titleLarge?.copyWith(color: AppColors.textTertiary)),
@@ -473,13 +483,14 @@ class _AlertButtonState extends ConsumerState<_AlertButton> {
               key: ValueKey(activated),
               padding: const EdgeInsets.symmetric(vertical: AppSpacing.md),
               decoration: BoxDecoration(
-                color: AppColors.textPrimary,
+                color: AppColors.brass.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(AppRadii.chip),
+                border: Border.all(color: AppColors.brass),
               ),
               alignment: Alignment.center,
               child: Text(
                 activated ? "Alerte activée ✓" : "M'alerter au début du match",
-                style: const TextStyle(color: AppColors.background, fontWeight: FontWeight.w600),
+                style: const TextStyle(color: AppColors.brass, fontWeight: FontWeight.w600),
               ),
             ),
           ),

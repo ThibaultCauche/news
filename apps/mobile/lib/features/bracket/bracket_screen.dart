@@ -1,3 +1,4 @@
+import "../../widgets/empty_mark.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -174,7 +175,7 @@ class _EmptyMessage extends StatelessWidget {
   final String text;
 
   @override
-  Widget build(BuildContext context) => Center(child: Text(text, style: const TextStyle(color: AppColors.textSecondary)));
+  Widget build(BuildContext context) => Center(child: EmptyMark(text));
 }
 
 /// Écran 06 : l'arbre de qualification de chaque poule (Ouverture →

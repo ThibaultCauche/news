@@ -1,3 +1,4 @@
+import "../../theme/app_theme.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -61,7 +62,7 @@ class _GuestCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Un compte est nécessaire", style: Theme.of(context).textTheme.titleLarge),
+          Text("Un compte est nécessaire", style: AppTextStyles.sectionTitle),
           const SizedBox(height: AppSpacing.xs),
           const Text("Crée un compte pour pronostiquer les matchs et jouer avec tes amis.", style: TextStyle(color: AppColors.textSecondary)),
           const SizedBox(height: AppSpacing.md),

@@ -1,3 +1,4 @@
+import "../../theme/app_theme.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -102,7 +103,6 @@ class _FollowLeagueSheetState extends ConsumerState<FollowLeagueSheet> {
   @override
   Widget build(BuildContext context) {
     final league = widget.league;
-    final textTheme = Theme.of(context).textTheme;
     return SafeArea(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.md),
@@ -110,7 +110,7 @@ class _FollowLeagueSheetState extends ConsumerState<FollowLeagueSheet> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Suivre dans ${league.name}", style: textTheme.titleLarge),
+            Text("Suivre dans ${league.name}", style: AppTextStyles.sectionTitle),
             const SizedBox(height: AppSpacing.xs),
             const Text(
               "Les nouvelles éditions sont incluses automatiquement.",
