@@ -242,7 +242,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
-        Text(group.name, style: Theme.of(context).textTheme.headlineLarge),
+        Text(group.name, style: AppTextStyles.pageTitle),
         const SizedBox(height: AppSpacing.md),
         const SizedBox(height: AppSpacing.lg),
         const SectionLabel("CLASSEMENT"),

@@ -41,7 +41,7 @@ class NewsRoot extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       navigatorKey: navigatorKey,
-      title: "News",
+      title: "Keryx",
       debugShowCheckedModeBanner: false,
       locale: const Locale("fr"),
       supportedLocales: const [Locale("fr")],

@@ -483,7 +483,13 @@
 
 **Hors périmètre** : refonte des écrans ; images, logos ou polices de Riot ou d'un autre éditeur.
 
-**Critères d'acceptation** : à rédiger au cadrage (`/jalon 16`).
+**Critères d'acceptation**
+- [x] Cinzel embarquée, utilisée uniquement pour les titres de page et de section, accents français corrects (test widget).
+- [x] Laiton `#B79B62` en token, contraste ≥ 4,5:1 sur le fond charbon (test, 7,4:1).
+- [x] Carte de grande finale en laiton avec coins de cadre, filet sous « Les grands rendez-vous » ; l'or reste réservé à « mes suivis ».
+- [x] Nom « Keryx », icône adaptative (losange laiton, K) et écran de lancement vus sur émulateur Android.
+- [ ] Goldens régénérés par la CI (branche jetable `regen-goldens`).
+- [ ] **Reporté** : marque (INPI, EUIPO) et nom de domaine à vérifier par l'utilisateur ; icône iOS.
 
 ---
 

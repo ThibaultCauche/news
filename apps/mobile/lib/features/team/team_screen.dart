@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "../learn/learn_screen.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../../theme/app_theme.dart";
 import "../../core/api_providers.dart";
 import "../../core/date_x.dart";
 import "../../core/settings_provider.dart";
@@ -88,7 +89,7 @@ class _TeamBody extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(entity.name, style: Theme.of(context).textTheme.headlineLarge),
+                  Text(entity.name, style: AppTextStyles.pageTitle),
                   if (entity.region != null) Text(entity.region!, style: const TextStyle(color: AppColors.textSecondary)),
                 ],
               ),

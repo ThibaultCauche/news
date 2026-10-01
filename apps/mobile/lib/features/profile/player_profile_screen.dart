@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/avatar_circle.dart";
 import "community_providers.dart";
@@ -27,7 +28,7 @@ class PlayerProfileScreen extends ConsumerWidget {
               children: [
                 AvatarCircle(avatarUrl: value.avatarUrl, pseudo: value.pseudo, radius: 28),
                 const SizedBox(width: AppSpacing.md),
-                Expanded(child: Text(value.pseudo, style: Theme.of(context).textTheme.headlineLarge)),
+                Expanded(child: Text(value.pseudo, style: AppTextStyles.pageTitle)),
               ],
             ),
             if (value.camps.isNotEmpty) ...[

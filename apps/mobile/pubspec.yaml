@@ -74,6 +74,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/games/
+    - assets/ornaments/
     - assets/learn/
 
   # The following line ensures that the Material Icons font is
@@ -96,6 +97,14 @@ flutter:
   # 400/500/600/700, cf. docs/maquettes/specs/commun.md) — remplace
   # google_fonts (téléchargement réseau à l'exécution).
   fonts:
+    - family: Cinzel
+      fonts:
+        - asset: assets/fonts/Cinzel.ttf
+          weight: 400
+        - asset: assets/fonts/Cinzel.ttf
+          weight: 600
+        - asset: assets/fonts/Cinzel.ttf
+          weight: 700
     - family: Inter
       fonts:
         - asset: assets/fonts/Inter.ttf

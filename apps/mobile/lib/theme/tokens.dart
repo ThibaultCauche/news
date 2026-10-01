@@ -23,6 +23,10 @@ abstract final class AppColors {
   /// Or : ce que je suis (mon équipe, mes suivis).
   static const gold = Color(0xFFFFC940);
 
+  /// Laiton mat : décoratif seulement (titres, filets, cadre de grande finale,
+  /// J16). Ne dit rien de « mon équipe » : cela reste le rôle de `gold`.
+  static const brass = Color(0xFFB79B62);
+
   /// Vert : victoire, qualifié, validé.
   static const win = Color(0xFF30D158);
   static const loss = Color(0x66F5F5F7); // gris neutre pour une défaite

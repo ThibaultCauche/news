@@ -6,7 +6,7 @@
 
 ## Cadre
 
-- Écrans iPhone 390×844, **thème sombre**, police Inter.
+- Écrans iPhone 390×844, **thème sombre**, police Inter ; **depuis le J16**, Cinzel (`AppTextStyles.pageTitle`/`sectionTitle`) pour les titres de page et de section seulement, jamais pour les scores ni le texte.
 - **Scénario fictif mais crédible** : VCT 2026, Champions Shanghai en phase finale. Équipe suivie : **G2 Esports**. Les exemples hors e-sport (loi, lancement, sorties, élection, keynote, streamers) sont marqués « exemple fictif ».
 - Tab bar V2 : **Aujourd'hui · Agenda · Compétitions · Suivis · Jeu** (J9 : 5ᵉ onglet « Compétitions » au centre, icône plus grande). Explorer s'ouvre avec la loupe de l'accueil, Réglages avec l'avatar.
 
@@ -20,6 +20,7 @@
 | Texte | `#F2F4F8` / `#8A93A6` / `#565E70` | `#F5F5F7`, puis blanc à 55 % / 30 % |
 | En direct, « tu es ici » | `#FF4655` | `#FF4655` |
 | **Mon équipe / mes suivis** | `#FFC940` | `#FFC940` |
+| **Décoratif (J16)** : titres de grande finale, filets, cadres | `#B79B62` (`AppColors.brass`, contraste 7,4:1 sur le fond) | jamais pour dire « mon équipe » |
 | Victoire / validé | `#3DDC97` | `#30D158` (défaites en gris neutre) |
 | Listes électorales (dataviz uniquement) | — | `#8FB3FF` · `#FFB38F` · `#B8E0A0` · `#D6B8FF` (pastels neutres, sans lien avec un parti) |
 

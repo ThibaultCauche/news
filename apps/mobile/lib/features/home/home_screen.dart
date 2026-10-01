@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_svg/flutter_svg.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../../theme/app_theme.dart";
 import "../../core/api_providers.dart";
 import "../../core/auth/account.dart";
 import "../../core/clock.dart";
@@ -76,7 +78,7 @@ class _HomeHeader extends ConsumerWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(capitalized, style: const TextStyle(color: AppColors.textSecondary)),
-                Text("Aujourd'hui", style: Theme.of(context).textTheme.headlineLarge),
+                Text("Aujourd'hui", style: AppTextStyles.pageTitle),
               ],
             ),
           ),
@@ -178,7 +180,7 @@ class _UpNextSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("À suivre", style: Theme.of(context).textTheme.titleLarge),
+          Text("À suivre", style: AppTextStyles.sectionTitle),
           const SizedBox(height: AppSpacing.sm),
           EventCard(
             event: event,
@@ -205,7 +207,9 @@ class _GrandFinalsSection extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text("Les grands rendez-vous", style: Theme.of(context).textTheme.titleLarge),
+          Text("Les grands rendez-vous", style: AppTextStyles.sectionTitle),
+          const SizedBox(height: AppSpacing.xs),
+          ExcludeSemantics(child: SvgPicture.asset("assets/ornaments/rule.svg", width: 120)),
           const SizedBox(height: AppSpacing.sm),
           for (final grandFinal in grandFinals) GrandFinalCard(grandFinal: grandFinal),
         ],
@@ -242,7 +246,7 @@ class _FollowsSection extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Tes suivis", style: Theme.of(context).textTheme.titleLarge),
+                Text("Tes suivis", style: AppTextStyles.sectionTitle),
                 const SizedBox(height: AppSpacing.xs),
                 const Text("Crée un compte pour suivre tes équipes et compétitions et être alerté.", style: TextStyle(color: AppColors.textSecondary)),
                 const SizedBox(height: AppSpacing.sm),
@@ -265,7 +269,7 @@ class _FollowsSection extends ConsumerWidget {
         children: [
           Row(
             children: [
-              Expanded(child: Text("Tes suivis", style: Theme.of(context).textTheme.titleLarge)),
+              Expanded(child: Text("Tes suivis", style: AppTextStyles.sectionTitle)),
               TextButton(
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FollowsScreen())),
                 child: const Text("Tout voir"),

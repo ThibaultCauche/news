@@ -1,5 +1,6 @@
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:flutter_svg/flutter_svg.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/date_x.dart";
@@ -49,10 +50,11 @@ class GrandFinalCard extends ConsumerWidget {
       decoration: BoxDecoration(
         color: AppColors.surface,
         borderRadius: BorderRadius.circular(AppRadii.card),
-        border: Border.all(color: AppColors.surfaceBorder),
+        border: Border.all(color: AppColors.brass.withValues(alpha: 0.5)),
         gradient: teamsGradient(colorA, colorB),
       ),
-      child: Material(
+      child: Stack(children: [
+      Material(
         type: MaterialType.transparency,
         borderRadius: BorderRadius.circular(AppRadii.card),
         clipBehavior: Clip.antiAlias,
@@ -68,7 +70,7 @@ class GrandFinalCard extends ConsumerWidget {
                     const Icon(Icons.emoji_events_outlined, size: 18, color: AppColors.textSecondary),
                     const SizedBox(width: AppSpacing.xs),
                     Expanded(child: Text(grandFinal.tournamentName, style: textTheme.bodySmall, overflow: TextOverflow.ellipsis)),
-                    const SectionLabel("GRANDE FINALE"),
+                    Text("GRANDE FINALE", style: textTheme.labelSmall?.copyWith(color: AppColors.brass)),
                   ],
                 ),
                 const SizedBox(height: AppSpacing.sm),
@@ -111,6 +113,25 @@ class GrandFinalCard extends ConsumerWidget {
             ),
           ),
         ),
+      ),
+      // Coins du cadre : décor statique (J16), ignoré par le toucher.
+      const Positioned(top: 6, left: 6, child: _Corner(turns: 0)),
+      const Positioned(bottom: 6, right: 6, child: _Corner(turns: 2)),
+      ]),
+    );
+  }
+}
+
+class _Corner extends StatelessWidget {
+  const _Corner({required this.turns});
+
+  final int turns;
+
+  @override
+  Widget build(BuildContext context) {
+    return IgnorePointer(
+      child: ExcludeSemantics(
+        child: RotatedBox(quarterTurns: turns, child: SvgPicture.asset("assets/ornaments/corner.svg", width: 14, height: 14)),
       ),
     );
   }
