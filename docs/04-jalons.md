@@ -406,6 +406,30 @@
 
 ---
 
+## J14 — Pronostics entre amis : choix des amis, rappels, classement par jeu, partage (ajouté)
+
+**Objectif** : rendre les pronostics du J11 plus vivants entre amis, sans changer le modèle de données ni le barème. Idées du 2026-10-01 (après la clôture du J11). **Prérequis : J11** (pronostics, groupes), notifications du J4 et du J13 (réponse, heures calmes, sans spoil).
+
+**Périmètre — lot A (à faire en premier)**
+- **Choix des amis après le coup d'envoi** : sur la page d'un match commencé, « 3 amis sur 5 ont choisi G2 », avec les pseudos, pour les membres de **tes groupes** seulement. **Jamais avant le coup d'envoi, et le masquage se fait côté serveur** (pas seulement dans l'appli), pour éviter la copie. Compatible sans spoil : le choix d'un ami ne révèle pas le résultat.
+- **Rappel « tu n'as pas pronostiqué ce match »** : notification (une heure avant, à confirmer au cadrage) pour les matchs de tes suivis sans pronostic. Dans le moteur de notifications existant : déduplication, heures calmes, réglage par l'utilisateur, texte sans spoil (un match à venir n'a pas de score à cacher).
+- **Classement de groupe par jeu ou par compétition** : filtre « Tous / jeu / compétition » sur le classement d'un groupe, avec les mêmes puces de jeu que l'écran Pronostics (aujourd'hui le classement est global). Le jeu d'un pronostic se déduit de l'événement (`competition.game`), aucune colonne en plus.
+- **Partage natif du code d'invitation** : bouton « Partager » dans la feuille d'invitation (message prêt, code inclus), sans backend.
+
+**Périmètre — lot B (après un premier retour d'usage du lot A)**
+- **Pronostic directement sur les cartes de match** (Accueil, Agenda) : choisir le vainqueur d'un tap, sans ouvrir le match (reporté du J11).
+- **Pronostic sur une compétition entière** (« qui gagne Champions ? »), posé avant le début, avec un barème plus fort (à fixer au cadrage).
+- **Joker hebdomadaire** : doubler les points d'un match choisi, un par semaine.
+- **Badges** (série de 5, score exact, premier du groupe), liés au profil ; à concevoir avec ceux du forum (J13).
+
+**À trancher au cadrage** : qui voit les choix d'un ami (recommandation : membres d'un groupe commun, jamais avant le coup d'envoi) ; heure du rappel (une heure fixe au début, réglable ensuite ?) ; le rappel suit-il les suivis seulement ou tous les matchs de l'onglet Pronostics ; filtre du classement par jeu seulement ou aussi par compétition ; barème du pronostic de compétition et règle du joker (lot B).
+
+**Hors périmètre** : classement public mondial (modération et pseudos à protéger, la couche communautaire reste optionnelle et apaisée) ; pronostic sur les rounds ou les cartes (le plan gratuit PandaScore n'a ni score par carte ni nom de carte, règle 6 de `CLAUDE.md`) ; quiz des tutos (voir « Ensuite », point 0).
+
+**Critères d'acceptation** : à rédiger au cadrage (`/jalon 14`). Vérification attendue en conditions réelles avec **deux comptes** (choix de l'ami visible seulement après le coup d'envoi, rappel reçu une seule fois, classement filtré, partage).
+
+---
+
 ## Ensuite (par ordre de priorité proposé)
 
 0. **Quiz des tutos avec points et classement** (idée du 2026-10-01, version « plus grosse » du compteur du J12) : points pour les quiz réussis, éventuellement dans les classements de groupe. Demande que **le serveur connaisse les bonnes réponses** (aujourd'hui dans les JSON embarqués de l'appli, donc « quiz réussi » est déclaré par le client), une règle claire pour ne pas mélanger ces points à ceux des pronostics (classement séparé ?), un seul passage compté par question, et une table de résultats par question plutôt que par tuto.
