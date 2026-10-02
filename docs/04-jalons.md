@@ -638,7 +638,7 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 - [x] **A6** Séance à l'écran (J16) : icône du lanceur vue sur l'émulateur (K dans un losange laiton, OK) ; tutos et glossaire s'affichent ; **« 1 » de Cinzel validé par l'utilisateur le 2026-10-03** (lisible). Contraste du laiton sur cartes colorées : pas de reproche de l'utilisateur sur ses essais.
 - [ ] **A7** Logo et statut qualifié/éliminé de l'écran Suivis en réel ; vérifier si la fiche d'une équipe suivie est atteignable (J8). Revérifier aussi les logos d'équipes dans « Sources et crédits » (ingérés depuis le J8).
 - [ ] **A8** Puces de jeu du classement de groupe (J14) : **laissées** tant que le catalogue n'a qu'un jeu (couvert par l'e2e API) ; à revérifier avec le 2ᵉ jeu.
-- [ ] **A9** Remettre `forum_beta` des comptes de test à leur valeur d'origine (J16).
+- [x] **A9** `forum_beta` des comptes de test (J16) : **vérifié le 2026-10-03 sur le NAS** (`select pseudo, forum_beta, is_moderator from app_user where forum_beta or is_moderator` → 0 ligne) : aucun compte n'a la bêta ni le rôle de modérateur, le forum est fermé pour tous, état d'origine. Les comptes `forum_beta` (Chewlin, Wylfram) n'existent que dans la base de dev.
 
 ### Lot 2 — Petits défauts et finitions de code
 - [x] **B1** « TYLOO » coupé en deux lignes dans « Forme récente » (J14) : colonne du nom 48 → 64, une ligne, points de suspension ; test `next_match_screen_test.dart`.
