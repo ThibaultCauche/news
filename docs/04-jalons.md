@@ -689,6 +689,18 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 - **Arbre de la phase finale = par équipes** (maquette 02/07) : 8 cercles sur l'anneau extérieur (les équipes des quarts), puis 4, puis 2, le match décisif au centre (compte à rebours, puis trophée et champion) ; arcs courbes, étiquettes « QUARTS » / « DEMIES », chemin en or de l'équipe suivie, badge rouge sur le match en direct, inconnus en pointillé. **Codes d'équipe, pas de logos** (comme la maquette ; le bracket de l'API n'en porte pas). Aujourd'hui `BracketPainter` dessine un point par match avec des traits droits : modèle à refaire, pas à régler.
 - **Repêchage** (maquette 05) : carte « Comment ça marche », « Tour N · état · date », cartes de match avec le perdant barré, et des placeholders lisibles (« Perdant du quart de finale 1 ») tant que rien n'est joué, au lieu de « Perdant de TBD vs TBD ». Noms de matchs PandaScore (« Upper Bracket Quarterfinal 1 », « Lower Bracket Round 2 »…) traduits en français.
 
+**Idées retenues par l'utilisateur (2026-10-03)**, à ordonner au cadrage (l'arbre radial d'abord : demies de Champions les 10 et 11 octobre, finale le 18 ; l'Accueil n'a pas de date limite) :
+1. **Phrase en haut de l'arbre**, par gabarit (comme « pourquoi ce match compte », règle 9) : « G2 est en quarts, prochain match demain à 9 h » pour les équipes suivies.
+2. **Appui sur un cercle ou sur un match** de l'arbre → fiche du match (aujourd'hui l'arbre est un dessin muet).
+3. **Phrases d'enjeu sous l'arbre** : « Si G2 gagne, elle rejoint la finale du haut ; sinon elle passe au repêchage » (le double élimination est ce qu'un néophyte comprend le moins).
+4. **Indicateur « 2 vies »** par équipe, comme le « 3 vies » du Kickoff (écran 14), pour rendre le repêchage lisible.
+5. **Script de playoffs simulés** (vides, partiels, terminés) qui s'ajoute et se supprime en une commande (ex. `pnpm db:demo-playoffs`), pour voir chaque état de l'arbre avant le 7 octobre et sans le piège du match de test dans une poule.
+6. **Chemin futur de l'équipe suivie** tracé en or à travers les cases encore inconnues (« G2 pourrait affronter… »).
+7. **Carte de partage** de l'arbre ou du chemin d'une équipe (image aux couleurs de Keryx, idée déjà notée dans « Suite de l'identité »).
+8. **Pronostic de tout le tableau** : remplir l'arbre soi-même avant le tournoi (lot B du J14, voir « Ensuite »). Idée du plus gros morceau : à placer en **dernière étape séparable**, qui peut glisser dans un J21 si le calendrier presse.
+9. **Accueil** : une ligne de résumé en haut (« Aujourd'hui : 2 matchs, G2 joue à 9 h ») et **masquer toute section vide**, avant tout redessin ; le reste de l'Accueil se décide avec l'utilisateur au cadrage.
+**Écarté** : le critère « test des 3 secondes » avec des néophytes (l'utilisateur ne le retient pas ; le test avec des néophytes reste la démarche C8 du J19).
+
 **À cadrer au démarrage (`/jalon 20`)**
 - **Liste des pages à revoir** avec l'utilisateur, une par une (l'Accueil d'abord) : ce qui est illisible, ce qu'on veut comprendre en 3 secondes. Pour chacune : décrire le défaut, décider (simplifier, réordonner, retirer), puis dessiner/valider avant de coder.
 - Vérification : j'insère des playoffs simulés dans la base locale (vides, partiels, terminés) pour voir chaque état sur l'émulateur, puis sur de vrais matchs à partir du **7 octobre 2026** (premier match de playoffs de Champions, fin le 18 octobre) : reprend le critère **A1 du J19** (remplissage de l'arbre à la fin d'un vrai match, fluidité 60 i/s).
