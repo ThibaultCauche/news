@@ -6,6 +6,8 @@ import "package:mobile/core/settings_provider.dart";
 import "package:mobile/features/bracket/bracket_provider.dart";
 import "package:mobile/features/valorant_season/season_data.dart";
 import "package:mobile/features/competitions/game_screen.dart";
+import "package:mobile/features/forum/forum_providers.dart";
+import "package:mobile/features/learn/learn_screen.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../competitions_test_helpers.dart";
 import "../follows_test_helpers.dart";
@@ -139,5 +141,37 @@ void main() {
     expect(find.text("G2"), findsWidgets);
     // Plus de tuile `EventCard` générique pour ces matchs : remplacée par l'arbre.
     expect(find.text("Aucun match programmé pour l'instant."), findsNothing);
+  });
+
+  testWidgets("onglets : celui qu'on choisit au bord de la capsule défile en entier dans le cadre (écran de 360)", (tester) async {
+    tester.view.physicalSize = const Size(360, 800);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          valorantSeasonProvider.overrideWith((ref) async => null),
+          forumEnabledProvider.overrideWithValue(true),
+          learnGamesProvider.overrideWith((ref) async => {"valorant"}),
+          userSettingProvider.overrideWith((ref) async => UserSettingDto((b) => b
+            ..spoilerFree = false
+            ..morningDigest = false)),
+          overrideFollowsWith(const []),
+          overrideFavoriteGamesWith(const []),
+        ],
+        child: MaterialApp(home: GameScreen(game: _valorant)),
+      ),
+    );
+    await tester.pump();
+    await tester.pump();
+
+    // Hors cadre à cette largeur : on déclenche le tap directement, comme sur le bord visible d'un vrai écran.
+    tester.widget<GestureDetector>(find.ancestor(of: find.text("Discussions"), matching: find.byType(GestureDetector)).first).onTap!();
+    await tester.pump();
+    await tester.pump(const Duration(milliseconds: 400));
+
+    final right = tester.getTopRight(find.text("Discussions")).dx;
+    expect(right, lessThanOrEqualTo(360));
   });
 }

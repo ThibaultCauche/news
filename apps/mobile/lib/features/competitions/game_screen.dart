@@ -143,8 +143,12 @@ class _SeasonTabs extends StatelessWidget {
   static const _maxFixed = 5;
 
   Widget _tab(int i, String label, {required bool fixed}) {
-    return GestureDetector(
-      onTap: () => onSelected(i),
+    return Builder(builder: (context) => GestureDetector(
+      onTap: () {
+        onSelected(i);
+        // La capsule défile : un onglet coupé au bord passe en entier dans le cadre (J19).
+        Scrollable.ensureVisible(context, duration: AppMotion.microDuration, curve: Curves.easeOut);
+      },
       child: AnimatedContainer(
         duration: AppMotion.microDuration,
         padding: EdgeInsets.symmetric(vertical: AppSpacing.sm, horizontal: fixed ? 6 : AppSpacing.md),
@@ -165,7 +169,7 @@ class _SeasonTabs extends StatelessWidget {
           ),
         ),
       ),
-    );
+    ));
   }
 
   @override
