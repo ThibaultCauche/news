@@ -23,6 +23,7 @@
 | J15 | Finitions d'interface : skeletons, retour instantané, parcours d'accueil, erreurs lisibles | L'appli paraît plus rapide et ne montre jamais d'erreur technique | À planifier |
 | J16 | Identité de l'app : nom, logo, personnalité visuelle « solennelle » (laiton mat, capitales fines, tampons), icône, écran de lancement | L'app a une vraie personnalité et un nom à elle | À planifier |
 | J17 | Versions Windows et Web de l'app | On suit ses compétitions depuis un ordinateur | À planifier |
+| J19 | Rattrapage des reportés (jalon intermédiaire) : vérifications en réel, petits défauts, démarches et décisions, guide des compétitions, résumé du matin | Plus rien de flou dans les « reportés » : chaque ligne est faite, abandonnée ou rangée dans « Ensuite », avec la raison | À planifier (proposé 2026-10-02) |
 | Ensuite | Temps réel V2, autres jeux, jeu du jour, politique, sport, web | — | Plus tard |
 
 **Calendrier à garder en tête**
@@ -619,6 +620,56 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 ---
 
+## J19 — Rattrapage des reportés (ajouté 2026-10-02, jalon intermédiaire)
+
+**Objectif** : solder tout ce qui a été mis de côté depuis J1 : le vérifier, le faire, ou le ranger explicitement (abandonné, ou laissé dans « Ensuite » avec la raison). Inventaire relu dans `docs/04`, `docs/00` et `docs/05` le 2026-10-02 et validé par l'utilisateur (aucun reporté supplémentaire connu de sa part ; guide des compétitions inclus ; résumé du matin à faire ; démarches incluses dans le jalon).
+
+**Calendrier** : le lot 1 (A1, A2) dépend des **playoffs de Champions 2026, fin le 18 octobre 2026** ; à faire en premier. Après, il faudra attendre 2027 pour un vrai bracket.
+
+**Principe** : le jalon ne se clôt pas sur « fait » seulement. Une ligne peut finir **faite**, **abandonnée** ou **laissée en Ensuite**, mais jamais « oubliée ». Les démarches du lot 3 que seul l'utilisateur peut signer ou envoyer (licence, mail, marque) sont **préparées par Claude** (brouillons, textes), **faites par l'utilisateur** ; elles comptent comme faites quand l'utilisateur le confirme.
+
+### Lot 1 — Vérifications à l'écran ou en réel (peu de code)
+- [ ] **A1** Remplissage de l'arbre radial à la fin d'un vrai match de playoffs + fluidité 60 i/s (J5, J10). **Avant le 18 oct.**
+- [ ] **A2** Points d'un vrai match PandaScore : règlement du pronostic de `Wylfram` (J11). **Avant le 18 oct.**
+- [ ] **A3** Forum sur téléphone (J13, J18) : envoi instantané, « Masquer »/« Exclure », tris, journal de modération, appui long et flou du tchat. Demande `FORUM_OPEN=true` ou `forum_beta` sur le NAS.
+- [ ] **A4** Sentry côté appli avec un vrai DSN (projet Sentry de type Flutter à créer ; `--dart-define=SENTRY_DSN=...`) : une erreur « inconnue » arrive, aucune donnée personnelle (J15, J18).
+- [ ] **A5** Connexion avec clavier ouvert et notifications, sur téléphone physique (J15, J18).
+- [ ] **A6** Séance à l'écran (`docs/seance-test-j16.md`) : icône du lanceur, glossaire, « 1 » de Cinzel (lisible face à « I »), contraste du laiton sur cartes colorées (J16).
+- [ ] **A7** Logo et statut qualifié/éliminé de l'écran Suivis en réel ; vérifier si la fiche d'une équipe suivie est atteignable (J8). Revérifier aussi les logos d'équipes dans « Sources et crédits » (ingérés depuis le J8).
+- [ ] **A8** Puces de jeu du classement de groupe (J14) : **laissées** tant que le catalogue n'a qu'un jeu (couvert par l'e2e API) ; à revérifier avec le 2ᵉ jeu.
+- [ ] **A9** Remettre `forum_beta` des comptes de test à leur valeur d'origine (J16).
+
+### Lot 2 — Petits défauts et finitions de code
+- [ ] **B1** « TYLOO » coupé en deux lignes dans « Forme récente » de l'écran du match (J14).
+- [ ] **B2** `_learnGames` (`game_screen.dart`) figé sur `valorant` : déduire les jeux de l'onglet Apprendre et du « ? » de la présence de `assets/learn/<jeu>.json` (J12).
+- [ ] **B3** Icône de notification Android : silhouette blanche monochrome (K dans un losange) + couleur d'accent laiton, à la place de l'icône par défaut (J16).
+- [ ] **B4** **Résumé du matin** : le réglage `user_setting.morning_digest` existe depuis le J6 sans envoi. Ajouter le job worker et le texte (français, sans spoil si le réglage est actif, plafond de notifications respecté, déduplication par `notification_log`), un interrupteur dans Réglages déjà présent. Test Jest du contenu et de la déduplication. **À cadrer au démarrage** : heure d'envoi (fixe ou liée aux heures calmes) et contenu (matchs du jour des suivis, sinon rien envoyé).
+- [ ] **B5** **Graphify** (J3) : générer le graphe du dépôt ou abandonner explicitement. À trancher.
+- [ ] **B6** **Guide d'explications des compétitions** (idée du 2026-09-30, jusque-là en « Ensuite ») : page « Comprendre les compétitions » (Kickoff, Stage, Masters, Champions, formats, qualification), ouverte depuis un « ? » de la page jeu. **Textes propres écrits pour un néophyte, jamais recopiés du site officiel VCT** (qui ne sert qu'à vérifier les faits), **relus par l'utilisateur avant mise en base**, stockés en base comme le glossaire (`context_snippet`, `pnpm db:seed`) avec un petit endpoint `GET /v1/…` et le client Dart régénéré. Schémas de format en données, comme au J12 si utile. Test e2e de l'endpoint, test de widget de la page, vérification à l'écran.
+
+### Lot 3 — Démarches et décisions (préparées par Claude, faites par l'utilisateur)
+- [ ] **C1** **Licence open source** du dépôt : choix (MIT, AGPL…) puis fichier `LICENSE` et mention dans le README (J7). Claude prépare le comparatif en 5 lignes.
+- [ ] **C2** **Écrire à PandaScore** : usage du plan gratuit et attribution exigée (J7). Claude rédige le brouillon du mail ; l'attribution est ensuite ajoutée dans Réglages → Sources si la réponse l'exige.
+- [ ] **C3** **Marque et domaine « Keryx »** : vérification INPI, EUIPO, nom de domaine (J16).
+- [ ] **C4** **Modèles d'e-mails Firebase** (`docs/emails/`) : les appliquer quand la vérification du domaine `keryx.thibaultcauche.com` débloque le champ Message, sinon décider (J16).
+- [ ] **C5** **Copie de sauvegarde hors site** (règle 3-2-1) : choisir une destination, la brancher au script de sauvegarde, tester une restauration depuis cette copie (J7).
+- [ ] **C6** **Bêta Google Play** (piste de test interne) et visuels de la fiche (icône, bandeau, captures) dans l'identité (J7, J16).
+- [ ] **C7** **Forum avant ouverture publique** : conditions relues (`forum_terms.dart`, version 2 si modifiées), contact de modération indiqué (les conditions renvoient vers « la fiche de l'application »), exigences des stores pour le contenu généré par les utilisateurs vérifiées (J13).
+- [ ] **C8** **Test avec 2-3 néophytes externes** (onboarding, glossaire, tutos Apprendre, guide des compétitions) : relevé des retours dans ce document (J6, J12).
+
+### Laissés dans « Ensuite » (décisions du 2026-10-02, avec la raison)
+- **Détail par carte et roster** de la fiche équipe (J6) : le plan gratuit PandaScore n'a pas ces données (règle 6).
+- **Sans spoil par catégorie** (J6) : attendre une 2ᵉ catégorie avec de vraies données.
+- **Lien de compte Google/Apple** (J11) : Apple dépend de iOS.
+- **Images officielles du jeu** (J12) : demande de licence ou clé d'API à Riot.
+- **iOS** (compte Apple Developer, APNs, icône iOS) : après la sortie, décision J4.
+- **Chantiers de fond** : lot B du J14, quiz avec points, suite de l'identité Keryx (podium, cérémonie du vainqueur, carte de partage), autres jeux, temps réel V2, politique, streams, sport, site Next.js, Start.gg.
+- **Abandonnée** : fidélité pixel-perfect aux maquettes (décision du 2026-09-30).
+
+**Critères d'acceptation** : chaque case ci-dessus est cochée, ou barrée avec la raison de l'abandon ; `flutter analyze`, tests Flutter et `pnpm -r test` verts ; CI verte, goldens régénérés par la CI si un widget couvert change (B1, B6 les concernent peut-être) ; `docs/00` §7 mise à jour ; « État actuel » du `CLAUDE.md` mis à jour.
+
+---
+
 ## Ensuite (par ordre de priorité proposé)
 
 0. **Quiz des tutos avec points et classement** (idée du 2026-10-01, version « plus grosse » du compteur du J12) : points pour les quiz réussis, éventuellement dans les classements de groupe. Demande que **le serveur connaisse les bonnes réponses** (aujourd'hui dans les JSON embarqués de l'appli, donc « quiz réussi » est déclaré par le client), une règle claire pour ne pas mélanger ces points à ceux des pronostics (classement séparé ?), un seul passage compté par question, et une table de résultats par question plutôt que par tuto.
@@ -632,7 +683,7 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
    - **Skeletons teintés laiton** : à intégrer dans le J15 (skeletons à la place des spinners), pas un lot à part.
    - Vérifier plus tard : le « 1 » de Cinzel ressemble à un « I » (lisibilité des scores) ; contraste du laiton sur les cartes colorées ; glossaire et icône du lanceur à voir à l'écran.
 
-1. **Guide d'explications des compétitions** (idée du 2026-09-30) : page « Comprendre les compétitions » (Kickoff, Stage, Masters, Champions, formats, qualification), ouverte depuis un « ? » de la page jeu. Textes propres écrits pour un néophyte, relus avant mise en base (pas de recopie du site officiel VCT, qui ne sert qu'à vérifier les faits), stockés en base comme le glossaire, avec un petit endpoint.
+1. **Guide d'explications des compétitions** (idée du 2026-09-30) — **repris dans le J19 (B6)** : page « Comprendre les compétitions » (Kickoff, Stage, Masters, Champions, formats, qualification), ouverte depuis un « ? » de la page jeu. Textes propres écrits pour un néophyte, relus avant mise en base (pas de recopie du site officiel VCT, qui ne sert qu'à vérifier les faits), stockés en base comme le glossaire, avec un petit endpoint.
 2. **Autres jeux PandaScore** (LoL, CS2, Dota 2, R6, Rocket League…) : même adaptateur, filtrage par tier. Nouveaux formats à dessiner : **phase suisse**, **classement de lobby** (battle royale). Vérifier le gagnant par carte pour CS, Dota 2 et LoL sur du tier S.
 3. **Temps réel V2** : flux SSE `GET /v1/live/events/:id`, **Live Activities** iOS (écran 13).
 4. **Autres jeux de l'onglet Jeux** (écran 16) : « devine le score », quiz (`quiz_answer`). Les pronostics (`prediction`) sont faits depuis le J11.
