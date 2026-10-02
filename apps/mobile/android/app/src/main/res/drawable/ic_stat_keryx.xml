@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Icône de la barre de notification (J19) : Android n'en garde que la transparence, donc un
+     losange blanc dont le « K » est évidé (tracé en sens inverse). Même dessin que assets/ornaments/monogram.svg. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="80"
+    android:viewportHeight="80">
+    <path
+        android:fillColor="#FFFFFF"
+        android:pathData="M40 6L74 40L40 74L6 40Z M31 27V53H38V45L40 43L48 53H56L44 38L55 27H47L38 37V27Z" />
+</vector>

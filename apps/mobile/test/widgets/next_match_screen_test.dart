@@ -29,7 +29,7 @@ void _tapSpan(WidgetTester tester, String text) {
   recognizer!.onTap!();
 }
 
-EventDetailResponseDto _event({required String status, int? scoreA, int? scoreB, String? stakes}) {
+EventDetailResponseDto _event({required String status, int? scoreA, int? scoreB, String? stakes, String shortNameA = "G2"}) {
   return EventDetailResponseDto((b) => b
     ..id = "evt-1"
     ..kind = "match"
@@ -46,7 +46,7 @@ EventDetailResponseDto _event({required String status, int? scoreA, int? scoreB,
       EventParticipantDto((p) => p
         ..entityId = "team-a"
         ..name = "G2 Esports"
-        ..shortName = "G2"
+        ..shortName = shortNameA
         ..score = scoreA
         ..isWinner = scoreA != null && scoreB != null ? scoreA > scoreB : null),
       EventParticipantDto((p) => p
@@ -56,7 +56,11 @@ EventDetailResponseDto _event({required String status, int? scoreA, int? scoreB,
         ..score = scoreB
         ..isWinner = scoreA != null && scoreB != null ? scoreB > scoreA : null),
     ])
-    ..context.replace(EventContextDto((c) => c.stakes = stakes)));
+    ..context.replace(EventContextDto((c) => c
+      ..stakes = stakes
+      ..recentForm.add(RecentFormEntryDto((r) => r
+        ..entityId = "team-a"
+        ..results.addAll(["V", "D", "V", "V", "D"]))))));
 }
 
 Future<void> _pump(WidgetTester tester, EventDetailResponseDto event, {bool spoilerFree = false}) async {
@@ -125,5 +129,13 @@ void main() {
 
     expect(find.byType(ImageFiltered), findsNothing);
     expect(find.text("2-0"), findsOneWidget);
+  });
+
+  testWidgets("forme récente : un nom de 5 lettres (TYLOO) tient sur une ligne", (tester) async {
+    await _pump(tester, _event(status: "scheduled", shortNameA: "TYLOO"));
+
+    final name = find.descendant(of: find.ancestor(of: find.text("FORME RÉCENTE"), matching: find.byType(Column)).first, matching: find.text("TYLOO"));
+    expect(name, findsOneWidget);
+    expect(tester.getSize(name).height, lessThan(24));
   });
 }

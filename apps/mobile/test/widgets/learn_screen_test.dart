@@ -7,7 +7,7 @@ import "package:mobile/core/auth/account.dart";
 import "package:mobile/features/learn/learn_screen.dart";
 import "package:shared_preferences/shared_preferences.dart";
 
-const _guides = ["valorant", "app"];
+const _guides = ["valorant", "app", "valorant-competitions"];
 
 class _Guest extends SignedInNotifier {
   @override
@@ -137,5 +137,13 @@ void main() {
         expect(tester.takeException(), isNull, reason: "$game/${a.id}");
       }
     }
+  });
+
+  testWidgets("les jeux avec guide sont déduits des fichiers de assets/learn", (tester) async {
+    final container = ProviderContainer();
+    addTearDown(container.dispose);
+    final games = (await tester.runAsync(() => container.read(learnGamesProvider.future)))!;
+
+    expect(games, containsAll(["valorant", "app"]));
   });
 }

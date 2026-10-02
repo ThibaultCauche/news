@@ -1,0 +1,174 @@
+{
+  "name": "Valorant · compétitions",
+  "listTitle": "Les compétitions",
+  "allLabel": "Toutes les explications",
+  "articles": [
+    {
+      "id": "saison",
+      "title": "Une saison de VCT",
+      "summary": "Six étapes, de l'ouverture à la finale du monde.",
+      "icon": "calendar",
+      "visual": {"type": "flow", "items": [
+        {"icon": "flag", "label": "Kickoff"},
+        {"icon": "public", "label": "Masters"},
+        {"icon": "calendar", "label": "Stage 1"},
+        {"icon": "public", "label": "Masters"},
+        {"icon": "calendar", "label": "Stage 2"},
+        {"icon": "emoji", "label": "Champions"}
+      ]},
+      "essential": "Une saison du circuit pro (VCT) alterne des compétitions dans chaque région et des tournois entre régions. Tout mène à Champions, la finale du monde.",
+      "details": [
+        {
+          "title": "Région ou monde ?",
+          "visual": {"type": "chips", "items": [
+            {"icon": "flag", "title": "Kickoff", "sub": "Dans sa région"},
+            {"icon": "calendar", "title": "Stage", "sub": "Dans sa région, plusieurs semaines"},
+            {"icon": "public", "title": "Masters", "sub": "Les régions se rencontrent"},
+            {"icon": "emoji", "title": "Champions", "sub": "Le champion du monde"}
+          ]},
+          "body": "Les compétitions régionales (Kickoff et Stages) désignent qui représente sa région. Les tournois internationaux (Masters et Champions) réunissent les meilleures équipes de toutes les régions."
+        },
+        {"title": "Les quatre régions", "body": "Les Amériques, l'EMEA (Europe, Moyen-Orient, Afrique), le Pacifique et la Chine ont chacune leur championnat."},
+        {"title": "Où je suis dans l'appli ?", "body": "La carte de la saison, sur la page Valorant, montre l'étape en cours. Chaque étape a sa page, avec son arbre ou ses groupes."}
+      ],
+      "gradient": 5,
+      "quiz": [
+        {
+          "q": "Quels tournois réunissent les équipes de toutes les régions ?",
+          "choices": ["Kickoff et Stage", "Masters et Champions", "Seulement Kickoff"],
+          "answer": 1,
+          "why": "Kickoff et Stages se jouent dans chaque région ; Masters et Champions sont internationaux."
+        }
+      ]
+    },
+    {
+      "id": "kickoff",
+      "title": "Le Kickoff",
+      "summary": "L'ouverture de la saison : trois vies par équipe.",
+      "icon": "flag",
+      "visual": {"type": "flow", "items": [
+        {"icon": "check", "label": "Victoire"},
+        {"icon": "replay", "label": "1re défaite"},
+        {"icon": "replay", "label": "2e défaite"},
+        {"icon": "close", "label": "3e : éliminé"}
+      ]},
+      "essential": "Le Kickoff ouvre la saison dans chaque région, en [[triple élimination]] : une équipe n'est éliminée qu'à sa troisième défaite. Les gagnants gagnent leur place au premier tournoi international.",
+      "details": [
+        {"title": "Trois vies", "body": "Chaque équipe a droit à deux défaites sans conséquence. La troisième l'élimine. L'écran « 3 vies » de l'appli montre où en est chaque équipe."},
+        {"title": "Pourquoi c'est important", "body": "Le Kickoff envoie les premières équipes de chaque région vers le Masters de début de saison : c'est la première porte d'entrée vers l'international."}
+      ],
+      "gradient": 1,
+      "quiz": [
+        {
+          "q": "Combien de défaites élimine une équipe en triple élimination ?",
+          "choices": ["1", "2", "3"],
+          "answer": 2,
+          "why": "Trois défaites : c'est le principe de la triple élimination."
+        }
+      ]
+    },
+    {
+      "id": "stage",
+      "title": "Le Stage",
+      "summary": "Des poules, puis des playoffs.",
+      "icon": "calendar",
+      "visual": {"type": "flow", "items": [
+        {"icon": "roles", "label": "Poules"},
+        {"icon": "swap", "label": "Playoffs"},
+        {"icon": "public", "label": "Le Masters"}
+      ]},
+      "essential": "Un Stage est la grande compétition d'une région : d'abord des poules où chaque équipe joue contre les autres de son groupe, puis des playoffs pour les meilleures.",
+      "details": [
+        {"title": "Les poules", "body": "Les équipes sont réparties en groupes. Chacune affronte les autres une fois, en [[BO3]]. Les mieux classées passent en playoffs."},
+        {"title": "Les playoffs", "body": "Les playoffs se jouent en double élimination : une défaite envoie dans le [[repêchage]], une seconde élimine. Les meilleures équipes de la région se qualifient pour le Masters suivant."},
+        {"title": "Stage 1 et Stage 2", "body": "Le format change un peu d'un Stage à l'autre : au Stage 2, des équipes d'une division inférieure, les challengers, peuvent se qualifier par des « Play-Ins ». La page de chaque étape explique son format."}
+      ],
+      "gradient": 2,
+      "quiz": [
+        {
+          "q": "Qu'est-ce qui se joue après les poules d'un Stage ?",
+          "choices": ["Les playoffs", "Rien", "Un nouveau Kickoff"],
+          "answer": 0,
+          "why": "Les meilleures équipes des poules jouent les playoffs."
+        }
+      ]
+    },
+    {
+      "id": "masters",
+      "title": "Les Masters",
+      "summary": "Les régions se rencontrent.",
+      "icon": "map",
+      "visual": {"type": "stats", "items": [
+        {"big": "12", "sub": "équipes"},
+        {"big": "4", "sub": "régions"}
+      ]},
+      "essential": "Un Masters est un tournoi international : les équipes qualifiées par leurs régions s'y affrontent. En 2026, il y en a deux : Santiago (mars) et Londres (juin).",
+      "details": [
+        {"title": "Comment ça se joue", "body": "Des poules d'abord, puis des playoffs en double élimination. C'est l'occasion de voir quelle région est la plus forte."},
+        {"title": "À quoi ça sert", "body": "Les Masters rapportent des points de championnat : les meilleures équipes de la saison gagnent ainsi une place à Champions."}
+      ],
+      "gradient": 3,
+      "quiz": [
+        {
+          "q": "Un Masters réunit…",
+          "choices": ["Une seule région", "Des équipes de plusieurs régions", "Les débutants"],
+          "answer": 1,
+          "why": "C'est un tournoi international."
+        }
+      ]
+    },
+    {
+      "id": "champions",
+      "title": "Champions",
+      "summary": "La finale du monde.",
+      "icon": "emoji",
+      "visual": {"type": "flow", "items": [
+        {"icon": "roles", "label": "4 groupes de 4"},
+        {"icon": "swap", "label": "Playoffs à 8"},
+        {"icon": "emoji", "label": "Grande finale"}
+      ]},
+      "essential": "Champions couronne l'équipe championne du monde. 16 équipes s'y retrouvent, quatre par région, qualifiées par leurs résultats de la saison.",
+      "details": [
+        {"title": "Les groupes", "body": "Les 16 équipes sont réparties en 4 groupes de 4, en [[groupes GSL]] : deux victoires et on est qualifié, deux défaites et on est éliminé. Les deux premières équipes de chaque groupe passent en playoffs."},
+        {"title": "Les playoffs", "body": "Huit équipes, en double élimination : une première défaite envoie au [[repêchage]], une seconde élimine. La grande finale se joue en [[BO5]], le match le plus long du tournoi."},
+        {"title": "Comment on s'y qualifie", "body": "Par les résultats des Stages, et par les points de championnat gagnés pendant la saison. En 2026, la finale a lieu à Shanghai."}
+      ],
+      "gradient": 4,
+      "quiz": [
+        {
+          "q": "Combien de défaites élimine une équipe d'un groupe GSL ?",
+          "choices": ["1", "2", "3"],
+          "answer": 1,
+          "why": "Dans un groupe GSL, deux victoires qualifient et deux défaites éliminent."
+        }
+      ]
+    },
+    {
+      "id": "formats",
+      "title": "Les formats en un coup d'œil",
+      "summary": "Poule, élimination, BO : le vocabulaire des tournois.",
+      "icon": "watch",
+      "visual": {"type": "chips", "items": [
+        {"icon": "roles", "title": "Poule", "sub": "Tout le monde joue contre tout le monde"},
+        {"icon": "replay", "title": "Double élimination", "sub": "Deux défaites pour sortir"},
+        {"icon": "replay", "title": "Triple élimination", "sub": "Trois défaites pour sortir"},
+        {"icon": "equal", "title": "BO1 / BO3 / BO5", "sub": "Le nombre maximal de cartes"}
+      ]},
+      "essential": "Chaque étape a son format. Il suffit de reconnaître quelques mots : poule, élimination, et le nombre de cartes d'un match.",
+      "details": [
+        {"title": "Poule", "body": "Un groupe d'équipes où chacune joue contre les autres. Le classement dit qui passe à la suite."},
+        {"title": "Élimination", "body": "En élimination simple, une défaite suffit pour sortir. En double ou triple élimination, il faut deux ou trois défaites : le [[tableau principal]] et le [[repêchage]] donnent une seconde chance."},
+        {"title": "BO1, BO3, BO5", "body": "Le « BO » indique le nombre maximal de cartes : en [[BO1]], une seule carte ; en [[BO3]], le premier à 2 cartes gagne ; en [[BO5]], le premier à 3."}
+      ],
+      "gradient": 6,
+      "quiz": [
+        {
+          "q": "Dans un BO5, combien de cartes faut-il gagner ?",
+          "choices": ["2", "3", "5"],
+          "answer": 1,
+          "why": "Le premier à 3 cartes gagne un BO5."
+        }
+      ]
+    }
+  ]
+}

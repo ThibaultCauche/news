@@ -116,6 +116,13 @@ final learnGuideProvider = FutureProvider.family<LearnGuide, String>((ref, guide
   );
 });
 
+/// Jeux qui ont un guide (J19) : un fichier `assets/learn/<slug>.json` suffit, sans liste à tenir à jour.
+final learnGamesProvider = FutureProvider<Set<String>>((ref) async {
+  const prefix = "assets/learn/";
+  final manifest = await AssetManifest.loadFromAssetBundle(rootBundle);
+  return {for (final a in manifest.listAssets()) if (a.startsWith(prefix) && a.endsWith(".json")) a.substring(prefix.length, a.length - 5)};
+});
+
 /// Progression dans les tutos : ouverts (`read`) et quiz réussis (`passed`), en clés `<guide>/<id>`.
 class LearnProgressState {
   const LearnProgressState({this.read = const {}, this.passed = const {}});

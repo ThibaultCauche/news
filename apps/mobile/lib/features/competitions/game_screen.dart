@@ -18,6 +18,7 @@ import "../bracket/bracket_provider.dart";
 import "../bracket/bracket_screen.dart";
 import "../bracket/kickoff_lives_screen.dart";
 import "../learn/learn_screen.dart";
+import "../learn/learn_visuals.dart";
 import "../next_match/next_match_screen.dart";
 import "../agenda/agenda_screen.dart";
 import "../team/team_screen.dart";
@@ -26,8 +27,6 @@ import "competitions_data.dart";
 import "leagues_tab.dart";
 
 const _tabs = ["Compétitions", "Ligues", "Équipes", "Agenda"];
-// Tutos écrits seulement pour Valorant pour l'instant (J12) : l'onglet n'apparaît pas ailleurs.
-const _learnGames = {"valorant"};
 
 /// Kickoff se raconte en « 3 vies » (écran 14), les autres étapes à élimination
 /// double en arbre radial + groupes + repêchage (écrans 02/05/06/07) — `docs/02`.
@@ -71,7 +70,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final overview = ref.watch(valorantSeasonProvider);
     final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
     final game = widget.game;
-    final hasLearn = _learnGames.contains(game.slug);
+    final hasLearn = ref.watch(learnGamesProvider).value?.contains(game.slug) ?? false;
     final forumEnabled = ref.watch(forumEnabledProvider);
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +83,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           ],
         ),
         actions: [
-          if (hasLearn) const LearnHelpButton(articleId: "le-jeu"),
+          if (hasLearn) LearnHelpButton(articleId: "le-jeu", game: game.slug),
           _FavoriteGameButton(game: game.slug),
         ],
       ),
@@ -277,6 +276,17 @@ class _SeasonBody extends StatelessWidget {
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xl),
       children: [
         _SeasonCard(overview: overview),
+        const SizedBox(height: AppSpacing.md),
+        FramedCard(
+          margin: EdgeInsets.zero,
+          child: ListTile(
+            leading: const LearnIconTile(icon: Icons.emoji_events_rounded, gradient: 5),
+            title: const Text("Comprendre les compétitions", style: TextStyle(fontWeight: FontWeight.w600)),
+            subtitle: const Text("Kickoff, Stages, Masters, Champions.", style: TextStyle(color: AppColors.textSecondary)),
+            trailing: const Icon(Icons.chevron_right, color: AppColors.textTertiary),
+            onTap: () => openLearnGuide(context, "valorant-competitions"),
+          ),
+        ),
         const SizedBox(height: AppSpacing.md),
         _NowCard(overview: overview, scoresHidden: scoresHidden),
         if (overview.playedSteps.isNotEmpty) ...[

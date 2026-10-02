@@ -1,4 +1,4 @@
-import { buildNotificationText, isTypeEnabled, isQuietHour, localHourFromOffsetMinutes, shouldNotify } from "./notifications";
+import { buildMorningDigestText, buildNotificationText, isTypeEnabled, isQuietHour, localDayBounds, localHourFromOffsetMinutes, shouldNotify } from "./notifications";
 
 describe("shouldNotify", () => {
   it("ne notifie jamais si l'option est désactivée", () => {
@@ -81,5 +81,31 @@ describe("isTypeEnabled", () => {
   });
   it("le rappel de pronostic annonce 30 minutes", () => {
     expect(buildNotificationText("prediction_reminder", "G2 vs PRX", true, null).body).toContain("30 minutes");
+  });
+});
+
+describe("résumé du matin", () => {
+  const at = (iso: string) => new Date(iso);
+
+  it("jour local d'un appareil en UTC+2 : de 22 h UTC la veille à 22 h UTC", () => {
+    const { start, end } = localDayBounds(at("2026-10-03T07:30:00Z"), 120);
+    expect(start.toISOString()).toBe("2026-10-02T22:00:00.000Z");
+    expect(end.toISOString()).toBe("2026-10-03T22:00:00.000Z");
+  });
+
+  it("un seul match : heure locale, minutes seulement si non nulles", () => {
+    expect(buildMorningDigestText([{ name: "G2 vs TL", startsAt: at("2026-10-03T16:00:00Z") }], 120).body).toBe("1 match de tes suivis : G2 vs TL à 18 h.");
+    expect(buildMorningDigestText([{ name: "G2 vs TL", startsAt: at("2026-10-03T16:30:00Z") }], 120).body).toContain("à 18 h 30.");
+  });
+
+  it("plusieurs matchs : le nombre et le premier", () => {
+    const body = buildMorningDigestText(
+      [
+        { name: "A vs B", startsAt: at("2026-10-03T09:00:00Z") },
+        { name: "C vs D", startsAt: at("2026-10-03T12:00:00Z") },
+      ],
+      -300,
+    ).body;
+    expect(body).toBe("2 matchs de tes suivis, le premier à 4 h : A vs B.");
   });
 });

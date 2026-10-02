@@ -4,6 +4,7 @@ import { DbModule } from "../db/db.module";
 import { EventBusModule } from "../events/event-bus.module";
 import { FcmService } from "./fcm.service";
 import { ForumRepliesSubscriber } from "./forum-replies.subscriber";
+import { MorningDigestService } from "./morning-digest.service";
 import { NotificationDispatchService } from "./notification-dispatch.service";
 import { NotificationsSubscriber } from "./notifications.subscriber";
 import { PredictionReminderService } from "./prediction-reminder.service";
@@ -14,7 +15,7 @@ import { StartingSoonService } from "./starting-soon.service";
 
 @Module({
   imports: [DbModule, EventBusModule, BullModule.registerQueue({ name: STARTING_SOON_QUEUE_NAME })],
-  providers: [FcmService, ForumRepliesSubscriber, NotificationDispatchService, NotificationsSubscriber, PredictionReminderService, StartingSoonService, StartingSoonScheduler, StartingSoonProcessor],
+  providers: [FcmService, ForumRepliesSubscriber, NotificationDispatchService, MorningDigestService, NotificationsSubscriber, PredictionReminderService, StartingSoonService, StartingSoonScheduler, StartingSoonProcessor],
   exports: [FcmService],
 })
 export class NotificationsModule {}

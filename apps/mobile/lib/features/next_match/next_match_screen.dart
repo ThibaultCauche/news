@@ -734,7 +734,7 @@ class _FormRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        SizedBox(width: 48, child: Text(label, style: Theme.of(context).textTheme.bodyMedium)),
+        SizedBox(width: 64, child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: Theme.of(context).textTheme.bodyMedium)),
         const SizedBox(width: AppSpacing.sm),
         for (final result in results) ...[
           _FormDot(win: result == "V"),

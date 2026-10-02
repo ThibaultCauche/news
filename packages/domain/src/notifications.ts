@@ -113,3 +113,33 @@ export function buildNotificationText(type: NotificationType, subjectName: strin
       return { title: "Pas encore de pronostic", body: `${subjectName} commence dans ${PREDICTION_REMINDER_MINUTES} minutes.` };
   }
 }
+
+// Résumé du matin (J19) : un seul message par jour local, envoyé entre 8 h et 11 h (la fenêtre
+// rattrape un redémarrage du worker et attend la fin des heures calmes), seulement s'il y a un
+// match parmi les suivis. Le type du journal est à part de `NotificationType` : sa clé de
+// déduplication est le premier match du jour, pas un match annoncé en particulier.
+export const MORNING_DIGEST_TYPE = "morning_digest";
+export const MORNING_DIGEST_FROM_HOUR = 8;
+export const MORNING_DIGEST_TO_HOUR = 11;
+
+/** Début et fin (UTC) du jour local d'un appareil, à partir de son décalage UTC en minutes. */
+export function localDayBounds(date: Date, offsetMinutes: number): { start: Date; end: Date } {
+  const dayMs = 24 * 60 * 60_000;
+  const shifted = date.getTime() + offsetMinutes * 60_000;
+  const start = Math.floor(shifted / dayMs) * dayMs - offsetMinutes * 60_000;
+  return { start: new Date(start), end: new Date(start + dayMs) };
+}
+
+function formatLocalTime(date: Date, offsetMinutes: number): string {
+  const total = (((Math.floor(date.getTime() / 60_000) + offsetMinutes) % 1440) + 1440) % 1440;
+  const minutes = total % 60;
+  return minutes === 0 ? `${Math.floor(total / 60)} h` : `${Math.floor(total / 60)} h ${String(minutes).padStart(2, "0")}`;
+}
+
+/** Texte du résumé du matin ; `matches` est trié par heure de début. Jamais de score : ce sont des matchs à venir. */
+export function buildMorningDigestText(matches: { name: string; startsAt: Date }[], offsetMinutes: number): NotificationText {
+  const first = matches[0];
+  const at = formatLocalTime(first.startsAt, offsetMinutes);
+  if (matches.length === 1) return { title: "Aujourd'hui", body: `1 match de tes suivis : ${first.name} à ${at}.` };
+  return { title: "Aujourd'hui", body: `${matches.length} matchs de tes suivis, le premier à ${at} : ${first.name}.` };
+}
