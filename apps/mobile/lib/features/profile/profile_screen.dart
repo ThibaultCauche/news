@@ -282,13 +282,13 @@ class _PseudoFormState extends ConsumerState<_PseudoForm> {
   }
 }
 
-class _PseudoHeader extends StatelessWidget {
+class _PseudoHeader extends ConsumerWidget {
   const _PseudoHeader({required this.profile});
 
   final ProfileDto profile;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final pseudo = profile.pseudo!;
     return Row(
       children: [
@@ -297,7 +297,7 @@ class _PseudoHeader extends StatelessWidget {
           onTap: () => showModalBottomSheet<void>(context: context, showDragHandle: true, builder: (_) => const _AvatarPicker()),
           child: Stack(
             children: [
-              AvatarCircle(avatarUrl: profile.avatarUrl, pseudo: pseudo, radius: 28),
+              AvatarCircle(avatarUrl: ref.watch(pendingAvatarProvider) ?? profile.avatarUrl, pseudo: pseudo, radius: 28),
               const Positioned(right: 0, bottom: 0, child: CircleAvatar(radius: 10, backgroundColor: AppColors.gold, child: Icon(Icons.edit_rounded, size: 12, color: AppColors.background))),
             ],
           ),
@@ -374,7 +374,7 @@ class _TeamLogos extends ConsumerWidget {
               onTap: () async {
                 Navigator.pop(context);
                 try {
-                  await ref.read(communityControllerProvider).setAvatar(team.id);
+                  await ref.read(communityControllerProvider).setAvatar(team.id, team.imageUrl!);
                 } catch (e) {
                   if (context.mounted) showErrorSnackBar(context, e);
                 }

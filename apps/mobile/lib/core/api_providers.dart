@@ -8,6 +8,7 @@ import "offline.dart";
 import "cache/app_database.dart";
 import "cache/cache_store.dart";
 import "cache/etag_cache_interceptor.dart";
+import "http_trace_interceptor.dart";
 
 /// En dev, l'API tourne sur la machine hôte : sur Android, `adb reverse
 /// tcp:3000 tcp:3000` fait pointer `localhost` de l'appareil (émulateur ou
@@ -48,6 +49,9 @@ final apiClientProvider = Provider<NewsApiClient>((ref) {
   // ajouté, la phase erreur en sens inverse — l'ETag doit d'abord laisser
   // passer un 401 (ce n'est ni un 304 ni une coupure réseau) avant que l'auth
   // tente son rafraîchissement.
+  // Mesure des durées réelles (J19) : `--dart-define=HTTP_TRACE=true`, lisible avec `adb logcat -s flutter`. Premier
+  // intercepteur, pour que la durée inclue les autres (rafraîchissement du jeton, cache).
+  if (const bool.fromEnvironment("HTTP_TRACE")) dio.interceptors.add(HttpTraceInterceptor());
   dio.interceptors.add(AuthInterceptor(auth, baseUrl, onSignedOut: () => ref.read(signedInProvider.notifier).set(false)));
   dio.interceptors.add(
     ETagCacheInterceptor(

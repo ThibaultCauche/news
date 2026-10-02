@@ -59,6 +59,16 @@ class PendingPicksNotifier extends Notifier<Map<String, PendingPick>> {
 
 final pendingPicksProvider = NotifierProvider<PendingPicksNotifier, Map<String, PendingPick>>(PendingPicksNotifier.new);
 
+/// Logo d'avatar choisi mais pas encore confirmé par le serveur (J19) : affiché à la place de l'avatar du profil.
+class PendingAvatarNotifier extends Notifier<String?> {
+  @override
+  String? build() => null;
+
+  void set(String? url) => state = url;
+}
+
+final pendingAvatarProvider = NotifierProvider<PendingAvatarNotifier, String?>(PendingAvatarNotifier.new);
+
 /// Actions communautaires : chacune exige un compte, et un pseudo pour les pronostics et groupes.
 class CommunityController {
   CommunityController(this._ref);
@@ -67,11 +77,20 @@ class CommunityController {
 
   CommunityApi get _api => _ref.read(apiClientProvider).getCommunityApi();
 
-  /// L'avatar est le logo d'une équipe (`entity`).
-  Future<void> setAvatar(String teamEntityId) async {
-    await _api.communityControllerSetProfile(putProfileDto: PutProfileDto((b) => b..avatarEntityId = teamEntityId));
-    _ref.invalidate(profileProvider);
-    _ref.invalidate(groupsProvider);
+  /// L'avatar est le logo d'une équipe (`entity`). Le logo choisi s'affiche tout de suite
+  /// (`pendingAvatarProvider`) et n'est retiré qu'une fois le vrai profil rechargé ; en cas d'échec,
+  /// l'ancien avatar revient et l'erreur remonte.
+  Future<void> setAvatar(String teamEntityId, String avatarUrl) async {
+    final pending = _ref.read(pendingAvatarProvider.notifier);
+    pending.set(avatarUrl);
+    try {
+      await _api.communityControllerSetProfile(putProfileDto: PutProfileDto((b) => b..avatarEntityId = teamEntityId));
+      _ref.invalidate(profileProvider);
+      _ref.invalidate(groupsProvider);
+      await _ref.read(profileProvider.future);
+    } finally {
+      pending.set(null);
+    }
   }
 
   Future<void> setPseudo(String pseudo) async {

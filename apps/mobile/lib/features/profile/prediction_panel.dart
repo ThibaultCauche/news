@@ -133,16 +133,27 @@ class _FriendsPicks extends ConsumerWidget {
   }
 }
 
-// Un pronostic à la fois par match : un double appui n'envoie pas deux fois.
+// Un envoi à la fois par match, mais le dernier choix n'est jamais perdu (J19) : le serveur peut mettre 5 s à
+// répondre, et un nouvel appui pendant ce temps s'affiche aussitôt puis part dès que l'envoi en cours est fini.
 final _saving = <String>{};
+final _queued = <String, PendingPick>{};
 
 Future<void> _save(BuildContext context, WidgetRef ref, String eventId, String entityId, {int? pickedScore, int? otherScore}) async {
-  if (!_saving.add(eventId)) return;
+  final pick = (entityId: entityId, picked: pickedScore, other: otherScore);
   final pending = ref.read(pendingPicksProvider.notifier);
-  pending.set(eventId, (entityId: entityId, picked: pickedScore, other: otherScore));
+  pending.set(eventId, pick);
+  if (!_saving.add(eventId)) {
+    _queued[eventId] = pick;
+    return;
+  }
   try {
-    await ref.read(communityControllerProvider).predict(eventId, entityId, pickedScore: pickedScore, otherScore: otherScore);
+    PendingPick? current = pick;
+    while (current != null) {
+      await ref.read(communityControllerProvider).predict(eventId, current.entityId, pickedScore: current.picked, otherScore: current.other);
+      current = _queued.remove(eventId);
+    }
   } catch (e) {
+    _queued.remove(eventId);
     if (context.mounted) showErrorSnackBar(context, e);
   } finally {
     pending.set(eventId, null);

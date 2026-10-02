@@ -70,7 +70,7 @@ class _HomeHeader extends ConsumerWidget {
     final capitalized = date[0].toUpperCase() + date.substring(1);
     final profile = ref.watch(profileProvider).value;
     final pseudo = profile?.pseudo;
-    final avatarUrl = profile?.avatarUrl;
+    final avatarUrl = ref.watch(pendingAvatarProvider) ?? profile?.avatarUrl;
     return Padding(
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.md, AppSpacing.md, AppSpacing.sm),
       child: Column(
