@@ -57,14 +57,19 @@ void main() {
     expect(events, ["online", "offline 10h42", "online"]);
   });
 
-  testWidgets("bandeau hors ligne : heure des données, disparaît au retour du réseau", (tester) async {
+  testWidgets("bandeau hors ligne : heure de la dernière connexion, stable, disparaît au retour du réseau", (tester) async {
     await tester.pumpWidget(const ProviderScope(child: MaterialApp(home: Scaffold(body: OfflineBanner()))));
     expect(find.textContaining("Hors ligne"), findsNothing);
 
     final container = ProviderScope.containerOf(tester.element(find.byType(OfflineBanner)));
     container.read(offlineProvider.notifier).markOffline(DateTime(2026, 10, 2, 9, 5));
     await tester.pump();
-    expect(find.text("Hors ligne · données de 9 h 05"), findsOneWidget);
+    expect(find.text("Hors ligne · dernière connexion à 9 h 05"), findsOneWidget);
+
+    // Une autre page repliée sur un cache plus ancien ne change pas l'heure affichée.
+    container.read(offlineProvider.notifier).markOffline(DateTime(2026, 10, 2, 8, 0));
+    await tester.pump();
+    expect(find.text("Hors ligne · dernière connexion à 9 h 05"), findsOneWidget);
 
     container.read(offlineProvider.notifier).markOnline();
     await tester.pump();

@@ -3,7 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "../core/offline.dart";
 import "../theme/tokens.dart";
 
-/// « Hors ligne · données de 10 h 42 » (J18) : le repli sur le cache est silencieux sinon, et on ne
+/// « Hors ligne · dernière connexion à 10 h 42 » (J18) : le repli sur le cache est silencieux sinon, et on ne
 /// saurait pas que ce qu'on voit est ancien. Statique (règle 13), au-dessus de la tab bar.
 class OfflineBanner extends ConsumerWidget {
   const OfflineBanner({super.key});
@@ -28,7 +28,7 @@ class OfflineBanner extends ConsumerWidget {
           children: [
             const Icon(Icons.cloud_off_rounded, size: 16, color: AppColors.brass),
             const SizedBox(width: AppSpacing.sm),
-            Flexible(child: Text("Hors ligne · données de $hour", style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption))),
+            Flexible(child: Text("Hors ligne · dernière connexion à $hour", style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption))),
           ],
         ),
       ),
