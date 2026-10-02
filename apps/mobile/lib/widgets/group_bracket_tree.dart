@@ -46,10 +46,9 @@ class GroupBracketTree extends ConsumerWidget {
   }
 }
 
-// Forme figée d'une poule GSL (2 CLAUDE.md règle 3 : pas de champ dédié en
-// base, on la retrouve par la topologie des liens déjà calculés au J5).
-class _GslShape {
-  const _GslShape({required this.opening1, required this.opening2, required this.winners, required this.elimination, required this.decider});
+// Forme figée d'une poule GSL (règle 3 de CLAUDE.md : pas de champ dédié en base).
+class GslShape {
+  const GslShape({required this.opening1, required this.opening2, required this.winners, required this.elimination, required this.decider});
 
   final BracketNodeDto opening1;
   final BracketNodeDto opening2;
@@ -58,10 +57,31 @@ class _GslShape {
   final BracketNodeDto decider;
 }
 
-// `null` si la poule n'a pas exactement cette forme (5 matchs, 2×2×1 par
-// round) : l'arbre replié s'affiche seulement quand on est sûr de bien
-// nommer chaque case, sinon on retombe sur la liste simple.
-_GslShape? _detectGslShape(BracketResponseDto bracket) {
+/// `null` si la poule n'a pas la forme GSL (5 matchs) : l'arbre replié s'affiche seulement quand on est sûr
+/// de bien nommer chaque case, sinon on retombe sur la liste simple.
+///
+/// Reconnue d'abord **par les noms** (« Winners Match », « Elimination Match », « Decider Match » ; les deux
+/// autres matchs sont les ouvertures, dans l'ordre de leur horaire). Les liens ne suffisent pas (J19) : dans les
+/// poules de Champions B, C et D, PandaScore ne donne qu'un des deux matchs d'ouverture dans `previous_matches`
+/// (4 liens au lieu de 6), et l'arbre retombait sur la liste. Repli sur la topologie des liens (2×2×1 par tour)
+/// quand les noms ne sont pas ceux-là.
+GslShape? detectGslShape(BracketResponseDto bracket) => _detectByNames(bracket) ?? _detectByLinks(bracket);
+
+GslShape? _detectByNames(BracketResponseDto bracket) {
+  if (bracket.nodes.length != 5) return null;
+  List<BracketNodeDto> named(RegExp pattern) => bracket.nodes.where((n) => pattern.hasMatch(n.name)).toList();
+  final winners = named(RegExp(r"winners?\s+match", caseSensitive: false));
+  final elimination = named(RegExp(r"elimination\s+match", caseSensitive: false));
+  final decider = named(RegExp(r"decider", caseSensitive: false));
+  if (winners.length != 1 || elimination.length != 1 || decider.length != 1) return null;
+  final special = {winners.single.eventId, elimination.single.eventId, decider.single.eventId};
+  final openings = bracket.nodes.where((n) => !special.contains(n.eventId)).toList()
+    ..sort((a, b) => (a.startsAt ?? "").compareTo(b.startsAt ?? ""));
+  if (openings.length != 2) return null;
+  return GslShape(opening1: openings[0], opening2: openings[1], winners: winners.single, elimination: elimination.single, decider: decider.single);
+}
+
+GslShape? _detectByLinks(BracketResponseDto bracket) {
   final byRound = <int, List<BracketNodeDto>>{};
   for (final n in bracket.nodes) {
     byRound.putIfAbsent(n.round.toInt(), () => []).add(n);
@@ -80,7 +100,7 @@ _GslShape? _detectGslShape(BracketResponseDto bracket) {
       middle.where((n) => bracket.links.any((l) => l.fromEventId == n.eventId && l.toEventId == deciderNode.eventId && l.outcome == "winner"));
   if (winners.length != 1 || elimination.length != 1) return null;
 
-  return _GslShape(opening1: opening![0], opening2: opening[1], winners: winners.single, elimination: elimination.single, decider: deciderNode);
+  return GslShape(opening1: opening![0], opening2: opening[1], winners: winners.single, elimination: elimination.single, decider: deciderNode);
 }
 
 class _Tree extends StatelessWidget {
@@ -91,7 +111,7 @@ class _Tree extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final shape = _detectGslShape(bracket);
+    final shape = detectGslShape(bracket);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -167,7 +187,7 @@ class _FunnelTree extends StatelessWidget {
   const _FunnelTree({required this.bracket, required this.shape});
 
   final BracketResponseDto bracket;
-  final _GslShape shape;
+  final GslShape shape;
 
   @override
   Widget build(BuildContext context) {
@@ -224,7 +244,7 @@ class _FunnelPainter extends CustomPainter {
   _FunnelPainter({required this.bracket, required this.shape});
 
   final BracketResponseDto bracket;
-  final _GslShape shape;
+  final GslShape shape;
 
   static const _lineColor = Color(0x26FFFFFF); // blanc 15 %
 
@@ -258,16 +278,12 @@ class _FunnelPainter extends CustomPainter {
       shape.decider.eventId: (_colX[1], _deciderY),
     };
 
-    // Un seul trait par match : vers l'endroit où va son GAGNANT (jamais son
-    // perdant). Ouverture 1/2 → Vainqueurs, Élimination → Decider — trouvés
-    // dans les vrais liens plutôt que supposés par position, au cas où.
-    for (final link in bracket.links) {
-      if (link.outcome != "winner") continue;
-      final from = position[link.fromEventId];
-      final to = position[link.toEventId];
-      if (from == null || to == null) continue;
-      _elbow(canvas, paint, rightOf(from.$1, from.$2), leftOf(to.$1, to.$2));
-    }
+    // Un seul trait par match : vers l'endroit où va son GAGNANT (jamais son perdant). Le chemin d'une poule GSL
+    // est fixe (Ouvertures → Vainqueurs, Élimination → Decider), donc tracé sans lire les liens : ils sont
+    // incomplets dans certaines poules (J19).
+    _elbow(canvas, paint, rightOf(position[shape.opening1.eventId]!.$1, position[shape.opening1.eventId]!.$2), leftOf(_colX[1], _winnersY));
+    _elbow(canvas, paint, rightOf(position[shape.opening2.eventId]!.$1, position[shape.opening2.eventId]!.$2), leftOf(_colX[1], _winnersY));
+    _elbow(canvas, paint, rightOf(position[shape.elimination.eventId]!.$1, position[shape.elimination.eventId]!.$2), leftOf(_colX[1], _deciderY));
     // Qualifiés : le gagnant de Vainqueurs se qualifie directement, celui du
     // Decider aussi — deux fins de chemin gagnant, pas des liens de la base.
     _elbow(canvas, paint, rightOf(_colX[1], _winnersY), leftOf(_colX[2], _qualifiedY));
