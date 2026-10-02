@@ -146,4 +146,17 @@ void main() {
 
     expect(games, containsAll(["valorant", "app"]));
   });
+
+  testWidgets("un schéma de 6 étapes se range sur deux rangées de 3 (écran de 360)", (tester) async {
+    tester.view.physicalSize = const Size(360, 1600);
+    tester.view.devicePixelRatio = 1;
+    addTearDown(tester.view.reset);
+    final (container, _) = await _load(tester, "valorant-competitions");
+    await tester.pumpWidget(_app(container, const LearnArticleScreen(game: "valorant-competitions", articleId: "saison", showAllRules: true)));
+    await tester.pumpAndSettle();
+
+    final kickoff = tester.getTopLeft(find.text("Kickoff").first).dy;
+    expect(tester.getTopLeft(find.text("Stage 1")).dy, kickoff, reason: "3 étapes sur la 1re rangée");
+    expect(tester.getTopLeft(find.text("Champions").first).dy, greaterThan(kickoff), reason: "la 2e rangée est dessous");
+  });
 }

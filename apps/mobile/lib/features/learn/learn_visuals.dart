@@ -179,38 +179,58 @@ class _Flow extends StatelessWidget {
 
   final List<Map<String, dynamic>> items;
 
-  @override
-  Widget build(BuildContext context) => Row(
+  // Au-delà de 4 étapes, le texte passe à la ligne mot par mot : on les range par rangées de 3 (J19).
+  static const _perRow = 3;
+
+  Widget _step(int i, Map<String, dynamic> item) => Expanded(
+    child: Semantics(
+      label: "Étape ${i + 1} sur ${items.length} : ${item["label"]}",
+      excludeSemantics: true,
+      child: Column(
+        children: [
+          Container(
+            width: 48,
+            height: 48,
+            decoration: const BoxDecoration(color: AppColors.surfaceHighlight, shape: BoxShape.circle),
+            child: Icon(_icon(item["icon"] as String?), color: AppColors.textPrimary),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+          Text(
+            item["label"] as String,
+            textAlign: TextAlign.center,
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: AppTypography.caption),
+          ),
+        ],
+      ),
+    ),
+  );
+
+  Widget _row(int start, int count, int slots) => Row(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      for (final (i, item) in items.indexed) ...[
-        Expanded(
-          child: Semantics(
-            label: "Étape ${i + 1} sur ${items.length} : ${item["label"]}",
-            excludeSemantics: true,
-            child: Column(
-            children: [
-              Container(
-                width: 48,
-                height: 48,
-                decoration: const BoxDecoration(color: AppColors.surfaceHighlight, shape: BoxShape.circle),
-                child: Icon(_icon(item["icon"] as String?), color: AppColors.textPrimary),
-              ),
-              const SizedBox(height: AppSpacing.xs),
-              Text(
-                item["label"] as String,
-                textAlign: TextAlign.center,
-                style: const TextStyle(fontWeight: FontWeight.w600, fontSize: AppTypography.caption),
-              ),
-            ],
+      for (var k = 0; k < slots; k++) ...[
+        if (k < count) _step(start + k, items[start + k]) else const Spacer(),
+        if (k < slots - 1)
+          Padding(
+            padding: const EdgeInsets.only(top: 12),
+            child: Icon(Icons.chevron_right_rounded, color: k < count - 1 ? AppColors.textTertiary : Colors.transparent),
           ),
-          ),
-        ),
-        if (i < items.length - 1)
-          const Padding(padding: EdgeInsets.only(top: 12), child: Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary)),
       ],
     ],
   );
+
+  @override
+  Widget build(BuildContext context) {
+    if (items.length <= _perRow + 1) return _row(0, items.length, items.length);
+    return Column(
+      children: [
+        for (var start = 0; start < items.length; start += _perRow) ...[
+          if (start > 0) const SizedBox(height: AppSpacing.md),
+          _row(start, (items.length - start).clamp(0, _perRow), _perRow),
+        ],
+      ],
+    );
+  }
 }
 
 /// Tuiles à deux colonnes : icône, titre, précision. Une rangée = même hauteur
