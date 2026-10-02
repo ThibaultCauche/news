@@ -28,7 +28,11 @@ Flutter · NestJS (TypeScript) · PostgreSQL · Redis · BullMQ · Firebase Clou
 
 ## Sources de données et crédits
 
-Données e-sport : PandaScore. Contexte : Liquipedia (CC-BY-SA 3.0). Données publiques : Assemblée nationale, Sénat, Légifrance, ministère de l'Intérieur (Licence ouverte 2.0). Les logos d'équipes et de compétitions appartiennent à leurs propriétaires respectifs.
+Données e-sport : PandaScore. Contexte : Liquipedia (CC-BY-SA 3.0). Données publiques : Assemblée nationale, Sénat, Légifrance, ministère de l'Intérieur (Licence ouverte 2.0). Les logos d'équipes et de compétitions appartiennent à leurs propriétaires respectifs. Polices **Cinzel** et **Inter** sous licence SIL Open Font License. Aucune image ni aucun texte des jeux n'est repris : les tutos et explications sont écrits pour l'appli.
+
+## Licence
+
+Le code de ce dépôt est publié sous **licence MIT** (voir [LICENSE](LICENSE)). Elle couvre le code, pas les données ni les contenus de tiers listés ci-dessus (logos, textes Liquipedia, polices), qui gardent leurs propres licences.
 
 ## Démarrer
 

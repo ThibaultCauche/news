@@ -98,4 +98,4 @@ iOS reste reporté après la sortie de l'appli (décision du J4, `docs/00` §7).
 
 ## Licence
 
-Point ouvert explicitement reporté lors du J7 (voir `docs/04-jalons.md`, section « Points ouverts ») : la licence open source du dépôt reste à trancher.
+Tranché au J19 (2026-10-03) : **MIT** (fichier `LICENSE` à la racine, section « Licence » du README). Elle couvre le code, pas les données ni les contenus de tiers (logos, textes Liquipedia, polices Cinzel et Inter sous OFL).
