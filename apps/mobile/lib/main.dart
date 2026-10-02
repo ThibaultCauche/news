@@ -33,7 +33,11 @@ Future<void> main() async {
     options.environment = const bool.fromEnvironment("dart.vm.product") ? "release" : "debug";
     // Réseau coupé, 4xx, jeton expiré : cas prévus et déjà gérés à l'écran, pas des bugs.
     options.beforeSend = (event, hint) => event.throwable is DioException ? null : event;
-  }, appRunner: _start);
+  }, appRunner: () async {
+    await _start();
+    // Validation de Sentry (J19) : `--dart-define=SENTRY_TEST=true` envoie une erreur volontaire au lancement.
+    if (const bool.fromEnvironment("SENTRY_TEST")) await Sentry.captureException(Exception("J19 : erreur de test volontaire depuis l'appli"));
+  });
 }
 
 Future<void> _start() async {
