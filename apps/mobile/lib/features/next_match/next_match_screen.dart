@@ -4,6 +4,7 @@ import "../../widgets/live_badge.dart";
 import "../../widgets/ornate_frame.dart";
 import "dart:async";
 
+import "package:add_2_calendar/add_2_calendar.dart";
 import "package:flutter/gestures.dart";
 import "package:flutter/material.dart";
 import "package:flutter/services.dart";
@@ -120,6 +121,26 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
   }
 }
 
+/// Événement d'agenda d'un match (J18) : « Équipe A – Équipe B », la compétition en description, deux
+/// heures par défaut (un BO3 dure en moyenne autant). Pur, pour être testé sans plugin.
+Event calendarEventFor({required List<String> teams, required String competition, required DateTime start}) {
+  return Event(title: teams.join(" – "), description: competition, startDate: start, endDate: start.add(const Duration(hours: 2)));
+}
+
+/// Ouvre l'agenda du téléphone avec le match pré-rempli ; rien n'est ajouté sans que l'utilisateur
+/// valide dans son appli d'agenda.
+Future<void> _addToCalendar(BuildContext context, EventDetailResponseDto event) {
+  return runOrShowError(context, () async {
+    final start = event.startsAt.toDateTime?.toLocal();
+    if (start == null) return;
+    final teams = [for (final p in event.participants) p.shortName ?? p.name];
+    final opened = await Add2Calendar.addEvent2Cal(calendarEventFor(teams: teams, competition: event.competition.name, start: start));
+    if (!opened && context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("Impossible d'ouvrir l'agenda du téléphone.")));
+    }
+  });
+}
+
 class _NextMatchBody extends ConsumerWidget {
   const _NextMatchBody({required this.event, required this.scoresHidden, required this.onReveal});
 
@@ -222,9 +243,7 @@ class _NextMatchBody extends ConsumerWidget {
           const SizedBox(height: AppSpacing.sm),
           Center(
             child: TextButton(
-              onPressed: () => ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("Ajout à l'agenda bientôt disponible")),
-              ),
+              onPressed: () => _addToCalendar(context, event),
               child: const Text("Ajouter à l'agenda"),
             ),
           ),

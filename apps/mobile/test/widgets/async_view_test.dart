@@ -19,6 +19,26 @@ Widget _app(AsyncValue<String> value, {VoidCallback? onRetry}) {
 }
 
 void main() {
+  testWidgets("le skeleton a un libellé pour les lecteurs d'écran et le contenu apparaît en fondu", (tester) async {
+    final semantics = tester.ensureSemantics();
+    await tester.pumpWidget(_app(const AsyncLoading()));
+    expect(find.bySemanticsLabel("Chargement en cours"), findsOneWidget);
+    await tester.pumpWidget(_app(const AsyncData("fini")));
+    await tester.pump(const Duration(milliseconds: 100));
+    // Pendant le fondu : le contenu est déjà là (opacité), le skeleton disparaît à la fin.
+    expect(find.text("contenu fini"), findsOneWidget);
+    await tester.pump(const Duration(milliseconds: 200));
+    expect(find.byType(Skeleton), findsNothing);
+    semantics.dispose();
+  });
+
+  testWidgets("mouvement réduit : pas de fondu", (tester) async {
+    await tester.pumpWidget(MediaQuery(data: const MediaQueryData(disableAnimations: true), child: _app(const AsyncLoading())));
+    await tester.pumpWidget(MediaQuery(data: const MediaQueryData(disableAnimations: true), child: _app(const AsyncData("fini"))));
+    await tester.pump();
+    expect(find.byType(Skeleton), findsNothing);
+  });
+
   testWidgets("premier chargement : un skeleton, jamais un spinner", (tester) async {
     await tester.pumpWidget(_app(const AsyncLoading()));
     expect(find.byType(Skeleton), findsWidgets);
@@ -39,6 +59,7 @@ void main() {
       ),
     );
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 300)); // fin du fondu skeleton -> contenu
     final container = ProviderScope.containerOf(tester.element(find.byType(AsyncView<String>)));
     container.invalidate(provider);
     await tester.pump();

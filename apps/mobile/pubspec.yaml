@@ -51,6 +51,9 @@ dependencies:
   flutter_svg: ^2.3.0
   firebase_auth: ^6.7.0
   share_plus: ^13.3.0
+  connectivity_plus: ^7.3.2
+  sentry_flutter: ^9.30.1
+  add_2_calendar: ^3.1.1
 
 dev_dependencies:
   built_collection: ^5.1.1
@@ -66,6 +69,8 @@ dev_dependencies:
   drift_dev: ^2.35.0
   build_runner: ^2.16.1
   built_value: ^8.13.0
+  integration_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

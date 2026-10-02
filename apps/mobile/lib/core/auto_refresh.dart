@@ -1,3 +1,4 @@
+import "package:connectivity_plus/connectivity_plus.dart";
 import "../features/profile/community_providers.dart";
 import "dart:async";
 
@@ -39,15 +40,27 @@ class _AutoRefreshState extends ConsumerState<AutoRefresh> with WidgetsBindingOb
 
   static const _agendaTab = 1;
 
+  StreamSubscription<List<ConnectivityResult>>? _connectivity;
+
   @override
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this);
     _startTimer();
+    // Le réseau revient (J18) : on recharge tout de suite au lieu d'attendre la prochaine minute. Sert
+    // seulement à relancer un chargement, jamais à décider qu'on est « en ligne ».
+    try {
+      _connectivity = Connectivity().onConnectivityChanged.listen((results) {
+        if (!results.contains(ConnectivityResult.none)) _refreshAll();
+      }, onError: (_) {});
+    } catch (_) {
+      // Plugin absent (tests) : le rechargement chaque minute suffit.
+    }
   }
 
   @override
   void dispose() {
+    _connectivity?.cancel();
     WidgetsBinding.instance.removeObserver(this);
     _timer?.cancel();
     super.dispose();

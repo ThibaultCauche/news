@@ -3,6 +3,7 @@ import "dart:async";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
+import "../../core/navigation.dart";
 import "../../core/auth/account.dart";
 import "../../core/notifications/push_service.dart";
 import "../account/account_gate.dart";
@@ -115,6 +116,7 @@ class FollowsController {
   Future<void> unfollow(FollowTargetType type, String targetId) async {
     if (!_ref.read(signedInProvider) && !await ensureAccount(_ref)) return;
     await _ref.read(followsProvider.notifier).unfollow(type, targetId);
+    showUndo("Suivi retiré.", () => follow(type, targetId));
   }
 }
 

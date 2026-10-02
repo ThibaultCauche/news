@@ -10,9 +10,14 @@ const _cacheKeyExtra = "cacheKey";
 /// échoue faute de réseau (mode avion). Un seul endroit pour les deux règles
 /// de `docs/03` §4 ("`ETag` partout") et §11 ("hors ligne d'abord").
 class ETagCacheInterceptor extends Interceptor {
-  ETagCacheInterceptor(this._store);
+  ETagCacheInterceptor(this._store, {this.onOffline, this.onOnline});
 
   final CacheStore _store;
+
+  /// Appelé quand une réponse en cache remplace une API injoignable (avec l'heure de ces données),
+  /// puis `onOnline` dès qu'une vraie réponse arrive : alimente le bandeau « Hors ligne » (J18).
+  final void Function(DateTime storedAt)? onOffline;
+  final void Function()? onOnline;
 
   static String keyFor(RequestOptions options) {
     final uri = options.uri;
@@ -51,6 +56,7 @@ class ETagCacheInterceptor extends Interceptor {
     ResponseInterceptorHandler handler,
   ) async {
     final key = response.requestOptions.extra[_cacheKeyExtra] as String?;
+    onOnline?.call();
     if (key != null && response.statusCode == 200) {
       try {
         await _store.write(
@@ -77,6 +83,11 @@ class ETagCacheInterceptor extends Interceptor {
     if (key != null && (isNotModified || isServerUnreachable)) {
       final cached = await _readSafe(key);
       if (cached != null) {
+        if (isNotModified) {
+          onOnline?.call();
+        } else {
+          onOffline?.call(cached.storedAt);
+        }
         return handler.resolve(
           Response(
             requestOptions: err.requestOptions,

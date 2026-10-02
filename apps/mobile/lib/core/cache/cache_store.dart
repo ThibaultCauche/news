@@ -2,10 +2,11 @@ import "package:drift/drift.dart";
 import "app_database.dart";
 
 class CachedEntry {
-  const CachedEntry({required this.body, required this.etag});
+  const CachedEntry({required this.body, required this.etag, required this.storedAt});
 
   final String body;
   final String? etag;
+  final DateTime storedAt;
 }
 
 /// Façade au-dessus de `AppDatabase` : le reste de l'appli manipule des
@@ -20,7 +21,7 @@ class CacheStore {
       _db.cachedResponses,
     )..where((t) => t.requestKey.equals(key))).getSingleOrNull();
     if (row == null) return null;
-    return CachedEntry(body: row.body, etag: row.etag);
+    return CachedEntry(body: row.body, etag: row.etag, storedAt: row.storedAt);
   }
 
   Future<void> write(String key, {required String body, String? etag}) {

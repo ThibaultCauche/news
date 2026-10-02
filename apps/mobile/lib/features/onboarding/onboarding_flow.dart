@@ -26,20 +26,23 @@ const _suggestedTeams = [
 
 final suggestedTeamsProvider = FutureProvider.autoDispose<List<(EntityResponseDto, String)>>((ref) async {
   final api = ref.watch(apiClientProvider).getEntitiesApi();
-  final results = <(EntityResponseDto, String)>[];
-  for (final team in _suggestedTeams) {
-    try {
-      final res = await api.entitiesControllerGetByShortName(shortName: team.shortName);
-      final data = res.data;
-      if (data != null) results.add((data, team.reason));
-    } on DioException catch (e) {
-      // Équipe pas encore ingérée dans cet environnement (404) : on l'ignore plutôt que de casser
-      // l'onboarding. Toute autre erreur (réseau, serveur) remonte pour afficher « Réessayer » au
-      // lieu d'un faux « Aucune suggestion ».
-      if (e.response?.statusCode != 404) rethrow;
-    }
-  }
-  return results;
+  // En parallèle (J18) : trois requêtes l'une après l'autre attendaient trois délais en cas de panne.
+  final results = await Future.wait([
+    for (final team in _suggestedTeams)
+      () async {
+        try {
+          final data = (await api.entitiesControllerGetByShortName(shortName: team.shortName)).data;
+          return data == null ? null : (data, team.reason);
+        } on DioException catch (e) {
+          // Équipe pas encore ingérée dans cet environnement (404) : on l'ignore plutôt que de casser
+          // l'onboarding. Toute autre erreur (réseau, serveur) remonte pour afficher « Réessayer »
+          // au lieu d'un faux « Aucune suggestion ».
+          if (e.response?.statusCode != 404) rethrow;
+          return null;
+        }
+      }(),
+  ]);
+  return [for (final r in results) ?r];
 });
 
 /// Onboarding (écrans 11-12, `docs/02`) : montré une fois au premier lancement

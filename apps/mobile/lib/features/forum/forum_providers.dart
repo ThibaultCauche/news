@@ -3,6 +3,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
 import "../../core/auth/account.dart";
+import "../../core/navigation.dart";
 import "../../core/notifications/notification_tap_handler.dart";
 import "../account/account_gate.dart";
 import "forum_terms.dart";
@@ -256,6 +257,10 @@ class ForumController {
     await _api.forumControllerBlock(userId: userId);
     _ref.invalidate(forumBlocksProvider);
     await _ref.read(forumMessagesProvider(threadId).notifier).refresh();
+    showUndo("Utilisateur bloqué.", () async {
+      await unblock(userId);
+      await _ref.read(forumMessagesProvider(threadId).notifier).refresh();
+    });
   }
 
   Future<void> unblock(String userId) async {

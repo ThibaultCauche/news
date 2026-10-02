@@ -131,8 +131,18 @@ class AsyncView<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    if (value.hasValue) return builder(value.value as T);
-    if (value.hasError) return ErrorState(message: errorMessage, onRetry: onRetry, compact: compactError);
-    return skeleton;
+    final (state, child) = value.hasValue
+        ? ("data", builder(value.value as T))
+        : value.hasError
+            ? ("error", ErrorState(message: errorMessage, onRetry: onRetry, compact: compactError))
+            // Un seul libellé pour les lecteurs d'écran : les blocs gris n'ont rien à dire.
+            : ("loading", Semantics(label: "Chargement en cours", container: true, child: ExcludeSemantics(child: skeleton)));
+    // Fondu court (opacité seule, règle 13) quand le skeleton laisse place au contenu ; rien en
+    // mouvement réduit, et rien pour les rechargements (même état « data »).
+    return AnimatedSwitcher(
+      duration: MediaQuery.disableAnimationsOf(context) ? Duration.zero : const Duration(milliseconds: 200),
+      layoutBuilder: (current, previous) => Stack(fit: StackFit.passthrough, alignment: Alignment.topCenter, children: [...previous, ?current]),
+      child: KeyedSubtree(key: ValueKey(state), child: child),
+    );
   }
 }

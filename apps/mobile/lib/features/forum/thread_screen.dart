@@ -47,6 +47,9 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
   final _revealedSpoilers = <String>{};
   // Cloche « suivre la discussion » : valeur choisie, affichée tout de suite le temps de l'appel.
   bool? _followPending;
+  // Message en cours d'envoi (J18) : affiché grisé au-dessus de la zone de saisie dès l'appui, remplacé
+  // par le vrai message au rechargement, ou remis dans la saisie si l'envoi échoue.
+  String? _pendingBody;
   // Actions du menu d'un message en cours : pas de double envoi (signaler deux fois, bloquer deux fois).
   bool _acting = false;
 
@@ -103,24 +106,50 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
   Future<void> _send() async {
     final text = _input.text.trim();
     if (text.isEmpty || _sending) return;
-    setState(() => _sending = true);
+    final editing = _editing;
+    final replyTo = _replyTo;
+    final spoiler = _spoiler;
+    setState(() {
+      _sending = true;
+      if (editing == null) {
+        _pendingBody = text;
+        _input.clear();
+        _replyTo = null;
+        _spoiler = false;
+      }
+    });
     try {
       final controller = ref.read(forumControllerProvider);
-      if (_editing != null) {
-        await controller.editMessage(widget.threadId, _editing!.id, text);
+      if (editing != null) {
+        await controller.editMessage(widget.threadId, editing.id, text);
+        _input.clear();
+        if (mounted) {
+          setState(() {
+            _replyTo = null;
+            _editing = null;
+            _spoiler = false;
+          });
+        }
       } else {
-        await controller.post(widget.threadId, text, parentId: _replyTo?.id, isSpoiler: _spoiler);
+        await controller.post(widget.threadId, text, parentId: replyTo?.id, isSpoiler: spoiler);
       }
-      _input.clear();
-      setState(() {
-        _replyTo = null;
-        _editing = null;
-        _spoiler = false;
-      });
     } catch (e) {
+      if (editing == null && mounted) {
+        // Échec : le texte revient dans la saisie, avec sa réponse et son spoiler.
+        _input.text = text;
+        setState(() {
+          _replyTo = replyTo;
+          _spoiler = spoiler;
+        });
+      }
       _toast(e);
     } finally {
-      if (mounted) setState(() => _sending = false);
+      if (mounted) {
+        setState(() {
+          _pendingBody = null;
+          _sending = false;
+        });
+      }
     }
   }
 
@@ -166,6 +195,20 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
                 _ => const SkeletonCards(count: 5, height: 72),
               },
             ),
+            if (_pendingBody != null)
+              Opacity(
+                opacity: 0.5,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, 0),
+                  child: Row(
+                    children: [
+                      const SizedBox(width: 14, height: 14, child: CircularProgressIndicator(strokeWidth: 2)),
+                      const SizedBox(width: AppSpacing.sm),
+                      Expanded(child: Text(_pendingBody!, maxLines: 2, overflow: TextOverflow.ellipsis)),
+                    ],
+                  ),
+                ),
+              ),
             _Composer(
               controller: _input,
               locked: thread?.locked ?? false,

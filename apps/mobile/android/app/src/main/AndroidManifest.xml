@@ -41,5 +41,11 @@
             <action android:name="android.intent.action.PROCESS_TEXT"/>
             <data android:mimeType="text/plain"/>
         </intent>
+        <!-- « Ajouter à l'agenda » (J18) : sans cette déclaration, Android 11+ cache les applis d'agenda et
+             le plugin add_2_calendar ne trouve personne à qui confier l'événement. -->
+        <intent>
+            <action android:name="android.intent.action.INSERT" />
+            <data android:mimeType="vnd.android.cursor.item/event" />
+        </intent>
     </queries>
 </manifest>

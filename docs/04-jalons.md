@@ -471,7 +471,7 @@
 - [x] Confirmations : une seule partout ; ajout de `confirmAction` avant « Exclure du forum » (menu du fil, tchat du direct, « Masquer et exclure » de la file).
 - [x] Tests : `async_view_test` (skeleton, rechargement, échec avec valeur, erreur + « Réessayer »), `error_messages_test` ; `flutter analyze` propre ; `flutter test` : tout passe sauf les goldens (rendu Windows, voir `CLAUDE.md`). Vérifié sur émulateur avec l'API coupée et avec une API ralentie à 4 s.
 
-- [ ] **Reportés** (avec raison) : Sentry côté appli (nouvelle dépendance, RGPD) ; suggestions d'onboarding demandées en parallèle (aujourd'hui l'une après l'autre, jusqu'à 24 s avant l'erreur sans API) ; écran de lancement qui attend jusqu'à 8 s quand l'API est coupée ; bouton « Ajouter à l'agenda » de l'écran du match (« bientôt disponible », à retirer ou à faire) ; vérification sur téléphone physique et des notifications ; goldens à régénérer par la CI si un widget couvert change (aucun ne l'a été ici).
+- [ ] **Reportés** (avec raison) : Sentry côté appli (nouvelle dépendance, RGPD) ; suggestions d'onboarding demandées en parallèle (aujourd'hui l'une après l'autre, jusqu'à 24 s avant l'erreur sans API) ; écran de lancement long (mesuré le 2026-10-02 : ~11 s sur l'émulateur en debug **avec ou sans** API, donc sans lien avec l'API ; à re-mesurer en release sur un vrai téléphone) ; bouton « Ajouter à l'agenda » de l'écran du match (« bientôt disponible », à retirer ou à faire) ; vérification sur téléphone physique et des notifications ; goldens à régénérer par la CI si un widget couvert change (aucun ne l'a été ici).
 
 ### Audit (2026-10-02, lecture du code ; rien vérifié à l'écran)
 
@@ -573,6 +573,35 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 - [x] Goldens régénérés par la CI (branche jetable `regen-goldens`, 8 images sur 9 changées). Séance de test des écrans non encore vus : `docs/seance-test-j16.md`.
 - [x] Séance de test sur émulateur (`docs/seance-test-j16.md`) : tampon en direct, forum, onboarding, scores.
 - [ ] **Reportés** (avec raison) : marque (INPI, EUIPO) et nom de domaine à vérifier par l'utilisateur ; icône iOS (iOS reporté après la sortie, décision J4) ; application des modèles d'e-mails (voir ci-dessus) ; vérification à l'écran de l'icône dans le lanceur et du glossaire ; remise de `forum_beta` des comptes de test à leur valeur d'origine.
+
+---
+
+## J18 — Fiabilité avant la bêta (ajouté 2026-10-02) — **En cours : code fait, vérification à l'écran restante**
+
+**Objectif** : faire de J15 une base solide avant d'ouvrir la bêta : savoir ce qui plante chez les testeurs, ne jamais montrer de données anciennes sans le dire, petits défauts restants. Idées proposées après J15, validées par l'utilisateur le 2026-10-02 (« je pense que les 10 sont de bonnes idées »).
+
+**Critères d'acceptation**
+- [x] **Bandeau « Hors ligne · données de 10 h 42 »** (`offlineProvider`, `widgets/offline_banner.dart`, signal levé par `ETagCacheInterceptor` quand le cache remplace une API injoignable, retiré à la première vraie réponse) + rechargement immédiat au retour du réseau (`connectivity_plus` dans `AutoRefresh`, sert seulement à relancer un chargement). Test : `test/resilience_test.dart` (intercepteur + bandeau). **À voir à l'écran.**
+- [x] **Sentry côté appli** (`sentry_flutter` 9, `main.dart`) : actif seulement avec `--dart-define=SENTRY_DSN=...` au build, pas de données personnelles, erreurs réseau/4xx (`DioException`) ignorées, les erreurs « inconnues » de `accountErrorMessage` sont envoyées. **Il faut un DSN dédié au Flutter** (projet Sentry de type Flutter ; le projet « news » actuel est de type NestJS). Non vérifié avec un vrai DSN.
+- [x] **Suggestions d'onboarding en parallèle** (`Future.wait`, 404 ignorés, autres erreurs remontées).
+- [x] **« Annuler »** après avoir arrêté de suivre ou bloqué (`showUndo`, `scaffoldMessengerKey`, 5 s). Test : `resilience_test.dart`. **À voir à l'écran.**
+- [x] **Fondu de 200 ms** quand le skeleton laisse place au contenu (`AsyncView`, opacité seule, aucun en mouvement réduit, aucun pour un rechargement) ; label « Chargement en cours » pour les lecteurs d'écran. Tests : `async_view_test.dart`.
+- [x] **« Ajouter à l'agenda »** : ouvre l'agenda du téléphone avec le match pré-rempli (`add_2_calendar`, titre « A – B », compétition en description, 2 h ; plugin natif : réinstaller l'appli). Test du contenu : `resilience_test.dart`. **À voir sur téléphone.**
+- [x] **Envoi de message de forum instantané** : le texte part de la saisie, s'affiche grisé au-dessus, revient dans la saisie avec son spoiler et sa réponse en cas d'échec. **À voir à l'écran** (pas de test automatisé).
+- [x] **Test d'intégration** `integration_test/resilience_test.dart` (2 tests, passent sur émulateur contre l'API du NAS en lecture seule) : API lente → skeletons puis contenu ; API coupée avec cache → repli et appli déclarée hors ligne ; API coupée sans cache → erreur en français + « Réessayer » ; API rétablie → le bouton recharge et l'appli repasse en ligne. Commande : `flutter test integration_test/resilience_test.dart -d <appareil> --dart-define=API_BASE_URL=https://<machine>.<tailnet>.ts.net/news` (ou API locale + `adb reverse`). **Il a trouvé un vrai défaut de J15** : Riverpod 3 relance par défaut un provider en échec jusqu'à 10 fois (attente doublée, ~40 s) en le laissant « en chargement », donc l'erreur n'apparaissait qu'après ~40 s de skeleton ; corrigé par `appProviderRetry` (`main.dart`) : un seul nouvel essai après 1 s.
+- [x] **Accessibilité** : label des skeletons, test grande police (×1,2) sur écran de 320 px pour la connexion, l'erreur et le skeleton (`resilience_test.dart`).
+- [x] Tests : 120 passent hors goldens (`flutter test -j 1`), `flutter analyze` propre.
+- [x] **Vérification sur téléphone physique (OnePlus CPH2359, build release, API du NAS, 2026-10-02)** :
+  - bandeau « Hors ligne · données de … » : vu par l'utilisateur, OK ;
+  - « Annuler » : la barre apparaissait mais **ne se fermait jamais** (depuis Flutter 3.29 une barre avec une action reste ouverte : `persist: false` ajouté, test ajouté) ; revérifié : « Suivi retiré. Annuler » apparaît puis disparaît seule. Elle n'apparaît qu'après la réponse du serveur (3-4 s sur le NAS) car on attend la confirmation avant de proposer d'annuler ;
+  - « Ajouter à l'agenda » : **ne faisait rien** (Android 11+ cache les applis d'agenda sans déclaration `<queries>` pour l'intent `INSERT` : le plugin renvoyait « introuvable » ; ajouté à `AndroidManifest.xml`) ; revérifié : Google Agenda s'ouvre avec « G2 – TL », samedi 3 octobre 11 h–13 h (non enregistré) ;
+  - démarrage en release : l'Accueil avec ses données s'affiche ~1,8 s après le lancement (les 11 s étaient propres au debug sur l'émulateur) ;
+  - **non vérifié** : envoi de message de forum instantané (la carte « Discussion » n'apparaît pas sur le NAS : forum fermé, `FORUM_OPEN` absent ; vérifié seulement sur émulateur au J15 pour les réactions), connexion avec clavier ouvert sur téléphone (vu sur émulateur), Sentry avec un vrai DSN.
+  - Au passage : la connexion échouait (« Une erreur est survenue ») parce que **l'API du NAS datait d'avant le J11** (route `/v1/auth/firebase` absente, 404) : mise à jour du NAS faite par l'utilisateur ; message d'erreur pour un 404 clarifié (« Le service n'est pas encore à jour »).
+
+**Aussi corrigé pendant le jalon** : `android/gradle.properties` réservait 8 Go de tas + 4 Go de métaspace pour Gradle (valeur par défaut du modèle Flutter), ce qui, avec l'émulateur et Android Studio, saturait les 15,8 Go du PC ; ramené à 3 Go + 1 Go, démon Kotlin à 1,5 Go (les compilations suivantes n'ont plus figé la machine).
+
+**Machine de développement** (diagnostic du 2026-10-02, voir `CLAUDE.md` « Commandes ») : 15,8 Go de RAM, émulateur 4 Go + Android Studio + navigateur proches de la saturation, image d'émulateur « tablette Play Store » (Google Play s'y met à jour en tâche de fond et plante), pilote graphique ancien (juin 2025) et `LiveKernelEvent` réguliers.
 
 ---
 

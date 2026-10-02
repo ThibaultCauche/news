@@ -4,6 +4,7 @@ import "package:news_api_client/news_api_client.dart";
 import "auth/account.dart";
 import "auth/auth_interceptor.dart";
 import "auth/auth_store.dart";
+import "offline.dart";
 import "cache/app_database.dart";
 import "cache/cache_store.dart";
 import "cache/etag_cache_interceptor.dart";
@@ -31,6 +32,10 @@ final cacheStoreProvider = Provider<CacheStore>((ref) {
   return CacheStore(ref.watch(appDatabaseProvider));
 });
 
+/// Pour les tests d'intégration seulement (`integration_test/`) : un adaptateur qui simule une API
+/// lente ou coupée. `null` en production.
+final httpClientAdapterOverrideProvider = Provider<HttpClientAdapter?>((ref) => null);
+
 final apiClientProvider = Provider<NewsApiClient>((ref) {
   final store = ref.watch(cacheStoreProvider);
   final auth = ref.watch(authStoreProvider);
@@ -44,6 +49,14 @@ final apiClientProvider = Provider<NewsApiClient>((ref) {
   // passer un 401 (ce n'est ni un 304 ni une coupure réseau) avant que l'auth
   // tente son rafraîchissement.
   dio.interceptors.add(AuthInterceptor(auth, baseUrl, onSignedOut: () => ref.read(signedInProvider.notifier).set(false)));
-  dio.interceptors.add(ETagCacheInterceptor(store));
+  dio.interceptors.add(
+    ETagCacheInterceptor(
+      store,
+      onOffline: (storedAt) => ref.read(offlineProvider.notifier).markOffline(storedAt),
+      onOnline: () => ref.read(offlineProvider.notifier).markOnline(),
+    ),
+  );
+  final adapter = ref.watch(httpClientAdapterOverrideProvider);
+  if (adapter != null) dio.httpClientAdapter = adapter;
   return NewsApiClient(dio: dio);
 });

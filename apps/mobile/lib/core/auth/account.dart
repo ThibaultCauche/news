@@ -1,6 +1,7 @@
 import "package:dio/dio.dart";
 import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/foundation.dart" show debugPrint;
+import "package:sentry_flutter/sentry_flutter.dart" show Sentry;
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../api_providers.dart";
@@ -102,6 +103,7 @@ String accountErrorMessage(Object error) {
     return switch (error.response?.statusCode) {
       null => "Pas de connexion au serveur. Vérifie ton réseau puis réessaie.",
       401 => "Ta session a expiré. Reconnecte-toi.",
+      404 => "Le service n'est pas encore à jour. Réessaie plus tard.",
       429 => "Trop de demandes. Réessaie dans un instant.",
       >= 500 => "Le service a un souci. Réessaie dans un instant.",
       _ => _unknown(error),
@@ -113,6 +115,7 @@ String accountErrorMessage(Object error) {
 /// L'erreur réelle est journalisée, jamais affichée (J15).
 String _unknown(Object error) {
   debugPrint("Erreur : $error");
+  Sentry.captureException(error);
   return "Une erreur est survenue. Réessaie.";
 }
 
