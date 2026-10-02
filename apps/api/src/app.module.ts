@@ -26,8 +26,8 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     // `../../.env` : cas des tests/e2e lancés depuis apps/api (cwd du package),
     // `.env` : cas où le process a déjà pour cwd la racine du dépôt.
     ConfigModule.forRoot({ isGlobal: true, envFilePath: ["../../.env", ".env"] }),
-    // 60 requêtes par minute et par IP ; `THROTTLE_LIMIT` relève la limite pour les tests e2e (suites longues).
-    ThrottlerModule.forRootAsync({ useFactory: () => [{ ttl: 60_000, limit: Number(process.env.THROTTLE_LIMIT ?? 60) }] }),
+    // 120 requêtes par minute et par IP (60 avant le J19 : un téléphone en consomme déjà 5 à 6 par minute au repos) ; `THROTTLE_LIMIT` relève la limite pour les tests e2e (suites longues).
+    ThrottlerModule.forRootAsync({ useFactory: () => [{ ttl: 60_000, limit: Number(process.env.THROTTLE_LIMIT ?? 120) }] }),
     DbModule,
     CacheModule,
     AuthModule,

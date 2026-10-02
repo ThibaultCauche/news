@@ -28,6 +28,8 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-news}:${POSTGRES_PASSWORD:?définir POSTGRES_PASSWORD dans .env}@postgres:5432/${POSTGRES_DB:-news}
       REDIS_URL: redis://redis:6379
       PORT: 3000
+      # Un relais (Tailscale Funnel) devant l'API : la limite de requêtes compte chaque client séparément (J19).
+      TRUST_PROXY: 1
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:

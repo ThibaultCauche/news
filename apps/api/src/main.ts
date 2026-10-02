@@ -8,12 +8,14 @@ import * as Sentry from "@sentry/nestjs";
 import express from "express";
 import { createLogger } from "@news/domain";
 import { AppModule } from "./app.module";
+import { trustProxyHops } from "./proxy";
 
 const logger = createLogger("api");
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.setGlobalPrefix("v1", { exclude: ["health"] });
+  trustProxyHops(app);
   // CORS reste fermé par défaut (règle 9 de CLAUDE.md, l'appli mobile n'en a
   // pas besoin) ; n'active une origine que pour vérifier l'appli Flutter web
   // en local, jamais en prod (`CORS_DEV_ORIGIN` n'est jamais défini ailleurs).
