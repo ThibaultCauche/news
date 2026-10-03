@@ -101,6 +101,57 @@ describe("Catalogue, favoris de jeu, équipes par jeu (e2e)", () => {
     expect(after.body).toEqual([]);
   });
 
+  it("marque en cours une série dont les dates encadrent maintenant", async () => {
+    const live = await prisma.competition.create({
+      data: {
+        id: randomUUID(),
+        categoryId,
+        parentId: leagueId,
+        kind: "serie",
+        game: "valorant",
+        name: "Test Série en cours",
+        startsAt: new Date(Date.now() - 86_400_000),
+        endsAt: new Date(Date.now() + 86_400_000),
+      },
+    });
+    await app.get(CacheService).del(CacheKeys.catalog());
+    try {
+      const res = await request(app.getHttpServer()).get("/v1/catalog").expect(200);
+      const league = res.body.categories.flatMap((c: any) => c.games).flatMap((g: any) => g.leagues).find((l: any) => l.id === leagueId);
+      expect(league.children.find((c: any) => c.id === live.id).live).toBe(true);
+      expect(league.children.find((c: any) => c.id === serieId).live).toBe(false);
+      // Ni la série de test ni sa ligue ne sont un grand rendez-vous mondial.
+      expect(league.children.find((c: any) => c.id === live.id).major).toBe(false);
+    } finally {
+      await prisma.competition.delete({ where: { id: live.id } });
+      await app.get(CacheService).del(CacheKeys.catalog());
+    }
+  });
+
+  it("met une compétition en favori sans abonnement, idempotent, isolé par compte, et la retire", async () => {
+    const alice = await createAccount();
+    const bob = await createAccount();
+    const auth = (token: string) => ({ Authorization: `Bearer ${token}` });
+
+    await request(app.getHttpServer()).put(`/v1/favorites/competitions/${serieId}`).expect(401);
+    await request(app.getHttpServer()).put(`/v1/favorites/competitions/${serieId}`).set(auth(alice.accessToken)).expect(204);
+    await request(app.getHttpServer()).put(`/v1/favorites/competitions/${serieId}`).set(auth(alice.accessToken)).expect(204);
+
+    const aliceList = await request(app.getHttpServer()).get("/v1/favorites/competitions").set(auth(alice.accessToken)).expect(200);
+    // Le logo vient de la ligue de la série.
+    expect(aliceList.body).toEqual([{ id: serieId, name: "Test Série 2026", imageUrl: "https://example.test/ligue.png" }]);
+    const bobList = await request(app.getHttpServer()).get("/v1/favorites/competitions").set(auth(bob.accessToken)).expect(200);
+    expect(bobList.body).toEqual([]);
+    expect(await prisma.subscription.count({ where: { userId: alice.userId } })).toBe(0);
+
+    await request(app.getHttpServer()).put(`/v1/favorites/competitions/${randomUUID()}`).set(auth(alice.accessToken)).expect(404);
+    await request(app.getHttpServer()).put("/v1/favorites/competitions/pas-un-uuid").set(auth(alice.accessToken)).expect(400);
+
+    await request(app.getHttpServer()).delete(`/v1/favorites/competitions/${serieId}`).set(auth(alice.accessToken)).expect(204);
+    const after = await request(app.getHttpServer()).get("/v1/favorites/competitions").set(auth(alice.accessToken)).expect(200);
+    expect(after.body).toEqual([]);
+  });
+
   it("refuse un jeu inconnu et l'accès sans jeton, et supprime les favoris avec le compte", async () => {
     const carol = await createAccount();
     await request(app.getHttpServer()).put("/v1/favorites/games/valorant").expect(401);

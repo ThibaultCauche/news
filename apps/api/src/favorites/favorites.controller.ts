@@ -1,4 +1,4 @@
-import { BadRequestException, Controller, Delete, Get, HttpCode, Inject, Param, Put, UseGuards } from "@nestjs/common";
+import { BadRequestException, Controller, Delete, Get, HttpCode, Inject, NotFoundException, Param, ParseUUIDPipe, Put, UseGuards } from "@nestjs/common";
 import { ApiOkResponse, ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
 import { isKnownGame } from "@news/domain";
@@ -39,5 +39,47 @@ export class FavoritesController {
   @HttpCode(204)
   async remove(@CurrentUser() user: AuthUser, @Param("game") game: string): Promise<void> {
     await this.prisma.favoriteGame.deleteMany({ where: { userId: user.id, game } });
+  }
+}
+
+export class FavoriteCompetitionDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() name!: string;
+  // Logo de la ligue de la série (pastille de la section « Favoris »), `null` sans logo.
+  @ApiProperty({ nullable: true, type: String }) imageUrl!: string | null;
+}
+
+// Compétitions favorites (J20) : même principe que les jeux, un raccourci sans notification.
+@Controller("favorites/competitions")
+@UseGuards(JwtAuthGuard)
+export class FavoriteCompetitionsController {
+  constructor(@Inject(PRISMA) private readonly prisma: PrismaClient) {}
+
+  @Get()
+  @ApiOkResponse({ type: [FavoriteCompetitionDto] })
+  async list(@CurrentUser() user: AuthUser): Promise<FavoriteCompetitionDto[]> {
+    const rows = await this.prisma.favoriteCompetition.findMany({
+      where: { userId: user.id },
+      orderBy: { createdAt: "asc" },
+      select: { competition: { select: { id: true, name: true, imageUrl: true, parent: { select: { imageUrl: true } } } } },
+    });
+    return rows.map(({ competition: c }) => ({ id: c.id, name: c.name, imageUrl: c.imageUrl ?? c.parent?.imageUrl ?? null }));
+  }
+
+  @Put(":id")
+  @HttpCode(204)
+  async add(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<void> {
+    if (!(await this.prisma.competition.findUnique({ where: { id }, select: { id: true } }))) throw new NotFoundException("Compétition introuvable");
+    await this.prisma.favoriteCompetition.upsert({
+      where: { userId_competitionId: { userId: user.id, competitionId: id } },
+      create: { userId: user.id, competitionId: id },
+      update: {},
+    });
+  }
+
+  @Delete(":id")
+  @HttpCode(204)
+  async remove(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<void> {
+    await this.prisma.favoriteCompetition.deleteMany({ where: { userId: user.id, competitionId: id } });
   }
 }

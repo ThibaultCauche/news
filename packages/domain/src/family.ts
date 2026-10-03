@@ -48,3 +48,15 @@ export function nearestCompetitionRule<T extends CompetitionRule>(rules: T[]): T
   }
   return best;
 }
+
+// Compétitions « majeures » (J20) : les grands rendez-vous mondiaux, ceux qui méritent la section « En
+// cours » de l'onglet Compétitions (Champions, Masters, Coupe du monde…), pas chaque étape régionale ou
+// qualification qui tourne en même temps. Reconnues par leur nom, faute de champ fournisseur fiable (la
+// catégorie de tournoi ne distingue pas un Champions d'une étape régionale) ; à compléter mot à mot quand
+// de nouveaux jeux et sports arrivent.
+const MAJOR_WORDS = /\b(champions|masters|world cup|world championship|worlds|international|major)\b/i;
+const MINOR_WORDS = /\b(qualifiers?|open|closed|challengers|regional)\b/i;
+
+export function isMajorEvent(leagueName: string, serieName: string): boolean {
+  return MAJOR_WORDS.test(`${leagueName} ${serieName}`) && !MINOR_WORDS.test(serieName);
+}

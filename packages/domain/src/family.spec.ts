@@ -1,4 +1,4 @@
-import { competitionSpecificity, familyNameOf, nearestCompetitionRule } from "./family";
+import { competitionSpecificity, familyNameOf, isMajorEvent, nearestCompetitionRule } from "./family";
 
 describe("familyNameOf", () => {
   it("retire l'année finale", () => {
@@ -48,5 +48,21 @@ describe("nearestCompetitionRule", () => {
 
   it("la sourdine d'une autre série n'a pas d'effet sur celle-ci (elle n'est pas dans la chaîne)", () => {
     expect(nearestCompetitionRule([league])?.muted).toBe(false);
+  });
+});
+
+describe("isMajorEvent", () => {
+  it("reconnaît les grands rendez-vous mondiaux", () => {
+    expect(isMajorEvent("VCT", "Champions 2026")).toBe(true);
+    expect(isMajorEvent("VCT", "Masters London 2026")).toBe(true);
+    expect(isMajorEvent("Esports World Cup", "2026")).toBe(true);
+    expect(isMajorEvent("LoL Esports", "Worlds 2026")).toBe(true);
+  });
+
+  it("écarte les étapes régionales, les qualifications et les petites ligues", () => {
+    expect(isMajorEvent("VCT", "Americas Stage 2 2026")).toBe(false);
+    expect(isMajorEvent("VCT", "EMEA Kickoff 2026")).toBe(false);
+    expect(isMajorEvent("Monsters Reloaded", "Closed Qualifier 2026")).toBe(false);
+    expect(isMajorEvent("Esports World Cup", "Americas Qualifier 2026")).toBe(false);
   });
 });

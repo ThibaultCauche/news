@@ -65,6 +65,7 @@ model Competition {
   hasBracket Boolean       @default(false) @map("has_bracket")
   events     Event[]
   standings  Standing[]
+  favorites  FavoriteCompetition[]
   createdAt  DateTime      @default(now()) @map("created_at")
   updatedAt  DateTime      @updatedAt @map("updated_at")
 
@@ -225,6 +226,7 @@ model AppUser {
   setting          UserSetting?
   notificationLogs NotificationLog[]
   favoriteGames    FavoriteGame[]
+  favoriteCompetitions FavoriteCompetition[]
   predictions      Prediction[]
   learnProgress    LearnProgress[]
   ownedGroups      FriendGroup[]
@@ -325,6 +327,20 @@ model FavoriteGame {
 
   @@unique([userId, game])
   @@map("favorite_game")
+}
+
+// Compétition mise en favori (J20) : raccourci d'accès uniquement (section « Favoris » de l'onglet
+// Compétitions), jamais de notification : `subscription` reste le seul lieu des alertes.
+model FavoriteCompetition {
+  id            String      @id @default(uuid())
+  userId        String      @map("user_id")
+  user          AppUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  competitionId String      @map("competition_id")
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@unique([userId, competitionId])
+  @@map("favorite_competition")
 }
 
 // Un appareil par installation (`installId` généré une fois côté client). `liveActivityToken`

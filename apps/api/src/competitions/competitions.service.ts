@@ -69,6 +69,7 @@ export class BracketParticipantDto {
   @ApiProperty() entityId!: string;
   @ApiProperty() name!: string;
   @ApiProperty({ nullable: true, type: String }) shortName!: string | null;
+  @ApiProperty({ nullable: true, type: String }) imageUrl!: string | null;
   @ApiProperty({ nullable: true, type: Number }) score!: number | null;
   @ApiProperty({ nullable: true, type: Boolean }) isWinner!: boolean | null;
 }
@@ -184,7 +185,7 @@ export class CompetitionsService {
       where: { competitionId: id },
       include: {
         participants: {
-          include: { entity: { select: { id: true, name: true, shortName: true } } },
+          include: { entity: { select: { id: true, name: true, shortName: true, imageUrl: true } } },
           orderBy: PARTICIPANT_ORDER,
         },
         linksTo: true,
@@ -210,6 +211,7 @@ export class CompetitionsService {
           entityId: p.entityId,
           name: p.entity.name,
           shortName: p.entity.shortName,
+          imageUrl: p.entity.imageUrl,
           score: p.score,
           isWinner: p.isWinner,
         })),

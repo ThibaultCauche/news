@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
-import { GAME_NAMES } from "@news/domain";
+import { GAME_NAMES, isMajorEvent } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { PRISMA } from "../db/db.module";
@@ -13,6 +13,11 @@ export class CatalogChildDto {
   @ApiProperty() name!: string;
   // Famille de la série (« Champions » pour Champions 2026), `null` sans famille (J10).
   @ApiProperty({ nullable: true, type: String }) familyId!: string | null;
+  // La série est en cours (dates de la série), pour la section « En cours » de l'onglet Compétitions (J20).
+  @ApiProperty() live!: boolean;
+  // Un grand rendez-vous mondial (Champions, Masters, Coupe du monde…) : seuls ceux-là vont dans « En cours », qui
+  // resterait trop longue à mesure qu'on ajoute des jeux et des sports.
+  @ApiProperty() major!: boolean;
 }
 
 // Une compétition qui revient d'année en année (J10) : suivre la famille suit toutes ses éditions.
@@ -47,6 +52,8 @@ export class CatalogDto {
   @ApiProperty({ type: [CatalogCategoryDto] }) categories!: CatalogCategoryDto[];
 }
 
+const isInProgress = (c: { startsAt: Date | null; endsAt: Date | null }, now: Date): boolean => c.startsAt !== null && c.startsAt <= now && (c.endsAt === null || c.endsAt >= now);
+
 // Onglet Compétitions (J9) : catégorie → jeu → ligues (racines) et leurs séries
 // directes. Une catégorie ou un jeu sans compétition n'apparaît pas (on part des
 // compétitions, pas des catégories). La recherche se fait côté appli sur ce catalogue.
@@ -71,6 +78,7 @@ export class CatalogService {
       orderBy: { name: "asc" },
     });
 
+    const now = new Date();
     const categories = new Map<string, CatalogCategoryDto>();
     for (const root of roots) {
       const slug = root.game!;
@@ -84,14 +92,13 @@ export class CatalogService {
         game = { slug, name: GAME_NAMES[slug] ?? slug, leagues: [] };
         category.games.push(game);
       }
-      const now = new Date();
       game.leagues.push({
         id: root.id,
         name: root.name,
         imageUrl: root.imageUrl,
-        children: root.children.map(({ id, name, familyId }) => ({ id, name, familyId })),
+        children: root.children.map((c) => ({ id: c.id, name: c.name, familyId: c.familyId, live: isInProgress(c, now), major: isMajorEvent(root.name, c.name) })),
         families: root.families,
-        live: root.children.some((c) => c.startsAt !== null && c.startsAt <= now && (c.endsAt === null || c.endsAt >= now)),
+        live: root.children.some((c) => isInProgress(c, now)),
       });
     }
 
