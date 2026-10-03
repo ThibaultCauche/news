@@ -8,6 +8,7 @@ import "../../widgets/page_title.dart";
 import "../../core/navigation.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/game_logo.dart";
+import "../bracket/bracket_provider.dart";
 import "competitions_data.dart";
 import "game_screen.dart";
 import "league_screen.dart";
@@ -88,6 +89,8 @@ class _Browse extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final favorites = ref.watch(favoriteGamesProvider).value ?? const <String>[];
+    final favoriteCompetitions = ref.watch(favoriteCompetitionsProvider).value ?? const <FavoriteCompetitionDto>[];
+    final live = liveSeries(catalog);
     final allGames = [for (final c in catalog.categories) ...c.games];
     final favoriteGames = [
       for (final g in allGames)
@@ -97,12 +100,37 @@ class _Browse extends ConsumerWidget {
     return ListView(
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xl + 80),
       children: [
-        if (favoriteGames.isNotEmpty) ...[
+        // Les grands rendez-vous en cours, repliés d'office : un geste pour les déplier, un autre pour le tableau (J20).
+        if (live.isNotEmpty) ...[
+          Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              tilePadding: EdgeInsets.zero,
+              childrenPadding: EdgeInsets.zero,
+              title: Row(
+                children: [
+                  Container(width: 8, height: 8, decoration: const BoxDecoration(color: AppColors.live, shape: BoxShape.circle)),
+                  const SizedBox(width: AppSpacing.sm),
+                  Text("EN COURS (${live.length})", style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.live)),
+                ],
+              ),
+              children: [for (final item in live) _LiveSeriesCard(item: item)],
+            ),
+          ),
+          const SizedBox(height: AppSpacing.xs),
+        ],
+        if (favoriteGames.isNotEmpty || favoriteCompetitions.isNotEmpty) ...[
           Text("FAVORIS", style: Theme.of(context).textTheme.labelSmall),
           const SizedBox(height: AppSpacing.xs),
           Wrap(
             spacing: AppSpacing.sm,
             children: [
+              for (final competition in favoriteCompetitions)
+                ActionChip(
+                  avatar: LeagueLogo(imageUrl: competition.imageUrl, size: 24),
+                  label: Text(competition.name),
+                  onPressed: () => openCompetitionPage(context, id: competition.id, name: competition.name),
+                ),
               for (final game in favoriteGames)
                 ActionChip(
                   avatar: GameLogo(slug: game.slug, size: 24),
@@ -174,6 +202,62 @@ class _Results extends StatelessWidget {
             },
           ),
       ],
+    );
+  }
+}
+
+/// Une grande compétition en cours : son nom, ses dates et une description (le résumé Liquipedia de la page
+/// compétition, avec sa source : règle 8 de `CLAUDE.md`). Le détail n'est demandé qu'une fois la section dépliée.
+class _LiveSeriesCard extends ConsumerWidget {
+  const _LiveSeriesCard({required this.item});
+
+  final ({CatalogChildDto serie, CatalogLeagueDto league, CatalogGameDto game}) item;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final detail = ref.watch(competitionDetailProvider(item.serie.id)).value;
+    final dates = detail == null ? null : formatDateRange(detail.startsAt, detail.endsAt);
+    final context_ = detail?.context;
+    return FramedCard(
+      margin: const EdgeInsets.only(bottom: AppSpacing.sm),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(AppRadii.card),
+        onTap: () => openCompetitionPage(context, id: item.serie.id, name: item.serie.name),
+        child: Padding(
+          padding: const EdgeInsets.all(AppSpacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  LeagueLogo(imageUrl: item.league.imageUrl),
+                  const SizedBox(width: AppSpacing.md),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(item.serie.name, style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 16)),
+                        Text("${item.league.name} · ${item.game.name}", style: const TextStyle(color: AppColors.textSecondary)),
+                      ],
+                    ),
+                  ),
+                  const Icon(Icons.chevron_right, color: AppColors.textTertiary),
+                ],
+              ),
+              if (dates != null) ...[
+                const SizedBox(height: AppSpacing.sm),
+                Text(dates, style: const TextStyle(color: AppColors.brass, fontWeight: FontWeight.w600)),
+              ],
+              if (context_ != null) ...[
+                const SizedBox(height: AppSpacing.xs),
+                Text(context_.text, maxLines: 3, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary, height: 1.35)),
+                const SizedBox(height: 2),
+                Text("Source : ${context_.source_} (${context_.license})", style: const TextStyle(color: AppColors.textTertiary, fontSize: 11)),
+              ],
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

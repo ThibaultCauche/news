@@ -22,6 +22,7 @@ import "../follows/follows_provider.dart";
 import "../follows/follows_screen.dart";
 import "../learn/learn_screen.dart";
 import "../learn/learn_visuals.dart";
+import "../bracket/bracket_model.dart" show scheduleLabel;
 import "grand_final_card.dart";
 import "../next_match/next_match_screen.dart";
 import "../profile/community_providers.dart";
@@ -123,8 +124,14 @@ class _HomeBody extends StatelessWidget {
     final liveEvent = home.nowForYou?.status == "live" ? home.nowForYou : live.firstOrNull;
     final upNextEvent = liveEvent == null ? (home.nowForYou ?? upcoming.firstOrNull) : null;
 
+    final summary = homeSummary(home, DateTime.now());
     return SliverList(
       delegate: SliverChildListDelegate([
+        if (summary != null)
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+            child: Text(summary, style: const TextStyle(fontWeight: FontWeight.w600)),
+          ),
         // « Ensuite » seulement si ce match a lieu aujourd'hui : un match de demain n'est pas « ensuite ».
         if (liveEvent != null) _LiveBanner(event: liveEvent, scoresHidden: scoresHidden, next: upcoming.firstOrNull.ifToday),
         if (liveEvent == null && upNextEvent != null) _UpNextSection(event: upNextEvent, scoresHidden: scoresHidden),
@@ -135,6 +142,23 @@ class _HomeBody extends StatelessWidget {
       ]),
     );
   }
+}
+
+String _teams(EventSummaryDto e) => e.participants.map((p) => p.shortName ?? p.name).join(" – ");
+
+/// Une ligne qui dit où on en est, par gabarit : « Ton match est en direct : FNC – G2. », « Ton
+/// prochain match : FNC – G2, demain à 9 h. », sinon le nombre de matchs en direct ou du jour.
+/// `null` quand il n'y a rien à dire (la ligne disparaît).
+String? homeSummary(HomeResponseDto home, DateTime now) {
+  final mine = home.nowForYou;
+  if (mine != null && mine.status == "live") return "Ton match est en direct : ${_teams(mine)}.";
+  final start = mine?.startsAt.toDateTime?.toLocal();
+  if (mine != null && start != null && !start.isBefore(now)) return "Ton prochain match : ${_teams(mine)}, ${scheduleLabel(start, now)}.";
+  final live = home.liveNow.length;
+  if (live > 0) return live == 1 ? "1 match en direct." : "$live matchs en direct.";
+  final today = home.upcoming.where((e) => e.startsAt.toDateTime != null && dateOnly(e.startsAt.toDateTime!.toLocal()) == dateOnly(now)).length;
+  if (today > 0) return today == 1 ? "1 match aujourd'hui." : "$today matchs aujourd'hui.";
+  return null;
 }
 
 /// "Maintenant pour toi" (docs/02, écran 17) : le match en direct sur la carte de match commune

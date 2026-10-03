@@ -1,167 +1,238 @@
 import "dart:math" as math;
 import "package:flutter/material.dart";
-import "package:news_api_client/news_api_client.dart";
-import "../../core/iterable_x.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
+import "bracket_model.dart";
 
-/// Arbre radial (écran 02/07, `docs/02`) : la finale est au centre, les tours
-/// précédents s'étalent sur des anneaux vers l'extérieur — `round` (calculé
-/// côté API, `packages/domain`) fixe l'anneau. L'angle dans un anneau, lui,
-/// est réparti ici : chaque nœud hérite de l'angle moyen des matchs qui le
-/// nourrissent, pour que les branches se suivent visuellement (ponytail :
-/// pas de vrai calcul de slot croisé haut/bas tableau, cf. `packages/domain/bracket.ts`).
-class BracketPainter extends CustomPainter {
-  BracketPainter({required this.nodes, required this.links, required this.highlightedEventIds});
-
-  final List<BracketNodeDto> nodes;
-  final List<BracketLinkDto> links;
-  final Set<String> highlightedEventIds;
-
-  ({Map<String, Offset> positions, double centerRadius}) _computePositions(Offset center, Size size) {
-    // `round` est un `num` côté client généré (OpenAPI `number`, packages/api_client_dart) :
-    // toujours un entier en pratique, ramené à `int` ici pour indexer les anneaux.
-    final byRound = <int, List<BracketNodeDto>>{};
-    for (final n in nodes) {
-      byRound.putIfAbsent(n.round.toInt(), () => []).add(n);
-    }
-    if (byRound.isEmpty) return (positions: {}, centerRadius: 0);
-    final maxRound = byRound.keys.reduce(math.max);
-
-    // Les anneaux se partagent l'espace disponible : le premier tour n'est
-    // jamais collé au centre, le tour le plus profond n'est jamais coupé —
-    // quel que soit le nombre de tours ou la taille de l'écran.
-    final maxRadius = math.min(size.width, size.height) / 2;
-    final centerRadius = maxRadius / (maxRound + 2);
-    final ringGap = centerRadius;
-
-    final childrenOf = <String, List<String>>{};
-    for (final l in links) {
-      childrenOf.putIfAbsent(l.toEventId, () => []).add(l.fromEventId);
-    }
-
-    final angles = <String, double>{};
-    for (var round = maxRound; round >= 1; round--) {
-      final ring = byRound[round] ?? const <BracketNodeDto>[];
-      final withAngle = <BracketNodeDto>[];
-      final withoutAngle = <BracketNodeDto>[];
-      for (final node in ring) {
-        final childAngles = (childrenOf[node.eventId] ?? const []).map((id) => angles[id]).whereType<double>().toList();
-        if (childAngles.isNotEmpty) {
-          angles[node.eventId] = childAngles.reduce((a, b) => a + b) / childAngles.length;
-          withAngle.add(node);
-        } else {
-          withoutAngle.add(node);
-        }
-      }
-      // Répartit les nœuds sans enfant connu (feuilles du tour le plus profond,
-      // ou bracket incomplet) sur les créneaux angulaires restants.
-      if (withoutAngle.isNotEmpty) {
-        final total = ring.length;
-        var slot = 0;
-        for (final node in ring) {
-          if (angles.containsKey(node.eventId)) continue;
-          angles[node.eventId] = 2 * math.pi * slot / total;
-          slot++;
-        }
-      }
-    }
-
-    final positions = <String, Offset>{};
-    for (var round = 1; round <= maxRound; round++) {
-      final radius = centerRadius + round * ringGap;
-      for (final node in byRound[round] ?? const <BracketNodeDto>[]) {
-        final angle = angles[node.eventId] ?? 0;
-        positions[node.eventId] = center + Offset(radius * math.cos(angle), radius * math.sin(angle));
-      }
-    }
-    for (final node in byRound[0] ?? const <BracketNodeDto>[]) {
-      positions[node.eventId] = center;
-    }
-    return (positions: positions, centerRadius: centerRadius);
+/// Géométrie de l'arbre radial : partagée par le dessin et par la détection des appuis.
+class RadialLayout {
+  // Quatre anneaux (phase finale avec repêchage) : des cercles plus petits pour que deux anneaux voisins ne se chevauchent pas.
+  RadialLayout(this.tree, Size size) : slotRadius = tree.rings >= 4 ? 16.0 : 19.0 {
+    center = Offset(size.width / 2, size.height / 2);
+    final maxRadius = math.min(size.width, size.height) / 2 - slotRadius - 4;
+    centerRadius = maxRadius * (tree.rings >= 4 ? 0.24 : 0.30);
+    _span = maxRadius - centerRadius;
   }
+
+  final double slotRadius;
+
+  final RadialTree tree;
+  late final Offset center;
+  late final double centerRadius;
+  late final double _span;
+
+  /// Rayon de l'anneau [ring] ; [branchRings] : le nombre d'anneaux de la moitié du cercle (0 = tout l'arbre).
+  double ringRadius(int ring, [int branchRings = 0]) {
+    final rings = branchRings > 0 ? branchRings : tree.rings;
+    return rings == 0 ? centerRadius : centerRadius + ring * _span / rings;
+  }
+
+  Offset polar(double radius, double angle) => center + Offset(radius * math.cos(angle), radius * math.sin(angle));
+
+  Offset position(TreeSlot slot) => polar(ringRadius(slot.ring, slot.branchRings), slot.angle);
+
+  /// Le match sous un appui : un cercle d'équipe → son match ; le centre → le match décisif.
+  String? matchAt(Offset point) {
+    final hit = tree.slots.where((s) => !s.hidden && (position(s) - point).distance <= slotRadius + 8).toList()
+      ..sort((a, b) => (position(a) - point).distance.compareTo((position(b) - point).distance));
+    if (hit.isNotEmpty) return hit.first.matchId;
+    if ((point - center).distance <= centerRadius) return tree.center?.eventId;
+    return null;
+  }
+}
+
+/// Arbre radial (écrans 02/07, `docs/02`) : une équipe par cercle, les 8 équipes des quarts
+/// à l'extérieur, le match décisif au centre. Le contenu du centre (compte à rebours,
+/// champion) est un widget posé par-dessus (`bracket_screen.dart`). Pas d'animation :
+/// règle 13 de `CLAUDE.md`.
+class BracketPainter extends CustomPainter {
+  BracketPainter({required this.tree, required this.followedEntityIds, this.divider});
+
+  final RadialTree tree;
+  final Set<String> followedEntityIds;
+
+  /// Une ligne horizontale qui coupe le cercle en deux (poules : ouvertures en haut, élimination en
+  /// bas), avec le nom de chaque moitié. Remplace alors les étiquettes d'anneaux.
+  final ({String top, String bottom})? divider;
+
+  bool _followed(TreeSlot? s) => s?.team != null && followedEntityIds.contains(s!.team!.entityId);
 
   @override
   void paint(Canvas canvas, Size size) {
-    final center = Offset(size.width / 2, size.height / 2);
-    final (:positions, :centerRadius) = _computePositions(center, size);
+    final layout = RadialLayout(tree, size);
+    final center = layout.center;
+
+    final ringPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 1
+      ..color = AppColors.surfaceBorder;
+    if (divider == null) {
+      for (var ring = 1; ring <= tree.rings; ring++) {
+        canvas.drawCircle(center, layout.ringRadius(ring), ringPaint);
+      }
+    } else {
+      // Cercle coupé en deux : chaque moitié a ses propres anneaux, répartis sur tout le rayon.
+      for (final (slots, from) in [(tree.slots.where((s) => s.angle < 0).toList(), -math.pi), (tree.slots.where((s) => s.angle >= 0).toList(), 0.0)]) {
+        final rings = slots.map((s) => s.branchRings > 0 ? s.branchRings : s.ring).fold(0, math.max);
+        for (var ring = 1; ring <= rings; ring++) {
+          canvas.drawArc(Rect.fromCircle(center: center, radius: layout.ringRadius(ring, rings)), from, math.pi, false, ringPaint);
+        }
+      }
+    }
+    if (divider == null) {
+      for (final entry in tree.ringLabels.entries) {
+        _paintRingLabel(canvas, Offset(center.dx, center.dy - layout.ringRadius(entry.key)), entry.value);
+      }
+    } else {
+      _paintDivider(canvas, layout, divider!);
+    }
 
     final linePaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2
-      ..color = AppColors.surfaceBorder;
-    final goldLinePaint = Paint()
+      ..color = AppColors.textTertiary;
+    final goldPaint = Paint()
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2.5
       ..color = AppColors.gold;
-
-    for (final link in links) {
-      final from = positions[link.fromEventId];
-      final to = positions[link.toEventId];
-      if (from == null || to == null) continue;
-      final highlighted = highlightedEventIds.contains(link.fromEventId) && highlightedEventIds.contains(link.toEventId);
-      canvas.drawLine(from, to, highlighted ? goldLinePaint : linePaint);
-    }
-
-    for (final node in nodes) {
-      final pos = positions[node.eventId];
-      if (pos == null) continue;
-      if (node.round == 0) {
-        _paintCenter(canvas, pos, node, centerRadius);
+    final centerFollowed = tree.center?.participants.any((p) => followedEntityIds.contains(p.entityId)) ?? false;
+    final brassPaint = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = 2.5
+      ..color = AppColors.brass;
+    final brassPaths = <Path>[];
+    final goldPaths = <Path>[];
+    for (final slot in tree.slots.where((s) => !s.hidden)) {
+      final path = _link(layout, slot);
+      final parent = slot.parent;
+      final gold = _followed(slot) && (parent == null ? centerFollowed : parent.team?.entityId == slot.team!.entityId);
+      if (gold) {
+        goldPaths.add(path);
+      } else if (slot.advances) {
+        brassPaths.add(path); // le chemin de l'équipe qui avance, en laiton
       } else {
-        _paintNode(canvas, pos, node, highlightedEventIds.contains(node.eventId));
+        canvas.drawPath(path, linePaint);
       }
     }
+    for (final path in brassPaths) {
+      canvas.drawPath(path, brassPaint);
+    }
+    for (final path in goldPaths) {
+      canvas.drawPath(path, goldPaint);
+    }
+
+    _paintCenter(canvas, layout);
+    for (final slot in tree.slots.where((s) => !s.hidden)) {
+      _paintSlot(canvas, layout.position(slot), slot, layout.slotRadius);
+    }
   }
 
-  void _paintCenter(Canvas canvas, Offset pos, BracketNodeDto node, double radius) {
-    final finished = node.status.statusKind == EventStatusKind.finished;
+  /// Du cercle vers son parent : radial, arc de cercle à mi-chemin entre les deux anneaux,
+  /// radial. Le dernier anneau rejoint le centre tout droit.
+  Path _link(RadialLayout layout, TreeSlot slot) {
+    final path = Path()..moveTo(layout.position(slot).dx, layout.position(slot).dy);
+    final parent = slot.parent;
+    if (parent == null) {
+      // Anneau 1 : la barre entre les deux équipes du match, à mi-chemin du centre, puis le chemin vers lui.
+      final siblings = tree.slots.where((s) => s.parent == null && s.matchId == slot.matchId).toList();
+      final target = siblings.map((s) => s.angle).reduce((a, b) => a + b) / siblings.length;
+      // Deux équipes aux antipodes (finale du haut, à gauche et à droite) : un arc de demi-cercle
+      // serait absurde, chacune rejoint le centre tout droit.
+      if ((slot.angle - target).abs() > math.pi / 3) {
+        final end = layout.polar(layout.centerRadius, slot.angle);
+        return path..lineTo(end.dx, end.dy);
+      }
+      final mid = (layout.ringRadius(1, slot.branchRings) + layout.centerRadius) / 2;
+      final start = layout.polar(mid, slot.angle);
+      final end = layout.polar(layout.centerRadius, target);
+      return path
+        ..lineTo(start.dx, start.dy)
+        ..arcTo(Rect.fromCircle(center: layout.center, radius: mid), slot.angle, target - slot.angle, false)
+        ..lineTo(end.dx, end.dy);
+    }
+    final mid = (layout.ringRadius(slot.ring, slot.branchRings) + layout.ringRadius(parent.ring, parent.branchRings)) / 2;
+    final start = layout.polar(mid, slot.angle);
+    final end = layout.position(parent);
+    return path
+      ..lineTo(start.dx, start.dy)
+      ..arcTo(Rect.fromCircle(center: layout.center, radius: mid), slot.angle, parent.angle - slot.angle, false)
+      ..lineTo(end.dx, end.dy);
+  }
+
+  void _paintCenter(Canvas canvas, RadialLayout layout) {
+    final node = tree.center;
+    final finished = node?.status.statusKind == EventStatusKind.finished;
+    final live = node?.status.statusKind == EventStatusKind.live;
+    canvas.drawCircle(layout.center, layout.centerRadius, Paint()..color = finished ? AppColors.gold.withValues(alpha: 0.15) : AppColors.surface);
     canvas.drawCircle(
-      pos,
-      radius,
-      Paint()..color = finished ? AppColors.gold.withValues(alpha: 0.15) : AppColors.surface,
-    );
-    canvas.drawCircle(
-      pos,
-      radius,
+      layout.center,
+      layout.centerRadius,
       Paint()
         ..style = PaintingStyle.stroke
-        ..strokeWidth = 2
-        ..color = finished ? AppColors.gold : AppColors.surfaceBorder,
+        ..strokeWidth = live ? 2.5 : 2
+        ..color = live ? AppColors.live : (finished ? AppColors.gold : AppColors.surfaceBorderHighlight),
     );
-    final winner = node.participants.where((p) => p.isWinner == true).map((p) => p.shortName ?? p.name).firstOrNull;
-    _paintLabel(canvas, pos, winner ?? "?", finished ? AppColors.gold : AppColors.textSecondary);
   }
 
-  void _paintNode(Canvas canvas, Offset pos, BracketNodeDto node, bool highlighted) {
-    final isLive = node.status.statusKind == EventStatusKind.live;
-    const radius = 20.0;
-    canvas.drawCircle(pos, radius, Paint()..color = AppColors.surface);
-    canvas.drawCircle(
-      pos,
-      radius,
-      Paint()
-        ..style = PaintingStyle.stroke
-        ..strokeWidth = isLive ? 2.5 : (highlighted ? 2.5 : 1.5)
-        ..color = isLive ? AppColors.live : (highlighted ? AppColors.gold : AppColors.surfaceBorder),
-    );
-    final label = node.participants.isEmpty
-        ? "TBD"
-        : node.participants.map((p) => p.shortName ?? p.name.substring(0, math.min(3, p.name.length))).join("/");
-    _paintLabel(canvas, pos, label, highlighted ? AppColors.gold : AppColors.textPrimary);
+  void _paintSlot(Canvas canvas, Offset pos, TreeSlot slot, double radius) {
+    final unknown = slot.team == null;
+    final followed = _followed(slot);
+    // Fond un peu plus clair que la carte : un logo sombre s'y lit (comme dans la pyramide).
+    canvas.drawCircle(pos, radius, Paint()..color = Color.alphaBlend(AppColors.surfaceBorder, AppColors.surface));
+
+    final border = Paint()
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = followed || slot.live || slot.won ? 2.5 : 1.5
+      ..color = slot.live ? AppColors.live : (followed ? AppColors.gold : (slot.won ? AppColors.brass : AppColors.surfaceBorderHighlight));
+    if (unknown) {
+      _dashedCircle(canvas, pos, radius, border);
+    } else {
+      canvas.drawCircle(pos, radius, border);
+    }
   }
 
-  void _paintLabel(Canvas canvas, Offset pos, String text, Color color) {
+  void _dashedCircle(Canvas canvas, Offset center, double radius, Paint paint) {
+    const dashes = 14;
+    const sweep = 2 * math.pi / dashes;
+    for (var i = 0; i < dashes; i++) {
+      canvas.drawArc(Rect.fromCircle(center: center, radius: radius), i * sweep, sweep * 0.55, false, paint);
+    }
+  }
+
+  void _paintRingLabel(Canvas canvas, Offset at, String text) {
     final painter = TextPainter(
-      text: TextSpan(text: text, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600)),
+      text: TextSpan(text: text, style: const TextStyle(color: AppColors.textTertiary, fontSize: 9, fontWeight: FontWeight.w600, letterSpacing: 1.2)),
       textDirection: TextDirection.ltr,
-      textAlign: TextAlign.center,
-    )..layout(maxWidth: 60);
-    painter.paint(canvas, pos - Offset(painter.width / 2, painter.height / 2));
+    )..layout();
+    final rect = Rect.fromCenter(center: at, width: painter.width + 8, height: painter.height + 2);
+    canvas.drawRect(rect, Paint()..color = AppColors.background);
+    painter.paint(canvas, at - Offset(painter.width / 2, painter.height / 2));
+  }
+
+  void _paintDivider(Canvas canvas, RadialLayout layout, ({String top, String bottom}) labels) {
+    final reach = layout.ringRadius(tree.rings) + layout.slotRadius;
+    final y = layout.center.dy;
+    canvas.drawLine(
+      Offset(layout.center.dx - reach, y),
+      Offset(layout.center.dx + reach, y),
+      Paint()
+        ..strokeWidth = 1
+        ..color = AppColors.brass.withValues(alpha: 0.45),
+    );
+    if (labels.top.isNotEmpty) _paintDividerLabel(canvas, Offset(layout.center.dx - reach + 2, y - 8), labels.top, above: true);
+    if (labels.bottom.isNotEmpty) _paintDividerLabel(canvas, Offset(layout.center.dx - reach + 2, y + 8), labels.bottom, above: false);
+  }
+
+  void _paintDividerLabel(Canvas canvas, Offset anchor, String text, {required bool above}) {
+    final painter = TextPainter(
+      text: TextSpan(text: text, style: const TextStyle(color: AppColors.brass, fontSize: 10, fontWeight: FontWeight.w600, letterSpacing: 1.2)),
+      textDirection: TextDirection.ltr,
+    )..layout();
+    final at = anchor + Offset(0, above ? -painter.height / 2 : painter.height / 2);
+    canvas.drawRect(Rect.fromCenter(center: at + Offset(painter.width / 2, 0), width: painter.width + 8, height: painter.height + 2), Paint()..color = AppColors.surface);
+    painter.paint(canvas, at - Offset(0, painter.height / 2));
   }
 
   @override
-  bool shouldRepaint(covariant BracketPainter oldDelegate) {
-    return oldDelegate.nodes != nodes || oldDelegate.links != links || oldDelegate.highlightedEventIds != highlightedEventIds;
-  }
+  bool shouldRepaint(covariant BracketPainter oldDelegate) => oldDelegate.tree != tree || oldDelegate.followedEntityIds != followedEntityIds;
 }

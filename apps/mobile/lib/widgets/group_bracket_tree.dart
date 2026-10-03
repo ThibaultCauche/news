@@ -1,12 +1,19 @@
+import "dart:math" as math;
 import "async_view.dart";
 import "ornate_frame.dart";
+import "../features/next_match/next_match_screen.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
-import "../core/iterable_x.dart";
 import "../domain/event_status.dart";
+import "../features/bracket/bracket_model.dart";
 import "../features/bracket/bracket_provider.dart";
-import "../features/next_match/next_match_screen.dart";
+import "../features/bracket/bracket_view.dart";
+import "../features/bracket/radial_bracket.dart";
+import "../features/follows/follows_provider.dart";
+import "../theme/app_theme.dart";
+import "bracket_match_card.dart";
+import "horizontal_bracket.dart";
 import "../theme/tokens.dart";
 
 /// Arbre d'une poule GSL (Ouverture → Vainqueurs/Élimination → Decider →
@@ -18,9 +25,13 @@ import "../theme/tokens.dart";
 /// Groupes (`BracketScreen`) et la carte "Maintenant" de l'écran Saison — un
 /// seul arbre plutôt que deux rendus différents du même bracket.
 class GroupBracketTree extends ConsumerWidget {
-  const GroupBracketTree({super.key, required this.competitionId});
+  const GroupBracketTree({super.key, required this.competitionId, this.followViewPreference = false});
 
   final String competitionId;
+
+  /// Vrai sur la page du tableau, où l'on choisit pyramide ou cercle ; la page du jeu garde la pyramide,
+  /// bien plus basse que quatre cercles empilés.
+  final bool followViewPreference;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -36,7 +47,7 @@ class GroupBracketTree extends ConsumerWidget {
           padding: const EdgeInsets.all(AppSpacing.sm),
           decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.chip)),
           child: switch (bracket) {
-            _ when bracket.hasValue => _Tree(name: name, bracket: bracket.value!),
+            _ when bracket.hasValue => _Tree(name: name, bracket: bracket.value!, followViewPreference: followViewPreference),
             AsyncError() => ErrorState(message: "Poule indisponible.", compact: true, onRetry: () => ref.invalidate(bracketProvider(competitionId))),
             _ => const Skeleton(height: 120, radius: AppRadii.chip),
           },
@@ -103,22 +114,171 @@ GslShape? _detectByLinks(BracketResponseDto bracket) {
   return GslShape(opening1: opening![0], opening2: opening[1], winners: winners.single, elimination: elimination.single, decider: deciderNode);
 }
 
-class _Tree extends StatelessWidget {
-  const _Tree({required this.name, required this.bracket});
+class _Tree extends ConsumerWidget {
+  const _Tree({required this.name, required this.bracket, required this.followViewPreference});
 
   final String name;
   final BracketResponseDto bracket;
+  final bool followViewPreference;
 
   @override
-  Widget build(BuildContext context) {
-    final shape = detectGslShape(bracket);
+  Widget build(BuildContext context, WidgetRef ref) {
+    final detected = detectGslShape(bracket);
+    // PandaScore nomme les ouvertures par leurs équipes (« TYLOO vs G2 ») : on les rebaptise
+    // « Ouverture 1/2 » pour que chaque case ait un titre lisible.
+    final named = detected == null ? bracket : _withOpeningNames(bracket, detected);
+    final shape = detected == null ? null : detectGslShape(named);
+    final followed = (ref.watch(followsProvider).value ?? const []).where((f) => f.targetType == "entity").map((f) => f.targetId).toSet();
+    final circle = followViewPreference && ref.watch(bracketViewProvider) == BracketView.circle;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(name.toUpperCase(), style: Theme.of(context).textTheme.labelSmall),
+        Text(name.toUpperCase(), style: AppTextStyles.sectionTitle.copyWith(fontSize: 14, color: AppColors.brass)),
         const SizedBox(height: AppSpacing.sm),
-        shape != null ? _FunnelTree(bracket: bracket, shape: shape) : _SimpleList(bracket: bracket),
+        if (shape == null)
+          _SimpleList(bracket: bracket)
+        else if (circle)
+          _GroupCircle(bracket: named, shape: shape, followed: followed)
+        else
+          HorizontalBracket(
+            bracket: named,
+            followed: followed,
+            // Trois colonnes, comme avant : 3 cases (Ouverture 1, Ouverture 2, Élimination), 2 (Vainqueurs,
+            // Décisif, en pyramide), 1 (Qualifiés). Seuls les chemins des gagnants sont tracés.
+            layout: GridLayout(cells: [
+              GridCell(node: shape.opening1, col: 0, row: 0),
+              GridCell(node: shape.opening2, col: 0, row: 1),
+              GridCell(node: shape.elimination, col: 0, row: 2),
+              GridCell(node: shape.winners, col: 1, row: 0.5),
+              GridCell(node: shape.decider, col: 1, row: 1.5),
+            ], cols: 2, rows: 3),
+            links: [
+              (shape.opening1.eventId, shape.winners.eventId),
+              (shape.opening2.eventId, shape.winners.eventId),
+              (shape.elimination.eventId, shape.decider.eventId),
+            ],
+            trailing: _QualifiedBox(participants: [winnerOf(shape.winners), winnerOf(shape.decider)]),
+            trailingFrom: [shape.winners.eventId, shape.decider.eventId],
+          ),
       ],
+    );
+  }
+}
+
+BracketResponseDto _withOpeningNames(BracketResponseDto bracket, GslShape shape) => bracket.rebuild((b) => b
+  ..nodes.map((n) => n.eventId == shape.opening1.eventId
+      ? n.rebuild((x) => x..name = "Opening Match 1")
+      : n.eventId == shape.opening2.eventId
+          ? n.rebuild((x) => x..name = "Opening Match 2")
+          : n));
+
+/// Le cercle d'une poule : les qualifiés au centre, trois branches autour. Les vainqueurs (deux
+/// ouvertures puis le match des vainqueurs) forment la moitié du haut ; l'élimination, qui reprend
+/// les perdants des ouvertures, et le match décisif forment la troisième branche, en bas.
+class _GroupCircle extends StatelessWidget {
+  const _GroupCircle({required this.bracket, required this.shape, required this.followed});
+
+  final BracketResponseDto bracket;
+  final GslShape shape;
+  final Set<String> followed;
+
+  @override
+  Widget build(BuildContext context) {
+    final qualified = [winnerOf(shape.winners), winnerOf(shape.decider)];
+    // Un « bracket » synthétique pour réutiliser l'arbre radial : seul le centre (round 0) est inventé.
+    BracketNodeDto asRound1(BracketNodeDto n) => n.rebuild((b) => b..round = 1);
+    final center = shape.decider.rebuild((b) => b
+      ..eventId = "qualified"
+      ..name = "Qualified"
+      ..round = 0
+      // Le centre n'est pas le match décisif : il ne prend pas son « en direct » rouge, seulement « terminé » (or) une fois les deux qualifiés connus.
+      ..status = qualified.every((q) => q != null) ? "finished" : "scheduled"
+      ..participants.replace(qualified.nonNulls));
+    BracketLinkDto link(String from, String to, int slot, [String outcome = "winner"]) => BracketLinkDto((l) => l
+      ..fromEventId = from
+      ..toEventId = to
+      ..outcome = outcome
+      ..slot = slot);
+    final tree = buildRadialTree(BracketResponseDto((b) => b
+      ..sourceUpdatedAt = bracket.sourceUpdatedAt
+      ..nodes.addAll([center, for (final n in [shape.opening1, shape.opening2, shape.winners, shape.elimination, shape.decider]) asRound1(n)])
+      ..links.addAll([
+        link(shape.opening1.eventId, shape.winners.eventId, 0),
+        link(shape.opening2.eventId, shape.winners.eventId, 1),
+        link(shape.elimination.eventId, shape.decider.eventId, 0),
+        // Le décisif reçoit aussi le perdant du match des vainqueurs : le bas du cercle répond au haut.
+        link(shape.winners.eventId, shape.decider.eventId, 1, "loser"),
+        link(shape.winners.eventId, center.eventId, 0),
+        link(shape.decider.eventId, center.eventId, 1),
+      ])), loserTargets: {shape.decider.eventId}, loserExpandsSides: true);
+
+    // Ouvertures et vainqueurs dans la moitié du haut, élimination et décisif dans celle du bas.
+    assignSectors(tree, {
+      shape.winners.eventId: (-math.pi, 0.0),
+      shape.decider.eventId: (0.0, math.pi),
+    });
+    return RadialBracket(
+      tree: tree,
+      followed: followed,
+      center: _QualifiedLabel(participants: qualified),
+      centerOpensMatch: false,
+      divider: (top: "OUVERTURE", bottom: "ÉLIMINATION"),
+    );
+  }
+}
+
+class _QualifiedLabel extends StatelessWidget {
+  const _QualifiedLabel({required this.participants});
+  final List<BracketParticipantDto?> participants;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(Icons.check_circle_rounded, color: AppColors.brass, size: 20),
+        const Text("QUALIFIÉS", style: TextStyle(fontSize: 9, letterSpacing: 1, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
+        for (final p in participants)
+          Text(p == null ? "?" : teamCode(p), style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: p == null ? AppColors.textTertiary : AppColors.brass)),
+      ],
+    );
+  }
+}
+
+/// La case « Qualifiés » à droite de la pyramide : les deux équipes qui sortent de la poule.
+class _QualifiedBox extends StatelessWidget {
+  const _QualifiedBox({required this.participants});
+  final List<BracketParticipantDto?> participants;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.fromLTRB(10, 6, 10, 6),
+      decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.chip), border: Border.all(color: AppColors.moss)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text("QUALIFIÉS", style: TextStyle(fontSize: 10, letterSpacing: 0.8, fontWeight: FontWeight.w600, color: AppColors.moss)),
+          for (final p in participants)
+            Expanded(
+              child: Row(
+                children: [
+                  BracketTeamLogo(side: (label: p?.name ?? "?", code: p == null ? null : teamCode(p), imageUrl: p?.imageUrl, entityId: p?.entityId, score: null, won: false, lost: false)),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      p?.name ?? "À déterminer",
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: p == null ? 11 : 13, fontWeight: FontWeight.w600, color: p == null ? AppColors.textTertiary : AppColors.textPrimary),
+                    ),
+                  ),
+                  if (p != null) const Icon(Icons.check_rounded, size: 16, color: AppColors.moss),
+                ],
+              ),
+            ),
+        ],
+      ),
     );
   }
 }
@@ -157,171 +317,7 @@ class _SimpleList extends StatelessWidget {
   }
 }
 
-const _boxW = 132.0;
 const _boxH = 52.0;
-const _colGap = 40.0;
-const _rowGap = 14.0;
-
-// 3 colonnes : Ouverture 1/Ouverture 2/Élimination empilées dans la 1ʳᵉ,
-// Vainqueurs/Decider (décalées vers le bas — effet pyramide) dans la 2e,
-// une seule case Qualifiés dans la 3e.
-const _colX = [0.0, _boxW + _colGap, 2 * (_boxW + _colGap)];
-const _opening1Y = 0.0;
-const _opening2Y = _boxH + _rowGap;
-const _eliminationY = 2 * (_boxH + _rowGap);
-// Effet pyramide : la colonne Vainqueurs/Decider démarre plus bas que la
-// colonne Ouverture, et se termine plus haut — elle "rentre" dans la forme
-// au lieu de rester alignée en haut comme la 1ʳᵉ colonne.
-const _staggerY = (_boxH + _rowGap) / 2;
-const _winnersY = _staggerY;
-const _deciderY = _staggerY + _boxH + _rowGap;
-const _totalWidth = 3 * _boxW + 2 * _colGap;
-const _totalHeight = _eliminationY + _boxH;
-const _qualifiedY = (_winnersY + _deciderY) / 2;
-
-/// L'arbre qui "se réduit" (2 matchs → 1 → 1 → qualifiés), traits compris —
-/// géométrie fixe (les 5 cases d'une poule GSL sont toujours à la même
-/// place), donc les traits se calculent sans mesurer le rendu réel des
-/// cases, contrairement à `BracketPainter` (arbre radial, forme variable).
-class _FunnelTree extends StatelessWidget {
-  const _FunnelTree({required this.bracket, required this.shape});
-
-  final BracketResponseDto bracket;
-  final GslShape shape;
-
-  @override
-  Widget build(BuildContext context) {
-    final byId = {for (final n in bracket.nodes) n.eventId: n};
-    final incomingByTarget = <String, List<BracketLinkDto>>{};
-    for (final l in bracket.links) {
-      incomingByTarget.putIfAbsent(l.toEventId, () => []).add(l);
-    }
-    BracketParticipantDto? winnerOf(BracketNodeDto n) => n.participants.where((p) => p.isWinner == true).firstOrNull;
-
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SizedBox(
-        width: _totalWidth,
-        height: _totalHeight,
-        child: Stack(
-          children: [
-            CustomPaint(size: const Size(_totalWidth, _totalHeight), painter: _FunnelPainter(bracket: bracket, shape: shape)),
-            Positioned(left: _colX[0], top: _opening1Y, child: _MatchBox(node: shape.opening1, incoming: const [], byId: byId, width: _boxW)),
-            Positioned(left: _colX[0], top: _opening2Y, child: _MatchBox(node: shape.opening2, incoming: const [], byId: byId, width: _boxW)),
-            Positioned(
-              left: _colX[0],
-              top: _eliminationY,
-              child: _MatchBox(node: shape.elimination, incoming: incomingByTarget[shape.elimination.eventId] ?? const [], byId: byId, width: _boxW),
-            ),
-            Positioned(
-              left: _colX[1],
-              top: _winnersY,
-              child: _MatchBox(node: shape.winners, incoming: incomingByTarget[shape.winners.eventId] ?? const [], byId: byId, width: _boxW),
-            ),
-            Positioned(
-              left: _colX[1],
-              top: _deciderY,
-              child: _MatchBox(node: shape.decider, incoming: incomingByTarget[shape.decider.eventId] ?? const [], byId: byId, width: _boxW),
-            ),
-            Positioned(
-              left: _colX[2],
-              top: _qualifiedY,
-              child: _QualifiedBox(participants: [winnerOf(shape.winners), winnerOf(shape.decider)]),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-/// Traits en coude (horizontal-vertical-horizontal), comme sur VLR.gg — pas
-/// de courbe, juste des angles droits. Uniquement le chemin des GAGNANTS :
-/// pas de trait vers l'Élimination (son perdant continue vers le Decider,
-/// mais rien ne montre d'où viennent ses joueurs — ça ne fait que la moitié
-/// du bracket, exprès).
-class _FunnelPainter extends CustomPainter {
-  _FunnelPainter({required this.bracket, required this.shape});
-
-  final BracketResponseDto bracket;
-  final GslShape shape;
-
-  static const _lineColor = Color(0x26FFFFFF); // blanc 15 %
-
-  void _elbow(Canvas canvas, Paint paint, Offset from, Offset to) {
-    final midX = from.dx + (to.dx - from.dx) / 2;
-    final path = Path()
-      ..moveTo(from.dx, from.dy)
-      ..lineTo(midX, from.dy)
-      ..lineTo(midX, to.dy)
-      ..lineTo(to.dx, to.dy);
-    canvas.drawPath(path, paint);
-  }
-
-  @override
-  void paint(Canvas canvas, Size size) {
-    final paint = Paint()
-      ..color = _lineColor
-      ..style = PaintingStyle.stroke
-      ..strokeWidth = 1.5;
-
-    Offset rightOf(double colX, double topY) => Offset(colX + _boxW, topY + _boxH / 2);
-    Offset leftOf(double colX, double topY) => Offset(colX, topY + _boxH / 2);
-
-    // Position (colonne, haut) de chaque case connue — sert à retrouver où
-    // partent les liens "winner" sans deviner leur sens depuis la forme.
-    final position = {
-      shape.opening1.eventId: (_colX[0], _opening1Y),
-      shape.opening2.eventId: (_colX[0], _opening2Y),
-      shape.elimination.eventId: (_colX[0], _eliminationY),
-      shape.winners.eventId: (_colX[1], _winnersY),
-      shape.decider.eventId: (_colX[1], _deciderY),
-    };
-
-    // Un seul trait par match : vers l'endroit où va son GAGNANT (jamais son perdant). Le chemin d'une poule GSL
-    // est fixe (Ouvertures → Vainqueurs, Élimination → Decider), donc tracé sans lire les liens : ils sont
-    // incomplets dans certaines poules (J19).
-    _elbow(canvas, paint, rightOf(position[shape.opening1.eventId]!.$1, position[shape.opening1.eventId]!.$2), leftOf(_colX[1], _winnersY));
-    _elbow(canvas, paint, rightOf(position[shape.opening2.eventId]!.$1, position[shape.opening2.eventId]!.$2), leftOf(_colX[1], _winnersY));
-    _elbow(canvas, paint, rightOf(position[shape.elimination.eventId]!.$1, position[shape.elimination.eventId]!.$2), leftOf(_colX[1], _deciderY));
-    // Qualifiés : le gagnant de Vainqueurs se qualifie directement, celui du
-    // Decider aussi — deux fins de chemin gagnant, pas des liens de la base.
-    _elbow(canvas, paint, rightOf(_colX[1], _winnersY), leftOf(_colX[2], _qualifiedY));
-    _elbow(canvas, paint, rightOf(_colX[1], _deciderY), leftOf(_colX[2], _qualifiedY));
-  }
-
-  @override
-  bool shouldRepaint(covariant _FunnelPainter oldDelegate) => oldDelegate.bracket != bracket;
-}
-
-class _QualifiedBox extends StatelessWidget {
-  const _QualifiedBox({required this.participants});
-  final List<BracketParticipantDto?> participants;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: _boxW,
-      height: _boxH,
-      alignment: Alignment.center,
-      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm),
-      decoration: BoxDecoration(color: AppColors.background, borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColors.surfaceBorder)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          for (final p in participants)
-            Text(
-              p?.shortName ?? p?.name ?? "?",
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: p != null ? AppColors.win : AppColors.textTertiary),
-            ),
-        ],
-      ),
-    );
-  }
-}
 
 class _MatchBox extends StatelessWidget {
   const _MatchBox({required this.node, required this.incoming, required this.byId, required this.width});

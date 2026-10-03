@@ -29,6 +29,10 @@ abstract final class AppColors {
 
   /// Vert : victoire, qualifié, validé.
   static const win = Color(0xFF30D158);
+
+  /// Vert mousse, assorti au laiton : la ligne gagnante et les qualifiés des cases de bracket
+  /// (J20). Le vert vif `win` reste celui des scores et des résultats ailleurs.
+  static const moss = Color(0xFF7C9A5E);
   static const loss = Color(0x66F5F5F7); // gris neutre pour une défaite
 }
 

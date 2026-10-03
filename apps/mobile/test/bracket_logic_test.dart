@@ -1,6 +1,5 @@
 import "package:flutter_test/flutter_test.dart";
 import "package:mobile/features/bracket/bracket_provider.dart";
-import "package:mobile/features/bracket/bracket_screen.dart";
 import "package:news_api_client/news_api_client.dart";
 
 BracketParticipantDto _participant({required String entityId, required String name, int? score, bool? isWinner}) {
@@ -36,24 +35,6 @@ BracketLinkDto _link({required String from, required String to, required String 
 }
 
 void main() {
-  group("highlightedEventIds", () {
-    test("marque les matchs où participe une entité suivie", () {
-      final g2 = _participant(entityId: "g2", name: "G2");
-      final th = _participant(entityId: "th", name: "TH");
-      final nodes = [
-        _node(eventId: "qf1", name: "Upper Bracket Quarterfinal 1", participants: [g2, th]),
-        _node(eventId: "qf2", name: "Upper Bracket Quarterfinal 2"), // TBD, pas de participants
-      ];
-
-      expect(highlightedEventIds(nodes, {"g2"}), {"qf1"});
-    });
-
-    test("aucune entité suivie : aucun match en or", () {
-      final nodes = [_node(eventId: "qf1", name: "QF1", participants: [_participant(entityId: "g2", name: "G2")])];
-      expect(highlightedEventIds(nodes, {}), isEmpty);
-    });
-  });
-
   group("bracketMatchRows", () {
     test("match résolu : une ligne par participant, avec score", () {
       final node = _node(

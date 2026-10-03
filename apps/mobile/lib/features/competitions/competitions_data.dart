@@ -52,6 +52,59 @@ class FavoriteGamesNotifier extends AsyncNotifier<List<String>> {
 
 final favoriteGamesProvider = AsyncNotifierProvider.autoDispose<FavoriteGamesNotifier, List<String>>(FavoriteGamesNotifier.new);
 
+/// Compétitions favorites (J20) : comme les jeux, un raccourci sans abonnement ni notification, affiché
+/// dans « Favoris » de l'onglet Compétitions.
+class FavoriteCompetitionsNotifier extends AsyncNotifier<List<FavoriteCompetitionDto>> {
+  @override
+  Future<List<FavoriteCompetitionDto>> build() async {
+    if (!ref.watch(signedInProvider)) return [];
+    final response = await ref.watch(apiClientProvider).getFavoriteCompetitionsApi().favoriteCompetitionsControllerList();
+    return response.data!.toList();
+  }
+
+  Future<void> toggle(String id, {required String name, String? imageUrl}) async {
+    if (!await ensureAccount(ref)) return;
+    final previous = state;
+    final current = previous.value ?? const <FavoriteCompetitionDto>[];
+    final adding = !current.any((f) => f.id == id);
+    state = AsyncValue.data(
+      adding
+          ? [
+              ...current,
+              FavoriteCompetitionDto((b) => b
+                ..id = id
+                ..name = name
+                ..imageUrl = imageUrl),
+            ]
+          : current.where((f) => f.id != id).toList(),
+    );
+    try {
+      final api = ref.read(apiClientProvider).getFavoriteCompetitionsApi();
+      if (adding) {
+        await api.favoriteCompetitionsControllerAdd(id: id);
+      } else {
+        await api.favoriteCompetitionsControllerRemove(id: id);
+      }
+    } catch (_) {
+      state = previous;
+      rethrow;
+    }
+  }
+}
+
+final favoriteCompetitionsProvider = AsyncNotifierProvider.autoDispose<FavoriteCompetitionsNotifier, List<FavoriteCompetitionDto>>(FavoriteCompetitionsNotifier.new);
+
+/// Les grandes séries en cours du catalogue (Champions, Masters, Coupe du monde…), avec leur ligue et leur jeu :
+/// la section « En cours » de l'onglet Compétitions (J20), sans rien à configurer. Les étapes régionales et les
+/// qualifications n'y sont pas : la section resterait trop longue à mesure qu'on ajoute des jeux et des sports.
+List<({CatalogChildDto serie, CatalogLeagueDto league, CatalogGameDto game})> liveSeries(CatalogDto catalog) => [
+      for (final category in catalog.categories)
+        for (final game in category.games)
+          for (final league in game.leagues)
+            for (final serie in league.children)
+              if (serie.live && serie.major) (serie: serie, league: league, game: game),
+    ];
+
 enum SearchKind { game, league, serie }
 
 class SearchResult {
@@ -137,4 +190,16 @@ List<SearchResult> searchCatalog(CatalogDto catalog, String query) {
     }
   }
   return null;
+}
+
+/// « 24 sept. – 18 oct. 2026 » (ou « 24 – 31 oct. 2026 » dans un même mois) ; `null` sans date de début.
+String? formatDateRange(String? startsAt, String? endsAt) {
+  if (startsAt == null) return null;
+  const months = ["janv.", "févr.", "mars", "avr.", "mai", "juin", "juil.", "août", "sept.", "oct.", "nov.", "déc."];
+  final start = DateTime.parse(startsAt).toLocal();
+  if (endsAt == null) return "À partir du ${start.day} ${months[start.month - 1]} ${start.year}";
+  final end = DateTime.parse(endsAt).toLocal();
+  final sameMonth = start.year == end.year && start.month == end.month;
+  final from = sameMonth ? "${start.day}" : "${start.day} ${months[start.month - 1]}${start.year == end.year ? "" : " ${start.year}"}";
+  return "$from – ${end.day} ${months[end.month - 1]} ${end.year}";
 }

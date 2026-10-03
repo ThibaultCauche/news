@@ -27,11 +27,11 @@ final _vct = CatalogLeagueDto((l) => l
       ..name = "Masters"),
   ])
   ..children = ListBuilder<CatalogChildDto>([
-    CatalogChildDto((k) => k
+    CatalogChildDto((k) => k..major = false..live = false
       ..id = "champions"
       ..name = "Champions 2026"
       ..familyId = "fam-champions"),
-    CatalogChildDto((k) => k
+    CatalogChildDto((k) => k..major = false..live = false
       ..id = "masters-london"
       ..name = "Masters London 2026"
       ..familyId = "fam-masters"),

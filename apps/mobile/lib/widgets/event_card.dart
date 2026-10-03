@@ -8,6 +8,7 @@ import "../core/settings_provider.dart";
 import "../domain/event_status.dart";
 import "../theme/app_theme.dart";
 import "ornate_frame.dart";
+import "../features/competitions/game_screen.dart" show openCompetitionOfEvent;
 import "../features/follows/follows_provider.dart";
 import "../theme/tokens.dart";
 import "live_dot.dart";
@@ -260,7 +261,21 @@ class EventCard extends ConsumerWidget {
                     ?topTime,
                     teamsRow,
                     const SizedBox(height: 4),
-                    Text(subtitle, style: textTheme.bodySmall),
+                    // Le nom de la compétition mène à sa page (J20) : un geste de moins pour retrouver le tableau.
+                    GestureDetector(
+                      behavior: HitTestBehavior.opaque,
+                      onTap: () => openCompetitionOfEvent(context, ref, event.competition),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(child: Text(subtitle, style: textTheme.bodySmall, overflow: TextOverflow.ellipsis)),
+                            const Icon(Icons.chevron_right_rounded, size: 14, color: AppColors.textTertiary),
+                          ],
+                        ),
+                      ),
+                    ),
                     if (footer != null) ...[
                       const Divider(height: AppSpacing.lg),
                       footer!,

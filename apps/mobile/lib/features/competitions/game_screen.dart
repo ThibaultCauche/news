@@ -14,6 +14,7 @@ import "../../widgets/async_view.dart";
 import "../../widgets/event_card.dart";
 import "../../widgets/game_logo.dart";
 import "../../widgets/group_bracket_tree.dart";
+import "../bracket/bracket_model.dart" show liveGroupsFirst;
 import "../bracket/bracket_provider.dart";
 import "../bracket/bracket_screen.dart";
 import "../bracket/kickoff_lives_screen.dart";
@@ -45,6 +46,24 @@ void openCompetitionPage(BuildContext context, {required String id, required Str
       builder: (_) => BracketScreen(competitionId: id, title: name, subtitle: subtitle),
     ),
   );
+}
+
+/// Ouvre la page de la compétition d'un match (J20). Un match appartient à une étape (« Group C », « Playoffs »)
+/// dont la page est celle de la série qui la contient (« Champions 2026 »), avec tous ses onglets : on remonte donc
+/// d'un cran. Depuis l'écran d'un match ou une carte de match, c'est un seul geste au lieu de cinq.
+Future<void> openCompetitionOfEvent(BuildContext context, WidgetRef ref, CompetitionRefDto competition) async {
+  try {
+    final detail = await ref.read(competitionDetailProvider(competition.id).future);
+    final parentId = detail.parentId;
+    if (detail.kind == "tournament" && parentId != null) {
+      final parent = await ref.read(competitionDetailProvider(parentId).future);
+      if (context.mounted) openCompetitionPage(context, id: parent.id, name: parent.name, status: parent.status);
+    } else if (context.mounted) {
+      openCompetitionPage(context, id: competition.id, name: competition.name, status: detail.status);
+    }
+  } catch (e) {
+    if (context.mounted) showErrorSnackBar(context, e);
+  }
 }
 
 void _openStep(BuildContext context, SeasonStep step) => openCompetitionPage(context, id: step.id, name: step.name, status: step.status);
@@ -690,7 +709,12 @@ class _NowCard extends ConsumerWidget {
     // `groupCompetitionIds` dans `bracket_provider.dart`). Une étape sans
     // poules (Kickoff, Playoffs) garde la liste de tuiles.
     final children = ref.watch(competitionDetailProvider(step.id)).value?.children;
-    final groupIds = groupCompetitionIds(children?.toList() ?? const []);
+    final allGroupIds = groupCompetitionIds(children?.toList() ?? const []);
+    // La poule qui joue en ce moment passe en premier.
+    final groupIds = liveGroupsFirst(allGroupIds, {
+      for (final id in allGroupIds)
+        if (ref.watch(bracketProvider(id)).value?.nodes.any((n) => n.status == "live") ?? false) id,
+    });
 
     return FramedCard(
       margin: EdgeInsets.zero,

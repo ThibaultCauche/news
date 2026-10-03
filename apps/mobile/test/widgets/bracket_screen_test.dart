@@ -4,6 +4,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:mobile/core/settings_provider.dart";
 import "package:mobile/features/bracket/bracket_painter.dart";
+import "package:mobile/features/bracket/bracket_view.dart";
 import "package:mobile/features/bracket/bracket_provider.dart";
 import "package:mobile/features/bracket/bracket_screen.dart";
 import "package:mobile/features/next_match/next_match_screen.dart";
@@ -118,7 +119,12 @@ BracketResponseDto _groupBracket() {
     ]));
 }
 
-Future<void> _pump(WidgetTester tester, {List<String>? calls}) {
+class _CircleView extends BracketViewNotifier {
+  @override
+  BracketView build() => BracketView.circle;
+}
+
+Future<void> _pump(WidgetTester tester, {List<String>? calls, bool circle = false}) {
   final qf1 = _node(
     eventId: "qf1",
     name: "Upper Bracket Quarterfinal 1",
@@ -138,6 +144,7 @@ Future<void> _pump(WidgetTester tester, {List<String>? calls}) {
     ProviderScope(
       overrides: [
         overrideSignedInForTest(),
+        if (circle) bracketViewProvider.overrideWith(_CircleView.new),
         competitionDetailProvider("champions").overrideWith((ref) async => _competition(
               id: "champions",
               name: "Champions",
@@ -174,33 +181,71 @@ Future<void> _pump(WidgetTester tester, {List<String>? calls}) {
 }
 
 void main() {
-  testWidgets("onglet Groupes : arbre de qualification (Ouverture, Vainqueurs, Élimination, Decider, Qualifiés)", (tester) async {
+  testWidgets("la phase finale a commencé : l'écran s'ouvre sur « Phase finale », sans toucher aux onglets", (tester) async {
     await _pump(tester);
     await tester.pumpAndSettle();
 
-    // G2 apparaît dans l'Ouverture, le match Vainqueurs ET la case Qualifiés
-    // (gagné son match Vainqueurs, pas besoin de Decider).
+    expect(find.text("QUART DE FINALE 1"), findsOneWidget);
+    expect(find.text("OUVERTURE 1"), findsNothing);
+  });
+
+  testWidgets("onglet Groupes : pyramide (Ouverture, Vainqueurs, Élimination, Decider, Qualifiés)", (tester) async {
+    await _pump(tester);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Groupes"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("OUVERTURE 1"), findsOneWidget);
+    expect(find.text("MATCH DES VAINQUEURS"), findsOneWidget);
+    expect(find.text("MATCH D'ÉLIMINATION"), findsOneWidget);
+    expect(find.text("MATCH DÉCISIF"), findsOneWidget);
+    expect(find.text("QUALIFIÉS"), findsOneWidget);
+    // G2 a gagné son match des vainqueurs : qualifié sans passer par le décisif.
     expect(find.text("G2"), findsWidgets);
-    // Le 2e nom de la case Qualifiés (via le Decider, pas encore joué) reste un placeholder.
-    expect(find.text("?"), findsOneWidget);
-    // Match pas encore joué : même logique de placeholder que le repêchage.
-    expect(find.textContaining("Perdant de"), findsWidgets);
+    // Le décisif attend le gagnant de l'élimination ; le 2ᵉ qualifié n'est pas connu.
+    expect(find.textContaining("Gagnant du match d'élimination"), findsOneWidget);
+    expect(find.text("À déterminer"), findsOneWidget);
+
+    // Trois colonnes : 3 cases (Ouverture 1 et 2, Élimination), 2 (Vainqueurs, Décisif), 1 (Qualifiés).
+    double x(String text) => tester.getTopLeft(find.text(text)).dx;
+    expect(x("OUVERTURE 2"), x("OUVERTURE 1"));
+    expect(x("MATCH D'ÉLIMINATION"), x("OUVERTURE 1"));
+    expect(x("MATCH DÉCISIF"), x("MATCH DES VAINQUEURS"));
+    expect(x("MATCH DES VAINQUEURS"), greaterThan(x("OUVERTURE 1")));
+    expect(x("QUALIFIÉS"), greaterThan(x("MATCH DÉCISIF")));
+  });
+
+  testWidgets("onglet Groupes : en cercle, les qualifiés au centre et l'élimination en troisième branche", (tester) async {
+    await _pump(tester, circle: true);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Groupes"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("QUALIFIÉS"), findsOneWidget);
+    final painter = tester.widget<CustomPaint>(find.byWidgetPredicate((w) => w is CustomPaint && w.painter is BracketPainter)).painter as BracketPainter;
+    // Deux moitiés qui se répondent : en haut les ouvertures (4) puis les vainqueurs (2) ; en bas l'élimination (2)
+    // et les deux équipes du match des vainqueurs (2), puis le décisif (2 : gagnant de l'élimination, perdant des vainqueurs).
+    expect(painter.tree.slots.where((s) => s.ring == 2), hasLength(8));
+    expect(painter.tree.slots.where((s) => s.ring == 1), hasLength(4));
+    expect(painter.tree.slots.map((s) => s.matchId), contains("g-elim"));
   });
 
   testWidgets("onglet Groupes : toucher une case ouvre le détail du match", (tester) async {
     await _pump(tester);
     await tester.pumpAndSettle();
+    await tester.tap(find.text("Groupes"));
+    await tester.pumpAndSettle();
 
-    // "TH" n'apparaît que dans la case Ouverture 1 (g-open1) : cible sans ambiguïté.
-    await tester.tap(find.text("TH"));
+    // La première case « TH » est celle de l'Ouverture 1 (g-open1), la première du tableau.
+    await tester.tap(find.text("TH").first);
     await tester.pumpAndSettle();
 
     expect(find.byType(NextMatchScreen), findsOneWidget);
     expect(find.text("Group A"), findsOneWidget); // nom de la compétition dans l'en-tête
   });
 
-  testWidgets("onglet Phase finale : l'arbre radial met en or le match du suivi (G2)", (tester) async {
-    await _pump(tester);
+  testWidgets("onglet Phase finale : un cercle par équipe, l'équipe suivie (G2) en or", (tester) async {
+    await _pump(tester, circle: true);
     await tester.pumpAndSettle();
 
     await tester.tap(find.text("Phase finale"));
@@ -210,22 +255,66 @@ void main() {
       find.byWidgetPredicate((w) => w is CustomPaint && w.painter is BracketPainter),
     );
     final painter = customPaint.painter as BracketPainter;
-    expect(painter.highlightedEventIds, {"qf1"});
-    // La finale (TBD) est dans l'arbre mais pas encore en or : G2 n'y a pas
-    // encore de participation confirmée.
-    expect(painter.nodes.map((n) => n.eventId), containsAll(["qf1", "final"]));
+    expect(painter.followedEntityIds, {"g2"});
+    expect(painter.tree.center?.eventId, "final");
+    expect(painter.tree.slots.map((s) => s.team?.shortName), ["G2", "TH"]);
     // Le tableau bas (repêchage) ne fait pas partie de l'arbre radial.
-    expect(painter.nodes.map((n) => n.eventId), isNot(contains("lower1")));
+    expect(painter.tree.slots.map((s) => s.matchId), isNot(contains("lower1")));
+    // La phrase de l'équipe suivie : G2 attend la finale, sans date.
+    expect(find.textContaining("Prochain match de G2 : Grande finale"), findsOneWidget);
   });
 
-  testWidgets("onglet Repêchage : match pas encore joué affiché comme « Perdant de G2 vs TH »", (tester) async {
+  testWidgets("onglet Phase finale : pyramide par défaut, du premier tour à la grande finale", (tester) async {
+    await _pump(tester);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Phase finale"));
+    await tester.pumpAndSettle();
+
+    expect(find.text("QUART DE FINALE 1"), findsOneWidget);
+    expect(find.text("GRANDE FINALE"), findsOneWidget);
+    // Le repêchage fait partie de la pyramide : sa case dit d'où viennent les équipes.
+    expect(find.text("REPÊCHAGE · TOUR 1"), findsOneWidget);
+    expect(find.byWidgetPredicate((w) => w is CustomPaint && w.painter is BracketPainter), findsNothing);
+  });
+
+  testWidgets("les deux ronds de la ligne du titre basculent entre pyramide et cercle", (tester) async {
+    await _pump(tester);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Phase finale"));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.bySemanticsLabel("Cercle"));
+    await tester.pumpAndSettle();
+    expect(find.byWidgetPredicate((w) => w is CustomPaint && w.painter is BracketPainter), findsOneWidget);
+
+    await tester.tap(find.bySemanticsLabel("Pyramide"));
+    await tester.pumpAndSettle();
+    expect(find.byWidgetPredicate((w) => w is CustomPaint && w.painter is BracketPainter), findsNothing);
+  });
+
+  testWidgets("onglet Phase finale : toucher un cercle ouvre son match", (tester) async {
+    await _pump(tester, circle: true);
+    await tester.pumpAndSettle();
+    await tester.tap(find.text("Phase finale"));
+    await tester.pumpAndSettle();
+
+    final painter = tester.widget<CustomPaint>(find.byWidgetPredicate((w) => w is CustomPaint && w.painter is BracketPainter));
+    final box = tester.getRect(find.byWidgetPredicate((w) => w is CustomPaint && w.painter is BracketPainter));
+    final layout = RadialLayout((painter.painter as BracketPainter).tree, box.size);
+    final slot = (painter.painter as BracketPainter).tree.slots.first;
+    expect(layout.matchAt(layout.position(slot)), "qf1");
+    expect(layout.matchAt(layout.center), "final");
+  });
+
+  testWidgets("onglet Repêchage : l'équipe issue d'un match joué remplace le « Perdant du … »", (tester) async {
     await _pump(tester);
     await tester.pumpAndSettle();
 
     await tester.tap(find.text("Repêchage"));
     await tester.pumpAndSettle();
 
-    expect(find.textContaining("Perdant de G2 vs TH"), findsOneWidget);
+    expect(find.text("COMMENT ÇA MARCHE"), findsOneWidget);
+    expect(find.text("TH"), findsNWidgets(2)); // pastille + nom
   });
 
   testWidgets("la page compétition a un bouton Suivre qui abonne la compétition (J10)", (tester) async {

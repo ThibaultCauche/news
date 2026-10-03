@@ -4,6 +4,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/async_view.dart";
+import "../../widgets/competition_favorite_button.dart";
 import "../../widgets/competition_follow_button.dart";
 import "bracket_provider.dart";
 
@@ -31,7 +32,11 @@ class KickoffLivesScreen extends ConsumerWidget {
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
           label: const Text("Valorant", style: TextStyle(color: AppColors.textSecondary)),
         ),
-        actions: [ForumActionButton(kind: "competition", targetId: competitionId), CompetitionFollowButton(competitionId: competitionId, name: title)],
+        actions: [
+          ForumActionButton(kind: "competition", targetId: competitionId),
+          CompetitionFavoriteButton(competitionId: competitionId, name: title),
+          CompetitionFollowButton(competitionId: competitionId, name: title),
+        ],
       ),
       body: AsyncView(
         value: detail,

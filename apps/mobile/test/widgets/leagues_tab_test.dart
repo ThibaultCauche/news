@@ -15,7 +15,7 @@ CatalogLeagueDto _league(String id, String name, {bool live = false, int series 
   ..families = ListBuilder<CatalogFamilyDto>()
   ..children = ListBuilder<CatalogChildDto>([
     for (var i = 0; i < series; i++)
-      CatalogChildDto((k) => k
+      CatalogChildDto((k) => k..major = false..live = false
         ..id = "$id-$i"
         ..name = "$name $i"),
   ]));

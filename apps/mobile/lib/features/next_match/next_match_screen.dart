@@ -1,4 +1,5 @@
 import "../../theme/app_theme.dart";
+import "../competitions/game_screen.dart" show openCompetitionOfEvent;
 import "../../widgets/async_view.dart";
 import "../../widgets/live_badge.dart";
 import "../../widgets/ornate_frame.dart";
@@ -180,10 +181,26 @@ class _NextMatchBody extends ConsumerWidget {
           ),
           child: Column(
             children: [
-              Text(
-                [event.competition.name, if (event.bestOf != null) "BO${event.bestOf}"].join(" · ").toUpperCase(),
-                textAlign: TextAlign.center,
-                style: AppTextStyles.sectionTitle.copyWith(fontSize: 14, letterSpacing: 1.2),
+              // Le nom de la compétition mène à sa page, tableau compris (J20).
+              GestureDetector(
+                behavior: HitTestBehavior.opaque,
+                onTap: () => openCompetitionOfEvent(context, ref, event.competition),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 4, horizontal: AppSpacing.md),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Flexible(
+                        child: Text(
+                          [event.competition.name, if (event.bestOf != null) "BO${event.bestOf}"].join(" · ").toUpperCase(),
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.sectionTitle.copyWith(fontSize: 14, letterSpacing: 1.2),
+                        ),
+                      ),
+                      const Icon(Icons.chevron_right_rounded, size: 18, color: AppColors.brass),
+                    ],
+                  ),
+                ),
               ),
               if (RegExp("final", caseSensitive: false).hasMatch(event.name) && status != EventStatusKind.finished) ...[
                 const SizedBox(height: AppSpacing.xs),
