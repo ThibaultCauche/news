@@ -105,6 +105,7 @@ docker compose -f infra/docker-compose.dev.yml up -d
 # Migrations Prisma (lit .env à la racine)
 pnpm db:migrate       # migration dev + génère le client
 pnpm db:generate      # régénère juste le client Prisma
+pnpm db:demo-playoffs partial   # J20 : playoffs simulés (tbd|empty|partial|finished|remove), série « Champions (démo) » sous VCT
 pnpm db:seed          # glossaire (context_snippet), idempotent, à rejouer si le texte change (J6)
 # `db:migrate` exige un terminal interactif ; sinon écrire la migration à la main et l'appliquer avec
 # `pnpm exec dotenv -e .env -- pnpm --filter @news/db exec prisma migrate deploy` (sans `dotenv`, `prisma` est introuvable ; `pnpm db:generate` se lance de même si besoin).
