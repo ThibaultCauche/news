@@ -32,7 +32,9 @@ class NewsApp extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final index = ref.watch(tabIndexProvider);
     return AutoRefresh(
-      child: Scaffold(
+      // Au-dessus de tout, tab bar comprise : l'écran de mise à jour obligatoire ne laisse rien d'accessible (J21).
+      child: Stack(fit: StackFit.expand, children: [
+      Scaffold(
       extendBody: true,
       body: Stack(
         children: [
@@ -62,12 +64,12 @@ class NewsApp extends ConsumerWidget {
           ),
           // Au-dessus de la tab bar flottante.
           const Positioned(left: AppSpacing.md, right: AppSpacing.md, bottom: 104, child: Center(child: OfflineBanner())),
-          // Dernier de la pile : l'écran bloquant recouvre tout (J21).
-          const UpdateGate(),
         ],
       ),
       bottomNavigationBar: GlassTabBar(items: _items, currentIndex: index, onTap: ref.read(tabIndexProvider.notifier).select),
     ),
+      const UpdateGate(),
+      ]),
     );
   }
 }

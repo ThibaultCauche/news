@@ -729,7 +729,7 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 ---
 
-## J21 — Correctifs avant les playoffs (ajouté 2026-10-06)
+## J21 — Correctifs avant les playoffs (ajouté 2026-10-06) — **Fait (2026-10-06)**, avec trois reports (clés Twitch, bêta Google Play, réserves du J20)
 
 **Origine** : brainstorm du 2026-10-03/04 (test par un premier utilisateur extérieur, usage sur téléphone), idées triées dans `docs/06-idees-a-trier.md` (repères `#…`, section « Tri décidé »). Décision dans `docs/00` §7 (2026-10-04).
 
@@ -774,13 +774,14 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 **Hors périmètre** : refonte de la densité des cartes et de l'Accueil (J22) ; co-streamers (J26) ; notifications avec logos (#M11, J22).
 
 **Critères d'acceptation**
-- [ ] Sur une compétition entièrement jouée (`pnpm db:demo-playoffs finished`), la pyramide et le cercle se placent sur la fin ; scores visibles dans les cercles, masqués en sans spoil ; cercle final vert, cercles d'équipes en laiton.
-- [ ] Écran du match : score dans la carte, retour sans « Group X », bouton Regarder qui ouvre le lien officiel.
-- [ ] Sur téléphone, un match suivi ne laisse **qu'une** notification dans le volet après le rappel, le début et le résultat ; réglages par défaut appliqués aux nouveaux suivis.
-- [ ] Une version sous `minSupported` affiche l'écran bloquant ; une version sous `latest` affiche le bandeau.
-- [ ] Bêta Google Play installable par lien.
-- [ ] Réserves du J20 vérifiées sur un vrai match de playoffs (ou reportées avec raison).
-- [ ] `flutter analyze`, tests Flutter (hors goldens Windows), lint et tests backend verts ; `docs/00` §7 et « État actuel » du `CLAUDE.md` mis à jour.
+- [x] Sur une compétition entièrement jouée (`pnpm db:demo-playoffs finished`), la pyramide et le cercle se placent sur la fin ; scores visibles dans les cercles, masqués en sans spoil ; cercle final vert, cercles d'équipes en laiton. *Vérifié sur émulateur et sur téléphone (compte en sans spoil : scores masqués ; le nom du champion au centre l'est aussi).*
+- [x] Écran du match : score dans la carte, retour sans « Group X ». Le bouton Regarder est devenu des **cercles de chaînes** (lot 6) : vérifié sur téléphone (ta langue d'abord, contour rouge en direct, un appui ouvre l'appli Twitch).
+- [x] Sur téléphone, un match suivi ne laisse **qu'une** notification dans le volet après le rappel, le début et le résultat ; réglages par défaut appliqués aux nouveaux suivis. *Vérifié sur un vrai téléphone avec un vrai FCM (deux matchs fictifs, rappel avec phrase « pas de pronostic », début, résultat « Terminé » sans score en sans spoil).*
+- [x] Une version sous `minSupported` affiche l'écran bloquant (tab bar comprise) ; une version sous `latest` affiche le bandeau. *Vérifié sur téléphone en changeant les `.env`.*
+- [ ] Bêta Google Play installable par lien. **Reporté** : démarche manuelle de l'utilisateur (`docs/demarches-j19.md`).
+- [ ] Réserves du J20 vérifiées sur un vrai match de playoffs. **Reporté** : premier match le 7 octobre, finale le 18 ; à voir pendant les playoffs (remplissage de l'arbre, 60 i/s, compte connecté : chemin en or, phrase d'équipe, étoile Favori).
+- [ ] Logos, noms et « en direct » des chaînes avec de vraies données Twitch. **Reporté** : clés `TWITCH_CLIENT_ID`/`TWITCH_CLIENT_SECRET` à créer (compte Twitch à refaire, double authentification) puis à mettre dans les `.env` du PC et du NAS ; sans elles, initiales et pas de « en direct » (testé avec une réponse simulée et en forçant la base).
+- [x] `flutter analyze`, tests Flutter (hors goldens Windows), lint et tests backend verts ; `docs/00` §7 et « État actuel » du `CLAUDE.md` mis à jour.
 
 ---
 

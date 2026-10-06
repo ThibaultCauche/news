@@ -159,10 +159,10 @@ describe("NotificationDispatchService (intégration)", () => {
     }
   });
 
-  it("deux matchs qui commencent ensemble : une seule notification qui compte, au tag du premier (J21)", async () => {
+  it("deux matchs qui commencent ensemble : une notification chacune, au tag de son match (J21)", async () => {
     const user = await prisma.appUser.create({ data: { id: randomUUID(), setting: { create: { id: randomUUID() } } } });
     try {
-      await prisma.device.create({ data: { id: randomUUID(), userId: user.id, installId: randomUUID(), platform: "android", pushToken: "token-burst" } });
+      await prisma.device.create({ data: { id: randomUUID(), userId: user.id, installId: randomUUID(), platform: "android", pushToken: "token-two" } });
       await prisma.subscription.create({ data: { id: randomUUID(), userId: user.id, targetType: "entity", targetId: entityId, level: "all" } });
       const first = await createFinishedEvent("Test Match A");
       const second = await createFinishedEvent("Test Match B");
@@ -171,12 +171,8 @@ describe("NotificationDispatchService (intégration)", () => {
       await dispatch.handle({ type: "EventStarted", eventId: second, competitionId });
 
       // Le compte partagé de la suite reçoit aussi ces débuts : on ne regarde que l'appareil de celui-ci.
-      const calls = (fcm.send as jest.Mock).mock.calls.filter((c) => c[0] === "token-burst");
-      expect(calls).toHaveLength(2);
-      expect(calls[0].slice(1)).toEqual(["Ça commence", "Test Match A vient de commencer.", { eventId: first }, `event-${first}`]);
-      expect(calls[1][1]).toBe("2 matchs commencent");
-      expect(calls[1][2]).toContain("Test Match B");
-      expect(calls[1][4]).toBe(`event-${first}`);
+      const calls = (fcm.send as jest.Mock).mock.calls.filter((c) => c[0] === "token-two");
+      expect(calls.map((c) => c[4])).toEqual([`event-${first}`, `event-${second}`]);
     } finally {
       await prisma.notificationLog.deleteMany({ where: { userId: user.id } });
       await prisma.device.deleteMany({ where: { userId: user.id } });

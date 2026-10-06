@@ -120,18 +120,11 @@ export class NotificationDispatchService {
         throw err;
       }
 
-      let { title, body } = buildNotificationText(type, event.name, sub.user.setting?.spoilerFree ?? false, winnerName, needsPrediction);
-      // Un tag par match : rappel, début et résultat se remplacent dans le volet (J21).
-      let tag = `event-${event.id}`;
-      if (type === "start") {
-        // Plusieurs matchs qui commencent ensemble : une seule notification qui compte, au tag du premier.
-        const burst = await this.recentStarts(sub.userId);
-        if (burst.length >= 2) {
-          title = `${burst.length} matchs commencent`;
-          body = burst.map((l) => l.event?.name).filter(Boolean).join(", ");
-          tag = `event-${burst[0].eventId}`;
-        }
-      }
+      const { title, body } = buildNotificationText(type, event.name, sub.user.setting?.spoilerFree ?? false, winnerName, needsPrediction);
+      // Un tag par match : rappel, début et résultat se remplacent dans le volet (J21). Plusieurs matchs
+      // qui commencent ensemble restent une notification chacun (la sienne remplace son rappel) :
+      // Android les range lui-même sous « Keryx ».
+      const tag = `event-${event.id}`;
       for (const device of sub.user.devices) {
         if (
           device.utcOffsetMinutes !== null &&
@@ -155,15 +148,6 @@ export class NotificationDispatchService {
   private async needsPredictionNudge(user: { id: string; pseudo: string | null; setting: { notifyPredictionReminders: boolean } | null }, eventId: string): Promise<boolean> {
     if (!user.pseudo || user.setting?.notifyPredictionReminders === false) return false;
     return (await this.prisma.prediction.count({ where: { userId: user.id, eventId } })) === 0;
-  }
-
-  // Débuts de match notifiés à cet utilisateur ces deux dernières minutes (le courant compris, son journal est déjà écrit), du plus ancien au plus récent.
-  private recentStarts(userId: string) {
-    return this.prisma.notificationLog.findMany({
-      where: { userId, type: "start", eventId: { not: null }, sentAt: { gte: new Date(Date.now() - 2 * 60 * 1000) } },
-      orderBy: { sentAt: "asc" },
-      include: { event: { select: { name: true } } },
-    });
   }
 
   // Qualification/élimination (J5, reporté du J4) : pas de match derrière, donc

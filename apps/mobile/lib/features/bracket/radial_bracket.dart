@@ -136,14 +136,15 @@ class _SlotContent extends ConsumerWidget {
 }
 
 /// Le contenu du cercle central : compte à rebours, « en direct » ou champion.
-class CenterLabel extends StatelessWidget {
+class CenterLabel extends ConsumerWidget {
   const CenterLabel({super.key, required this.node});
   final BracketNodeDto node;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final kind = node.status.statusKind;
-    final winner = winnerOf(node);
+    // Sans spoil : le nom du champion reste caché derrière « Terminé » tant qu'on n'a pas révélé le match.
+    final winner = ref.watch(scoreHiddenProvider(node.eventId)) ? null : winnerOf(node);
     final finalists = node.participants.map(teamCode).join(" – ");
     final startsAt = node.startsAt == null ? null : DateTime.parse(node.startsAt!);
     final (Color trophy, Widget main) = switch (kind) {
