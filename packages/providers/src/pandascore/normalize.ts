@@ -1,4 +1,4 @@
-import { buildEventLinks, CompetitionDTO, detectBracketFormat, EntityDTO, EventDTO, EventStatus, StructureDTO } from "@news/domain";
+import { buildEventLinks, CompetitionDTO, detectBracketFormat, EntityDTO, EventDTO, EventStatus, pickPublisherStreams, StructureDTO } from "@news/domain";
 import { RawLeague, RawMatch, RawSerie, RawTeam, RawTournament } from "./types";
 
 const PROVIDER = "pandascore";
@@ -120,12 +120,6 @@ export function normalizeCompetitionsFromTournament(tournament: RawTournament, n
   return [normalizeLeague(tournament.league), normalizeSerie(tournament.serie), normalizeTournament(tournament, now)];
 }
 
-// Le direct officiel (J21) : celui marqué `main`, sinon un officiel. Jamais un co-streamer.
-export function pickOfficialStream(streams: RawMatch["streams_list"]): string | null {
-  const official = (streams ?? []).filter((s) => s.official && s.raw_url);
-  return (official.find((s) => s.main) ?? official[0])?.raw_url ?? null;
-}
-
 // Score de série et gagnant de chaque carte uniquement (plan gratuit, règle 6 de
 // CLAUDE.md) : pas de score en rounds, pas de nom de carte.
 export function normalizeMatch(match: RawMatch): EventDTO {
@@ -151,7 +145,7 @@ export function normalizeMatch(match: RawMatch): EventDTO {
     startsAt: match.begin_at ? new Date(match.begin_at) : match.scheduled_at ? new Date(match.scheduled_at) : null,
     endsAt: match.end_at ? new Date(match.end_at) : null,
     bestOf: match.number_of_games ?? null,
-    streamUrl: pickOfficialStream(match.streams_list),
+    streams: pickPublisherStreams(match.streams_list),
     result: {
       seriesScore: match.results ?? [],
       games: (match.games ?? []).map((g) => ({

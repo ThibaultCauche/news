@@ -7,6 +7,7 @@ import { IngestionModule } from "./ingestion/ingestion.module";
 import { LiquipediaModule } from "./liquipedia/liquipedia.module";
 import { PredictionsModule } from "./predictions/predictions.module";
 import { NotificationsModule } from "./notifications/notifications.module";
+import { StreamsModule } from "./streams/streams.module";
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { NotificationsModule } from "./notifications/notifications.module";
     PredictionsModule,
     LiquipediaModule,
     AlertsModule,
+    StreamsModule,
   ],
 })
 export class AppModule {}

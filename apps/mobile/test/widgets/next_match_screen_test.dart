@@ -29,14 +29,15 @@ void _tapSpan(WidgetTester tester, String text) {
   recognizer!.onTap!();
 }
 
-EventDetailResponseDto _event({required String status, int? scoreA, int? scoreB, String? stakes, String shortNameA = "G2", String? streamUrl}) {
+EventDetailResponseDto _event({required String status, int? scoreA, int? scoreB, String? stakes, String shortNameA = "G2", List<StreamDto> streams = const [], String? moreUrl}) {
   return EventDetailResponseDto((b) => b
     ..id = "evt-1"
     ..kind = "match"
     ..name = "G2 Esports vs Paper Rex"
     ..status = status
     ..bestOf = 3
-    ..streamUrl = streamUrl
+    ..streams.addAll(streams)
+    ..moreStreamersUrl = moreUrl
     ..importance = 3
     ..sourceUpdatedAt = "2026-09-27T00:00:00.000Z"
     ..result = JsonObject(<String, dynamic>{})
@@ -82,17 +83,28 @@ Future<void> _pump(WidgetTester tester, EventDetailResponseDto event, {bool spoi
 }
 
 void main() {
-  testWidgets("Regarder : seulement avant et pendant le match, et seulement s'il y a un lien officiel (J21)", (tester) async {
-    await _pump(tester, _event(status: "scheduled", streamUrl: "https://www.twitch.tv/valorant"));
-    expect(find.text("Regarder"), findsOneWidget);
+  StreamDto stream(String channel, String lang, {String? name, bool? live}) => StreamDto((b) => b
+    ..channel = channel
+    ..url = "https://www.twitch.tv/$channel"
+    ..language = lang
+    ..displayName = name
+    ..live = live);
+
+  testWidgets("Regarder : un cercle par chaîne (ta langue d'abord) et « Autres streamers », avant et pendant le match (J21)", (tester) async {
+    await _pump(tester, _event(status: "live", streams: [stream("valorant", "en", name: "VALORANT", live: true), stream("valorant_fr", "fr", name: "Valorant FR")], moreUrl: "https://www.twitch.tv/directory/category/valorant"));
+    expect(find.text("REGARDER"), findsOneWidget);
+    expect(find.text("Autres streamers"), findsOneWidget);
+    // La langue du test n'est pas le français : on ne vérifie que la présence des deux cercles.
+    expect(find.text("VALORANT"), findsOneWidget);
+    expect(find.text("Valorant FR"), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
+    await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0, streams: [stream("valorant", "en")], moreUrl: "https://x.test"));
+    expect(find.text("REGARDER"), findsNothing);
 
     await tester.pumpWidget(const SizedBox());
     await _pump(tester, _event(status: "scheduled"));
-    expect(find.text("Regarder"), findsNothing);
-
-    await tester.pumpWidget(const SizedBox());
-    await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0, streamUrl: "https://www.twitch.tv/valorant"));
-    expect(find.text("Regarder"), findsNothing);
+    expect(find.text("REGARDER"), findsNothing);
   });
 
   testWidgets("le score est dans la carte, entre les deux équipes (J21)", (tester) async {

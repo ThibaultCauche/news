@@ -75,7 +75,7 @@ export const PARTICIPANT_ORDER: Prisma.EventParticipantOrderByWithRelationInput[
 
 // Inclusion Prisma correspondante, partagée pour rester cohérente avec le mapper.
 export const eventSummaryInclude = {
-  competition: { select: { id: true, name: true, format: true } },
+  competition: { select: { id: true, name: true, format: true, game: true } },
   // Ordre stable des équipes (gauche/droite) : `side`, puis l'identifiant pour les anciennes lignes sans côté.
   participants: {
     include: { entity: { select: { id: true, name: true, shortName: true, imageUrl: true } } },

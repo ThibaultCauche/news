@@ -9,7 +9,9 @@ import "../../widgets/async_view.dart";
 import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
+import "../../widgets/stream_language_picker.dart";
 import "../follows/follows_screen.dart";
+import "follow_notifications_screen.dart";
 import "../learn/learn_screen.dart";
 
 /// Écran 22 (`docs/02`, J6). Sans spoil et résumé du matin restent globaux
@@ -76,7 +78,32 @@ class _SettingsBody extends ConsumerWidget {
           ),
         ),
         const SizedBox(height: AppSpacing.lg),
+        const SectionLabel("STREAMS"),
+        const SizedBox(height: AppSpacing.sm),
+        const SectionCard(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Langue de diffusion", style: TextStyle(fontWeight: FontWeight.w600)),
+              SizedBox(height: AppSpacing.xs),
+              Text("Sur l'écran d'un match, la diffusion dans cette langue passe en premier.", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
+              SizedBox(height: AppSpacing.sm),
+              StreamLanguagePicker(),
+            ],
+          ),
+        ),
+        const SizedBox(height: AppSpacing.lg),
         const SectionLabel("NOTIFICATIONS"),
+        const SizedBox(height: AppSpacing.sm),
+        SectionCard(
+          child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: const Text("Notifications par suivi", style: TextStyle(fontWeight: FontWeight.w600)),
+            subtitle: const Text("Rappel, début, résultat : au cas par cas pour chaque équipe ou compétition.", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
+            trailing: const Icon(Icons.chevron_right_rounded),
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const FollowNotificationsScreen())),
+          ),
+        ),
         const SizedBox(height: AppSpacing.sm),
         SectionCard(
           child: Column(

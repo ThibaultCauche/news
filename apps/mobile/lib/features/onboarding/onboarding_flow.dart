@@ -11,6 +11,7 @@ import "../../widgets/follow_button.dart";
 import "../../widgets/page_subtitle.dart";
 import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
+import "../../widgets/stream_language_picker.dart";
 import "../follows/follows_provider.dart";
 import "../learn/learn_screen.dart";
 
@@ -67,7 +68,11 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
         automaticallyImplyLeading: false,
         actions: [TextButton(onPressed: widget.onDone, child: const Text("Passer"))],
       ),
-      body: _page == 0 ? _SubjectsPage(onContinue: () => setState(() => _page = 1)) : _TeamsPage(onDone: widget.onDone),
+      body: switch (_page) {
+        0 => _SubjectsPage(onContinue: () => setState(() => _page = 1)),
+        1 => _LanguagePage(onContinue: () => setState(() => _page = 2)),
+        _ => _TeamsPage(onDone: widget.onDone),
+      },
     );
   }
 }
@@ -179,6 +184,35 @@ class _GameRow extends StatelessWidget {
             Text(label),
           ],
         ),
+      ),
+    );
+  }
+}
+
+/// La langue des streams (J21) : celle du téléphone est déjà choisie, on demande seulement de confirmer.
+class _LanguagePage extends StatelessWidget {
+  const _LanguagePage({required this.onContinue});
+
+  final VoidCallback onContinue;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const PageTitle("Tu regardes en quelle langue ?"),
+          const SizedBox(height: AppSpacing.xs),
+          const PageSubtitle("Pour chaque match, on met en premier la diffusion dans ta langue. Modifiable dans les Réglages."),
+          const SizedBox(height: AppSpacing.lg),
+          const Expanded(child: SingleChildScrollView(child: StreamLanguagePicker())),
+          SizedBox(
+            width: double.infinity,
+            child: FilledButton(onPressed: onContinue, child: const Padding(padding: EdgeInsets.all(AppSpacing.sm), child: Text("Continuer"))),
+          ),
+          const SizedBox(height: AppSpacing.md),
+        ],
       ),
     );
   }

@@ -42,7 +42,7 @@ describe("API v1 (e2e)", () => {
     const category = await prisma.category.create({ data: { id: randomUUID(), slug: categorySlug, name: "Test e-sport" } });
     categoryId = category.id;
     const competition = await prisma.competition.create({
-      data: { id: randomUUID(), categoryId, kind: "tournament", name: "Test Champions", format: "double_elim", status: "live", importance: 3 },
+      data: { id: randomUUID(), categoryId, kind: "tournament", name: "Test Champions", game: "valorant", format: "double_elim", status: "live", importance: 3 },
     });
     competitionId = competition.id;
     const teamA = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test Alpha", shortName: `TA${shortNameSuffix}` } });
@@ -182,6 +182,29 @@ describe("API v1 (e2e)", () => {
     expect((res.body.result as { seriesScore: unknown[] }).seriesScore).toHaveLength(1);
 
     await request(app.getHttpServer()).get(`/v1/events/${randomUUID()}`).expect(404);
+  });
+
+  it("GET /v1/events/:id donne les chaînes de diffusion avec leur profil Twitch, et le lien « Autres streamers » (J21)", async () => {
+    const login = `test_chan_${randomUUID().slice(0, 8)}`;
+    const event = await prisma.event.create({
+      data: {
+        id: randomUUID(),
+        competitionId,
+        kind: "match",
+        name: "Test streams",
+        status: "scheduled",
+        result: {},
+        streams: [{ channel: login, url: `https://www.twitch.tv/${login}`, language: "fr", official: true }],
+      },
+    });
+    await prisma.streamChannel.create({ data: { login, displayName: "Test FR", imageUrl: "https://example.test/fr.png", live: true, liveCheckedAt: new Date() } });
+    try {
+      const res = await request(app.getHttpServer()).get(`/v1/events/${event.id}`).expect(200);
+      expect(res.body.streams).toEqual([{ channel: login, url: `https://www.twitch.tv/${login}`, language: "fr", displayName: "Test FR", imageUrl: "https://example.test/fr.png", live: true }]);
+      expect(res.body.moreStreamersUrl).toContain("twitch.tv/directory/category/valorant");
+    } finally {
+      await prisma.streamChannel.delete({ where: { login } });
+    }
   });
 
   it("GET /v1/events/:id résout le gagnant de chaque carte depuis provider_ref (règle 6)", async () => {

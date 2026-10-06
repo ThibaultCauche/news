@@ -66,6 +66,33 @@ class FollowsNotifier extends AsyncNotifier<List<FollowStateDto>> {
     unawaited(ref.read(pushServiceProvider).ensureRegistered());
   }
 
+  /// Ce qu'un suivi déclenche (J21) : rappel de 15 minutes, début, résultat. L'API est la même que
+  /// pour suivre : on renvoie le niveau et la sourdine tels quels pour ne rien changer d'autre.
+  Future<void> setNotifications(FollowStateDto follow, {bool? reminder, bool? start, bool? result}) async {
+    final previous = state;
+    final next = follow.rebuild((b) => b
+      ..notifyReminder = reminder ?? follow.notifyReminder
+      ..notifyStart = start ?? follow.notifyStart
+      ..notifyResult = result ?? follow.notifyResult);
+    final current = previous.value;
+    if (current != null) state = AsyncValue.data([for (final f in current) f.id == follow.id ? next : f]);
+    try {
+      await ref.read(apiClientProvider).getSubscriptionsApi().subscriptionsControllerCreate(
+        createSubscriptionDto: CreateSubscriptionDto((b) => b
+          ..targetType = _toCreateEnum(followTargetTypeFromWire(follow.targetType))
+          ..targetId = follow.targetId
+          ..level = CreateSubscriptionDtoLevelEnum.valueOf(follow.level)
+          ..muted = follow.muted
+          ..notifyReminder = next.notifyReminder
+          ..notifyStart = next.notifyStart
+          ..notifyResult = next.notifyResult),
+      );
+    } catch (_) {
+      state = previous;
+      rethrow;
+    }
+  }
+
   Future<void> unfollow(FollowTargetType type, String targetId) async {
     final previous = state;
     final current = previous.value;

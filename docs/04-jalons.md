@@ -761,6 +761,14 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 - [ ] Remplissage de l'arbre (pyramide et cercle) à la fin d'un vrai match, fluidité 60 i/s (A1 du J19).
 - [ ] Avec un compte connecté : chemin en or, phrase de l'équipe suivie, étoile Favori.
 
+### Lot 6 — Regarder, langue et notifications (ajouté 2026-10-06, extension du J21)
+- [x] **Streams** : seulement les chaînes de l'éditeur (Riot pour Valorant : `valorant`, `valorant_fr`, `valorant_emea`…), filtrées par nom (`pickPublisherStreams`, `packages/domain/src/streams.ts` : PandaScore marque `official: false` les chaînes de langue de Riot). `event.streams` (JSON), table `stream_channel` (logo, nom, en direct) remplie par le worker via l'API Twitch Helix (`apps/worker/src/streams/twitch.service.ts`, `TWITCH_CLIENT_ID`/`TWITCH_CLIENT_SECRET`, sans clés : initiales et pas de « en direct »). Co-streamers non gérés : bouton « Autres streamers » vers la page du jeu chez Twitch (`moreStreamersUrl`).
+- [x] **Écran du match** : cercles (logo, nom, langue), contour rouge qui respire en direct (figé en mouvement réduit), remplace le bouton Regarder. Pas de lien direct dans les notifications.
+- [x] **Langue** : langue du téléphone par défaut, page de confirmation dans l'onboarding, choix dans Réglages (`streamLanguageProvider`, local, vaut pour les invités). Sa langue d'abord.
+- [x] **Notifications par suivi** : écran Réglages → « Notifications par suivi » (rappel, début, résultat par équipe ou compétition).
+- Abandonné : streamer préféré et « Tes streamers en direct » sur l'Accueil (sans co-streamers, rien à mettre en favori).
+- **Reste** : mettre les clés Twitch dans `.env` (PC et NAS) et vérifier logos et « en direct » avec de vraies données.
+
 **À trancher au cadrage** : libellé du bouton retour (#E2) ; endpoint maison ou Remote Config (#L1) ; place du bouton Regarder (écran du match seulement, ou aussi la carte : la carte relève plutôt du J26) ; migration des réglages de notification existants (#G3).
 
 **Hors périmètre** : refonte de la densité des cartes et de l'Accueil (J22) ; co-streamers (J26) ; notifications avec logos (#M11, J22).

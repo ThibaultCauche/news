@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import { normalizeCompetitionsFromTournament, normalizeMatch, normalizeStructure, pickOfficialStream } from "./normalize";
+import { normalizeCompetitionsFromTournament, normalizeMatch, normalizeStructure } from "./normalize";
 import { RawMatch, RawTournament } from "./types";
 
 // Fixtures = vraies réponses PandaScore, gardées dans tests-pandascore/samples/
@@ -8,18 +8,12 @@ import { RawMatch, RawTournament } from "./types";
 const SAMPLES = join(__dirname, "../../../../tests-pandascore/samples");
 const load = <T>(file: string): T => JSON.parse(readFileSync(join(SAMPLES, file), "utf8"));
 
-describe("pickOfficialStream", () => {
-  it("préfère le direct officiel principal, jamais un co-streamer", () => {
-    const s = (raw_url: string, official: boolean, main = false) => ({ raw_url, official, main });
-    expect(pickOfficialStream([s("co", false, true), s("off", true), s("main", true, true)])).toBe("main");
-    expect(pickOfficialStream([s("co", false), s("off", true)])).toBe("off");
-    expect(pickOfficialStream([s("co", false)])).toBeNull();
-    expect(pickOfficialStream(undefined)).toBeNull();
-  });
-
-  it("lit le direct d'un vrai match PandaScore", () => {
-    const [match] = load<RawMatch[]>("matchs-termin-s.json");
-    expect(normalizeMatch(match).streamUrl === null || normalizeMatch(match).streamUrl!.startsWith("https://")).toBe(true);
+describe("streams d'un match (J21)", () => {
+  it("un vrai match PandaScore : seulement des chaînes Twitch de l'éditeur", () => {
+    const matches = load<RawMatch[]>("brackets-du-tournoi.json");
+    const streams = matches.flatMap((m) => normalizeMatch(m).streams);
+    expect(streams.length).toBeGreaterThan(0);
+    for (const s of streams) expect(s.url).toMatch(/^https:\/\/www\.twitch\.tv\//);
   });
 });
 

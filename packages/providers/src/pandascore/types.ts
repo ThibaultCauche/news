@@ -63,6 +63,7 @@ export interface RawMatchResult {
 export interface RawStream {
   main?: boolean;
   official?: boolean;
+  language?: string | null;
   raw_url?: string | null;
 }
 

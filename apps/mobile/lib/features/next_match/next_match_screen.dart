@@ -27,6 +27,7 @@ import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
 import "../team/team_screen.dart";
 import "../../widgets/spoiler_hold.dart";
+import "../../widgets/stream_circles.dart";
 import "../forum/forum_entry.dart";
 import "../profile/prediction_panel.dart";
 
@@ -218,14 +219,10 @@ class _NextMatchBody extends ConsumerWidget {
           ),
         ),
         ),
-        // Le direct officiel, avant et pendant le match (J21) : un lien, jamais une vidéo dans l'appli.
-        if (event.streamUrl != null && (status == EventStatusKind.scheduled || status == EventStatusKind.live)) ...[
+        // Où regarder, avant et pendant le match (J21) : les chaînes de l'éditeur, puis « Autres streamers ».
+        if (status == EventStatusKind.scheduled || status == EventStatusKind.live) ...[
           const SizedBox(height: AppSpacing.md),
-          FilledButton.icon(
-            onPressed: () => launchUrl(Uri.parse(event.streamUrl!), mode: LaunchMode.externalApplication),
-            icon: const Icon(Icons.play_arrow_rounded),
-            label: const Text("Regarder"),
-          ),
+          StreamCircles(streams: event.streams.toList(), moreUrl: event.moreStreamersUrl),
         ],
         const SizedBox(height: AppSpacing.lg),
         // Gagnant de chaque carte (règle 6 de CLAUDE.md) : masqué tant que le

@@ -102,8 +102,8 @@ model Event {
   endsAt           DateTime?          @map("ends_at")
   bestOf           Int?               @map("best_of")
   result           Json?
-  // Lien du direct officiel (PandaScore `streams_list`), pour le bouton « Regarder » (J21).
-  streamUrl        String?            @map("stream_url")
+  // Chaînes de diffusion de l'éditeur (PandaScore `streams_list`, filtrées par `pickPublisherStreams`), J21.
+  streams          Json?
   importance       Int                @default(0)
   spoilerSensitive Boolean            @default(true) @map("spoiler_sensitive")
   participants     EventParticipant[]
@@ -115,6 +115,19 @@ model Event {
   updatedAt        DateTime           @updatedAt @map("updated_at")
 
   @@map("event")
+}
+
+// Profil Twitch d'une chaîne de diffusion (J21) : logo, nom affiché et « en direct ». Rempli par le worker
+// (API Twitch), jamais par l'appli (règle 1).
+model StreamChannel {
+  login            String    @id
+  displayName      String?   @map("display_name")
+  imageUrl         String?   @map("image_url")
+  live             Boolean   @default(false)
+  profileCheckedAt DateTime? @map("profile_checked_at")
+  liveCheckedAt    DateTime? @map("live_checked_at")
+
+  @@map("stream_channel")
 }
 
 model EventParticipant {

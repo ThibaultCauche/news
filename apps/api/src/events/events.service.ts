@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
-import { buildMatchStakes } from "@news/domain";
+import { buildMatchStakes, moreStreamersUrl, StreamDTO } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { eventSummaryInclude, EventSummaryDto, toEventSummary } from "../common/event-summary.mapper";
@@ -44,9 +44,21 @@ export class EventContextDto {
   @ApiProperty({ nullable: true, type: HeadToHeadDto }) headToHead!: HeadToHeadDto | null;
 }
 
+export class StreamDto {
+  @ApiProperty() channel!: string;
+  @ApiProperty() url!: string;
+  @ApiProperty({ nullable: true, type: String }) language!: string | null;
+  @ApiProperty({ nullable: true, type: String }) displayName!: string | null;
+  @ApiProperty({ nullable: true, type: String }) imageUrl!: string | null;
+  /** `null` tant que Twitch n'a pas été interrogé (pas de clé, ou match encore lointain). */
+  @ApiProperty({ nullable: true, type: Boolean }) live!: boolean | null;
+}
+
 export class EventDetailResponseDto extends EventSummaryDto {
   @ApiProperty() sourceUpdatedAt!: string;
-  @ApiProperty({ nullable: true, type: String }) streamUrl!: string | null;
+  @ApiProperty({ type: [StreamDto] }) streams!: StreamDto[];
+  /** Page du jeu chez Twitch, pour « Autres streamers » ; `null` si on ne la connaît pas. */
+  @ApiProperty({ nullable: true, type: String }) moreStreamersUrl!: string | null;
   @ApiProperty({ type: Object }) result!: unknown;
   @ApiProperty({ type: [MapResultDto] }) maps!: MapResultDto[];
   @ApiProperty({ type: EventContextDto }) context!: EventContextDto;
@@ -89,13 +101,25 @@ export class EventsService {
     const response: EventDetailResponseDto = {
       ...toEventSummary(event),
       sourceUpdatedAt: event.updatedAt.toISOString(),
-      streamUrl: event.streamUrl,
+      streams: await this.buildStreams(event.streams),
+      moreStreamersUrl: moreStreamersUrl(event.competition.game),
       result: event.result,
       maps: await this.buildMaps(event.result),
       context: await this.buildContext(event),
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);
     return response;
+  }
+
+  private async buildStreams(raw: unknown): Promise<StreamDto[]> {
+    const streams = ((raw as StreamDTO[] | null) ?? []).filter((s) => s.channel);
+    if (streams.length === 0) return [];
+    const profiles = await this.prisma.streamChannel.findMany({ where: { login: { in: streams.map((s) => s.channel!) } } });
+    const byLogin = new Map(profiles.map((p) => [p.login, p]));
+    return streams.map((s) => {
+      const p = byLogin.get(s.channel!);
+      return { channel: s.channel!, url: s.url, language: s.language, displayName: p?.displayName ?? null, imageUrl: p?.imageUrl ?? null, live: p?.liveCheckedAt ? p.live : null };
+    });
   }
 
   private async buildMaps(result: unknown): Promise<MapResultDto[]> {

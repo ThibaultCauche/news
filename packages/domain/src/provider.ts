@@ -1,5 +1,6 @@
 import { BracketFormat, EventLinkDTO } from "./bracket";
 import { EventStatus } from "./status";
+import { StreamDTO } from "./streams";
 
 // Fenêtre de temps pour une requête d'ingestion (bornes optionnelles).
 // `onlyLive` : ne renvoyer que les événements en cours (un seul appel, pour le
@@ -57,8 +58,8 @@ export interface EventDTO {
   startsAt: Date | null;
   endsAt: Date | null;
   bestOf: number | null;
-  /** Lien du direct officiel, s'il y en a un. */
-  streamUrl: string | null;
+  /** Chaînes de diffusion de l'éditeur (une par langue). */
+  streams: StreamDTO[];
   result: unknown;
   participants: EventParticipantDTO[];
   raw: unknown;

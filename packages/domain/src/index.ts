@@ -10,3 +10,4 @@ export * from "./games";
 export * from "./family";
 export * from "./community";
 export * from "./forum";
+export * from "./streams";
