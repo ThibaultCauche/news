@@ -3,6 +3,7 @@ import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
 import "../../features/forum/thread_screen.dart";
 import "../../features/next_match/next_match_screen.dart";
+import "local_notifications.dart";
 
 /// Clé du `Navigator` racine : accessible en dehors de l'arbre de widgets,
 /// pour naviguer depuis un tap sur une notification (docs/04 J4).
@@ -22,7 +23,13 @@ Future<NotificationTarget?> setupNotificationTapHandling() async {
   } catch (_) {
     return null;
   }
+  // Les notifications sont affichées par l'appli (message « data », `local_notifications.dart`) : le tap
+  // vient du plugin. Les écouteurs FCM restent pour d'éventuelles notifications envoyées par la console.
+  FirebaseMessaging.onBackgroundMessage(firebaseBackgroundHandler);
+  await initLocalNotifications(onTap: openFromNotification);
   FirebaseMessaging.onMessageOpenedApp.listen((message) => openFromNotification(message.data));
+  final launchData = await launchNotificationData();
+  if (launchData != null) return launchData;
   final initialMessage = await FirebaseMessaging.instance.getInitialMessage();
   return initialMessage?.data;
 }

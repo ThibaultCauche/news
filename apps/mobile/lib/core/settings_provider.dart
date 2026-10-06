@@ -60,3 +60,16 @@ class CompactEventCardsNotifier extends Notifier<bool> {
 }
 
 final compactEventCardsProvider = NotifierProvider<CompactEventCardsNotifier, bool>(CompactEventCardsNotifier.new);
+
+/// Logo de l'équipe dans les notifications (Réglages) : local à l'appareil, comme `CompactEventCardsNotifier`.
+class NotificationTeamLogoNotifier extends Notifier<bool> {
+  @override
+  bool build() => ref.watch(authStoreProvider).notificationTeamLogo;
+
+  Future<void> set(bool value) async {
+    await ref.read(authStoreProvider).setNotificationTeamLogo(value);
+    state = value;
+  }
+}
+
+final notificationTeamLogoProvider = NotifierProvider<NotificationTeamLogoNotifier, bool>(NotificationTeamLogoNotifier.new);

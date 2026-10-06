@@ -9,6 +9,10 @@ const _onboardingSeenKey = "onboarding.seen";
 const _compactEventCardsKey = "display.compactEventCards";
 const _agendaCategoryKey = "agenda.category";
 const _agendaLeagueIdsKey = "agenda.leagueIds";
+const _agendaMineKey = "agenda.mine";
+const _learnChipDismissedKey = "home.learnDismissed";
+// Même clé que `teamLogoPrefKey` (`local_notifications.dart`) : l'isolat des messages en arrière-plan la relit.
+const _notificationTeamLogoKey = "notif.teamLogo";
 
 /// Jetons du compte et identifiant d'installation, dans `shared_preferences` (docs/04 J4).
 /// Ce sont nos JWT (accès 1 h, rafraîchissement 180 j) : le mot de passe reste chez
@@ -75,4 +79,19 @@ class AuthStore {
       await _prefs.setString(_agendaLeagueIdsKey, leagueIds);
     }
   }
+
+  // Agenda : « Mes suivis » (vrai) ou « Tout » (faux) ; `null` tant que l'utilisateur n'a pas choisi (J22).
+  bool? get agendaMine => _prefs.getBool(_agendaMineKey);
+
+  Future<void> setAgendaMine(bool value) => _prefs.setBool(_agendaMineKey, value);
+
+  // Puce « Nouveau sur Valorant » de l'Accueil fermée (J22).
+  bool get learnChipDismissed => _prefs.getBool(_learnChipDismissedKey) ?? false;
+
+  Future<void> dismissLearnChip() => _prefs.setBool(_learnChipDismissedKey, true);
+
+  // Logo de l'équipe en petite icône dans les notifications (J22) : propre à l'appareil, lu aussi hors de l'appli ouverte.
+  bool get notificationTeamLogo => _prefs.getBool(_notificationTeamLogoKey) ?? true;
+
+  Future<void> setNotificationTeamLogo(bool value) => _prefs.setBool(_notificationTeamLogoKey, value);
 }

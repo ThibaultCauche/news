@@ -1,3 +1,4 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "../theme/tokens.dart";
@@ -42,7 +43,7 @@ class LeagueLogo extends StatelessWidget {
       padding: EdgeInsets.all(size * 0.1),
       decoration: BoxDecoration(color: url == null ? AppColors.surface : AppColors.textPrimary, borderRadius: BorderRadius.circular(AppRadii.chip)),
       clipBehavior: Clip.antiAlias,
-      child: url == null ? fallback : Image.network(url, fit: BoxFit.contain, errorBuilder: (_, _, _) => fallback),
+      child: url == null ? fallback : Image(image: CachedNetworkImageProvider(url), fit: BoxFit.contain, errorBuilder: (_, _, _) => fallback),
     );
   }
 }

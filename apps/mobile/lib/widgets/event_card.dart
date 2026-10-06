@@ -2,6 +2,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
+import "package:cached_network_image/cached_network_image.dart";
 import "package:palette_generator/palette_generator.dart";
 import "../core/date_x.dart";
 import "../core/settings_provider.dart";
@@ -12,6 +13,7 @@ import "../features/competitions/game_screen.dart" show openCompetitionOfEvent;
 import "../features/follows/follows_provider.dart";
 import "../theme/tokens.dart";
 import "live_dot.dart";
+import "match_context.dart";
 import "match_countdown.dart";
 import "match_visuals.dart";
 import "spoiler_hold.dart";
@@ -22,9 +24,11 @@ import "spoiler_hold.dart";
 /// modèle reste générique, règle 3 de CLAUDE.md).
 final entityAccentColorProvider = FutureProvider.family<Color?, String>((ref, imageUrl) async {
   try {
-    final palette = await PaletteGenerator.fromImageProvider(NetworkImage(imageUrl), maximumColorCount: 8);
+    final palette = await PaletteGenerator.fromImageProvider(CachedNetworkImageProvider(imageUrl), maximumColorCount: 8);
     return palette.vibrantColor?.color ?? palette.dominantColor?.color;
   } catch (_) {
+    // Image pas encore disponible : on retente plus tard plutôt que de garder « sans couleur » pour la session.
+    retryProviderLater(ref, "accent:$imageUrl");
     return null;
   }
 });
@@ -123,7 +127,7 @@ class EventCard extends ConsumerWidget {
 
     // BOx redevient utile en l'absence de score (personne à départager encore) ;
     // une fois le score affiché, il fait doublon avec "le format BO3".
-    final subtitle = [event.competition.name, if (score == null && event.bestOf != null) "BO${event.bestOf}"].join(" · ");
+    final bestOfSuffix = score == null && event.bestOf != null ? "BO${event.bestOf}" : null;
 
     // En haut, centrée : à gauche ("décalé") pointait vers l'équipe A alors
     // qu'elle concerne le match entier.
@@ -270,7 +274,7 @@ class EventCard extends ConsumerWidget {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Flexible(child: Text(subtitle, style: textTheme.bodySmall, overflow: TextOverflow.ellipsis)),
+                            Flexible(child: MatchContextLine(competition: event.competition, suffix: bestOfSuffix)),
                             const Icon(Icons.chevron_right_rounded, size: 14, color: AppColors.textTertiary),
                           ],
                         ),

@@ -37,9 +37,12 @@ export class FcmService implements OnModuleDestroy {
     return getMessaging(this.app);
   }
 
-  // `tag` (J21) : une notification qui porte le même tag en remplace la précédente dans le volet
-// (Android `notification.tag`, iOS `apns-collapse-id`), donc un match = une seule notification.
-  async send(pushToken: string, title: string, body: string, data: Record<string, string>, tag?: string): Promise<SendResult> {
+  // Message « data » seul (J22) : l'appli le transforme en notification avec le logo de l'équipe en petite
+  // icône (`local_notifications.dart`), ce que FCM ne sait pas faire (grande image seulement). `tag` (J21) :
+  // une notification qui porte le même tag en remplace la précédente, donc un match = une notification.
+  // Priorité haute pour une livraison immédiate, même appli fermée (pas « arrêtée de force »).
+  // ponytail: Android seulement ; iOS (reporté) demandera un bloc `notification` + `apns` en plus.
+  async send(pushToken: string, title: string, body: string, data: Record<string, string>, tag?: string, imageUrl?: string): Promise<SendResult> {
     const messaging = this.getMessaging();
     if (!messaging) {
       logger.warn({ title }, "FIREBASE_* absent, notification journalée mais pas envoyée");
@@ -48,9 +51,8 @@ export class FcmService implements OnModuleDestroy {
     try {
       await messaging.send({
         token: pushToken,
-        notification: { title, body },
-        data,
-        ...(tag ? { android: { notification: { tag } }, apns: { headers: { "apns-collapse-id": tag } } } : {}),
+        data: { ...data, title, body, ...(tag ? { tag } : {}), ...(imageUrl ? { imageUrl } : {}) },
+        android: { priority: "high" },
       });
       this.windowSent++;
       return { tokenInvalid: false };

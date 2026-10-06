@@ -44,7 +44,7 @@ export class NotificationDispatchService {
 
     const event = await this.prisma.event.findUnique({
       where: { id: message.eventId },
-      include: { competition: { select: { id: true, categoryId: true } }, participants: { include: { entity: { select: { name: true } } } } },
+      include: { competition: { select: { id: true, categoryId: true } }, participants: { include: { entity: { select: { name: true, imageUrl: true } } }, orderBy: { side: "asc" } } },
     });
     if (!event) return;
 
@@ -125,6 +125,12 @@ export class NotificationDispatchService {
       // qui commencent ensemble restent une notification chacun (la sienne remplace son rappel) :
       // Android les range lui-même sous « Keryx ».
       const tag = `event-${event.id}`;
+      // Logo de l'équipe en petite icône (J22) : celui de l'équipe de gauche (sa place, pas son résultat).
+      // Au résultat, hors sans spoil, c'est celui du vainqueur ; en sans spoil on reste sur l'équipe de gauche,
+      // qui ne dit pas qui a gagné.
+      const spoilerFree = sub.user.setting?.spoilerFree ?? false;
+      const first = event.participants[0]?.entity.imageUrl ?? null;
+      const image = type === "result" && !spoilerFree ? (event.participants.find((p) => p.isWinner)?.entity.imageUrl ?? first) : first;
       for (const device of sub.user.devices) {
         if (
           device.utcOffsetMinutes !== null &&
@@ -137,7 +143,7 @@ export class NotificationDispatchService {
           continue; // regroupement dans un résumé du matin : écran Réglages pas encore construit (J6)
         }
         if (!device.pushToken) continue;
-        const { tokenInvalid } = await this.fcm.send(device.pushToken, title, body, { eventId: event.id }, tag);
+        const { tokenInvalid } = await this.fcm.send(device.pushToken, title, body, { eventId: event.id }, tag, image ?? undefined);
         if (tokenInvalid) await this.prisma.device.delete({ where: { id: device.id } }).catch(() => undefined);
       }
       logger.info({ userId: sub.userId, eventId: event.id, type }, "notification traitée");

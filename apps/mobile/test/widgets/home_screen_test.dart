@@ -2,8 +2,10 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
 import "package:intl/date_symbol_data_local.dart";
+import "package:mobile/core/api_providers.dart";
 import "package:mobile/core/navigation.dart";
 import "package:mobile/core/settings_provider.dart";
+import "package:mobile/widgets/match_countdown.dart";
 import "package:mobile/features/home/home_screen.dart";
 import "package:mobile/features/profile/community_providers.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -42,12 +44,20 @@ DateTime _todayAt(int h, int m) {
   return DateTime(now.year, now.month, now.day, h, m);
 }
 
-HomeResponseDto _home({List<GrandFinalDto> grandFinals = const [], List<EventSummaryDto> live = const [], List<EventSummaryDto> upcoming = const []}) => HomeResponseDto(
+HomeResponseDto _home({
+  List<GrandFinalDto> grandFinals = const [],
+  List<EventSummaryDto> live = const [],
+  List<EventSummaryDto> upcoming = const [],
+  List<EventSummaryDto> todayFollowed = const [],
+  List<MajorCompetitionDto> majors = const [],
+}) => HomeResponseDto(
       (b) => b
         ..sourceUpdatedAt = "2026-10-18T10:00:00.000Z"
         ..liveNow.addAll(live)
         ..upcoming.addAll(upcoming)
-        ..grandFinals.addAll(grandFinals),
+        ..grandFinals.addAll(grandFinals)
+        ..todayFollowed.addAll(todayFollowed)
+        ..majors.addAll(majors),
     );
 
 EventSummaryDto _match(String id, String status, String a, String b, {int? scoreA, int? scoreB, DateTime? startsAt}) => EventSummaryDto(
@@ -77,8 +87,12 @@ EventSummaryDto _match(String id, String status, String a, String b, {int? score
     );
 
 Future<ProviderContainer> _pump(WidgetTester tester, HomeResponseDto home, {List<String>? calls}) async {
+  final authStore = await tester.runAsync(() async => await overrideAuthStoreForTest());
   final container = ProviderContainer(overrides: [
         overrideSignedInForTest(),
+        authStore,
+        // Pas de vrai client : la progression des tutos échoue en silence (hors ligne), sans base ni réseau.
+        apiClientProvider.overrideWith((ref) => throw UnimplementedError("pas de réseau en test")),
         profileProvider.overrideWith((ref) async => null),
     homeProvider.overrideWith((ref) async => home),
     userSettingProvider.overrideWith((ref) async => UserSettingDto((b) => b
@@ -112,7 +126,7 @@ void main() {
     expect(find.text("VIT"), findsOneWidget);
     expect(find.text("LOUD"), findsOneWidget);
     expect(find.text("1"), findsOneWidget); // score sous le logo, comme sur toutes les cartes
-    expect(find.text("Group B"), findsOneWidget); // le BO n'apparaît plus une fois le score affiché
+    expect(find.text("Groupe B"), findsOneWidget); // le BO n'apparaît plus une fois le score affiché
     expect(find.text("Ensuite : FUT – 100T"), findsOneWidget);
     // Même ordre que l'API : la première équipe à gauche.
     expect(tester.getTopLeft(find.text("VIT")).dx, lessThan(tester.getTopLeft(find.text("LOUD")).dx));
@@ -149,7 +163,8 @@ void main() {
     final calls = <String>[];
     await _pump(tester, _home(grandFinals: [GrandFinalDto((b) => b..event.replace(_final())..tournamentName = "Champions 2026"..stakes = "Le vainqueur est sacré champion. Match en [[BO5]].")]), calls: calls);
 
-    expect(find.text("Les grands rendez-vous"), findsOneWidget);
+    // La grande finale est la seule grande carte : son état spécial (J22).
+    expect(find.text("À suivre"), findsOneWidget);
     expect(find.text("GRANDE FINALE"), findsOneWidget);
     expect(find.text("Champions 2026"), findsOneWidget); // le tournoi, pas « Playoffs » seul
     expect(find.text("G2"), findsOneWidget);
@@ -167,6 +182,70 @@ void main() {
     await _pump(tester, _home(grandFinals: [GrandFinalDto((b) => b..event.replace(_final(withTeams: false))..tournamentName = "Champions 2026")]));
     expect(find.text("Adversaires à déterminer"), findsOneWidget);
     expect(find.text("POURQUOI ÇA COMPTE"), findsNothing);
+  });
+
+  testWidgets("matchs en direct en plus du premier : pastilles avec score (J22)", (tester) async {
+    await _pump(
+      tester,
+      _home(live: [_match("l1", "live", "VIT", "LOUD", scoreA: 1, scoreB: 0), _match("l2", "live", "NRG", "KC", scoreA: 0, scoreB: 2)]),
+    );
+    // Le premier est sur la grande carte, le second en pastille.
+    expect(find.byType(LivePill), findsOneWidget);
+    expect(find.descendant(of: find.byType(LivePill), matching: find.text("2")), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets("aujourd'hui dans tes suivis : lignes compactes groupées, rien d'affiché sans match (J22)", (tester) async {
+    await _pump(tester, _home(todayFollowed: [_match("t1", "scheduled", "FNC", "G2", startsAt: _todayAt(23, 59))], upcoming: [_match("n", "scheduled", "AAA", "BBB", startsAt: _todayAt(23, 58))]));
+    expect(find.text("Aujourd'hui dans tes suivis"), findsOneWidget);
+    expect(find.text("FNC"), findsOneWidget);
+    expect(find.text("GROUPE B"), findsOneWidget);
+  });
+
+  testWidgets("aucune section vide : sans suivi du jour ni grand rendez-vous, rien n'est affiché (J22)", (tester) async {
+    await _pump(tester, _home());
+    expect(find.text("Aujourd'hui dans tes suivis"), findsNothing);
+    expect(find.text("Les grands rendez-vous"), findsNothing);
+  });
+
+  testWidgets("grands rendez-vous : mini-cartes de tournois, « En cours » ou date (J22)", (tester) async {
+    await _pump(
+      tester,
+      _home(majors: [
+        MajorCompetitionDto((m) => m..id = "c1"..name = "Champions 2026"..live = true),
+        MajorCompetitionDto((m) => m..id = "c2"..name = "Masters Toronto"..live = false..startsAt = DateTime.now().add(const Duration(days: 3)).toUtc().toIso8601String()),
+      ]),
+    );
+    expect(find.text("Les grands rendez-vous"), findsOneWidget);
+    expect(find.text("Champions 2026"), findsOneWidget);
+    expect(find.text("En cours"), findsOneWidget);
+    expect(find.text("Masters Toronto"), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets("résultats d'hier : section repliée, qui s'ouvre au toucher (J22)", (tester) async {
+    final n = DateTime.now();
+    final yesterday = DateTime(n.year, n.month, n.day - 1, 20);
+    await _pump(tester, _home(todayFollowed: [_match("y1", "finished", "FNC", "G2", scoreA: 2, scoreB: 1, startsAt: yesterday)]));
+    expect(find.text("HIER · 1 RÉSULTAT"), findsOneWidget);
+    expect(find.text("FNC"), findsNothing); // replié
+    await tester.tap(find.text("HIER · 1 RÉSULTAT"));
+    await tester.pump();
+    expect(find.text("FNC"), findsOneWidget);
+  });
+
+  testWidgets("match suivi dans moins d'une heure : pastille avec compte à rebours (J22)", (tester) async {
+    final soon = DateTime.now().add(const Duration(minutes: 30));
+    await _pump(tester, _home(todayFollowed: [_match("s1", "scheduled", "FNC", "G2", startsAt: soon)]));
+    expect(find.byType(LivePill), findsOneWidget);
+    expect(find.byType(MatchCountdown), findsOneWidget);
+    await tester.pumpWidget(const SizedBox());
+  });
+
+  testWidgets("un match suivi dans plus d'une heure n'a pas de pastille (J22)", (tester) async {
+    final later = DateTime.now().add(const Duration(hours: 3));
+    await _pump(tester, _home(todayFollowed: [_match("s2", "scheduled", "FNC", "G2", startsAt: later)]));
+    expect(find.byType(LivePill), findsNothing);
   });
 
   testWidgets("l'icône de recherche ouvre l'onglet Compétitions et demande le focus (J10)", (tester) async {

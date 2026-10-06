@@ -135,4 +135,27 @@ describe("Familles et sourdine (e2e)", () => {
     const league = list.body.find((f: { targetId: string }) => f.targetId === leagueId);
     expect(league.currentEvent.id).toBe(champions2027.eventId);
   });
+
+  it("J22 : « aujourd'hui dans tes suivis » et « Mes suivis » suivent la hiérarchie et la sourdine, le tournoi parent est exposé", async () => {
+    await prisma.event.update({ where: { id: champions2027.eventId }, data: { startsAt: new Date(Date.now() + 6 * 3600 * 1000) } });
+    await redis.del(CacheKeys.home());
+    const ids = (events: { id: string }[]) => events.map((e) => e.id);
+
+    const home = await request(app.getHttpServer()).get("/v1/home").set(auth()).expect(200);
+    expect(ids(home.body.todayFollowed)).toContain(champions2027.eventId);
+    expect(ids(home.body.todayFollowed)).not.toContain(champions2026.eventId); // série en sourdine
+    const mine27 = home.body.todayFollowed.find((e: { id: string }) => e.id === champions2027.eventId);
+    expect(mine27.competition.tournamentName).toBe("Champions 2027");
+
+    const from = new Date(Date.now() - 24 * 3600 * 1000).toISOString();
+    const to = new Date(Date.now() + 24 * 3600 * 1000).toISOString();
+    const mine = await request(app.getHttpServer()).get(`/v1/agenda?from=${from}&to=${to}&mine=true`).set(auth()).expect(200);
+    expect(ids(mine.body.events)).toContain(champions2027.eventId);
+    expect(ids(mine.body.events)).not.toContain(champions2026.eventId);
+
+    const all = await request(app.getHttpServer()).get(`/v1/agenda?from=${from}&to=${to}`).expect(200);
+    expect(ids(all.body.events)).toContain(champions2026.eventId); // « Tout » ne dépend pas des suivis
+    const guest = await request(app.getHttpServer()).get(`/v1/agenda?from=${from}&to=${to}&mine=true`).expect(200);
+    expect(guest.body.events).toEqual([]);
+  });
 });

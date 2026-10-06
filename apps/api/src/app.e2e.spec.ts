@@ -176,6 +176,25 @@ describe("API v1 (e2e)", () => {
     await request(app.getHttpServer()).get("/v1/agenda").expect(400);
   });
 
+  it("GET /v1/agenda : plusieurs catégories (virgule) et le jeu sur chaque match — J22", async () => {
+    const from = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+    const to = new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString();
+    const res = await request(app.getHttpServer()).get(`/v1/agenda?from=${from}&to=${to}&category=${categorySlug},autre-${categorySlug}`).expect(200);
+    const live = res.body.events.find((e: { id: string }) => e.id === liveEventId);
+    expect(live.competition.game).toBe("valorant");
+    expect(live.competition.tournamentName).toBeNull(); // pas de compétition parente dans ce jeu d'essai
+    const other = await request(app.getHttpServer()).get(`/v1/agenda?from=${from}&to=${to}&category=autre-${categorySlug}`).expect(200);
+    expect(other.body.events).toHaveLength(0);
+  });
+
+  it("GET /v1/home : les tournois importants en cours remplissent `majors`, `todayFollowed` est vide sans compte — J22", async () => {
+    await redis.del(CacheKeys.home());
+    const res = await request(app.getHttpServer()).get("/v1/home").expect(200);
+    const major = res.body.majors.find((m: { id: string }) => m.id === competitionId);
+    expect(major).toMatchObject({ live: true, game: "valorant" });
+    expect(res.body.todayFollowed).toEqual([]);
+  });
+
   it("GET /v1/events/:id renvoie le score de série et 404 si absent", async () => {
     const res = await request(app.getHttpServer()).get(`/v1/events/${liveEventId}`).expect(200);
     expect(res.body.participants).toHaveLength(2);

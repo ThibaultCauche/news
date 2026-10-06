@@ -5,6 +5,7 @@ import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { eventSummaryInclude, EventSummaryDto, toEventSummary } from "../common/event-summary.mapper";
 import { PRISMA } from "../db/db.module";
+import { SubscriptionsService } from "../subscriptions/subscriptions.service";
 import { AgendaQueryDto } from "./agenda.query.dto";
 
 const TTL_SECONDS = 30;
@@ -20,16 +21,21 @@ export class AgendaService {
   constructor(
     @Inject(PRISMA) private readonly prisma: PrismaClient,
     private readonly cache: CacheService,
+    private readonly subscriptions: SubscriptionsService,
   ) {}
 
-  async getAgenda(query: AgendaQueryDto): Promise<AgendaResponseDto> {
+  async getAgenda(query: AgendaQueryDto, userId: string | null = null): Promise<AgendaResponseDto> {
+    const mine = query.mine === "true";
+    // « Mes suivis » est propre au compte : ni lu ni écrit dans le cache partagé.
     const cacheKey = CacheKeys.agenda(query.from, query.to, query.category, query.leagueIds);
-    const cached = await this.cache.get<AgendaResponseDto>(cacheKey);
+    const cached = mine ? null : await this.cache.get<AgendaResponseDto>(cacheKey);
     if (cached) return cached;
 
+    const categories = query.category?.split(",").filter(Boolean);
     const leagueIds = query.leagueIds?.split(",").filter(Boolean);
     const competitionWhere: Prisma.CompetitionWhereInput = {
-      ...(query.category ? { category: { slug: query.category } } : {}),
+      // Plusieurs catégories possibles, séparées par une virgule (J22, #D3).
+      ...(categories?.length ? { category: { slug: { in: categories } } } : {}),
       // Ligue racine d'un jeu (ex. "VCT") : la compétition d'un match est à
       // 0, 1 ou 2 niveaux en dessous d'elle (ligue → série → tournoi →
       // match) dans toute la hiérarchie ingérée jusqu'ici (docs/03 §2) —
@@ -38,6 +44,12 @@ export class AgendaService {
         ? { OR: [{ id: { in: leagueIds } }, { parentId: { in: leagueIds } }, { parent: { parentId: { in: leagueIds } } }] }
         : {}),
     };
+    if (mine) {
+      const events = userId
+        ? await this.subscriptions.listEventsInWindow(userId, new Date(query.from), new Date(query.to), 300, Object.keys(competitionWhere).length ? competitionWhere : undefined)
+        : [];
+      return { sourceUpdatedAt: new Date().toISOString(), events };
+    }
     const where: Prisma.EventWhereInput = {
       startsAt: { gte: new Date(query.from), lte: new Date(query.to) },
       ...(Object.keys(competitionWhere).length ? { competition: competitionWhere } : {}),

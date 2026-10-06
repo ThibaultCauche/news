@@ -141,9 +141,9 @@ export class SubscriptionsService {
     return map;
   }
 
-  // Une carte par suivi avec son état (docs/02 écran 17/Suivis) : le match en
-  // direct s'il y en a un, sinon le plus proche à venir.
-  private async resolveCurrentEvents(allSubs: Subscription[]): Promise<Map<string, EventSummaryDto>> {
+  // Prépare la correspondance suivis → matchs (hiérarchie, familles, sourdines), partagée
+  // par la carte de chaque suivi et par « Aujourd'hui dans tes suivis » (J22).
+  private async prepareMatching(allSubs: Subscription[]) {
     // Une sourdine n'est pas un suivi : pas de carte ; elle sert seulement à écarter
     // ses matchs des suivis de ligue ou de famille (J10).
     const mutedCompetitionIds = allSubs.filter((s) => s.muted && s.targetType === "competition").map((s) => s.targetId);
@@ -175,23 +175,15 @@ export class SubscriptionsService {
     if (descendantCompetitionIds.length) or.push({ competitionId: { in: descendantCompetitionIds } });
     if (eventIds.length) or.push({ id: { in: eventIds } });
     if (categoryIds.length) or.push({ competition: { categoryId: { in: categoryIds } } });
-    if (or.length === 0) return new Map();
+    if (or.length === 0) return null;
 
     // Champ `categoryId` en plus de `eventSummaryInclude` : nécessaire ici pour
     // faire correspondre les abonnements par catégorie, jamais renvoyé au client
     // (`toEventSummary` reconstruit l'objet champ par champ).
     const include = { ...eventSummaryInclude, competition: { select: { ...eventSummaryInclude.competition.select, categoryId: true } } };
-    const [live, upcoming] = await Promise.all([
-      this.prisma.event.findMany({ where: { OR: or, status: "live" }, include, orderBy: { startsAt: "asc" } }),
-      this.prisma.event.findMany({
-        where: { OR: or, status: "scheduled", startsAt: { gte: new Date() } },
-        include,
-        orderBy: { startsAt: "asc" },
-      }),
-    ]);
-    const candidates = [...live, ...upcoming]; // en direct d'abord, puis le plus proche à venir
 
-    const matches = (sub: Subscription, event: (typeof candidates)[number]): boolean => {
+    type Candidate = Prisma.EventGetPayload<{ include: typeof include }>;
+    const matches = (sub: Subscription, event: Candidate): boolean => {
       switch (sub.targetType) {
         case "entity":
           return event.participants.some((p) => p.entityId === sub.targetId);
@@ -207,6 +199,43 @@ export class SubscriptionsService {
           return false;
       }
     };
+
+    return { or, include, matches, subs };
+  }
+
+  // Matchs des suivis dans une fenêtre de temps (J22) : tout statut, le tri par jour se fait côté appli.
+  async listEventsInWindow(userId: string, from: Date, to: Date, limit = 80, competition?: Prisma.CompetitionWhereInput): Promise<EventSummaryDto[]> {
+    const subs = await this.prisma.subscription.findMany({ where: { userId } });
+    const prepared = await this.prepareMatching(subs);
+    if (!prepared) return [];
+    const events = await this.prisma.event.findMany({
+      where: { OR: prepared.or, startsAt: { gte: from, lte: to }, status: { not: "cancelled" }, ...(competition ? { competition } : {}) },
+      include: prepared.include,
+      orderBy: { startsAt: "asc" },
+      take: limit * 2,
+    });
+    // Une sourdine écarte ses matchs : on ne garde que ceux qu'au moins un suivi actif couvre.
+    return events
+      .filter((event) => prepared.subs.some((sub) => prepared.matches(sub, event)))
+      .slice(0, limit)
+      .map(toEventSummary);
+  }
+
+  // Une carte par suivi avec son état (docs/02 écran 17/Suivis) : le match en
+  // direct s'il y en a un, sinon le plus proche à venir.
+  private async resolveCurrentEvents(allSubs: Subscription[]): Promise<Map<string, EventSummaryDto>> {
+    const prepared = await this.prepareMatching(allSubs);
+    if (!prepared) return new Map();
+    const { or, include, matches, subs } = prepared;
+    const [live, upcoming] = await Promise.all([
+      this.prisma.event.findMany({ where: { OR: or, status: "live" }, include, orderBy: { startsAt: "asc" } }),
+      this.prisma.event.findMany({
+        where: { OR: or, status: "scheduled", startsAt: { gte: new Date() } },
+        include,
+        orderBy: { startsAt: "asc" },
+      }),
+    ]);
+    const candidates = [...live, ...upcoming]; // en direct d'abord, puis le plus proche à venir
 
     const result = new Map<string, EventSummaryDto>();
     for (const sub of subs) {

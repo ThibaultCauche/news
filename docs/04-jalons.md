@@ -607,13 +607,25 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 ---
 
-## J17 — Versions Windows et Web (ajouté)
+## J17 — Versions Windows et Web, pour les amis (ajouté ; complété le 2026-10-06)
 
 **Objectif** : permettre de suivre ses compétitions depuis un ordinateur (application Windows et site web).
 
 **Décision (2026-10-01)** : tout en **Flutter**, une seule base de code pour Android, Windows et Web. Cela **lève la décision antérieure** « pas de plateforme web dans le projet Flutter » (`docs/00` §7) : les plateformes `windows` et `web` sont ajoutées au projet. Le **site Next.js** pour le référencement (pages publiques en lecture seule : résultats, compétitions, classements) reste prévu **plus tard, comme jalon séparé** (voir « Ensuite »), pas dans J17. Limite connue de Flutter web : très peu visible sur Google et chargement initial lourd ; assumé pour J17.
 
 **Points à vérifier au cadrage** : prise en charge de **Firebase Auth** et des **notifications push** sur Windows et sur le web (le plugin `firebase_messaging` n'est pas disponible sur toutes les plateformes) ; cache local **drift** sur le web ; mise en page adaptée aux grands écrans (l'appli est conçue pour 390 px de large) ; distribution Windows (Microsoft Store ou installateur) ; CORS et CSP côté API pour le web.
+
+**Complément du tri du 2026-10-04** (`docs/06`, section « Tri décidé ») : J17 passe **après le J23 (LoL)** et devient le jalon « web pour les amis ». En plus de la version web et Windows, il reprend :
+- [ ] **#J1** Version web pour les amis **sur iPhone** (iOS reporté) : notifications web (service worker, clé VAPID ; sur iPhone seulement si le site est ajouté à l'écran d'accueil), CORS sur l'API (Tailscale Funnel), domaine autorisé dans Firebase Auth.
+- [ ] **#J2** Liens qui ouvrent le web si l'appli n'est pas installée (invitation de groupe, événement partagé).
+- [ ] **#J4 / #M7** Bouton « Donner mon avis » : bug ou idée, capture d'écran, infos de l'appareil jointes automatiquement.
+- [ ] **#J5 / #M12** Mesures et analytics : actifs à 7 et 30 jours, arrivées par invitation, écrans et catégories les plus vus. Mesure anonyme auto-hébergée (Umami, PostHog auto-hébergé ou table maison) pour rester dans l'exemption de consentement de la CNIL, sinon bandeau de consentement.
+- [ ] **#L2** Mise à jour selon la plateforme : In-App Updates (Google Play), Firebase App Distribution ou lien (APK), « Nouvelle version, recharger » (web), lien (Windows).
+- [ ] **#L3** Feuille « Quoi de neuf » une seule fois après une mise à jour.
+- [ ] **#L4** Message de service (champ `message` de `/v1/app/version`, #L1 du J21).
+- [ ] **#L5** Sauvegarde hors site de la base (reportée depuis le J7), **avant l'arrivée des amis**.
+- [ ] **#L6** Relecture légale avant ouverture : conditions du forum, politique de confidentialité, contact de modération, exigences des stores.
+- [ ] **#M10** Interface d'administration dans le build web, écrans réservés aux modérateurs : utilisateurs, signalements, organisations (#A4), version et message de service, listes `isMajorEvent`, glossaire ; diffuseurs (#H2) au J26.
 
 **Hors périmètre** : macOS et Linux ; le site Next.js pour le SEO.
 
@@ -782,6 +794,177 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 - [ ] Réserves du J20 vérifiées sur un vrai match de playoffs. **Reporté** : premier match le 7 octobre, finale le 18 ; à voir pendant les playoffs (remplissage de l'arbre, 60 i/s, compte connecté : chemin en or, phrase d'équipe, étoile Favori).
 - [ ] Logos, noms et « en direct » des chaînes avec de vraies données Twitch. **Reporté** : clés `TWITCH_CLIENT_ID`/`TWITCH_CLIENT_SECRET` à créer (compte Twitch à refaire, double authentification) puis à mettre dans les `.env` du PC et du NAS ; sans elles, initiales et pas de « en direct » (testé avec une réponse simulée et en forçant la base).
 - [x] `flutter analyze`, tests Flutter (hors goldens Windows), lint et tests backend verts ; `docs/00` §7 et « État actuel » du `CLAUDE.md` mis à jour.
+
+---
+
+## J22 — Refonte de la densité (ajouté 2026-10-06) — **Fait (2026-10-07)**, sans iOS ni supervision des alertes jamais affichées
+
+**Origine** : retour d'un premier testeur extérieur : « on ne comprend pas de quoi parlent les cartes » ; deux cartes lisibles par écran au maximum. Idées `docs/06` #A, #D, #F, #M11.
+
+**Objectif** : penser l'interface pour 20 jeux et 40 sports, quitte à ce qu'elle paraisse vide aujourd'hui. **Prérequis à tout nouveau jeu** (décision du 2026-10-04 : avant LoL).
+
+**Périmètre**
+- [x] **#A1** Ligne de contexte complète sur chaque carte : `[logo du jeu] Champions 2026 · Groupe C` (`competition.game`, `competition.tournamentName`, `matchContextLabel`, `MatchContextLine`).
+- [x] **#A2** Carte compacte (`CompactMatchRow`, 56 px) : heure ou statut à gauche, `logo nom  score VS score  nom logo` au centre (le VS au centre exact de la carte, deux blocs de même largeur, un peu d'air entre logo et nom s'il y a la place), cloche à droite. Même identité que la grande carte (cadre laiton à pointes, fond teinté des deux équipes, Cinzel). La grande `EventCard` reste pour l'écran du match et « Maintenant pour toi ».
+- [x] **#A3** Regroupement par compétition avec en-tête collant dans l'Agenda (`SliverMainAxisGroup`).
+- [x] **#F** Accueil : résumé → pastilles (matchs en direct, puis matchs suivis qui commencent dans l'heure avec compte à rebours) → « Maintenant pour toi » (seule grande carte ; la grande finale en est l'état spécial) → « Aujourd'hui dans tes suivis » (lignes compactes) → « Hier · N résultats » replié → grands rendez-vous (mini-cartes) → puce « Nouveau sur Valorant » fermable. Icône « Tes suivis » dans l'en-tête.
+- [x] **#D1** Agenda : bascule Mes suivis / Tout (à droite du titre, « Mes suivis » par défaut quand on suit quelque chose, `GET /v1/agenda?mine=true`).
+- [x] **#D3** Filtres à sélection multiple (`category=esport,sport`, appli et API ; les ligues ne restreignent que l'e-sport seul).
+- [x] **#D4** Choix d'une date : calendrier du mois avec un point les jours de match selon le filtre ; la fenêtre ±14 jours se recentre sur la date choisie ; sans animation de défilement.
+- [x] **#D5** Catégories en icônes (icône seule si inactive, icône + nom si active).
+- [x] **#M11** Notifications avec le logo de l'équipe **en petite icône** (voir ci-dessous), sans spoil respecté.
+- [x] **Ajouts décidés en cours de route** : bouton « Aujourd'hui » et balayage horizontal dans l'Agenda ; résultats d'hier ; pastille « bientôt » ; cache disque des logos (`cached_network_image`) et nouveaux essais d'un logo qui ne se charge pas ; logos tout noirs affichés en blanc (`logoIsDarkProvider`, seuil 99,9 %) ; bandeau « Notifications désactivées » (Accueil et Réglages) ; réglage « Logo de l'équipe » ; alertes regroupées sous « N alertes ».
+
+**Notifications (changement d'architecture)** : le serveur envoie un message FCM **« data » seul** (titre, texte, `tag`, `imageUrl`, `eventId`…, priorité haute) ; l'appli l'affiche elle-même avec `flutter_local_notifications` (`core/notifications/local_notifications.dart`, gestionnaire d'arrière-plan `firebaseBackgroundHandler`), le logo posé dans une tuile carrée (claire pour un logo sombre). Android seulement. En sans spoil, le résultat garde le logo de l'équipe de gauche (jamais celui du vainqueur).
+
+**Hors périmètre** : nouveau jeu (J23) ; lien d'agenda personnel webcal (#D2, plus tard) ; **iOS** ; **supervision des alertes acceptées par FCM mais jamais affichées** (demande un accusé de réception de l'appli).
+
+**Critères d'acceptation**
+- [x] Chaque carte de match indique le jeu et le tournoi. *Vérifié sur téléphone.*
+- [x] ~~Au moins 8 matchs visibles sur un écran de 390 px~~ **Assoupli** : la carte compacte mesure 56 px, mais les en-têtes de groupe et les journées à un match par poule limitent à 4-6 lignes par écran ; l'utilisateur s'en satisfait (2026-10-07).
+- [x] Agenda : Mes suivis / Tout, plusieurs catégories à la fois, choix d'une date. *Vérifié sur téléphone avec un compte.*
+- [x] Aucune section vide affichée sur l'Accueil ; sans spoil respecté partout (cartes compactes, notifications). *Les pastilles « en direct » affichent le score comme les cartes en direct.*
+- [x] Tests de widgets des nouvelles cartes ; `flutter analyze` et tests verts (214 tests Flutter hors goldens Windows, API 92, worker 27, domain 85, providers 14).
+- [ ] Goldens régénérés par la CI (le sous-titre de `EventCard` a changé) : voir `CLAUDE.md`.
+
+---
+
+## J23 — League of Legends (ajouté 2026-10-06)
+
+**Origine** : `docs/06` #I1, #I7, #I8, #A4, #M1. Deuxième jeu, même adaptateur PandaScore ; Worlds 2026 en cours (la refonte du J22 passe d'abord, quitte à ne couvrir que la fin des Worlds).
+
+**Objectif** : prouver que l'appli tient avec deux jeux, et ajouter ce qui n'a de sens qu'à partir de deux jeux.
+
+**Périmètre**
+- [ ] **#I1** Ingestion LoL (filtre par tier, quota PandaScore à mesurer), `isMajorEvent` complété mot à mot (Worlds, MSI…), **phase suisse** (nouveau format d'affichage), vérification du gagnant par carte en tier S.
+- [ ] **#M1** Classement global d'une compétition : toutes les équipes, statut (en course / éliminée en… / championne), bilan (3-0, 2-1…), gain assuré puis final (répartition par place via LPDB Liquipedia si possible, sinon dotation totale seulement).
+- [ ] **#I7** Un tuto « l'essentiel en une page » LoL + glossaire propre au jeu.
+- [ ] **#I8** Onboarding multi-jeux : vrai choix du jeu, équipes suggérées de plusieurs jeux.
+- [ ] **#A4** Suivre toute une structure : table `organization` + `entity.organizationId`, remplie par script de seed (l'admin arrive au J17), abonnement qui s'étend aux équipes ; « Suivre G2 LoL » / « Suivre toute G2 ». Camps du forum toujours par jeu.
+
+**À trancher au cadrage** : répartition des gains (LPDB ou dotation seule) ; liste des structures du seed ; rendu de la phase suisse (maquette Figma).
+
+**Hors périmètre** : images du jeu (règle Riot, comme Valorant) ; TFT (écarté, voir #I2).
+
+**Critères d'acceptation**
+- [ ] Les Worlds 2026 (au moins la phase finale) s'affichent avec leurs vraies données ; la phase suisse aussi si elle n'est pas encore terminée au moment du jalon, sinon sur des données de démonstration.
+- [ ] Classement global visible sur une compétition terminée et en cours.
+- [ ] Suivre toute une structure abonne à ses équipes des deux jeux.
+- [ ] Quota PandaScore mesuré avec deux jeux, sous la limite de 1 000 req/h.
+
+---
+
+## J24 — Onglet Discussion (ajouté 2026-10-06)
+
+**Origine** : `docs/06` #B1-#B5, #M9. Remplace l'onglet vide « Bientôt » ; **réutilise le forum du J13** au lieu de créer un second système. L'onglet Jeux reste.
+
+**Périmètre**
+- [ ] **#B1** Mes discussions : fils où j'ai écrit + fils suivis (`ForumThreadFollow`), triés par activité, compteur de non-lus.
+- [ ] **#B2** Fil de groupe : `ForumThread` réservé aux membres d'un groupe d'amis (réactions, spoiler, flou sans spoil, modération récupérés). Ouvrable même si le forum public reste en bêta.
+- [ ] **#B3** Messages privés : fil privé à deux, **limité aux personnes qui ont un groupe en commun** (règle comme `canSeeFriendsPicks`).
+- [ ] **#B4** Rechercher et rejoindre une discussion libre ou un fil d'équipe, de compétition ou de jeu.
+- [ ] **#B5** Partager un événement, une compétition ou un pronostic : message de type `event` / `competition` / `prediction` qui ne contient qu'un identifiant (compatible « texte seul, pas de lien libre »), carte dessinée par l'appli avec les données en direct et le sans spoil du lecteur ; bouton « Partager » → « Envoyer à… ».
+- [ ] **#M9** Sondages (type de message) et tableau des idées (fils `feature`, réactions comme votes, statut proposée / prévue / en cours / faite / refusée).
+
+**À trancher au cadrage** : faut-il un compteur de non-lus côté serveur ; qui peut créer un sondage (seulement l'équipe de l'appli au début ?) ; temps réel (rechargement 5 s gardé, WebSocket seulement si besoin).
+
+**Critères d'acceptation**
+- [ ] Deux comptes d'un même groupe discutent dans le fil du groupe et en message privé ; un compte sans groupe commun ne peut pas écrire en privé (vérifié côté serveur).
+- [ ] Un match partagé s'affiche en carte à jour chez le destinataire, score flouté s'il est en sans spoil.
+- [ ] Signalement et blocage fonctionnent dans les fils privés et de groupe.
+
+---
+
+## J25 — Pick'em et économie de récompenses (ajouté 2026-10-06)
+
+**Origine** : `docs/06` #M13, #M2, #M3 ; reprend l'idée 8 du J20 (pronostic de tout le tableau) et le lot B du J14. Après la Discussion, pour partager ses choix dans les groupes ; viser la saison 2027 (Kickoff, Masters).
+
+**Périmètre**
+- [ ] **#M13** **D'abord** : concevoir une seule économie de récompenses (points de pronostics, progression des tutos, pick'em, futures cartes et quêtes, premium gagnable) : une monnaie ou des points, ce que chacun débloque, ce qui reste séparé. Document validé avant de coder.
+- [ ] **#M2** Pick'em de tout le tableau, verrouillé avant le début. **Barème validé** : points croissants par tour (quart 1, demie 2, finale 4) **plus** un bonus « série parfaite » qui s'arrête à la première erreur. Choix des autres visibles après verrouillage seulement (côté serveur), partage dans un groupe (#B5).
+- [ ] **#M3** Pick'em de groupe : à chaque étape, le choix du groupe = vote majoritaire des membres ; classement entre groupes.
+
+**À trancher au cadrage** : formats couverts (élimination simple, double, poules GSL, phase suisse) ; égalités du vote de groupe ; place dans l'onglet Jeux.
+
+**Hors périmètre** : jeu de cartes (#M4, plus tard) ; tout avantage payant (règle de #M5).
+
+**Critères d'acceptation**
+- [ ] Document d'économie validé par l'utilisateur.
+- [ ] Un tableau rempli se verrouille au début du tournoi ; points et bonus calculés une seule fois par match (tests).
+- [ ] Choix des autres invisibles avant verrouillage, même en appelant l'API directement.
+
+---
+
+## J26 — Diffusion et co-streamers (ajouté 2026-10-06)
+
+**Origine** : `docs/06` #H1-#H5.
+
+**Acquis du J21 (lot 6)** : chaînes de l'éditeur seulement (`pickPublisherStreams`), table `stream_channel` remplie par le worker via l'**API Twitch Helix** (logo, nom, en direct), cercles de chaînes sur l'écran du match, langue des streams. Le J26 ajoute les **co-streamers** et la diffusion **sur la carte**.
+
+**Périmètre**
+- [ ] **#H1** Lien vers la diffusion sur la carte : icône avec le nombre de streams en direct, feuille avec l'officiel d'abord puis les co-streamers français ; lien vers Twitch (pas de lecteur intégré).
+- [ ] **#H2** Co-streamers rattachés **par compétition** (extension de `stream_channel` ou table dédiée : plateforme, chaîne, langue, officiel / co-stream, vérifié), gérés dans l'admin (#M10).
+- [ ] **#H3** Étendre l'intégration Twitch Helix du J21 aux co-streamers : nombre de spectateurs, seuls ceux qui streament sont affichés, la langue choisie d'abord.
+- [ ] **#H4** Formulaire « Je diffuse cette compétition » avec connexion Twitch (preuve de propriété de la chaîne), validation manuelle. **Seulement les co-streamers sous licence** (règles de co-streaming de Riot).
+- [ ] **#H5** « Regarder avec … » sur la carte ; idée de groupe de pronos de la communauté d'un streamer.
+
+**À trancher au cadrage** : YouTube et Kick en plus de Twitch ; critère « sous licence » par éditeur.
+
+**Critères d'acceptation**
+- [ ] Sur un match en direct, l'officiel et au moins un co-streamer français vérifié s'affichent, avec spectateurs ; une chaîne hors ligne n'apparaît pas.
+- [ ] Une demande de streamer arrive dans l'admin et ne s'affiche qu'après validation.
+
+---
+
+## J27 — Super Smash Bros. Ultimate (ajouté 2026-10-06)
+
+**Origine** : `docs/06` #I2 ; **remplace TFT** (absent de PandaScore). Format différent : duels 1 contre 1 entre **joueurs**, double élimination à des centaines d'inscrits.
+
+**Périmètre**
+- [ ] Adaptateur **start.gg** (API GraphQL officielle, token gratuit, 80 req/min) : tournois, événements, phases, poules, sets ; réutilisable ensuite pour Street Fighter 6 et Tekken 8.
+- [ ] Entités « joueur » (pas d'équipe) ; double élimination à grande échelle (poules puis top 8), séries BO3 puis BO5.
+- [ ] Filtre des tournois (majors seulement au début).
+- [ ] Tuto « l'essentiel en une page » + glossaire (stock, top 8, winners/losers).
+
+**À vérifier avant de coder** : conditions d'utilisation de l'API start.gg (non lues dans `docs/01b`) ; personnage joué par manche, pas toujours saisi.
+
+**Règle** : aucun logo, image ni personnage Nintendo (comme la règle Riot) ; illustrations avec nos widgets.
+
+**Critères d'acceptation**
+- [ ] Un major Smash Ultimate récent s'affiche avec son top 8 lisible et le tableau complet accessible.
+- [ ] Suivre un joueur envoie les notifications de ses sets.
+
+---
+
+## J28 — Sport (ajouté 2026-10-06)
+
+**Origine** : `docs/06` #I4, #I3, #I5, #M6 ; sources étudiées dans `docs/01b`. Test du modèle générique sur des formes nouvelles.
+
+**Périmètre** (par vagues, la F1 d'abord)
+- [ ] **#I4** F1 (Jolpica + OpenF1) : saison, week-ends de course, classements pilotes et constructeurs, calendrier des Grands Prix.
+- [ ] **#I3** Football (football-data.org + openfootball) : championnat et classement, coupes à élimination.
+- [ ] **#I5** Basket : saison régulière puis playoffs au meilleur des 7 ; source à choisir.
+- [ ] **#M6** Appli modulée selon l'utilisateur : accueil et filtres par défaut ordonnés selon ses suivis, ouverture sur sa catégorie favorite, suggestion occasionnelle d'une autre catégorie avec sa raison ; **barre d'onglets stable**.
+
+**À trancher au cadrage** : découpage en sous-jalons (une vague par sport ?) ; conditions commerciales de chaque source.
+
+**Critères d'acceptation** : à rédiger au cadrage (au minimum : une saison de F1 complète affichée, classement à jour après une course).
+
+---
+
+## J29 — Politique (ajouté 2026-10-06)
+
+**Origine** : `docs/06` #I6, `docs/01c`, maquettes Figma 19 (loi façon colis) et 25 (soirée électorale). **Doit être prêt avant la présidentielle (1er tour le 18 avril 2027).**
+
+**Périmètre**
+- [ ] Adaptateurs `assemblee` (zips quotidiens), `senat`, `legifrance` (PISTE), `elections` (data.gouv, rythme rapide le soir d'élection).
+- [ ] Écran 19 (suivi d'une loi façon colis) et écran 25 (soirée électorale).
+- [ ] Jeu « Qui a voté ? » à partir de `politique-quiz/`.
+- [ ] Module à part, ton neutre : charte de neutralité, sources officielles citées, **aucun pronostic électoral**, **aucun résultat électoral affiché avant 20 h** (blocage codé en dur, article L52-2).
+
+**À vérifier avant la présidentielle** : flux de résultats en direct testé sur un scrutin partiel.
+
+**Critères d'acceptation** : à rédiger au cadrage.
 
 ---
 

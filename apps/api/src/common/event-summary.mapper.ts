@@ -3,7 +3,7 @@ import { Entity, Event, EventParticipant, Prisma } from "@news/db";
 import { buildGroupStakes } from "@news/domain";
 
 type EventWithRelations = Event & {
-  competition: { id: string; name: string; format: string | null };
+  competition: { id: string; name: string; format: string | null; game?: string | null; parent?: { name: string } | null };
   participants: (EventParticipant & { entity: Pick<Entity, "id" | "name" | "shortName" | "imageUrl"> })[];
 };
 
@@ -17,6 +17,9 @@ export class CompetitionRefDto {
   // de calcul par match ici, `buildMatchStakes` (par lien de bracket) reste
   // réservé à l'écran Prochain match (`GET /v1/events/:id`).
   @ApiProperty({ nullable: true, type: String }) stakes!: string | null;
+  // Ligne de contexte des cartes (J22) : slug du jeu et nom du tournoi parent (« Champions 2026 »).
+  @ApiProperty({ nullable: true, type: String }) game!: string | null;
+  @ApiProperty({ nullable: true, type: String }) tournamentName!: string | null;
 }
 
 export class EventParticipantDto {
@@ -58,6 +61,8 @@ export function toEventSummary(event: EventWithRelations): EventSummaryDto {
       id: event.competition.id,
       name: event.competition.name,
       stakes: event.competition.format === "groups_gsl" ? buildGroupStakes() : null,
+      game: event.competition.game ?? null,
+      tournamentName: event.competition.parent?.name ?? null,
     },
     participants: event.participants.map((p) => ({
       entityId: p.entityId,
@@ -75,7 +80,7 @@ export const PARTICIPANT_ORDER: Prisma.EventParticipantOrderByWithRelationInput[
 
 // Inclusion Prisma correspondante, partagée pour rester cohérente avec le mapper.
 export const eventSummaryInclude = {
-  competition: { select: { id: true, name: true, format: true, game: true } },
+  competition: { select: { id: true, name: true, format: true, game: true, parent: { select: { name: true } } } },
   // Ordre stable des équipes (gauche/droite) : `side`, puis l'identifiant pour les anciennes lignes sans côté.
   participants: {
     include: { entity: { select: { id: true, name: true, shortName: true, imageUrl: true } } },

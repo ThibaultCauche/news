@@ -102,6 +102,7 @@ class _UpcomingSectionState extends ConsumerState<_UpcomingSection> {
       to: DateTime(today.year, today.month, today.day + 7),
       category: null,
       leagueIds: selected?.leagues.map((l) => l.id).join(","),
+      mine: false,
     );
     final agenda = ref.watch(agendaProvider(query));
     final predictions = ref.watch(predictionsProvider).value ?? const <String, PredictionDto>{};

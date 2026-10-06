@@ -137,7 +137,43 @@ describe("NotificationDispatchService (intégration)", () => {
 
     await dispatch.handle({ type: "EventFinished", eventId, competitionId });
 
-    expect(fcm.send).toHaveBeenCalledWith("token-tag", expect.any(String), expect.any(String), { eventId }, `event-${eventId}`);
+    expect(fcm.send).toHaveBeenCalledWith("token-tag", expect.any(String), expect.any(String), { eventId }, `event-${eventId}`, undefined);
+  });
+
+  it("joint le logo en petite icône : celui du vainqueur au résultat, celui de l'équipe de gauche en sans spoil (J22)", async () => {
+    const logo = "https://example.test/winner.png";
+    const leftLogo = "https://example.test/left.png";
+    const team = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test Logo", imageUrl: logo } });
+    const left = await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test Gauche", imageUrl: leftLogo } });
+    const user = await prisma.appUser.create({ data: { id: randomUUID(), setting: { create: { id: randomUUID(), spoilerFree: false } } } });
+    const hidden = await prisma.appUser.create({ data: { id: randomUUID(), setting: { create: { id: randomUUID(), spoilerFree: true } } } });
+    try {
+      for (const [u, token] of [[user, "token-logo"], [hidden, "token-logo-hidden"]] as const) {
+        await prisma.device.create({ data: { id: randomUUID(), userId: u.id, installId: randomUUID(), platform: "android", pushToken: token } });
+        await prisma.subscription.create({ data: { id: randomUUID(), userId: u.id, targetType: "entity", targetId: team.id, level: "all" } });
+      }
+      // La gauche perd, le suivi gagne : le logo du vainqueur ne doit pas fuiter en sans spoil.
+      const event = await prisma.event.create({
+        data: {
+          id: randomUUID(), competitionId, kind: "match", name: "Test Logo vs X", status: "finished", startsAt: new Date(), importance: 3,
+          participants: { create: [{ id: randomUUID(), entityId: left.id, side: 0, score: 1, isWinner: false }, { id: randomUUID(), entityId: team.id, side: 1, score: 2, isWinner: true }] },
+        },
+      });
+      await dispatch.handle({ type: "EventFinished", eventId: event.id, competitionId });
+      expect(fcm.send).toHaveBeenCalledWith("token-logo", expect.any(String), expect.any(String), { eventId: event.id }, `event-${event.id}`, logo);
+      expect(fcm.send).toHaveBeenCalledWith("token-logo-hidden", expect.any(String), expect.any(String), { eventId: event.id }, `event-${event.id}`, leftLogo);
+    } finally {
+      await prisma.eventParticipant.deleteMany({ where: { entityId: { in: [team.id, left.id] } } });
+      await prisma.event.deleteMany({ where: { name: "Test Logo vs X" } });
+      await prisma.entity.deleteMany({ where: { id: { in: [team.id, left.id] } } });
+      for (const u of [user, hidden]) {
+        await prisma.notificationLog.deleteMany({ where: { userId: u.id } });
+        await prisma.device.deleteMany({ where: { userId: u.id } });
+        await prisma.subscription.deleteMany({ where: { userId: u.id } });
+        await prisma.userSetting.deleteMany({ where: { userId: u.id } });
+        await prisma.appUser.delete({ where: { id: u.id } });
+      }
+    }
   });
 
   it("rappel T-15 sans pronostic : il part même rappel coupé, avec la phrase qui le dit (J21)", async () => {
@@ -149,7 +185,7 @@ describe("NotificationDispatchService (intégration)", () => {
       await prisma.eventParticipant.create({ data: { id: randomUUID(), eventId, entityId: (await prisma.entity.create({ data: { id: randomUUID(), kind: "team", name: "Test Adverse" } })).id } });
 
       await dispatch.handle({ type: "EventStartingSoon", eventId, competitionId });
-      expect(fcm.send).toHaveBeenCalledWith("token-nudge", expect.any(String), expect.stringContaining("pas encore pronostiqué"), { eventId }, `event-${eventId}`);
+      expect(fcm.send).toHaveBeenCalledWith("token-nudge", expect.any(String), expect.stringContaining("pas encore pronostiqué"), { eventId }, `event-${eventId}`, undefined);
     } finally {
       await prisma.notificationLog.deleteMany({ where: { userId: user.id } });
       await prisma.device.deleteMany({ where: { userId: user.id } });

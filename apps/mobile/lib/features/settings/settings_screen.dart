@@ -6,6 +6,7 @@ import "../../core/settings_provider.dart";
 import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/async_view.dart";
+import "../../widgets/notifications_banner.dart";
 import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
@@ -95,6 +96,7 @@ class _SettingsBody extends ConsumerWidget {
         const SizedBox(height: AppSpacing.lg),
         const SectionLabel("NOTIFICATIONS"),
         const SizedBox(height: AppSpacing.sm),
+        const NotificationsDisabledBanner(),
         SectionCard(
           child: ListTile(
             contentPadding: EdgeInsets.zero,
@@ -165,6 +167,13 @@ class _SettingsBody extends ConsumerWidget {
                   onChanged: (v) => controller.update(notifyForumThreads: v),
                 ),
               ],
+              const Divider(height: AppSpacing.lg),
+              _ToggleRow(
+                label: "Logo de l'équipe",
+                caption: "Une petite icône d'équipe à côté de chaque alerte.",
+                value: ref.watch(notificationTeamLogoProvider),
+                onChanged: (v) => ref.read(notificationTeamLogoProvider.notifier).set(v),
+              ),
               const Divider(height: AppSpacing.lg),
               _QuietHoursRow(setting: setting, controller: controller),
               const Divider(height: AppSpacing.lg),

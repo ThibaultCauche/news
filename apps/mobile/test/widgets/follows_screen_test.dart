@@ -1,3 +1,4 @@
+import "package:cached_network_image/cached_network_image.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:flutter_test/flutter_test.dart";
@@ -62,6 +63,7 @@ Future<void> _pump(WidgetTester tester, List<FollowStateDto> follows) {
           ..spoilerFree = false
           ..morningDigest = false)),
         overrideCompactEventCardsWith(false),
+        logoIsDarkProvider("https://example.test/g2.png").overrideWith((ref) async => false),
         // Pages ouvertes par un tap sur le nom : pas de réseau en test.
         entityProvider("team-a").overrideWith((ref) async => throw Exception("hors ligne")),
         competitionDetailProvider("comp-1").overrideWith((ref) async => throw Exception("hors ligne")),
@@ -106,7 +108,7 @@ void main() {
 
     expect(find.text("ENCORE EN COURSE"), findsOneWidget);
     final logo = tester.widget<Image>(find.byType(Image));
-    expect((logo.image as NetworkImage).url, "https://example.test/g2.png");
+    expect((logo.image as CachedNetworkImageProvider).url, "https://example.test/g2.png");
   });
 
   testWidgets("équipe éliminée : statut affiché, pas de logo sans imageUrl", (tester) async {
