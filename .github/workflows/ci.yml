@@ -99,9 +99,8 @@ jobs:
       # defined ») : on reste sur 14.4.0, la version qui marche en local. À retirer quand build_runner suit.
       - run: |
           mkdir -p packages/api_client_dart
-          printf 'dependency_overrides:
-  analyzer: 14.4.0
-' > packages/api_client_dart/pubspec_overrides.yaml
+          echo "dependency_overrides:" > packages/api_client_dart/pubspec_overrides.yaml
+          echo "  analyzer: 14.4.0" >> packages/api_client_dart/pubspec_overrides.yaml
       - run: pnpm generate:dart-client
 
       - run: flutter pub get
