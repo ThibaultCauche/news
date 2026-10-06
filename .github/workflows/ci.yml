@@ -95,6 +95,13 @@ jobs:
 
       # Client Dart généré depuis openapi.json (règle 11 de CLAUDE.md : jamais
       # écrit à la main), même pipeline que `pnpm generate:dart-client` en local.
+      # analyzer 14.5.0 (publié début octobre 2026) casse build_runner 2.16.1 (« contextFeatures isn't
+      # defined ») : on reste sur 14.4.0, la version qui marche en local. À retirer quand build_runner suit.
+      - run: |
+          mkdir -p packages/api_client_dart
+          printf 'dependency_overrides:
+  analyzer: 14.4.0
+' > packages/api_client_dart/pubspec_overrides.yaml
       - run: pnpm generate:dart-client
 
       - run: flutter pub get
