@@ -5,6 +5,8 @@ import "package:flutter/material.dart";
 import "package:flutter/services.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 
+import "../core/settings_provider.dart";
+
 /// Matchs dont l'utilisateur a révélé le score (appui long) pendant cette session : la carte du
 /// match et son écran de détail restent d'accord. Pas persisté : au prochain lancement, le
 /// sans spoil masque de nouveau ces scores.
@@ -16,6 +18,12 @@ class RevealedEventsNotifier extends Notifier<Set<String>> {
 }
 
 final revealedEventsProvider = NotifierProvider<RevealedEventsNotifier, Set<String>>(RevealedEventsNotifier.new);
+
+/// Le score de ce match terminé doit-il rester caché (sans spoil du compte, pas encore révélé) ?
+/// Pour les arbres, qui masquent le score plutôt que de le flouter.
+final scoreHiddenProvider = Provider.family<bool, String>((ref, eventId) {
+  return (ref.watch(userSettingProvider).value?.spoilerFree ?? true) && !ref.watch(revealedEventsProvider).contains(eventId);
+});
 
 /// Flou d'un score masqué (sans spoil) : assez fort pour ne laisser deviner aucun chiffre, et
 /// caché aux lecteurs d'écran tant qu'il est flouté. `sigma == 0` : le texte net.

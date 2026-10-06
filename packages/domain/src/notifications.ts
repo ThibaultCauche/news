@@ -6,10 +6,16 @@ export type SubscriptionTargetType = "category" | "competition" | "competition_f
 export type SubscriptionLevel = "all" | "key_moments";
 export type DevicePlatform = "android" | "ios";
 
-export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination" | "prediction_reminder";
+export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination";
 
-// Rappel « tu n'as pas pronostiqué » (J14) : 30 minutes avant le coup d'envoi.
-export const PREDICTION_REMINDER_MINUTES = 30;
+// Ce que reçoit un nouveau suivi selon sa cible (J21) : une équipe → début et résultat ; une compétition,
+// une famille ou une catégorie → le résultat seulement ; un match précis → tout, c'est une demande
+// explicite. Le rappel T-15 d'une équipe ou d'une compétition ne vient que sur demande.
+export function defaultSubscriptionNotifications(targetType: SubscriptionTargetType): { notifyReminder: boolean; notifyStart: boolean; notifyResult: boolean } {
+  if (targetType === "event") return { notifyReminder: true, notifyStart: true, notifyResult: true };
+  if (targetType === "entity") return { notifyReminder: false, notifyStart: true, notifyResult: true };
+  return { notifyReminder: false, notifyStart: false, notifyResult: true };
+}
 
 // Réglages globaux par type de notification (J14, écran Réglages) ; chacun s'ajoute aux options du suivi.
 export interface NotificationTypeSettings {
@@ -33,8 +39,6 @@ export function isTypeEnabled(type: NotificationType, setting: NotificationTypeS
     case "qualification":
     case "elimination":
       return setting.notifyQualification;
-    case "prediction_reminder":
-      return setting.notifyPredictionReminders;
   }
 }
 
@@ -96,9 +100,11 @@ export interface NotificationText {
 // CLAUDE.md) — appliqué ici côté serveur, contrairement au masquage côté appli
 // pour l'affichage, qui reste réversible. `subjectName` est le nom du match pour
 // reminder/start/result, celui de l'entité pour qualification/elimination (J5).
-export function buildNotificationText(type: NotificationType, subjectName: string, spoilerFree: boolean, winnerName: string | null): NotificationText {
+// `needsPrediction` : le rappel T-15 dit aussi que le pronostic manque (J21, remplace l'ancien rappel à T-30).
+export function buildNotificationText(type: NotificationType, subjectName: string, spoilerFree: boolean, winnerName: string | null, needsPrediction = false): NotificationText {
   switch (type) {
     case "reminder":
+      if (needsPrediction) return { title: "Bientôt, sans pronostic", body: `${subjectName} commence dans 15 minutes, tu n'as pas encore pronostiqué.` };
       return { title: "Bientôt", body: `${subjectName} commence dans 15 minutes.` };
     case "start":
       return { title: "Ça commence", body: `${subjectName} vient de commencer.` };
@@ -109,8 +115,6 @@ export function buildNotificationText(type: NotificationType, subjectName: strin
       return { title: "Qualifiée !", body: `${subjectName} est qualifiée pour la suite.` };
     case "elimination":
       return { title: "Éliminée", body: `${subjectName} est éliminée.` };
-    case "prediction_reminder":
-      return { title: "Pas encore de pronostic", body: `${subjectName} commence dans ${PREDICTION_REMINDER_MINUTES} minutes.` };
   }
 }
 

@@ -729,7 +729,58 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 ---
 
-## Ensuite (par ordre de priorité proposé)
+## J21 — Correctifs avant les playoffs (ajouté 2026-10-06)
+
+**Origine** : brainstorm du 2026-10-03/04 (test par un premier utilisateur extérieur, usage sur téléphone), idées triées dans `docs/06-idees-a-trier.md` (repères `#…`, section « Tri décidé »). Décision dans `docs/00` §7 (2026-10-04).
+
+**Objectif** : corriger ce qui se voit le plus pendant les playoffs de Champions 2026, sans nouvelle grosse fonctionnalité, et préparer la première version donnée à des amis.
+
+**Calendrier** : playoffs du **7 au 18 octobre 2026**. Ordre : lot 1 d'abord (écrans regardés pendant les playoffs), puis lot 2, lot 3, lot 4 ; le lot 5 se vérifie au fil des vrais matchs.
+
+### Lot 1 — Arbres (page tournoi) — fait 2026-10-06, vérifié sur émulateur (`db:demo-playoffs finished`)
+- [x] **#C1** Défilement automatique calé à la fin quand tout est joué : `nextMatchId` (`features/bracket/bracket_model.dart`) renvoie `null` sans match en direct ni à venir, la vue retombe au début. Repli sur le dernier match terminé (ou la case « Qualifiés » / la finale).
+- [x] **#C2** Scores dans les cercles, poules et phase finale : `radial_bracket.dart` ne dessine le score que si `slot.live`. L'afficher aussi pour les matchs terminés (petit, sous le nœud), masqué en sans spoil.
+- [x] **#C3** Couleurs : **laiton sur les cercles des équipes** (inchangé, J20), **vert sur le cercle final** (« Qualifiés » d'une poule, centre de la phase finale) une fois le groupe ou le tournoi terminé.
+
+### Lot 2 — Écran du match — fait 2026-10-06, vérifié sur émulateur (retour en flèche, score dans la carte, Regarder)
+- [x] **#E2** Bouton retour : le libellé vient de `event.competition.name` (« Group C »). Flèche seule, ou nom du tournoi parent (« Champions 2026 ») : à trancher au cadrage.
+- [x] **#E1** Score dans la carte : fusionner `_Participants` et `_StatusDisplay` (`next_match_screen.dart`), en gardant le flou sans spoil et l'appui long.
+- [x] **#E3** Bouton **Regarder** : `streams_list` du plan gratuit PandaScore (lien officiel, `official: true`, vu dans `tests-pandascore/samples`), avant et pendant le match. Demande de stocker les liens à l'ingestion et de les exposer dans l'API (client Dart à régénérer).
+
+### Lot 3 — Notifications — codé et testé (Jest) le 2026-10-06 ; **à vérifier sur téléphone avec un vrai FCM** (une seule notification dans le volet). G4 : le regroupement Android natif n'existe pas dans FCM v1, remplacé par un résumé serveur « N matchs commencent » au tag du premier match.
+- [x] **#G1** Une notification par match qui évolue : `fcm.service.ts` n'envoie ni `android.notification.tag` ni `apns-collapse-id`. Tag `event-<id>` : rappel T-15 → début → résultat se remplacent.
+- [x] **#G2** Fusionner les rappels : sans pronostic, le rappel T-15 le dit (« commence dans 15 min, tu n'as pas encore pronostiqué ») au lieu d'une notification de plus à T-30.
+- [x] **#G3** Réglages par défaut : début + résultat pour une équipe suivie, résultat seul pour une compétition entière, rappel T-15 seulement sur demande. Ne pas écraser les réglages déjà choisis par un utilisateur.
+- [x] **#G4** Regroupement Android quand plusieurs matchs commencent ensemble (« 3 matchs commencent »).
+
+### Lot 4 — Avant de donner l'appli à des amis — #L1 fait (endpoint maison, `APP_LATEST_VERSION`/`APP_MIN_SUPPORTED_VERSION`/`APP_UPDATE_NOTES` dans `.env`) ; #J3 reste à faire par l'utilisateur
+- [x] **#L1** Vérification de version au lancement : `GET /v1/app/version` → `{ latest, minSupported, notes }` (ou Firebase Remote Config, à trancher), comparé à la version de l'appli. Bandeau « mise à jour conseillée » qu'on peut fermer ; écran bloquant si la version est sous `minSupported`.
+- [ ] **#J3** Bêta fermée Google Play publiée (compte retrouvé au J7) : au moins une version de test installable par lien.
+
+### Lot 5 — Réserves du J20, sur de vrais matchs de playoffs
+- [ ] Remplissage de l'arbre (pyramide et cercle) à la fin d'un vrai match, fluidité 60 i/s (A1 du J19).
+- [ ] Avec un compte connecté : chemin en or, phrase de l'équipe suivie, étoile Favori.
+
+**À trancher au cadrage** : libellé du bouton retour (#E2) ; endpoint maison ou Remote Config (#L1) ; place du bouton Regarder (écran du match seulement, ou aussi la carte : la carte relève plutôt du J26) ; migration des réglages de notification existants (#G3).
+
+**Hors périmètre** : refonte de la densité des cartes et de l'Accueil (J22) ; co-streamers (J26) ; notifications avec logos (#M11, J22).
+
+**Critères d'acceptation**
+- [ ] Sur une compétition entièrement jouée (`pnpm db:demo-playoffs finished`), la pyramide et le cercle se placent sur la fin ; scores visibles dans les cercles, masqués en sans spoil ; cercle final vert, cercles d'équipes en laiton.
+- [ ] Écran du match : score dans la carte, retour sans « Group X », bouton Regarder qui ouvre le lien officiel.
+- [ ] Sur téléphone, un match suivi ne laisse **qu'une** notification dans le volet après le rappel, le début et le résultat ; réglages par défaut appliqués aux nouveaux suivis.
+- [ ] Une version sous `minSupported` affiche l'écran bloquant ; une version sous `latest` affiche le bandeau.
+- [ ] Bêta Google Play installable par lien.
+- [ ] Réserves du J20 vérifiées sur un vrai match de playoffs (ou reportées avec raison).
+- [ ] `flutter analyze`, tests Flutter (hors goldens Windows), lint et tests backend verts ; `docs/00` §7 et « État actuel » du `CLAUDE.md` mis à jour.
+
+---
+
+## Prochains jalons (tri du 2026-10-04)
+
+Ordre décidé : **J21** correctifs avant les playoffs · **J22** refonte de la densité · **J23** League of Legends · **J17** web pour les amis (+ admin, retours, analytics) · **J24** Discussion · **J25** pick'em et économie de récompenses · **J26** diffusion et co-streamers · **J27** Smash Ultimate · **J28** sport (F1 d'abord) · **J29** politique. Contenu détaillé (idées `#…`) dans `docs/06-idees-a-trier.md`, section « Tri décidé » ; chaque jalon se cadre dans sa discussion.
+
+## Ensuite (par ordre de priorité proposé, antérieur au tri du 2026-10-04)
 
 0. **Quiz des tutos avec points et classement** (idée du 2026-10-01, version « plus grosse » du compteur du J12) : points pour les quiz réussis, éventuellement dans les classements de groupe. Demande que **le serveur connaisse les bonnes réponses** (aujourd'hui dans les JSON embarqués de l'appli, donc « quiz réussi » est déclaré par le client), une règle claire pour ne pas mélanger ces points à ceux des pronostics (classement séparé ?), un seul passage compté par question, et une table de résultats par question plutôt que par tuto.
 

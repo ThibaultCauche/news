@@ -233,13 +233,16 @@ class _QualifiedLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Vert (qualifié) quand la poule est jouée, laiton tant que les deux places ne sont pas prises.
+    final done = participants.every((p) => p != null);
+    final tint = done ? AppColors.win : AppColors.brass;
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        const Icon(Icons.check_circle_rounded, color: AppColors.brass, size: 20),
+        Icon(Icons.check_circle_rounded, color: tint, size: 20),
         const Text("QUALIFIÉS", style: TextStyle(fontSize: 9, letterSpacing: 1, fontWeight: FontWeight.w600, color: AppColors.textSecondary)),
         for (final p in participants)
-          Text(p == null ? "?" : teamCode(p), style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: p == null ? AppColors.textTertiary : AppColors.brass)),
+          Text(p == null ? "?" : teamCode(p), style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: p == null ? AppColors.textTertiary : tint)),
       ],
     );
   }

@@ -46,6 +46,7 @@ export class EventContextDto {
 
 export class EventDetailResponseDto extends EventSummaryDto {
   @ApiProperty() sourceUpdatedAt!: string;
+  @ApiProperty({ nullable: true, type: String }) streamUrl!: string | null;
   @ApiProperty({ type: Object }) result!: unknown;
   @ApiProperty({ type: [MapResultDto] }) maps!: MapResultDto[];
   @ApiProperty({ type: EventContextDto }) context!: EventContextDto;
@@ -88,6 +89,7 @@ export class EventsService {
     const response: EventDetailResponseDto = {
       ...toEventSummary(event),
       sourceUpdatedAt: event.updatedAt.toISOString(),
+      streamUrl: event.streamUrl,
       result: event.result,
       maps: await this.buildMaps(event.result),
       context: await this.buildContext(event),

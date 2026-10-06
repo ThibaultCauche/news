@@ -268,6 +268,14 @@ void main() {
         ..nodes.add(_n("gf", "Grand Final", 0, "finished")));
       expect(nextMatchId(done, {}), isNull);
     });
+
+    test("tout est terminé : la vue se pose sur le dernier match joué", () {
+      final done = BracketResponseDto((b) => b
+        ..sourceUpdatedAt = "x"
+        ..nodes.addAll([_n("sf", "Semifinal 1", 1, "finished"), _n("gf", "Grand Final", 0, "finished")]));
+      expect(anchorMatchId(done, {}), isNotNull);
+      expect(anchorMatchId(_partial(), {}), "uf"); // sinon le prochain match
+    });
   });
 
   group("assignSectors", () {

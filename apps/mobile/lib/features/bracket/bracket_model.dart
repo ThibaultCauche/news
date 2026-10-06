@@ -408,6 +408,14 @@ String? nextMatchId(BracketResponseDto bracket, Set<String> followedEntityIds) {
   return (mine ?? upcoming.firstOrNull)?.eventId;
 }
 
+/// Où poser la vue : le prochain match, sinon (tout est joué) le dernier match terminé, donc la finale.
+String? anchorMatchId(BracketResponseDto bracket, Set<String> followedEntityIds) {
+  final next = nextMatchId(bracket, followedEntityIds);
+  if (next != null) return next;
+  final done = bracket.nodes.where(_isFinished).toList()..sort((a, b) => (a.startsAt ?? "").compareTo(b.startsAt ?? ""));
+  return done.lastOrNull?.eventId;
+}
+
 // ─── Pyramide horizontale ──────────────────────────────────────────────────
 
 class GridCell {

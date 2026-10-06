@@ -1,4 +1,4 @@
-import { buildMorningDigestText, buildNotificationText, isTypeEnabled, isQuietHour, localDayBounds, localHourFromOffsetMinutes, shouldNotify } from "./notifications";
+import { buildMorningDigestText, buildNotificationText, defaultSubscriptionNotifications, isTypeEnabled, isQuietHour, localDayBounds, localHourFromOffsetMinutes, shouldNotify } from "./notifications";
 
 describe("shouldNotify", () => {
   it("ne notifie jamais si l'option est désactivée", () => {
@@ -77,10 +77,19 @@ describe("isTypeEnabled", () => {
     expect(isTypeEnabled("start", { ...all, notifyMatchStart: false })).toBe(false);
     expect(isTypeEnabled("result", { ...all, notifyMatchStart: false })).toBe(true);
     expect(isTypeEnabled("elimination", { ...all, notifyQualification: false })).toBe(false);
-    expect(isTypeEnabled("prediction_reminder", { ...all, notifyPredictionReminders: false })).toBe(false);
   });
-  it("le rappel de pronostic annonce 30 minutes", () => {
-    expect(buildNotificationText("prediction_reminder", "G2 vs PRX", true, null).body).toContain("30 minutes");
+  it("le rappel T-15 dit que le pronostic manque", () => {
+    expect(buildNotificationText("reminder", "G2 vs PRX", true, null, true).body).toContain("pas encore pronostiqué");
+    expect(buildNotificationText("reminder", "G2 vs PRX", true, null).body).not.toContain("pronostiqué");
+  });
+});
+
+describe("defaultSubscriptionNotifications", () => {
+  it("équipe : début et résultat ; compétition : résultat seul ; match : tout", () => {
+    expect(defaultSubscriptionNotifications("entity")).toEqual({ notifyReminder: false, notifyStart: true, notifyResult: true });
+    expect(defaultSubscriptionNotifications("competition")).toEqual({ notifyReminder: false, notifyStart: false, notifyResult: true });
+    expect(defaultSubscriptionNotifications("competition_family").notifyStart).toBe(false);
+    expect(defaultSubscriptionNotifications("event")).toEqual({ notifyReminder: true, notifyStart: true, notifyResult: true });
   });
 });
 

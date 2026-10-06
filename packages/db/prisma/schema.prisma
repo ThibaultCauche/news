@@ -102,6 +102,8 @@ model Event {
   endsAt           DateTime?          @map("ends_at")
   bestOf           Int?               @map("best_of")
   result           Json?
+  // Lien du direct officiel (PandaScore `streams_list`), pour le bouton « Regarder » (J21).
+  streamUrl        String?            @map("stream_url")
   importance       Int                @default(0)
   spoilerSensitive Boolean            @default(true) @map("spoiler_sensitive")
   participants     EventParticipant[]

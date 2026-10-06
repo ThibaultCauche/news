@@ -98,7 +98,8 @@ class _HorizontalBracketState extends State<HorizontalBracket> {
 
     final fromRows = [for (final id in widget.trailingFrom) layout.cell(id)?.row].whereType<double>().toList();
     final trailingRow = fromRows.isEmpty ? 0.0 : fromRows.reduce((a, b) => a + b) / fromRows.length;
-    final next = nextId == null ? null : layout.cell(nextId);
+    final anchorId = anchorMatchId(bracket, widget.followed);
+    final next = anchorId == null ? null : layout.cell(anchorId);
     final nextTopLeft = next == null ? Offset.zero : Offset(leftOf(next.col), topOf(next.row));
 
     final content = SizedBox(

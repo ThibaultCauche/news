@@ -57,6 +57,8 @@ export interface EventDTO {
   startsAt: Date | null;
   endsAt: Date | null;
   bestOf: number | null;
+  /** Lien du direct officiel, s'il y en a un. */
+  streamUrl: string | null;
   result: unknown;
   participants: EventParticipantDTO[];
   raw: unknown;

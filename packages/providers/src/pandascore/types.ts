@@ -60,6 +60,12 @@ export interface RawMatchResult {
   score: number;
 }
 
+export interface RawStream {
+  main?: boolean;
+  official?: boolean;
+  raw_url?: string | null;
+}
+
 export interface RawPreviousMatch {
   type: "winner" | "loser";
   match_id: number;
@@ -79,4 +85,5 @@ export interface RawMatch {
   results?: RawMatchResult[];
   games?: RawGame[];
   previous_matches?: RawPreviousMatch[];
+  streams_list?: RawStream[];
 }

@@ -1,7 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { BadRequestException, Inject, Injectable } from "@nestjs/common";
 import { Prisma, PrismaClient, Subscription } from "@news/db";
-import { SUBSCRIPTION_LEVELS } from "@news/domain";
+import { defaultSubscriptionNotifications, SubscriptionTargetType, SUBSCRIPTION_LEVELS } from "@news/domain";
 import { PRISMA } from "../db/db.module";
 import { eventSummaryInclude, EventSummaryDto, toEventSummary } from "../common/event-summary.mapper";
 import { CreateSubscriptionDto, FollowStateDto, SubscriptionDto, SubscriptionTargetDto } from "./subscription.dto";
@@ -25,6 +25,10 @@ function defaultLevel(targetType: string): (typeof SUBSCRIPTION_LEVELS)[number] 
   return targetType === "category" ? "key_moments" : "all";
 }
 
+function definedOnly<T extends object>(o: T): Partial<T> {
+  return Object.fromEntries(Object.entries(o).filter(([, v]) => v !== undefined)) as Partial<T>;
+}
+
 @Injectable()
 export class SubscriptionsService {
   constructor(@Inject(PRISMA) private readonly prisma: PrismaClient) {}
@@ -33,17 +37,15 @@ export class SubscriptionsService {
     if (dto.muted && dto.targetType !== "competition" && dto.targetType !== "competition_family") {
       throw new BadRequestException("Seule une compétition ou une famille peut être mise en sourdine");
     }
-    const data = {
-      muted: dto.muted ?? false,
-      level: dto.level ?? defaultLevel(dto.targetType),
-      notifyReminder: dto.notifyReminder ?? true,
-      notifyStart: dto.notifyStart ?? true,
-      notifyResult: dto.notifyResult ?? true,
-    };
+    const data = { muted: dto.muted ?? false, level: dto.level ?? defaultLevel(dto.targetType) };
+    // Défauts par cible (J21) à la création seulement : suivre de nouveau, ou mettre en sourdine, ne
+    // reprend jamais ce que l'utilisateur a choisi.
+    const given = { notifyReminder: dto.notifyReminder, notifyStart: dto.notifyStart, notifyResult: dto.notifyResult };
+    const defaults = defaultSubscriptionNotifications(dto.targetType as SubscriptionTargetType);
     const sub = await this.prisma.subscription.upsert({
       where: { userId_targetType_targetId: { userId, targetType: dto.targetType, targetId: dto.targetId } },
-      create: { id: randomUUID(), userId, targetType: dto.targetType, targetId: dto.targetId, ...data },
-      update: data,
+      create: { id: randomUUID(), userId, targetType: dto.targetType, targetId: dto.targetId, ...data, ...defaults, ...definedOnly(given) },
+      update: { ...data, ...definedOnly(given) },
     });
     return toSubscriptionDto(sub);
   }

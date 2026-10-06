@@ -4,6 +4,7 @@ import { APP_FILTER, APP_GUARD } from "@nestjs/core";
 import { ThrottlerGuard, ThrottlerModule } from "@nestjs/throttler";
 import { SentryGlobalFilter } from "@sentry/nestjs/setup";
 import { AgendaModule } from "./agenda/agenda.module";
+import { AppVersionController } from "./app-version/app-version.controller";
 import { AuthModule } from "./auth/auth.module";
 import { CacheModule } from "./cache/cache.module";
 import { CatalogModule } from "./catalog/catalog.module";
@@ -45,7 +46,7 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     EntitiesModule,
     GlossaryModule,
   ],
-  controllers: [HealthController],
+  controllers: [HealthController, AppVersionController],
   providers: [
     // Doit être déclaré avant tout autre filtre d'exception (docs Sentry/NestJS).
     { provide: APP_FILTER, useClass: SentryGlobalFilter },

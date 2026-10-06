@@ -111,7 +111,7 @@ class _SettingsBody extends ConsumerWidget {
               const Divider(height: AppSpacing.lg),
               _ToggleRow(
                 label: "Rappel de pronostic",
-                caption: "30 minutes avant un match que tu suis, si tu n'as pas encore pronostiqué.",
+                caption: "Le rappel de 15 minutes avant un match que tu suis te dit aussi si tu n'as pas encore pronostiqué.",
                 value: setting.notifyPredictionReminders,
                 onChanged: (v) => controller.update(notifyPredictionReminders: v),
               ),

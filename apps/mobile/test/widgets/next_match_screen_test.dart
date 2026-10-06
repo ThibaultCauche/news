@@ -29,13 +29,14 @@ void _tapSpan(WidgetTester tester, String text) {
   recognizer!.onTap!();
 }
 
-EventDetailResponseDto _event({required String status, int? scoreA, int? scoreB, String? stakes, String shortNameA = "G2"}) {
+EventDetailResponseDto _event({required String status, int? scoreA, int? scoreB, String? stakes, String shortNameA = "G2", String? streamUrl}) {
   return EventDetailResponseDto((b) => b
     ..id = "evt-1"
     ..kind = "match"
     ..name = "G2 Esports vs Paper Rex"
     ..status = status
     ..bestOf = 3
+    ..streamUrl = streamUrl
     ..importance = 3
     ..sourceUpdatedAt = "2026-09-27T00:00:00.000Z"
     ..result = JsonObject(<String, dynamic>{})
@@ -81,6 +82,27 @@ Future<void> _pump(WidgetTester tester, EventDetailResponseDto event, {bool spoi
 }
 
 void main() {
+  testWidgets("Regarder : seulement avant et pendant le match, et seulement s'il y a un lien officiel (J21)", (tester) async {
+    await _pump(tester, _event(status: "scheduled", streamUrl: "https://www.twitch.tv/valorant"));
+    expect(find.text("Regarder"), findsOneWidget);
+
+    await tester.pumpWidget(const SizedBox());
+    await _pump(tester, _event(status: "scheduled"));
+    expect(find.text("Regarder"), findsNothing);
+
+    await tester.pumpWidget(const SizedBox());
+    await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 0, streamUrl: "https://www.twitch.tv/valorant"));
+    expect(find.text("Regarder"), findsNothing);
+  });
+
+  testWidgets("le score est dans la carte, entre les deux équipes (J21)", (tester) async {
+    await _pump(tester, _event(status: "finished", scoreA: 2, scoreB: 1));
+    final score = tester.getCenter(find.text("2-1"));
+    final a = tester.getCenter(find.text("G2 Esports"));
+    final b = tester.getCenter(find.text("Paper Rex"));
+    expect(score.dx, inExclusiveRange(a.dx, b.dx));
+  });
+
   testWidgets("pourquoi ce match compte : mot souligné ouvre la feuille glossaire", (tester) async {
     await tester.pumpWidget(
       ProviderScope(

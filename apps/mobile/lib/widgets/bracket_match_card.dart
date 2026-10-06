@@ -1,10 +1,12 @@
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../domain/event_status.dart";
 import "../features/bracket/bracket_model.dart";
 import "../features/next_match/next_match_screen.dart";
 import "../theme/tokens.dart";
 import "ornate_frame.dart";
+import "spoiler_hold.dart";
 
 enum CardEmphasis { none, next, live }
 
@@ -14,7 +16,7 @@ const bracketCardHeight = 100.0;
 /// Une case de la pyramide (J20) : titre du match, deux équipes (logo, nom, score), état ou
 /// date en bas. Le **prochain match** (`next`) porte un cadre à pointes renforcé, le match en
 /// direct (`live`) le même en rouge : ce sont les deux cases que l'œil doit trouver d'abord.
-class BracketMatchCard extends StatelessWidget {
+class BracketMatchCard extends ConsumerWidget {
   const BracketMatchCard({super.key, required this.node, required this.sides, this.followed = const {}, this.emphasis = CardEmphasis.none});
 
   final BracketNodeDto node;
@@ -23,7 +25,8 @@ class BracketMatchCard extends StatelessWidget {
   final CardEmphasis emphasis;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final hideScores = node.status == "finished" && ref.watch(scoreHiddenProvider(node.eventId));
     final emphasized = emphasis != CardEmphasis.none;
     final accent = emphasis == CardEmphasis.live ? AppColors.live : AppColors.brass;
     return SizedBox(
@@ -54,7 +57,7 @@ class BracketMatchCard extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 2),
-                  for (final side in sides.take(2)) Expanded(child: _SideLine(side: side, followed: followed)),
+                  for (final side in sides.take(2)) Expanded(child: _SideLine(side: side, followed: followed, hideScore: hideScores)),
                   Padding(padding: const EdgeInsets.symmetric(horizontal: 10), child: _Footer(node: node)),
                 ],
               ),
@@ -67,7 +70,8 @@ class BracketMatchCard extends StatelessWidget {
 }
 
 class _SideLine extends StatelessWidget {
-  const _SideLine({required this.side, required this.followed});
+  const _SideLine({required this.side, required this.followed, required this.hideScore});
+  final bool hideScore;
   final MatchSide side;
   final Set<String> followed;
 
@@ -92,7 +96,7 @@ class _SideLine extends StatelessWidget {
               style: TextStyle(fontSize: unknown ? 11 : 13, height: 1.1, color: color, fontWeight: side.won ? FontWeight.w700 : FontWeight.w500),
             ),
           ),
-          if (side.score != null) Text("${side.score}", style: TextStyle(fontWeight: FontWeight.w700, color: side.won || mine ? color : AppColors.textSecondary)),
+          if (side.score != null && !hideScore) Text("${side.score}", style: TextStyle(fontWeight: FontWeight.w700, color: side.won || mine ? color : AppColors.textSecondary)),
         ],
       ),
     );

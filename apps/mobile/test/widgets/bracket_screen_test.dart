@@ -241,7 +241,7 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(NextMatchScreen), findsOneWidget);
-    expect(find.text("Group A"), findsOneWidget); // nom de la compétition dans l'en-tête
+    expect(find.byType(BackButton), findsOneWidget); // flèche seule, sans « Group A » (J21)
   });
 
   testWidgets("onglet Phase finale : un cercle par équipe, l'équipe suivie (G2) en or", (tester) async {

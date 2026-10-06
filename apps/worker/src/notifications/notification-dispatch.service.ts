@@ -92,9 +92,12 @@ export class NotificationDispatchService {
     }
 
     for (const sub of subscriptions) {
-      const notifyEnabled = type === "reminder" ? sub.notifyReminder : type === "start" ? sub.notifyStart : sub.notifyResult;
-      if (!shouldNotify({ notifyEnabled, subscriptionLevel: sub.level as SubscriptionLevel, eventImportance: event.importance })) continue;
-      if (!isTypeEnabled(type, sub.user.setting)) continue;
+      const subEnabled = type === "reminder" ? sub.notifyReminder : type === "start" ? sub.notifyStart : sub.notifyResult;
+      // Le rappel T-15 absorbe l'ancien rappel de pronostic (J21) : sans pronostic, il part même si le
+      // rappel simple est coupé, avec la phrase qui le dit.
+      const needsPrediction = type === "reminder" && event.participants.length === 2 && (await this.needsPredictionNudge(sub.user, event.id));
+      if (!shouldNotify({ notifyEnabled: subEnabled || needsPrediction, subscriptionLevel: sub.level as SubscriptionLevel, eventImportance: event.importance })) continue;
+      if (!needsPrediction && !isTypeEnabled(type, sub.user.setting)) continue;
 
       // "hors équipe suivie en direct" (docs/03 §6) : un abonnement direct
       // (équipe/événement) n'est jamais plafonné, un abonnement large (catégorie/
@@ -117,7 +120,18 @@ export class NotificationDispatchService {
         throw err;
       }
 
-      const { title, body } = buildNotificationText(type, event.name, sub.user.setting?.spoilerFree ?? false, winnerName);
+      let { title, body } = buildNotificationText(type, event.name, sub.user.setting?.spoilerFree ?? false, winnerName, needsPrediction);
+      // Un tag par match : rappel, début et résultat se remplacent dans le volet (J21).
+      let tag = `event-${event.id}`;
+      if (type === "start") {
+        // Plusieurs matchs qui commencent ensemble : une seule notification qui compte, au tag du premier.
+        const burst = await this.recentStarts(sub.userId);
+        if (burst.length >= 2) {
+          title = `${burst.length} matchs commencent`;
+          body = burst.map((l) => l.event?.name).filter(Boolean).join(", ");
+          tag = `event-${burst[0].eventId}`;
+        }
+      }
       for (const device of sub.user.devices) {
         if (
           device.utcOffsetMinutes !== null &&
@@ -130,11 +144,26 @@ export class NotificationDispatchService {
           continue; // regroupement dans un résumé du matin : écran Réglages pas encore construit (J6)
         }
         if (!device.pushToken) continue;
-        const { tokenInvalid } = await this.fcm.send(device.pushToken, title, body, { eventId: event.id });
+        const { tokenInvalid } = await this.fcm.send(device.pushToken, title, body, { eventId: event.id }, tag);
         if (tokenInvalid) await this.prisma.device.delete({ where: { id: device.id } }).catch(() => undefined);
       }
       logger.info({ userId: sub.userId, eventId: event.id, type }, "notification traitée");
     }
+  }
+
+  // Pseudo (compte complet), réglage actif et pas de pronostic sur ce match.
+  private async needsPredictionNudge(user: { id: string; pseudo: string | null; setting: { notifyPredictionReminders: boolean } | null }, eventId: string): Promise<boolean> {
+    if (!user.pseudo || user.setting?.notifyPredictionReminders === false) return false;
+    return (await this.prisma.prediction.count({ where: { userId: user.id, eventId } })) === 0;
+  }
+
+  // Débuts de match notifiés à cet utilisateur ces deux dernières minutes (le courant compris, son journal est déjà écrit), du plus ancien au plus récent.
+  private recentStarts(userId: string) {
+    return this.prisma.notificationLog.findMany({
+      where: { userId, type: "start", eventId: { not: null }, sentAt: { gte: new Date(Date.now() - 2 * 60 * 1000) } },
+      orderBy: { sentAt: "asc" },
+      include: { event: { select: { name: true } } },
+    });
   }
 
   // Qualification/élimination (J5, reporté du J4) : pas de match derrière, donc

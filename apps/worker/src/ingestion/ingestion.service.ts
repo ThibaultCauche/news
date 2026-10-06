@@ -180,6 +180,7 @@ export class IngestionService {
         startsAt: dto.startsAt,
         endsAt: dto.endsAt,
         bestOf: dto.bestOf,
+        streamUrl: dto.streamUrl,
         result: dto.result as Prisma.InputJsonValue,
       };
       if (existingRef) {

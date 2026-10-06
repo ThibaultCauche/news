@@ -15,6 +15,7 @@ import "../follows/follows_provider.dart";
 import "../../widgets/bracket_match_card.dart";
 import "../../widgets/horizontal_bracket.dart";
 import "../../widgets/ornate_frame.dart";
+import "../../widgets/spoiler_hold.dart";
 import "radial_bracket.dart";
 import "bracket_model.dart";
 import "bracket_view.dart";
@@ -401,8 +402,10 @@ class _RepechageListState extends State<_RepechageList> {
     }
     final rounds = byRound.keys.toList()..sort((a, b) => b.compareTo(a)); // le plus profond = tour 1
     final now = DateTime.now();
-    final focusId = nextMatchId(bracket.rebuild((b) => b..nodes.where((n) => isLowerBracketName(n.name))), widget.followed);
-    if (focusId != null) _scrollToFocus();
+    final lowerOnly = bracket.rebuild((b) => b..nodes.where((n) => isLowerBracketName(n.name)));
+    final focusId = nextMatchId(lowerOnly, widget.followed);
+    final anchorId = anchorMatchId(lowerOnly, widget.followed);
+    if (anchorId != null) _scrollToFocus();
 
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
@@ -420,7 +423,7 @@ class _RepechageListState extends State<_RepechageList> {
             Padding(
               padding: const EdgeInsets.only(bottom: AppSpacing.sm),
               child: _BracketMatchCard(
-                key: node.eventId == focusId ? _focusKey : null,
+                key: node.eventId == anchorId ? _focusKey : null,
                 node: node,
                 sides: matchSides(node, incomingByTarget[node.eventId] ?? const [], byId),
                 lives: widget.lives,
@@ -465,7 +468,7 @@ class _HowItWorks extends StatelessWidget {
   }
 }
 
-class _BracketMatchCard extends StatelessWidget {
+class _BracketMatchCard extends ConsumerWidget {
   const _BracketMatchCard({super.key, required this.node, required this.sides, required this.lives, this.emphasis = CardEmphasis.none});
   final BracketNodeDto node;
   final List<MatchSide> sides;
@@ -473,8 +476,9 @@ class _BracketMatchCard extends StatelessWidget {
   final CardEmphasis emphasis;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final finished = node.status.statusKind == EventStatusKind.finished;
+    final hideScores = finished && ref.watch(scoreHiddenProvider(node.eventId));
     final emphasized = emphasis != CardEmphasis.none;
     final accent = emphasis == CardEmphasis.live ? AppColors.live : AppColors.brass;
     return OrnateFrame(
@@ -495,7 +499,7 @@ class _BracketMatchCard extends StatelessWidget {
               children: [
                 for (final (i, side) in sides.indexed) ...[
                   if (i > 0) const Divider(height: 1, color: AppColors.surfaceBorder),
-                  _SideRow(side: side, lives: side.entityId == null || finished ? null : lives[side.entityId]),
+                  _SideRow(side: side, hideScore: hideScores, lives: side.entityId == null || finished ? null : lives[side.entityId]),
                 ],
               ],
             ),
@@ -507,7 +511,8 @@ class _BracketMatchCard extends StatelessWidget {
 }
 
 class _SideRow extends StatelessWidget {
-  const _SideRow({required this.side, required this.lives});
+  const _SideRow({required this.side, required this.lives, required this.hideScore});
+  final bool hideScore;
   final MatchSide side;
 
   /// Vies restantes (2 au départ), `null` = pas affiché (équipe inconnue ou match fini).
@@ -534,7 +539,7 @@ class _SideRow extends StatelessWidget {
             ),
           ),
           if (lives != null) _Lives(left: lives!),
-          if (side.score != null) ...[const SizedBox(width: AppSpacing.sm), Text("${side.score}", style: const TextStyle(fontWeight: FontWeight.w700))],
+          if (side.score != null && !hideScore) ...[const SizedBox(width: AppSpacing.sm), Text("${side.score}", style: const TextStyle(fontWeight: FontWeight.w700))],
         ],
       ),
     );

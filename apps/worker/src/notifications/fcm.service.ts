@@ -37,14 +37,21 @@ export class FcmService implements OnModuleDestroy {
     return getMessaging(this.app);
   }
 
-  async send(pushToken: string, title: string, body: string, data: Record<string, string>): Promise<SendResult> {
+  // `tag` (J21) : une notification qui porte le même tag en remplace la précédente dans le volet
+// (Android `notification.tag`, iOS `apns-collapse-id`), donc un match = une seule notification.
+  async send(pushToken: string, title: string, body: string, data: Record<string, string>, tag?: string): Promise<SendResult> {
     const messaging = this.getMessaging();
     if (!messaging) {
       logger.warn({ title }, "FIREBASE_* absent, notification journalée mais pas envoyée");
       return { tokenInvalid: false };
     }
     try {
-      await messaging.send({ token: pushToken, notification: { title, body }, data });
+      await messaging.send({
+        token: pushToken,
+        notification: { title, body },
+        data,
+        ...(tag ? { android: { notification: { tag } }, apns: { headers: { "apns-collapse-id": tag } } } : {}),
+      });
       this.windowSent++;
       return { tokenInvalid: false };
     } catch (err) {

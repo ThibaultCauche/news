@@ -1,7 +1,9 @@
 import "package:flutter/material.dart";
+import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
+import "../../widgets/spoiler_hold.dart";
 import "../../widgets/match_countdown.dart";
 import "../next_match/next_match_screen.dart";
 import "bracket_model.dart";
@@ -77,14 +79,15 @@ class RadialBracket extends StatelessWidget {
   }
 }
 
-class _SlotContent extends StatelessWidget {
+class _SlotContent extends ConsumerWidget {
   const _SlotContent({required this.slot, required this.followed});
   final TreeSlot slot;
   final Set<String> followed;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final team = slot.team;
+    final finishedScore = !slot.live && (slot.won || slot.lost) && slot.score != null && !ref.watch(scoreHiddenProvider(slot.matchId));
     final mine = team != null && followed.contains(team.entityId);
     final color = team == null || slot.lost ? AppColors.textTertiary : (mine ? AppColors.gold : AppColors.textPrimary);
     final code = Text(team == null ? "?" : teamCode(team), maxLines: 1, style: TextStyle(color: color, fontSize: 11, fontWeight: FontWeight.w600));
@@ -114,6 +117,18 @@ class _SlotContent extends StatelessWidget {
               decoration: const BoxDecoration(color: AppColors.live, shape: BoxShape.circle),
               child: Text("${slot.score}", style: const TextStyle(color: AppColors.textPrimary, fontSize: 10, fontWeight: FontWeight.w700)),
             ),
+          )
+        else if (finishedScore)
+          Positioned(
+            right: -6,
+            bottom: -6,
+            child: Container(
+              width: 16,
+              height: 16,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(color: AppColors.surface, shape: BoxShape.circle, border: Border.all(color: slot.won ? AppColors.win : AppColors.surfaceBorderHighlight)),
+              child: Text("${slot.score}", style: TextStyle(color: slot.won ? AppColors.win : AppColors.textSecondary, fontSize: 10, fontWeight: FontWeight.w700)),
+            ),
           ),
       ],
     );
@@ -132,7 +147,7 @@ class CenterLabel extends StatelessWidget {
     final finalists = node.participants.map(teamCode).join(" – ");
     final startsAt = node.startsAt == null ? null : DateTime.parse(node.startsAt!);
     final (Color trophy, Widget main) = switch (kind) {
-      EventStatusKind.finished => (AppColors.gold, Text(winner == null ? "Terminé" : teamCode(winner), style: const TextStyle(color: AppColors.gold, fontWeight: FontWeight.w700, fontSize: 16))),
+      EventStatusKind.finished => (AppColors.win, Text(winner == null ? "Terminé" : teamCode(winner), style: const TextStyle(color: AppColors.win, fontWeight: FontWeight.w700, fontSize: 16))),
       EventStatusKind.live => (AppColors.live, const Text("EN DIRECT", style: TextStyle(color: AppColors.live, fontWeight: FontWeight.w700, fontSize: 11))),
       _ => (
         AppColors.textSecondary,

@@ -163,14 +163,14 @@ class BracketPainter extends CustomPainter {
     final node = tree.center;
     final finished = node?.status.statusKind == EventStatusKind.finished;
     final live = node?.status.statusKind == EventStatusKind.live;
-    canvas.drawCircle(layout.center, layout.centerRadius, Paint()..color = finished ? AppColors.gold.withValues(alpha: 0.15) : AppColors.surface);
+    canvas.drawCircle(layout.center, layout.centerRadius, Paint()..color = finished ? AppColors.win.withValues(alpha: 0.15) : AppColors.surface);
     canvas.drawCircle(
       layout.center,
       layout.centerRadius,
       Paint()
         ..style = PaintingStyle.stroke
         ..strokeWidth = live ? 2.5 : 2
-        ..color = live ? AppColors.live : (finished ? AppColors.gold : AppColors.surfaceBorderHighlight),
+        ..color = live ? AppColors.live : (finished ? AppColors.win : AppColors.surfaceBorderHighlight),
     );
   }
 

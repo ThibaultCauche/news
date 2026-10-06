@@ -92,16 +92,6 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 160,
-        leading: TextButton.icon(
-          onPressed: () => Navigator.of(context).maybePop(),
-          icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
-          label: Text(
-            event.value?.competition.name ?? "",
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(color: AppColors.textSecondary),
-          ),
-        ),
         actions: [
           const LearnHelpButton(articleId: "regarder-un-match"),
           IconButton(
@@ -167,6 +157,18 @@ class _NextMatchBody extends ConsumerWidget {
     final colorA = accentOf(0);
     final colorB = accentOf(1);
 
+    // Le score (ou le compte à rebours) entre les deux équipes, dans la carte. Score flouté : l'appui
+    // long le dissipe petit à petit (`SpoilerHold`), puis le révèle.
+    final statusBlock = scoresHidden && status == EventStatusKind.finished
+        ? SpoilerHold(
+            builder: (context, sigma) => _StatusDisplay(event: event, scoresHidden: scoresHidden, sigma: sigma),
+            onReveal: () {
+              ref.read(revealedEventsProvider.notifier).reveal(event.id);
+              onReveal();
+            },
+          )
+        : _StatusDisplay(event: event, scoresHidden: scoresHidden);
+
     return ListView(
       padding: const EdgeInsets.all(AppSpacing.md),
       children: [
@@ -207,32 +209,23 @@ class _NextMatchBody extends ConsumerWidget {
                 Text("Qui sera proclamé vainqueur ?", textAlign: TextAlign.center, style: AppTextStyles.body.copyWith(color: AppColors.textSecondary)),
               ],
               const SizedBox(height: AppSpacing.lg),
-              _Participants(event: event, scoresHidden: scoresHidden),
+              _Participants(event: event, center: statusBlock),
+              if (scoresHidden && status == EventStatusKind.finished) ...[
+                const SizedBox(height: AppSpacing.sm),
+                const Text("Maintiens pour révéler le score", style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption)),
+              ],
             ],
           ),
         ),
         ),
-        const SizedBox(height: AppSpacing.lg),
-        Center(
-          child: GestureDetector(
-            onLongPress: scoresHidden && status == EventStatusKind.finished
-                ? () {}
-                : null,
-            // Score flouté : l'appui long le dissipe petit à petit (`SpoilerHold`), puis le révèle.
-            child: scoresHidden && status == EventStatusKind.finished
-                ? SpoilerHold(
-                    builder: (context, sigma) => _StatusDisplay(event: event, scoresHidden: scoresHidden, sigma: sigma),
-                    onReveal: () {
-                      ref.read(revealedEventsProvider.notifier).reveal(event.id);
-                      onReveal();
-                    },
-                  )
-                : _StatusDisplay(event: event, scoresHidden: scoresHidden),
+        // Le direct officiel, avant et pendant le match (J21) : un lien, jamais une vidéo dans l'appli.
+        if (event.streamUrl != null && (status == EventStatusKind.scheduled || status == EventStatusKind.live)) ...[
+          const SizedBox(height: AppSpacing.md),
+          FilledButton.icon(
+            onPressed: () => launchUrl(Uri.parse(event.streamUrl!), mode: LaunchMode.externalApplication),
+            icon: const Icon(Icons.play_arrow_rounded),
+            label: const Text("Regarder"),
           ),
-        ),
-        if (scoresHidden && status == EventStatusKind.finished) ...[
-          const SizedBox(height: AppSpacing.xs),
-          const Text("Maintiens pour révéler le score", style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption)),
         ],
         const SizedBox(height: AppSpacing.lg),
         // Gagnant de chaque carte (règle 6 de CLAUDE.md) : masqué tant que le
@@ -298,21 +291,26 @@ class _StaleBanner extends StatelessWidget {
 }
 
 class _Participants extends StatelessWidget {
-  const _Participants({required this.event, required this.scoresHidden});
+  const _Participants({required this.event, required this.center});
 
   final EventDetailResponseDto event;
-  final bool scoresHidden;
+
+  /// Le milieu de la carte : score, « en direct » ou compte à rebours.
+  final Widget center;
 
   @override
   Widget build(BuildContext context) {
     if (event.participants.length != 2) {
       return Text(event.name, textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge);
     }
+    final [a, b] = event.participants.toList();
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        for (final participant in event.participants)
-          Expanded(child: _ParticipantColumn(participant: participant, competitionName: event.competition.name)),
+        Expanded(flex: 3, child: _ParticipantColumn(participant: a, competitionName: event.competition.name)),
+        // Le badge fait 64 de haut : le milieu se centre sur lui, pas sur le nom en dessous.
+        Expanded(flex: 4, child: Padding(padding: const EdgeInsets.only(top: AppSpacing.md), child: FittedBox(fit: BoxFit.scaleDown, child: center))),
+        Expanded(flex: 3, child: _ParticipantColumn(participant: b, competitionName: event.competition.name)),
       ],
     );
   }

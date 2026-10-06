@@ -117,8 +117,20 @@ describe("Comptes, abonnements, notifications (e2e)", () => {
       .expect(201)
       .expect((res) => {
         expect(res.body.level).toBe("all");
+        // Défauts d'une équipe (J21) : début et résultat, rappel T-15 sur demande seulement.
         expect(res.body.notifyStart).toBe(true);
+        expect(res.body.notifyResult).toBe(true);
+        expect(res.body.notifyReminder).toBe(false);
       });
+
+    // Suivre de nouveau ne reprend pas ce que l'utilisateur a choisi.
+    await request(app.getHttpServer()).post("/v1/subscriptions").set(auth).send({ targetType: "entity", targetId: teamG2Id, notifyReminder: true }).expect(201);
+    await request(app.getHttpServer())
+      .post("/v1/subscriptions")
+      .set(auth)
+      .send({ targetType: "entity", targetId: teamG2Id })
+      .expect(201)
+      .expect((res) => expect(res.body.notifyReminder).toBe(true));
 
     const list = await request(app.getHttpServer()).get("/v1/subscriptions").set(auth).expect(200);
     expect(list.body).toHaveLength(1);

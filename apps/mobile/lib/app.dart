@@ -9,6 +9,7 @@ import "features/games/games_screen.dart";
 import "theme/tokens.dart";
 import "widgets/glass_tab_bar.dart";
 import "widgets/offline_banner.dart";
+import "widgets/update_gate.dart";
 
 // Icônes fines (trait), pas les variantes "_rounded" pleines : la maquette
 // dessine des icônes en contour (`docs/maquettes/svg/17-accueil.svg`).
@@ -61,6 +62,8 @@ class NewsApp extends ConsumerWidget {
           ),
           // Au-dessus de la tab bar flottante.
           const Positioned(left: AppSpacing.md, right: AppSpacing.md, bottom: 104, child: Center(child: OfflineBanner())),
+          // Dernier de la pile : l'écran bloquant recouvre tout (J21).
+          const UpdateGate(),
         ],
       ),
       bottomNavigationBar: GlassTabBar(items: _items, currentIndex: index, onTap: ref.read(tabIndexProvider.notifier).select),
