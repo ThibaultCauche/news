@@ -181,7 +181,7 @@ Ordre retenu avec Thibault (2ᵉ vague intégrée le même jour). Chaque jalon s
 | — | **Plus tard** | #D2, #E4, #G5, #M4 (cartes, après #M13 et avis juridique) | Dépendent d'une source, d'un besoin ou d'une validation |
 | — | **Vision long terme** | #M8 réseau social d'événements | Ne rien coder qui l'empêche |
 
-## Discussion : idées pour plus tard (2026-10-08)
+## Discussion : idées pour plus tard (2026-10-07)
 
 Ajoutées après le J24. **Écartées** (voir `docs/idees-non-retenues/`) : messages vocaux, réaction « live » partagée.
 
