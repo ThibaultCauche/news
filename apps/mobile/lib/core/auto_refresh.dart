@@ -9,6 +9,7 @@ import "../features/agenda/agenda_screen.dart";
 import "../features/bracket/bracket_provider.dart";
 import "../features/competitions/competitions_data.dart";
 import "../features/follows/follows_provider.dart";
+import "../features/forum/forum_providers.dart" show inboxProvider;
 import "../features/home/home_screen.dart";
 import "../features/next_match/next_match_screen.dart";
 import "../features/team/team_screen.dart";
@@ -89,6 +90,7 @@ class _AutoRefreshState extends ConsumerState<AutoRefresh> with WidgetsBindingOb
     ref.invalidate(homeProvider);
     ref.invalidate(followsProvider);
     ref.invalidate(predictionsProvider);
+    ref.invalidate(inboxProvider);
     ref.invalidate(eventProvider);
     if (ref.read(tabIndexProvider) == _agendaTab) ref.invalidate(agendaProvider);
   }

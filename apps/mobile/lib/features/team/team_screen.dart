@@ -14,6 +14,7 @@ import "../../widgets/follow_button.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
+import "../discussion/share_sheet.dart";
 import "../forum/forum_entry.dart";
 import "../next_match/next_match_screen.dart";
 
@@ -43,7 +44,7 @@ class TeamScreen extends ConsumerWidget {
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
           label: Text(breadcrumb ?? "", overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary)),
         ),
-        actions: const [LearnHelpButton(articleId: "fiche-equipe", game: "app")],
+        actions: [const LearnHelpButton(articleId: "fiche-equipe", game: "app"), ShareButton(kind: ShareDtoKindEnum.team, refId: entityId)],
       ),
       body: switch (entity) {
         _ when entity.hasValue => _TeamBody(entity: entity.value!, scoresHidden: scoresHidden),

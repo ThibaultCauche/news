@@ -1,3 +1,4 @@
+import "dart:async";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
@@ -47,6 +48,29 @@ final forumThreadsProvider = FutureProvider.autoDispose.family<List<ForumThreadD
   return (await ref.watch(apiClientProvider).getForumApi().forumControllerListThreads(game: key.game, kind: key.kind, sort: key.sort)).data!.toList();
 });
 
+/// Boîte « Discussion » (J24) : groupes, messages privés, fils suivis ou où j'ai écrit, avec non-lus.
+/// Vide pour un invité.
+final inboxProvider = FutureProvider.autoDispose<List<InboxItemDto>>((ref) async {
+  if (!ref.watch(signedInProvider)) return const [];
+  return (await ref.watch(apiClientProvider).getForumApi().forumControllerGetInbox()).data!.toList();
+});
+
+/// Messages non lus de toute la boîte (pastille de l'onglet).
+final unreadCountProvider = Provider.autoDispose<int>((ref) {
+  return ref.watch(inboxProvider).value?.fold<int>(0, (sum, i) => sum + i.unreadCount.toInt()) ?? 0;
+});
+
+/// Joueurs à qui l'on peut écrire en privé : les membres de mes groupes.
+final forumContactsProvider = FutureProvider.autoDispose<List<ForumContactDto>>((ref) async {
+  if (!ref.watch(signedInProvider)) return const [];
+  return (await ref.watch(apiClientProvider).getForumApi().forumControllerContacts()).data!.toList();
+});
+
+/// Recherche de discussions publiques (équipes, compétitions, jeux, fils libres).
+final forumSearchProvider = FutureProvider.autoDispose.family<List<ForumSearchResultDto>, String>((ref, q) async {
+  return (await ref.watch(apiClientProvider).getForumApi().forumControllerSearch(q: q)).data!.toList();
+});
+
 final forumCampsProvider = FutureProvider.autoDispose<List<ForumCampDto>>((ref) async {
   if (!ref.watch(signedInProvider)) return const [];
   return (await ref.watch(apiClientProvider).getForumApi().forumControllerListCamps()).data!.toList();
@@ -67,11 +91,44 @@ final moderationReportsProvider = FutureProvider.autoDispose<List<ReportedMessag
 
 /// Messages racines d'un fil (les plus récents d'abord), avec leurs réponses.
 class ForumMessagesState {
-  const ForumMessagesState({required this.thread, required this.messages, required this.nextBefore});
+  const ForumMessagesState({
+    required this.thread,
+    required this.messages,
+    required this.nextBefore,
+    this.unreadCount = 0,
+    this.firstUnreadId,
+    this.seenAt,
+    this.typing,
+  });
 
   final ForumThreadDto thread;
   final List<ForumMessageDto> messages;
   final String? nextBefore;
+  // Fil privé (J24) : nouveaux messages à l'ouverture, « Vu » et « écrit… » d'un message privé.
+  final int unreadCount;
+  final String? firstUnreadId;
+  final DateTime? seenAt;
+  final String? typing;
+
+  ForumMessagesState withMessages(List<ForumMessageDto> next, {String? nextBefore, bool keepNextBefore = false}) => ForumMessagesState(
+    thread: thread,
+    messages: next,
+    nextBefore: keepNextBefore ? this.nextBefore : nextBefore,
+    unreadCount: unreadCount,
+    firstUnreadId: firstUnreadId,
+    seenAt: seenAt,
+    typing: typing,
+  );
+
+  static ForumMessagesState fromPage(ForumMessagesPageDto page, List<ForumMessageDto> messages, String? nextBefore) => ForumMessagesState(
+    thread: page.thread,
+    messages: messages,
+    nextBefore: nextBefore,
+    unreadCount: page.unreadCount?.toInt() ?? 0,
+    firstUnreadId: page.firstUnreadId,
+    seenAt: page.seenAt,
+    typing: page.typing,
+  );
 }
 
 class ForumMessagesNotifier extends AsyncNotifier<ForumMessagesState> {
@@ -85,7 +142,7 @@ class ForumMessagesNotifier extends AsyncNotifier<ForumMessagesState> {
   Future<ForumMessagesState> build() async {
     ref.watch(signedInProvider); // « ma réaction » dépend du compte
     final page = (await _api.forumControllerListMessages(id: threadId)).data!;
-    return ForumMessagesState(thread: page.thread, messages: page.messages.toList(), nextBefore: page.nextBefore);
+    return ForumMessagesState.fromPage(page, page.messages.toList(), page.nextBefore);
   }
 
   /// Recharge la première page sans perdre les pages plus anciennes déjà chargées.
@@ -94,12 +151,12 @@ class ForumMessagesNotifier extends AsyncNotifier<ForumMessagesState> {
     final page = (await _api.forumControllerListMessages(id: threadId)).data!;
     final fresh = page.messages.toList();
     if (current == null || fresh.isEmpty) {
-      state = AsyncData(ForumMessagesState(thread: page.thread, messages: fresh, nextBefore: page.nextBefore));
+      state = AsyncData(ForumMessagesState.fromPage(page, fresh, page.nextBefore));
       return;
     }
     final oldest = fresh.last.createdAt;
     final older = current.messages.where((m) => m.createdAt.isBefore(oldest)).toList();
-    state = AsyncData(ForumMessagesState(thread: page.thread, messages: [...fresh, ...older], nextBefore: older.isEmpty ? page.nextBefore : current.nextBefore));
+    state = AsyncData(ForumMessagesState.fromPage(page, [...fresh, ...older], older.isEmpty ? page.nextBefore : current.nextBefore));
   }
 
   /// Réaction affichée tout de suite (J15), avant la réponse du serveur : le compteur et « ma réaction »
@@ -107,7 +164,7 @@ class ForumMessagesNotifier extends AsyncNotifier<ForumMessagesState> {
   void showReaction(String messageId, String emojiName, {required bool remove}) {
     final current = state.value;
     if (current == null) return;
-    state = AsyncData(ForumMessagesState(thread: current.thread, messages: [for (final m in current.messages) _withReaction(m, messageId, remove ? null : emojiName)], nextBefore: current.nextBefore));
+    state = AsyncData(current.withMessages([for (final m in current.messages) _withReaction(m, messageId, remove ? null : emojiName)], keepNextBefore: true));
   }
 
   static ForumMessageDto _withReaction(ForumMessageDto m, String id, String? next) {
@@ -133,7 +190,7 @@ class ForumMessagesNotifier extends AsyncNotifier<ForumMessagesState> {
     final before = current?.nextBefore;
     if (current == null || before == null) return;
     final page = (await _api.forumControllerListMessages(id: threadId, before: before)).data!;
-    state = AsyncData(ForumMessagesState(thread: current.thread, messages: [...current.messages, ...page.messages], nextBefore: page.nextBefore));
+    state = AsyncData(current.withMessages([...current.messages, ...page.messages], nextBefore: page.nextBefore));
   }
 }
 
@@ -180,18 +237,87 @@ class ForumController {
     return _ref.read(forumStatusProvider.future);
   }
 
-  Future<void> post(String threadId, String body, {String? parentId, bool isSpoiler = false}) async {
+  Future<void> post(String threadId, String body, {String? parentId, bool isSpoiler = false, List<String>? pollOptions, int? pollHours}) async {
     await _api.forumControllerPostMessage(
       id: threadId,
       postMessageDto: PostMessageDto((b) {
         b.body = body;
         if (parentId != null) b.parentId = parentId;
         if (isSpoiler) b.isSpoiler = true;
+        if (pollOptions != null) b.pollOptions.replace(pollOptions);
+        if (pollHours != null) b.pollHours = PostMessageDtoPollHoursEnum.valueOf("n$pollHours");
       }),
     );
     await _ref.read(forumMessagesProvider(threadId).notifier).refresh();
     _ref.invalidate(forumThreadsProvider);
     _ref.invalidate(forumThreadProvider);
+    _ref.invalidate(inboxProvider);
+  }
+
+  /// Sourdine d'un fil privé : plus de notification de nouveaux messages.
+  Future<void> setMuted(String threadId, bool muted) async {
+    if (muted) {
+      await _api.forumControllerMute(id: threadId);
+    } else {
+      await _api.forumControllerUnmute(id: threadId);
+    }
+    await _ref.read(forumMessagesProvider(threadId).notifier).refresh();
+    _ref.invalidate(inboxProvider);
+  }
+
+  /// « X écrit… » : signal envoyé pendant la frappe d'un message privé (l'erreur est sans importance).
+  void sendTyping(String threadId) {
+    unawaited(_api.forumControllerTyping(id: threadId).then<void>((_) {}, onError: (_) {}));
+  }
+
+  /// Compte connecté ? Sinon déroule la création de compte (la Discussion est réservée aux comptes).
+  Future<bool> ensureSignedIn() => ensureAccount(_ref);
+
+  /// Ouvre (ou crée) le message privé avec un membre de l'un de mes groupes.
+  Future<ForumThreadDto> openDm(String userId) async {
+    final thread = (await _api.forumControllerOpenDm(createDmDto: CreateDmDto((b) => b..userId = userId))).data!;
+    _ref.invalidate(inboxProvider);
+    return thread;
+  }
+
+  Future<ForumThreadDto> groupThread(String groupId) async {
+    final thread = (await _api.forumControllerGroupThread(id: groupId)).data!;
+    _ref.invalidate(inboxProvider);
+    return thread;
+  }
+
+  /// Envoie une carte (match, compétition, pronostic) dans un fil : seul l'identifiant part.
+  Future<void> share(String threadId, ShareDtoKindEnum kind, String refId) async {
+    await _api.forumControllerPostMessage(
+      id: threadId,
+      postMessageDto: PostMessageDto((b) {
+        b.body = "";
+        b.share.kind = kind;
+        b.share.refId = refId;
+      }),
+    );
+    _ref.invalidate(inboxProvider);
+    _ref.invalidate(forumMessagesProvider(threadId));
+  }
+
+  /// Vote d'un sondage ; `option` nul retire le vote.
+  Future<void> vote(String threadId, String messageId, int? option) async {
+    if (!await ensureAccount(_ref)) return;
+    if (option == null) {
+      await _api.forumControllerDeleteVote(id: messageId);
+    } else {
+      await _api.forumControllerPutVote(id: messageId, voteDto: VoteDto((b) => b..option = option));
+    }
+    await _ref.read(forumMessagesProvider(threadId).notifier).refresh();
+  }
+
+  Future<void> setIdeaStatus(String threadId, String messageId, SetIdeaStatusDtoStatusEnum? status) async {
+    if (status == null) {
+      await _moderation.moderationControllerClearIdeaStatus(id: messageId);
+    } else {
+      await _moderation.moderationControllerSetIdeaStatus(id: messageId, setIdeaStatusDto: SetIdeaStatusDto((b) => b..status = status));
+    }
+    await _ref.read(forumMessagesProvider(threadId).notifier).refresh();
   }
 
   /// Corrige son message (dans les 5 minutes après sa publication).

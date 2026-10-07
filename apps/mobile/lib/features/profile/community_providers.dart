@@ -3,6 +3,7 @@ import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
 import "../../core/auth/account.dart";
 import "../account/account_gate.dart";
+import "../forum/forum_providers.dart" show inboxProvider;
 
 /// Profil (pseudo, e-mail vérifié, stats de pronostics) ; `null` pour un invité.
 final profileProvider = FutureProvider.autoDispose<ProfileDto?>((ref) async {
@@ -87,6 +88,7 @@ class CommunityController {
       await _api.communityControllerSetProfile(putProfileDto: PutProfileDto((b) => b..avatarEntityId = teamEntityId));
       _ref.invalidate(profileProvider);
       _ref.invalidate(groupsProvider);
+    _ref.invalidate(inboxProvider);
       await _ref.read(profileProvider.future);
     } finally {
       pending.set(null);
@@ -123,23 +125,27 @@ class CommunityController {
   Future<GroupDto> createGroup(String name) async {
     final group = (await _api.communityControllerCreateGroup(createGroupDto: CreateGroupDto((b) => b..name = name))).data!;
     _ref.invalidate(groupsProvider);
+    _ref.invalidate(inboxProvider);
     return group;
   }
 
   Future<GroupDto> joinGroup(String code) async {
     final group = (await _api.communityControllerJoinGroup(joinGroupDto: JoinGroupDto((b) => b..code = code.trim().toUpperCase()))).data!;
     _ref.invalidate(groupsProvider);
+    _ref.invalidate(inboxProvider);
     return group;
   }
 
   Future<void> leaveGroup(String id) async {
     await _api.communityControllerLeaveGroup(id: id);
     _ref.invalidate(groupsProvider);
+    _ref.invalidate(inboxProvider);
   }
 
   Future<void> deleteGroup(String id) async {
     await _api.communityControllerDeleteGroup(id: id);
     _ref.invalidate(groupsProvider);
+    _ref.invalidate(inboxProvider);
   }
 }
 

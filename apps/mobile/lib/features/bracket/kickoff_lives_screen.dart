@@ -1,3 +1,4 @@
+import "../discussion/share_sheet.dart";
 import "../forum/forum_entry.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -33,6 +34,7 @@ class KickoffLivesScreen extends ConsumerWidget {
           label: const Text("Valorant", style: TextStyle(color: AppColors.textSecondary)),
         ),
         actions: [
+          ShareButton(kind: ShareDtoKindEnum.competition, refId: competitionId),
           ForumActionButton(kind: "competition", targetId: competitionId),
           CompetitionFavoriteButton(competitionId: competitionId, name: title),
           CompetitionFollowButton(competitionId: competitionId, name: title),

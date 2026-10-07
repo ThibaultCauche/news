@@ -28,6 +28,7 @@ import "../follows/follows_provider.dart";
 import "../team/team_screen.dart";
 import "../../widgets/spoiler_hold.dart";
 import "../../widgets/stream_circles.dart";
+import "../discussion/share_sheet.dart";
 import "../forum/forum_entry.dart";
 import "../profile/prediction_panel.dart";
 
@@ -95,6 +96,7 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
       appBar: AppBar(
         actions: [
           LearnHelpButton(articleId: "regarder-un-match", game: event.value?.competition.game ?? "valorant"),
+          ShareButton(kind: ShareDtoKindEnum.event, refId: widget.eventId),
           IconButton(
             icon: Icon(scoresHidden ? Icons.visibility_off_rounded : Icons.visibility_rounded),
             tooltip: "Sans spoil",

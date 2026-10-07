@@ -180,3 +180,14 @@ Ordre retenu avec Thibault (2ᵉ vague intégrée le même jour). Chaque jalon s
 | — | **Études (hors jalon)** | #M5 monétisation | À mener avant tout revenu ; peut se faire en parallèle |
 | — | **Plus tard** | #D2, #E4, #G5, #M4 (cartes, après #M13 et avis juridique) | Dépendent d'une source, d'un besoin ou d'une validation |
 | — | **Vision long terme** | #M8 réseau social d'événements | Ne rien coder qui l'empêche |
+
+## Discussion : idées pour plus tard (2026-10-08)
+
+Ajoutées après le J24. **Écartées** (voir `docs/idees-non-retenues/`) : messages vocaux, réaction « live » partagée.
+
+| # | Idée | Détail | Effort |
+|---|---|---|---|
+| #B7 | **Fil automatique par match pour mon groupe** | Dès qu'un match suivi par plusieurs membres d'un groupe commence, un fil éphémère « 100T – G2 » s'ouvre dans le groupe, avec les pronostics des amis dévoilés au coup d'envoi. Relie la Discussion aux pronostics du J14 et au pick'em du J25. | M-L |
+| #B8 | **Invitation de groupe par lien** | Un lien plutôt qu'un code de 8 caractères ; utile avec le web du J17. | S-M |
+| #B9 | **Images dans les messages** | À **éviter pour l'instant** : même problème que les vocaux (modération, stores, stockage), la règle « texte seul » du J13 le refuse. | L |
+| #B10 | **Partage d'un classement ou d'une phase suisse en carte dédiée** | Aujourd'hui le partage d'une compétition ouvre sa page (onglets Classement et Phase suisse compris). Une carte dédiée afficherait le classement lui-même. | M |

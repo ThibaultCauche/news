@@ -38,8 +38,62 @@ export interface ForumReplyMessage {
 
 // `live` : le fil du direct d'un match (écriture ouverte seulement pendant le match) ; `event` reste la
 // discussion d'avant et d'après match.
-export const FORUM_THREAD_KINDS = ["event", "live", "entity", "competition", "game", "free"] as const;
+// J24 : `group` (fil réservé aux membres d'un groupe d'amis), `dm` (message privé à deux, entre membres
+// d'un groupe en commun) et `feature` (tableau des idées). `group` et `dm` ne se listent jamais publiquement.
+export const FORUM_THREAD_KINDS = ["event", "live", "entity", "competition", "game", "free", "group", "dm", "feature"] as const;
 export type ForumThreadKind = (typeof FORUM_THREAD_KINDS)[number];
+export const FORUM_PRIVATE_KINDS: readonly string[] = ["group", "dm"];
+export const FORUM_NON_PUBLIC_KINDS: readonly string[] = ["group", "dm", "feature"];
+
+export function isPrivateThreadKind(kind: string): boolean {
+  return FORUM_PRIVATE_KINDS.includes(kind);
+}
+
+/** Identifiant stable du message privé de deux joueurs (les deux ids triés), le même dans les deux sens. */
+export function dmTargetId(a: string, b: string): string {
+  return a < b ? `${a}:${b}` : `${b}:${a}`;
+}
+
+/** Types de message : le texte, trois cartes partagées (un identifiant, jamais de lien libre) et le sondage. */
+export const FORUM_MESSAGE_KINDS = ["text", "event", "competition", "prediction", "team", "poll"] as const;
+export type ForumMessageKind = (typeof FORUM_MESSAGE_KINDS)[number];
+export const FORUM_SHARE_KINDS = ["event", "competition", "prediction", "team"] as const;
+export type ForumShareKind = (typeof FORUM_SHARE_KINDS)[number];
+
+export const POLL_MIN_OPTIONS = 2;
+export const POLL_MAX_OPTIONS = 6;
+export const POLL_OPTION_MAX_LENGTH = 40;
+
+/** `null` si les options d'un sondage sont acceptables. */
+export function pollProblem(options: string[]): "count" | "length" | "link" | "forbidden" | "duplicate" | null {
+  if (options.length < POLL_MIN_OPTIONS || options.length > POLL_MAX_OPTIONS) return "count";
+  const clean = options.map((o) => o.trim());
+  if (clean.some((o) => o.length === 0 || o.length > POLL_OPTION_MAX_LENGTH)) return "length";
+  if (new Set(clean.map((o) => o.toLowerCase())).size !== clean.length) return "duplicate";
+  if (clean.some((o) => LINK.test(o))) return "link";
+  if (clean.some((o) => containsForbiddenWord(o))) return "forbidden";
+  return null;
+}
+
+// Durées proposées pour un sondage (heures) ; sans durée, le sondage reste ouvert.
+export const POLL_DURATIONS_HOURS = [1, 24, 168] as const;
+
+/** Un sondage dont la date de fin est passée n'accepte plus de vote. */
+export function pollClosed(endsAt: string | null | undefined, now: Date): boolean {
+  return endsAt != null && new Date(endsAt).getTime() <= now.getTime();
+}
+
+// Indicateur « écrit… » d'un message privé : valable quelques secondes après la dernière frappe.
+export const FORUM_TYPING_TTL_SECONDS = 8;
+
+/** Fils lus comme un tchat (à plat, le plus récent en bas) : le direct, les groupes et les messages privés. */
+export function isChatThreadKind(kind: string): boolean {
+  return kind === "live" || kind === "group" || kind === "dm";
+}
+
+/** Statuts d'une idée du tableau des idées (posés par un modérateur). */
+export const IDEA_STATUSES = ["planned", "in_progress", "done", "declined"] as const;
+export type IdeaStatus = (typeof IDEA_STATUSES)[number];
 
 export const FORUM_REACTIONS = ["up", "fire", "laugh", "wow", "sad"] as const;
 export type ForumReaction = (typeof FORUM_REACTIONS)[number];

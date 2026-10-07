@@ -1,6 +1,6 @@
 import { BadRequestException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
-import { FORUM_MAX_PINNED, forumSnippet } from "@news/domain";
+import { FORUM_MAX_PINNED, forumSnippet, isPrivateThreadKind } from "@news/domain";
 import { PRISMA } from "../db/db.module";
 import { ModerationLogDto, ReportedMessageDto } from "./forum.dto";
 import { ForumService } from "./forum.service";
@@ -26,7 +26,7 @@ export class ModerationService {
     await this.requireModerator(userId);
     const reports = await this.prisma.forumReport.findMany({
       where: { resolvedAt: null },
-      include: { message: { include: { user: { select: { id: true, pseudo: true } }, thread: { select: { title: true } } } } },
+      include: { message: { include: { user: { select: { id: true, pseudo: true } }, thread: { select: { title: true, kind: true } } } } },
       orderBy: { createdAt: "desc" },
     });
     const byMessage = new Map<string, ReportedMessageDto>();
@@ -50,7 +50,25 @@ export class ModerationService {
         createdAt: r.message.createdAt,
       });
     }
+    // Un message privé ou de groupe n'est lisible par un modérateur que parce qu'il a été signalé : chaque
+    // lecture est inscrite au journal (une fois par modérateur et par message).
+    const privateIds = reports.filter((r) => isPrivateThreadKind(r.message.thread.kind)).map((r) => r.messageId);
+    if (privateIds.length) {
+      const seen = new Set((await this.prisma.moderationLog.findMany({ where: { moderatorId: userId, action: "view_private", messageId: { in: privateIds } }, select: { messageId: true } })).map((l) => l.messageId));
+      for (const id of new Set(privateIds)) {
+        if (!seen.has(id)) await this.forum.logModeration(userId, "view_private", { messageId: id, targetUserId: byMessage.get(id)?.authorId, threadId: byMessage.get(id)?.threadId });
+      }
+    }
     return [...byMessage.values()].sort((a, b) => b.reportCount - a.reportCount).slice(0, QUEUE_SIZE);
+  }
+
+  /** Statut d'une idée du tableau des idées (`null` : redevient « proposée »). */
+  async setIdeaStatus(userId: string, messageId: string, status: string | null): Promise<void> {
+    await this.requireModerator(userId);
+    const message = await this.prisma.forumMessage.findUnique({ where: { id: messageId }, include: { thread: { select: { kind: true } } } });
+    if (!message || message.thread.kind !== "feature" || message.parentId) throw new NotFoundException("Idée introuvable");
+    await this.prisma.forumMessage.update({ where: { id: messageId }, data: { ideaStatus: status } });
+    await this.forum.logModeration(userId, "idea_status", { messageId, targetUserId: message.userId, threadId: message.threadId, detail: status ?? "proposed" });
   }
 
   /** Les signalements étaient infondés : le message revient s'il avait été masqué automatiquement. */

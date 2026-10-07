@@ -14,6 +14,8 @@ import "../../widgets/avatar_circle.dart";
 import "../../widgets/confirm_dialog.dart";
 import "../../widgets/spoiler_hold.dart";
 import "../profile/player_profile_screen.dart";
+import "../../core/notifications/push_service.dart";
+import "../discussion/shared_cards.dart";
 import "forum_providers.dart";
 
 /// Fil de discussion (docs/04 J13) : messages texte seul, réponses, réactions, signalement,
@@ -30,8 +32,8 @@ class ForumThreadScreen extends ConsumerStatefulWidget {
 }
 
 class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
-  // 5 s : le tchat du direct se recharge à ce rythme, les autres fils une fois sur six (30 s).
-  static const _pollInterval = Duration(seconds: 5);
+  // 3 s : les tchats (direct, groupes, messages privés) se rechargent à ce rythme, les autres fils une fois sur dix (30 s).
+  static const _pollInterval = Duration(seconds: 3);
 
   final _input = TextEditingController();
   Timer? _timer;
@@ -52,6 +54,15 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
   String? _pendingBody;
   // Actions du menu d'un message en cours : pas de double envoi (signaler deux fois, bloquer deux fois).
   bool _acting = false;
+  // Fil privé : premier message non lu à l'ouverture, gardé pour la session (le serveur marque lu à chaque
+  // rechargement, il ne le renverrait plus).
+  bool _anchorCaptured = false;
+  String? _unreadAnchor;
+  int _unreadCount = 0;
+  final _unreadKey = GlobalKey();
+  final _chatScroll = ScrollController();
+  DateTime _lastTyping = DateTime.fromMillisecondsSinceEpoch(0);
+  bool? _mutedPending;
 
   @override
   void initState() {
@@ -62,14 +73,17 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
   @override
   void dispose() {
     _timer?.cancel();
+    _chatScroll.dispose();
     _input.dispose();
     super.dispose();
   }
 
   void _poll() {
     _tick++;
-    final live = ref.read(forumMessagesProvider(widget.threadId)).value?.thread.kind == ForumThreadDtoKindEnum.live;
-    if (live || _tick % 6 == 0) _refresh();
+    final kind = ref.read(forumMessagesProvider(widget.threadId)).value?.thread.kind;
+    // Le direct et les fils privés (groupe, message privé) se rechargent toutes les 5 s, les autres toutes les 30 s.
+    final fast = kind == ForumThreadDtoKindEnum.live || kind == ForumThreadDtoKindEnum.group || kind == ForumThreadDtoKindEnum.dm;
+    if (fast || _tick % 10 == 0) _refresh();
   }
 
   void _startEdit(ForumMessageDto message) {
@@ -85,6 +99,40 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
       await ref.read(forumMessagesProvider(widget.threadId).notifier).refresh();
     } catch (_) {
       // Hors ligne ou erreur passagère : on garde ce qui est affiché.
+    }
+  }
+
+  // La liste ne construit que ce qui est à l'écran : si le séparateur est loin, on remonte d'un écran à la fois
+  // (liste inversée : l'offset grandit vers les anciens messages) jusqu'à ce qu'il existe, puis on le centre.
+  void _scrollToUnread([int attempt = 0]) {
+    final context = _unreadKey.currentContext;
+    if (context != null) {
+      Scrollable.ensureVisible(context, alignment: 0.3);
+      return;
+    }
+    if (attempt >= 20 || !_chatScroll.hasClients) return;
+    final position = _chatScroll.position;
+    _chatScroll.jumpTo((position.pixels + position.viewportDimension * 0.9).clamp(0.0, position.maxScrollExtent));
+    WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToUnread(attempt + 1));
+  }
+
+  /// « X écrit… » : au plus un signal toutes les 3 s pendant la frappe d'un message privé.
+  void _onTyping(ForumThreadDto? thread) {
+    if (thread?.kind != ForumThreadDtoKindEnum.dm) return;
+    final now = DateTime.now();
+    if (now.difference(_lastTyping) < const Duration(seconds: 3)) return;
+    _lastTyping = now;
+    ref.read(forumControllerProvider).sendTyping(widget.threadId);
+  }
+
+  Future<void> _toggleMute(bool current) async {
+    setState(() => _mutedPending = !current);
+    try {
+      await ref.read(forumControllerProvider).setMuted(widget.threadId, !current);
+    } catch (e) {
+      _toast(e);
+    } finally {
+      if (mounted) setState(() => _mutedPending = null);
     }
   }
 
@@ -132,6 +180,9 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
         }
       } else {
         await controller.post(widget.threadId, text, parentId: replyTo?.id, isSpoiler: spoiler);
+        // Écrire dans un fil privé : on veut pouvoir recevoir la réponse en notification.
+        final kind = ref.read(forumMessagesProvider(widget.threadId)).value?.thread.kind;
+        if (kind == ForumThreadDtoKindEnum.group || kind == ForumThreadDtoKindEnum.dm) ref.read(pushServiceProvider).ensureRegistered();
       }
     } catch (e) {
       if (editing == null && mounted) {
@@ -159,28 +210,47 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
     final status = ref.watch(forumStatusProvider).value;
     final spoilerFree = ref.watch(userSettingProvider).value?.spoilerFree ?? false;
     final thread = messages.value?.thread;
+    final privateThread = thread?.kind == ForumThreadDtoKindEnum.group || thread?.kind == ForumThreadDtoKindEnum.dm;
+    final loaded = messages.value;
+    if (!_anchorCaptured && loaded != null) {
+      _anchorCaptured = true;
+      _unreadAnchor = loaded.firstUnreadId;
+      _unreadCount = loaded.unreadCount;
+      if (_unreadAnchor != null) WidgetsBinding.instance.addPostFrameCallback((_) => _scrollToUnread());
+    }
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Discussion"),
+        title: Text(privateThread ? thread!.title : "Discussion", overflow: TextOverflow.ellipsis),
         actions: [
-          if (thread != null)
+          if (thread != null && privateThread)
+            IconButton(
+              tooltip: (_mutedPending ?? thread.muted) ? "Réactiver les notifications" : "Mettre en sourdine",
+              icon: Icon((_mutedPending ?? thread.muted) ? Icons.notifications_off_rounded : Icons.notifications_active_outlined),
+              onPressed: _mutedPending != null ? null : () => _toggleMute(thread.muted),
+            ),
+          if (thread != null && !privateThread && thread.kind != ForumThreadDtoKindEnum.feature)
             IconButton(
               tooltip: (_followPending ?? thread.following) ? "Ne plus suivre cette discussion" : "Suivre cette discussion",
               icon: Icon((_followPending ?? thread.following) ? Icons.notifications_active_rounded : Icons.notifications_none_rounded),
               onPressed: _followPending != null ? null : () => _toggleFollow(thread.following),
             ),
           if (status?.isModerator == true && thread != null)
-            PopupMenuButton<bool>(
-              onSelected: (lock) async {
+            PopupMenuButton<String>(
+              onSelected: (action) async {
                 try {
-                  await ref.read(forumControllerProvider).setLock(thread.id, locked: lock);
-                  await _refresh();
+                  if (action == "poll") {
+                    await _newPoll();
+                  } else {
+                    await ref.read(forumControllerProvider).setLock(thread.id, locked: action == "lock");
+                    await _refresh();
+                  }
                 } catch (e) {
                   _toast(e);
                 }
               },
               itemBuilder: (_) => [
-                if (thread.locked) const PopupMenuItem(value: false, child: Text("Déverrouiller la discussion")) else const PopupMenuItem(value: true, child: Text("Verrouiller la discussion")),
+                if (thread.locked) const PopupMenuItem(value: "unlock", child: Text("Déverrouiller la discussion")) else const PopupMenuItem(value: "lock", child: Text("Verrouiller la discussion")),
+                const PopupMenuItem(value: "poll", child: Text("Lancer un sondage")),
               ],
             ),
         ],
@@ -195,6 +265,11 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
                 _ => const SkeletonCards(count: 5, height: 72),
               },
             ),
+            if (loaded?.typing != null)
+              Padding(
+                padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.xs, AppSpacing.md, 0),
+                child: Align(alignment: Alignment.centerLeft, child: Text("${loaded!.typing} écrit…", style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption, fontStyle: FontStyle.italic))),
+              ),
             if (_pendingBody != null)
               Opacity(
                 opacity: 0.5,
@@ -217,6 +292,7 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
               sending: _sending,
               onCancelReply: () => setState(() => _replyTo = null),
               onSend: _send,
+              onChanged: (_) => _onTyping(thread),
               onNeedAccess: () => ref.read(forumControllerProvider).ensureCanPost(context),
               readOnly: thread?.readOnly ?? false,
               liveChat: thread?.kind == ForumThreadDtoKindEnum.live,
@@ -232,6 +308,13 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
         ),
       ),
     );
+  }
+
+  /// Sondage (modérateurs) : une question et 2 à 6 options.
+  Future<void> _newPoll() async {
+    final result = await showDialog<({String question, List<String> options, int? hours})>(context: context, builder: (_) => const _PollDialog());
+    if (result == null || !mounted) return;
+    await ref.read(forumControllerProvider).post(widget.threadId, result.question, pollOptions: result.options, pollHours: result.hours);
   }
 
   void _toggleCollapse(String id) => setState(() => _collapsed.contains(id) ? _collapsed.remove(id) : _collapsed.add(id));
@@ -273,6 +356,68 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
             _editing = null;
           }),
           onActions: (m) => _liveActions(m, status),
+        );
+      },
+    );
+  }
+
+  /// Groupe ou message privé : un tchat à plat, le plus récent en bas (liste inversée, collée en bas), avec
+  /// le séparateur « nouveaux messages » et, dans un message privé, « Vu » sous mon dernier message.
+  Widget _chatListView(ForumMessagesState state, ForumStatusDto? status) {
+    final canReply = !(state.thread.locked || state.thread.readOnly);
+    final more = state.nextBefore != null;
+    final empty = state.messages.isEmpty;
+    final seenAt = state.seenAt;
+    final lastMine = seenAt == null ? null : state.messages.where((m) => m.author?.userId == status?.userId).firstOrNull;
+    final entries = <Object>[
+      for (final m in state.messages) ...[m, if (m.id == _unreadAnchor) _unreadAnchor!],
+    ];
+    final count = (empty ? 1 : entries.length) + (more ? 1 : 0);
+    return ListView.builder(
+      controller: _chatScroll,
+      reverse: true,
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.md, AppSpacing.sm),
+      itemCount: count,
+      itemBuilder: (context, i) {
+        if (empty) return const Padding(padding: EdgeInsets.all(AppSpacing.xl), child: Center(child: EmptyMark("Aucun message pour l'instant. Écris le premier !")));
+        if (more && i == entries.length) {
+          return TextButton(onPressed: () => ref.read(forumMessagesProvider(widget.threadId).notifier).loadMore().catchError(_toast), child: const Text("Voir les messages plus anciens"));
+        }
+        final entry = entries[i];
+        if (entry is String) {
+          return Padding(
+            key: _unreadKey,
+            padding: const EdgeInsets.only(bottom: AppSpacing.sm),
+            child: Row(
+              children: [
+                const Expanded(child: Divider(color: AppColors.brass)),
+                Padding(padding: const EdgeInsets.symmetric(horizontal: AppSpacing.sm), child: Text(_unreadCount == 1 ? "1 nouveau message" : "$_unreadCount nouveaux messages", style: const TextStyle(color: AppColors.brass, fontSize: AppTypography.caption))),
+                const Expanded(child: Divider(color: AppColors.brass)),
+              ],
+            ),
+          );
+        }
+        final message = entry as ForumMessageDto;
+        final tile = _MessageTile(
+          threadId: widget.threadId,
+          message: message,
+          status: status,
+          collapsed: _collapsed,
+          canCollapse: false,
+          onToggleCollapse: _toggleCollapse,
+          onReply: (m) => setState(() {
+            _replyTo = m;
+            _editing = null;
+          }),
+          canReply: canReply,
+          revealedSpoilers: _revealedSpoilers,
+          onRevealSpoiler: (id) => setState(() => _revealedSpoilers.add(id)),
+          onEdit: _startEdit,
+        );
+        if (lastMine == null || message.id != lastMine.id || seenAt == null || seenAt.isBefore(message.createdAt)) return tile;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
+          children: [tile, const Padding(padding: EdgeInsets.only(bottom: AppSpacing.sm), child: Text("Vu", style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.label)))],
         );
       },
     );
@@ -329,13 +474,19 @@ class _ForumThreadScreenState extends ConsumerState<ForumThreadScreen> {
 
   Widget _list(BuildContext context, ForumMessagesState state, ForumStatusDto? status, bool blurred) {
     // Le titre complet est en tête de la liste (la barre est trop étroite pour un titre de 80 caractères).
-    final header = Padding(
-      padding: const EdgeInsets.only(bottom: AppSpacing.md),
-      child: Text(state.thread.title, style: AppTextStyles.sectionTitle),
-    );
+    // Fil de groupe ou message privé : le titre est déjà dans la barre.
+    final privateThread = state.thread.kind == ForumThreadDtoKindEnum.group || state.thread.kind == ForumThreadDtoKindEnum.dm;
+    final header = privateThread
+        ? const SizedBox.shrink()
+        : Padding(
+            padding: const EdgeInsets.only(bottom: AppSpacing.md),
+            child: Text(state.thread.title, style: AppTextStyles.sectionTitle),
+          );
     final list = state.thread.kind == ForumThreadDtoKindEnum.live
         ? _liveListView(state, status)
-        : RefreshIndicator(
+        : privateThread
+            ? _chatListView(state, status)
+            : RefreshIndicator(
       onRefresh: _refresh,
       child: ListView.builder(
         physics: const AlwaysScrollableScrollPhysics(),
@@ -667,15 +818,25 @@ class _MessageTile extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Appui long : plie ou déplie les réponses (rien à plier sans réponse).
+          // Message cité (fils à plat : tchats) : la réponse ne s'imbrique pas, elle renvoie au message d'origine.
+          if (message.replyTo != null)
+            Padding(
+              padding: const EdgeInsets.only(left: 36, bottom: 2),
+              child: Text("↪ ${message.replyTo!.pseudo ?? "…"} : ${message.replyTo!.snippet}", maxLines: 1, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.label)),
+            ),
+          // Double appui : 👍. Appui long : plie ou déplie les réponses, ou ouvre les réactions s'il n'y en a pas.
           GestureDetector(
             behavior: HitTestBehavior.opaque,
+            onDoubleTap: () => _run(context, () => controller.react(threadId, message, PutReactionDtoEmojiEnum.up)),
             onLongPress: canCollapse && message.replies.isNotEmpty
                 ? () {
                     HapticFeedback.selectionClick();
                     onToggleCollapse(message.id);
                   }
-                : null,
+                : () {
+                    HapticFeedback.selectionClick();
+                    _pickReaction(context, ref);
+                  },
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -711,7 +872,7 @@ class _MessageTile extends ConsumerWidget {
                         ],
                       ),
                       const SizedBox(height: 2),
-                      _body(),
+                      if (message.poll == null && (message.body ?? "").isNotEmpty) _body(),
                     ],
                   ),
                 ),
@@ -735,7 +896,7 @@ class _MessageTile extends ConsumerWidget {
                   itemBuilder: (_) => [
                     if (!mine) const PopupMenuItem(value: "report", child: Text("Signaler")),
                     if (!mine) PopupMenuItem(value: "block", child: Text("Bloquer ${author?.pseudo ?? ""}")),
-                    if (mine && DateTime.now().difference(message.createdAt.toLocal()).inMinutes < 5) const PopupMenuItem(value: "edit", child: Text("Modifier")),
+                    if (mine && message.kind == ForumMessageDtoKindEnum.text && DateTime.now().difference(message.createdAt.toLocal()).inMinutes < 5) const PopupMenuItem(value: "edit", child: Text("Modifier")),
                     if (mine) const PopupMenuItem(value: "delete", child: Text("Supprimer")),
                     if (isModerator && depth == 0) PopupMenuItem(value: "pin", child: Text(message.pinned ? "Désépingler" : "Épingler")),
                     if (isModerator && !mine) const PopupMenuItem(value: "hide", child: Text("Masquer (modération)")),
@@ -745,6 +906,8 @@ class _MessageTile extends ConsumerWidget {
               ],
             ),
           ),
+          if (message.shared != null) Padding(padding: const EdgeInsets.only(top: AppSpacing.xs), child: SharedCard(shared: message.shared!, pseudo: author?.pseudo ?? "")),
+          if (message.poll != null) Padding(padding: const EdgeInsets.only(top: AppSpacing.xs), child: PollCard(threadId: threadId, messageId: message.id, question: message.body ?? "", poll: message.poll!)),
           Padding(
             padding: EdgeInsets.only(left: radius * 2 + AppSpacing.sm, top: AppSpacing.xs),
             child: Wrap(
@@ -849,6 +1012,7 @@ class _Composer extends StatelessWidget {
     required this.sending,
     required this.onCancelReply,
     required this.onSend,
+    required this.onChanged,
     required this.onNeedAccess,
     required this.readOnly,
     required this.liveChat,
@@ -865,6 +1029,7 @@ class _Composer extends StatelessWidget {
   final bool sending;
   final VoidCallback onCancelReply;
   final VoidCallback onSend;
+  final ValueChanged<String> onChanged;
   final Future<bool> Function() onNeedAccess;
   final bool readOnly;
   final bool liveChat;
@@ -936,6 +1101,7 @@ class _Composer extends StatelessWidget {
                 Expanded(
                   child: TextField(
                     controller: controller,
+                    onChanged: onChanged,
                     minLines: 1,
                     maxLines: 4,
                     maxLength: 500,
@@ -952,6 +1118,68 @@ class _Composer extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+}
+
+/// Création d'un sondage : une question et de 2 à 6 options (réservé aux modérateurs, vérifié par le serveur).
+class _PollDialog extends StatefulWidget {
+  const _PollDialog();
+
+  @override
+  State<_PollDialog> createState() => _PollDialogState();
+}
+
+class _PollDialogState extends State<_PollDialog> {
+  final _question = TextEditingController();
+  final _options = [TextEditingController(), TextEditingController()];
+  int? _hours;
+
+  @override
+  void dispose() {
+    _question.dispose();
+    for (final c in _options) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      title: const Text("Lancer un sondage"),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(controller: _question, maxLength: 200, decoration: const InputDecoration(labelText: "Question", counterText: "")),
+            for (final (i, c) in _options.indexed) TextField(controller: c, maxLength: 40, decoration: InputDecoration(labelText: "Option ${i + 1}", counterText: "")),
+            DropdownButtonFormField<int?>(
+              initialValue: _hours,
+              decoration: const InputDecoration(labelText: "Durée"),
+              items: const [
+                DropdownMenuItem(value: null, child: Text("Sans limite")),
+                DropdownMenuItem(value: 1, child: Text("1 heure")),
+                DropdownMenuItem(value: 24, child: Text("24 heures")),
+                DropdownMenuItem(value: 168, child: Text("7 jours")),
+              ],
+              onChanged: (v) => setState(() => _hours = v),
+            ),
+            if (_options.length < 6) TextButton.icon(onPressed: () => setState(() => _options.add(TextEditingController())), icon: const Icon(Icons.add_rounded), label: const Text("Ajouter une option")),
+          ],
+        ),
+      ),
+      actions: [
+        TextButton(onPressed: () => Navigator.pop(context), child: const Text("Annuler")),
+        TextButton(
+          onPressed: () {
+            final options = [for (final c in _options) if (c.text.trim().isNotEmpty) c.text.trim()];
+            if (_question.text.trim().isEmpty || options.length < 2) return;
+            Navigator.pop(context, (question: _question.text.trim(), options: options, hours: _hours));
+          },
+          child: const Text("Lancer"),
+        ),
+      ],
     );
   }
 }

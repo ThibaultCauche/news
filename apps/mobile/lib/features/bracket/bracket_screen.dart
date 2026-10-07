@@ -1,3 +1,4 @@
+import "../discussion/share_sheet.dart";
 import "../../widgets/empty_mark.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -57,6 +58,7 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
         ),
         actions: [
           LearnHelpButton(articleId: "regarder-un-match", game: game),
+          ShareButton(kind: ShareDtoKindEnum.competition, refId: widget.competitionId),
           ForumActionButton(kind: "competition", targetId: widget.competitionId),
           CompetitionFavoriteButton(competitionId: widget.competitionId, name: widget.title),
           CompetitionFollowButton(competitionId: widget.competitionId, name: widget.title)],

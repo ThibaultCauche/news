@@ -297,6 +297,9 @@ model AppUser {
   forumReports     ForumReport[]
   forumCamps       ForumCamp[]
   forumFollows     ForumThreadFollow[]
+  forumMemberships ForumThreadMember[]
+  forumReads       ForumThreadRead[]
+  forumPollVotes   ForumPollVote[]
   moderationLogs   ModerationLog[]
   blocking         UserBlock[]         @relation("Blocker")
   blockedBy        UserBlock[]         @relation("Blocked")
@@ -352,6 +355,7 @@ model FriendGroup {
   ownerId   String              @map("owner_id")
   owner     AppUser             @relation(fields: [ownerId], references: [id], onDelete: Cascade)
   members   FriendGroupMember[]
+  threads   ForumThread[]
   createdAt DateTime            @default(now()) @map("created_at")
 
   @@map("friend_group")
@@ -510,6 +514,12 @@ model ForumThread {
   lastMessageAt DateTime?      @map("last_message_at")
   messages      ForumMessage[]
   followers     ForumThreadFollow[]
+  // J24 : fil réservé aux membres d'un groupe d'amis (`kind` = group, `target_id` = groupe), participants
+  // d'un message privé (`kind` = dm), lecture par personne pour les non-lus.
+  groupId       String?        @map("group_id")
+  group         FriendGroup?   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  members       ForumThreadMember[]
+  reads         ForumThreadRead[]
   createdAt     DateTime       @default(now()) @map("created_at")
 
   @@unique([kind, targetId])
@@ -536,6 +546,13 @@ model ForumMessage {
   editedAt     DateTime?       @map("edited_at")
   isSpoiler    Boolean         @default(false) @map("is_spoiler")
   pinnedAt     DateTime?       @map("pinned_at")
+  // J24 : `text` (défaut), carte partagée (`event`, `competition`, `prediction` : seul `ref_id` est stocké)
+  // ou `poll` (options dans `payload`). Statut d'une idée du tableau des idées (posé par un modérateur).
+  kind         String          @default("text")
+  refId        String?         @map("ref_id")
+  payload      Json?
+  ideaStatus   String?         @map("idea_status")
+  pollVotes    ForumPollVote[]
   reactions    ForumReaction[]
   reports      ForumReport[]
   createdAt    DateTime        @default(now()) @map("created_at")
@@ -628,4 +645,45 @@ model ModerationLog {
 
   @@index([createdAt])
   @@map("moderation_log")
+}
+
+// Participants d'un message privé (J24) : deux lignes par fil `dm`.
+model ForumThreadMember {
+  threadId String      @map("thread_id")
+  thread   ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  userId   String      @map("user_id")
+  user     AppUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([threadId, userId])
+  @@index([userId])
+  @@map("forum_thread_member")
+}
+
+// Dernière lecture d'un fil par une personne (J24) : sert aux non-lus et à la limite de notifications
+// des fils de groupe.
+model ForumThreadRead {
+  threadId       String      @map("thread_id")
+  thread         ForumThread @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  userId         String      @map("user_id")
+  user           AppUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lastReadAt     DateTime    @default(now()) @map("last_read_at")
+  lastNotifiedAt DateTime?   @map("last_notified_at")
+  // Sourdine d'un fil privé : plus de notification de nouveaux messages (les mentions et réponses passent).
+  muted          Boolean     @default(false)
+
+  @@id([threadId, userId])
+  @@index([userId])
+  @@map("forum_thread_read")
+}
+
+// Vote d'un sondage (J24) : un choix par personne, modifiable. `option` = index dans `payload.options`.
+model ForumPollVote {
+  messageId String       @map("message_id")
+  message   ForumMessage @relation(fields: [messageId], references: [id], onDelete: Cascade)
+  userId    String       @map("user_id")
+  user      AppUser      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  option    Int
+
+  @@id([messageId, userId])
+  @@map("forum_poll_vote")
 }

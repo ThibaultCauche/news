@@ -13,6 +13,7 @@ class TabIndexNotifier extends Notifier<int> {
 final tabIndexProvider = NotifierProvider<TabIndexNotifier, int>(TabIndexNotifier.new);
 
 const competitionsTabIndex = 2;
+const discussionTabIndex = 3;
 
 /// Compteur incrémenté à chaque demande de "mets le curseur dans la recherche"
 /// de l'onglet Compétitions.

@@ -6,7 +6,10 @@ import "../theme/app_theme.dart";
 import "../theme/tokens.dart";
 
 class GlassTabBarItem {
-  const GlassTabBarItem({required this.icon, required this.label, this.featured = false});
+  const GlassTabBarItem({required this.icon, required this.label, this.featured = false, this.badge = 0});
+
+  /// Compteur de non-lus affiché sur l'icône (0 = rien).
+  final int badge;
 
   final IconData icon;
   final String label;
@@ -176,7 +179,13 @@ class _TabButton extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(item.icon, color: color, size: 20),
+          Badge(
+            isLabelVisible: item.badge > 0,
+            label: Text(item.badge > 99 ? "99+" : "${item.badge}"),
+            backgroundColor: AppColors.brass,
+            textColor: AppColors.background,
+            child: Icon(item.icon, color: color, size: 20),
+          ),
           const SizedBox(height: 6),
           // Rétrécit plutôt que de passer à la ligne (« Compétition/s » sur un écran de 360 dp).
           FittedBox(

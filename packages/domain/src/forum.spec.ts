@@ -1,4 +1,4 @@
-import { accountOldEnough, campChangeWaitDays, canEditMessage, containsForbiddenWord, extractMentions, forumSnippet, messageProblem, titleProblem } from "./forum";
+import { accountOldEnough, campChangeWaitDays, canEditMessage, containsForbiddenWord, dmTargetId, extractMentions, forumSnippet, isChatThreadKind, isPrivateThreadKind, messageProblem, pollClosed, pollProblem, titleProblem } from "./forum";
 
 describe("forum", () => {
   describe("messageProblem", () => {
@@ -58,5 +58,36 @@ describe("forum", () => {
     expect(extractMentions("ecris a moi@exemple.test")).toEqual([]);
     expect(extractMentions("@ab trop court")).toEqual([]);
     expect(extractMentions("@aaa @bbb @ccc @ddd @eee @fff")).toHaveLength(5);
+  });
+  describe("messages privés et sondages (J24)", () => {
+    it("dmTargetId est le même dans les deux sens", () => {
+      expect(dmTargetId("b", "a")).toBe("a:b");
+      expect(dmTargetId("a", "b")).toBe(dmTargetId("b", "a"));
+    });
+    it("seuls group et dm sont privés", () => {
+      expect(isPrivateThreadKind("group")).toBe(true);
+      expect(isPrivateThreadKind("dm")).toBe(true);
+      expect(isPrivateThreadKind("free")).toBe(false);
+      expect(isPrivateThreadKind("feature")).toBe(false);
+    });
+    it("pollClosed : sans date jamais fermé, sinon fermé à partir de la date", () => {
+      const now = new Date("2026-10-08T12:00:00Z");
+      expect(pollClosed(null, now)).toBe(false);
+      expect(pollClosed("2026-10-08T12:00:01Z", now)).toBe(false);
+      expect(pollClosed("2026-10-08T12:00:00Z", now)).toBe(true);
+    });
+    it("le direct, les groupes et les messages privés se lisent comme un tchat", () => {
+      expect(["live", "group", "dm"].every(isChatThreadKind)).toBe(true);
+      expect(["event", "free", "feature"].some(isChatThreadKind)).toBe(false);
+    });
+    it("pollProblem vérifie nombre, longueur, doublons, liens et mots interdits", () => {
+      expect(pollProblem(["G2", "Fnatic"])).toBeNull();
+      expect(pollProblem(["G2"])).toBe("count");
+      expect(pollProblem(["a", "b", "c", "d", "e", "f", "g"])).toBe("count");
+      expect(pollProblem(["G2", " "])).toBe("length");
+      expect(pollProblem(["G2", "g2"])).toBe("duplicate");
+      expect(pollProblem(["G2", "voir exemple.com"])).toBe("link");
+      expect(pollProblem(["G2", "connard"])).toBe("forbidden");
+    });
   });
 });

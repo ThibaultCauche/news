@@ -6,6 +6,7 @@ import "../../theme/tokens.dart";
 import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
 import "../../widgets/section_card.dart";
+import "../discussion/share_sheet.dart";
 import "community_providers.dart";
 import "player_profile_screen.dart";
 
@@ -56,6 +57,16 @@ class PredictionPanel extends ConsumerWidget {
             ],
           ),
           if (scheduled && pickedEntityId != null) _ScoreChoices(event: event, pickedEntityId: pickedEntityId, pickedScore: pickedScore, otherScore: otherScore),
+          if (prediction != null)
+            Align(
+              alignment: Alignment.centerLeft,
+              child: TextButton.icon(
+                style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(0, 32), tapTargetSize: MaterialTapTargetSize.shrinkWrap),
+                onPressed: () => showShareSheet(context, ref, kind: ShareDtoKindEnum.prediction, refId: event.id),
+                icon: const Icon(Icons.ios_share_rounded, size: 18),
+                label: const Text("Partager mon pronostic"),
+              ),
+            ),
           if (finished && prediction?.points != null)
             Padding(
               padding: const EdgeInsets.only(top: AppSpacing.md),

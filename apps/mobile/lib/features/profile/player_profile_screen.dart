@@ -4,6 +4,8 @@ import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/async_view.dart";
 import "../../widgets/avatar_circle.dart";
+import "../forum/forum_providers.dart";
+import "../forum/thread_screen.dart";
 import "community_providers.dart";
 import "profile_screen.dart";
 
@@ -47,6 +49,26 @@ class PlayerProfileScreen extends ConsumerWidget {
                       label: Text("${camp.name} · ${camp.game[0].toUpperCase()}${camp.game.substring(1)}"),
                     ),
                 ],
+              ),
+            ],
+            // Message privé (J24) : seulement aux membres d'un de mes groupes (le serveur le vérifie aussi).
+            if (ref.watch(forumContactsProvider).value?.any((c) => c.userId == userId) ?? false) ...[
+              const SizedBox(height: AppSpacing.md),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  icon: const Icon(Icons.mail_outline_rounded),
+                  label: const Text("Écrire en privé"),
+                  onPressed: () async {
+                    try {
+                      final thread = await ref.read(forumControllerProvider).openDm(userId);
+                      if (context.mounted) await Navigator.of(context).push(MaterialPageRoute(builder: (_) => ForumThreadScreen(threadId: thread.id, title: thread.title)));
+                      ref.invalidate(inboxProvider);
+                    } catch (e) {
+                      if (context.mounted) showErrorSnackBar(context, e);
+                    }
+                  },
+                ),
               ),
             ],
             const SizedBox(height: AppSpacing.lg),

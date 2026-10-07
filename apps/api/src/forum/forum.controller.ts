@@ -5,6 +5,13 @@ import { CurrentUser } from "../auth/current-user.decorator";
 import { JwtAuthGuard, OptionalUserGuard } from "../auth/jwt-auth.guard";
 import {
   AcceptTermsDto,
+  CreateDmDto,
+  ForumContactDto,
+  ForumSearchResultDto,
+  InboxItemDto,
+  SearchQueryDto,
+  SetIdeaStatusDto,
+  VoteDto,
   BlockedUserDto,
   CreateThreadDto,
   EditMessageDto,
@@ -24,12 +31,53 @@ import {
   ResolveThreadQueryDto,
 } from "./forum.dto";
 import { ForumService } from "./forum.service";
+import { InboxService } from "./inbox.service";
 import { ModerationService } from "./moderation.service";
 
 // Forum (J13) : lecture ouverte aux invités (quand le forum est ouvert), le reste exige un compte.
 @Controller("forum")
 export class ForumController {
-  constructor(private readonly forum: ForumService) {}
+  constructor(
+    private readonly forum: ForumService,
+    private readonly inbox: InboxService,
+  ) {}
+
+  // ---- Discussion (J24) : boîte, messages privés, fil de groupe, recherche ----
+
+  @Get("inbox")
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: [InboxItemDto] })
+  getInbox(@CurrentUser() user: AuthUser): Promise<InboxItemDto[]> {
+    return this.inbox.inbox(user.id);
+  }
+
+  @Get("contacts")
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: [ForumContactDto] })
+  contacts(@CurrentUser() user: AuthUser): Promise<ForumContactDto[]> {
+    return this.inbox.contacts(user.id);
+  }
+
+  @Post("dm")
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: ForumThreadDto })
+  openDm(@CurrentUser() user: AuthUser, @Body() dto: CreateDmDto): Promise<ForumThreadDto> {
+    return this.inbox.openDm(user.id, dto.userId);
+  }
+
+  @Get("groups/:id/thread")
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: ForumThreadDto })
+  groupThread(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<ForumThreadDto> {
+    return this.inbox.groupThread(user.id, id);
+  }
+
+  @Get("search")
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: [ForumSearchResultDto] })
+  search(@CurrentUser() user: AuthUser, @Query() q: SearchQueryDto): Promise<ForumSearchResultDto[]> {
+    return this.inbox.search(user.id, q.q);
+  }
 
   @Get("status")
   @UseGuards(OptionalUserGuard)
@@ -130,6 +178,41 @@ export class ForumController {
     return this.forum.reportMessage(user.id, id, dto);
   }
 
+  @Put("threads/:id/mute")
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  mute(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<void> {
+    return this.forum.setMuted(user.id, id, true);
+  }
+
+  @Delete("threads/:id/mute")
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  unmute(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<void> {
+    return this.forum.setMuted(user.id, id, false);
+  }
+
+  @Put("threads/:id/typing")
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  typing(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<void> {
+    return this.forum.putTyping(user.id, id);
+  }
+
+  @Put("messages/:id/vote")
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  putVote(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string, @Body() dto: VoteDto): Promise<void> {
+    return this.forum.putVote(user.id, id, dto.option);
+  }
+
+  @Delete("messages/:id/vote")
+  @UseGuards(JwtAuthGuard)
+  @HttpCode(204)
+  deleteVote(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<void> {
+    return this.forum.deleteVote(user.id, id);
+  }
+
   @Get("blocks")
   @UseGuards(JwtAuthGuard)
   @ApiOkResponse({ type: [BlockedUserDto] })
@@ -225,6 +308,18 @@ export class ModerationController {
   @HttpCode(204)
   unban(@CurrentUser() user: AuthUser, @Param("userId", ParseUUIDPipe) userId: string): Promise<void> {
     return this.moderation.setBan(user.id, userId, false);
+  }
+
+  @Put("messages/:id/idea-status")
+  @HttpCode(204)
+  setIdeaStatus(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string, @Body() dto: SetIdeaStatusDto): Promise<void> {
+    return this.moderation.setIdeaStatus(user.id, id, dto.status);
+  }
+
+  @Delete("messages/:id/idea-status")
+  @HttpCode(204)
+  clearIdeaStatus(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<void> {
+    return this.moderation.setIdeaStatus(user.id, id, null);
   }
 
   @Put("threads/:id/lock")

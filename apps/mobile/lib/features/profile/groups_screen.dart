@@ -14,6 +14,8 @@ import "../../theme/tokens.dart";
 import "../../widgets/section_card.dart";
 import "../../widgets/section_label.dart";
 import "../competitions/competitions_data.dart";
+import "../forum/forum_providers.dart";
+import "../forum/thread_screen.dart";
 import "../predictions/predictions_screen.dart";
 import "community_providers.dart";
 import "player_profile_screen.dart";
@@ -160,6 +162,25 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
   String? _game;
   bool _leaving = false;
 
+  bool _opening = false;
+
+  /// Fil du groupe (J24) : réservé à ses membres, ouvert même si le forum public est en bêta fermée.
+  Future<void> _openChat() async {
+    if (_opening) return;
+    _opening = true;
+    try {
+      final thread = await ref.read(forumControllerProvider).groupThread(widget.groupId);
+      if (mounted) {
+        await Navigator.of(context).push(MaterialPageRoute(builder: (_) => ForumThreadScreen(threadId: thread.id, title: thread.title)));
+        ref.invalidate(inboxProvider);
+      }
+    } catch (e) {
+      if (mounted) showErrorSnackBar(context, e);
+    } finally {
+      _opening = false;
+    }
+  }
+
   Future<void> _leaveOrDelete(GroupDetailDto group) async {
     final community = ref.read(communityControllerProvider);
     final confirmed = await confirmAction(
@@ -247,6 +268,7 @@ class _GroupScreenState extends ConsumerState<GroupScreen> {
       children: [
         PageTitle(group.name),
         const SizedBox(height: AppSpacing.md),
+        SizedBox(width: double.infinity, child: FilledButton.icon(onPressed: _openChat, icon: const Icon(Icons.forum_outlined), label: const Text("Discussion du groupe"))),
         const SizedBox(height: AppSpacing.lg),
         const SectionLabel("CLASSEMENT"),
         const SizedBox(height: AppSpacing.sm),
