@@ -10,13 +10,15 @@
     "lint": "tsc -p tsconfig.json --noEmit",
     "seed": "ts-node prisma/seed.ts",
     "demo-playoffs": "ts-node prisma/demo-playoffs.ts",
-    "demo-worlds": "ts-node prisma/demo-worlds.ts"
+    "demo-worlds": "ts-node prisma/demo-worlds.ts",
+    "demo-startgg": "ts-node prisma/demo-startgg.ts"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0"
   },
   "devDependencies": {
     "@news/domain": "workspace:*",
+    "@news/providers": "workspace:*",
     "prisma": "^5.22.0",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.2"

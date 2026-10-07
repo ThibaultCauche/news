@@ -15,6 +15,7 @@
     "db:seed": "dotenv -e .env -- pnpm --filter @news/db run seed",
     "db:demo-playoffs": "dotenv -e .env -- pnpm --filter @news/db run demo-playoffs",
     "db:demo-worlds": "dotenv -e .env -- pnpm --filter @news/db run demo-worlds",
+    "db:demo-startgg": "dotenv -e .env -- pnpm --filter @news/db run demo-startgg",
     "dev": "dotenv -e .env -- pnpm --parallel --filter @news/api --filter @news/worker dev",
     "worker:dev": "dotenv -e .env -- pnpm --filter @news/worker dev",
     "api:dev": "dotenv -e .env -- pnpm --filter @news/api dev",

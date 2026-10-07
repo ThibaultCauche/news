@@ -28,8 +28,15 @@ export class HeadToHeadDto {
 // (`event.result.games`) est un identifiant PandaScore, résolu ici vers notre
 // `entityId` via `provider_ref` : l'appli ne doit jamais voir d'identifiant
 // fournisseur (règle 1 de CLAUDE.md).
+// Personnage joué par un joueur dans une manche (J27, Smash), quand il est saisi.
+export class MapCharacterDto {
+  @ApiProperty() entityId!: string;
+  @ApiProperty() character!: string;
+}
+
 export class MapResultDto {
   @ApiProperty() position!: number;
+  @ApiProperty({ type: [MapCharacterDto] }) characters!: MapCharacterDto[];
   @ApiProperty({ nullable: true, type: String }) winnerEntityId!: string | null;
   @ApiProperty({ nullable: true, type: Number }) durationSeconds!: number | null;
 }
@@ -104,7 +111,7 @@ export class EventsService {
       streams: await this.buildStreams(event.streams),
       moreStreamersUrl: moreStreamersUrl(event.competition.game),
       result: event.result,
-      maps: await this.buildMaps(event.result),
+      maps: await this.buildMaps(event.result, event.participants.map((p) => p.entityId)),
       context: await this.buildContext(event),
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);
@@ -122,16 +129,19 @@ export class EventsService {
     });
   }
 
-  private async buildMaps(result: unknown): Promise<MapResultDto[]> {
-    const games =
-      (result as { games?: { position: number; winnerExternalId: string | null; durationSeconds?: number | null }[] } | null)?.games ?? [];
-    const externalIds = [...new Set(games.map((g) => g.winnerExternalId).filter((id): id is string => id != null))];
-    const refs = externalIds.length
-      ? await this.prisma.providerRef.findMany({ where: { objectType: "entity", provider: "pandascore", externalId: { in: externalIds } } })
-      : [];
+  private async buildMaps(result: unknown, participantEntityIds: string[]): Promise<MapResultDto[]> {
+    type Game = { position: number; winnerExternalId: string | null; durationSeconds?: number | null; characters?: Record<string, string> };
+    const games = (result as { games?: Game[] } | null)?.games ?? [];
+    // Identifiants du fournisseur (équipe PandaScore, joueur start.gg) : résolus vers nos entités, jamais montrés à l'appli.
+    const externalIds = [...new Set(games.flatMap((g) => [g.winnerExternalId, ...Object.keys(g.characters ?? {})]).filter((id): id is string => id != null))];
+    const refs = externalIds.length ? await this.prisma.providerRef.findMany({ where: { objectType: "entity", externalId: { in: externalIds }, objectId: { in: participantEntityIds } } }) : [];
     const entityIdByExternalId = new Map(refs.map((r) => [r.externalId, r.objectId]));
     return games.map((g) => ({
       position: g.position,
+      characters: Object.entries(g.characters ?? {}).flatMap(([externalId, character]) => {
+        const entityId = entityIdByExternalId.get(externalId);
+        return entityId ? [{ entityId, character }] : [];
+      }),
       winnerEntityId: g.winnerExternalId != null ? (entityIdByExternalId.get(g.winnerExternalId) ?? null) : null,
       durationSeconds: g.durationSeconds ?? null,
     }));

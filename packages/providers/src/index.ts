@@ -5,3 +5,7 @@ export * from "./pandascore/quota";
 export * from "./pandascore/types";
 export * from "./liquipedia/client";
 export * from "./liquipedia/format";
+export * from "./startgg/client";
+export * from "./startgg/provider";
+export { normalizeSet as normalizeStartGgSet, normalizeStructure as normalizeStartGgStructure, setNumbers as startGgSetNumbers } from "./startgg/normalize";
+export { PHASE_SETS_QUERY as START_GG_PHASE_SETS_QUERY, PHASE_LINKS_QUERY as START_GG_PHASE_LINKS_QUERY } from "./startgg/queries";

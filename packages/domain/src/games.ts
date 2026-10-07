@@ -4,6 +4,7 @@
 export const GAME_NAMES: Record<string, string> = {
   valorant: "Valorant",
   "league-of-legends": "League of Legends",
+  "super-smash-bros-ultimate": "Super Smash Bros. Ultimate",
 };
 
 export function isKnownGame(slug: string): boolean {

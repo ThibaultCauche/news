@@ -24,10 +24,9 @@ import {
   StandingMatchInput,
   standingsOptionsFor,
 } from "@news/domain";
-import { PandaScoreProvider } from "@news/providers";
 import { PRISMA } from "../db/db.module";
 import { EventBusService } from "../events/event-bus.service";
-import { PANDASCORE_PROVIDER } from "../pandascore/pandascore.module";
+import { INGESTION_PROVIDERS, IngestionProvider, IngestionProviders } from "./providers";
 import { commitProviderRef, findProviderRef, upsertByProviderRef } from "./provider-ref.repository";
 
 const CATEGORY_SLUG = "esport";
@@ -49,14 +48,14 @@ class StructureIncompleteError extends Error {
 const logger = createLogger("worker:ingestion");
 
 // Normalise → upsert via provider_ref + payload_hash (règle 4 de CLAUDE.md).
-// Un seul fournisseur au J1 (PandaScore) ; d'autres adaptateurs suivront le même schéma.
+// Un adaptateur par fournisseur (PandaScore, start.gg au J27), chacun avec son propre quota.
 @Injectable()
 export class IngestionService {
   private categoryId: string | null = null;
 
   constructor(
     @Inject(PRISMA) private readonly prisma: PrismaClient,
-    @Inject(PANDASCORE_PROVIDER) private readonly provider: PandaScoreProvider,
+    @Inject(INGESTION_PROVIDERS) private readonly providers: IngestionProviders,
     private readonly eventBus: EventBusService,
   ) {}
 
@@ -200,11 +199,13 @@ export class IngestionService {
 
     const eventId = existingRef?.objectId ?? randomUUID();
     let previousSnapshot: EventStateSnapshot | null = null;
+    let previousResult: unknown = null;
 
     if (!payloadUnchanged) {
       const existingEvent = existingRef
         ? await this.prisma.event.findUnique({ where: { id: existingRef.objectId }, select: { status: true, result: true } })
         : null;
+      previousResult = existingEvent?.result ?? null;
       previousSnapshot = existingEvent
         ? { status: existingEvent.status as EventDTO["status"], resultHash: existingEvent.result ? computePayloadHash(existingEvent.result) : null }
         : null;
@@ -273,6 +274,11 @@ export class IngestionService {
     for (const type of diffEventStatus(previousSnapshot, nextSnapshot)) {
       await this.eventBus.publish({ type, eventId, competitionId: competitionRef.objectId });
     }
+    // Joueurs appelés à leur station (J27) : le signal passe de faux à vrai sur un set qui n'a pas commencé.
+    const isCalled = (result: unknown) => (result as { called?: boolean } | null)?.called === true;
+    if (previousSnapshot && dto.status === "scheduled" && isCalled(dto.result) && !isCalled(previousResult)) {
+      await this.eventBus.publish({ type: "EventCalled", eventId, competitionId: competitionRef.objectId });
+    }
   }
 
   private async detectSwiss(competitionId: string): Promise<void> {
@@ -284,45 +290,63 @@ export class IngestionService {
     logger.info({ competitionId }, "phase suisse reconnue");
   }
 
-  async runCatalogue(): Promise<void> {
-    const competitions = await this.provider.listCompetitions();
-    for (const dto of competitions) {
-      await this.upsertCompetition(dto);
+  // Un fournisseur en panne ne bloque pas les autres : chaque erreur est journalisée, la dernière est relancée à la
+  // fin pour que le job apparaisse en échec (et que la supervision le voie).
+  private async eachProvider(job: string, run: (name: string, provider: IngestionProvider) => Promise<void>): Promise<void> {
+    let failure: unknown = null;
+    for (const [name, provider] of Object.entries(this.providers)) {
+      try {
+        await run(name, provider);
+      } catch (err) {
+        logger.error({ err, provider: name, job }, "échec d'un fournisseur");
+        failure = err;
+      }
     }
+    if (failure) throw failure;
+  }
+
+  async runCatalogue(): Promise<void> {
+    await this.eachProvider("catalogue", async (name, provider) => {
+      const competitions = await provider.listCompetitions();
+      for (const dto of competitions) {
+        await this.upsertCompetition(dto);
+      }
+      logger.info({ provider: name, count: competitions.length, quota: provider.quota.getUsageRatio() }, "catalogue ingéré");
+    });
     const deleted = await this.prisma.providerPayload.deleteMany({
       where: { fetchedAt: { lt: new Date(Date.now() - PROVIDER_PAYLOAD_RETENTION_DAYS * 24 * 60 * 60 * 1000) } },
     });
-    logger.info({ count: competitions.length, purged: deleted.count, quota: this.provider.quota.getUsageRatio() }, "catalogue ingéré");
+    logger.info({ purged: deleted.count }, "payloads purgés");
   }
 
   async runCalendar(): Promise<void> {
-    if (this.provider.quota.shouldThrottle()) {
-      logger.warn({ quota: this.provider.quota.getUsageRatio() }, "quota au-delà de 70%, calendrier reporté");
-      return;
-    }
-    const events = await this.provider.listEvents();
-    for (const dto of events) {
-      await this.upsertEvent(dto);
-    }
-    logger.info({ count: events.length, quota: this.provider.quota.getUsageRatio() }, "calendrier ingéré");
+    await this.eachProvider("calendar", async (name, provider) => {
+      if (provider.quota.shouldThrottle()) {
+        logger.warn({ provider: name, quota: provider.quota.getUsageRatio() }, "quota au-delà de 70%, calendrier reporté");
+        return;
+      }
+      const events = await provider.listEvents();
+      for (const dto of events) {
+        await this.upsertEvent(dto);
+      }
+      logger.info({ provider: name, count: events.length, quota: provider.quota.getUsageRatio() }, "calendrier ingéré");
+    });
   }
 
   // Matchs en cours : rythme rapide, toujours exécuté (règle 5 de CLAUDE.md).
   async runLive(): Promise<void> {
-    const events = await this.provider.listEvents({ onlyLive: true });
-    for (const dto of events) {
-      await this.upsertEvent(dto);
-    }
-    logger.info({ count: events.length, quota: this.provider.quota.getUsageRatio() }, "matchs en direct ingérés");
+    await this.eachProvider("live", async (name, provider) => {
+      const events = await provider.listEvents({ onlyLive: true });
+      for (const dto of events) {
+        await this.upsertEvent(dto);
+      }
+      logger.info({ provider: name, count: events.length, quota: provider.quota.getUsageRatio() }, "matchs en direct ingérés");
+    });
   }
 
   // Brackets et classements (J5) : seuls les tournois avec bracket, actifs ou
   // terminés récemment (le temps que la poule/le tableau se stabilise en base).
   async runStructure(): Promise<void> {
-    if (this.provider.quota.shouldThrottle()) {
-      logger.warn({ quota: this.provider.quota.getUsageRatio() }, "quota au-delà de 70%, structure reportée");
-      return;
-    }
     const recentCutoff = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
     // Un tournoi à venir n'est interrogé que la veille de son début (J23) : avec deux jeux, les phases finales encore
     // lointaines coûtaient à elles seules ~100 requêtes par heure sans rien apporter (aucune équipe connue).
@@ -352,7 +376,7 @@ export class IngestionService {
     for (const competition of swissTargets) {
       await this.syncStandings(competition.id, "swiss").catch((err) => logger.error({ err, competitionId: competition.id }, "échec du classement suisse"));
     }
-    logger.info({ count: targets.length, swiss: swissTargets.length, quota: this.provider.quota.getUsageRatio() }, "structure ingérée");
+    logger.info({ count: targets.length, swiss: swissTargets.length }, "structure ingérée");
   }
 
   // Liens de bracket : upsert par match (une source a un unique lien "winner" et un
@@ -360,8 +384,13 @@ export class IngestionService {
   // si l'événement métier BracketAdvanced est publié.
   private async syncStructure(competitionId: string): Promise<void> {
     const ref = await this.prisma.providerRef.findFirst({ where: { objectType: "competition", objectId: competitionId } });
-    if (!ref) return;
-    const structure = await this.provider.getStructure(ref.externalId);
+    const provider = ref ? this.providers[ref.provider] : undefined;
+    if (!ref || !provider?.getStructure) return;
+    if (provider.quota.shouldThrottle()) {
+      logger.warn({ provider: ref.provider, quota: provider.quota.getUsageRatio() }, "quota au-delà de 70%, structure reportée");
+      return;
+    }
+    const structure = await provider.getStructure(ref.externalId);
 
     const { changed } = await upsertByProviderRef(this.prisma, {
       provider: ref.provider,
@@ -405,7 +434,7 @@ export class IngestionService {
     const record = new Map(standings.map((s) => [s.entityExternalId, s]));
     const upcoming = await this.prisma.event.findMany({
       where: { competitionId, status: { in: ["scheduled", "live"] } },
-      select: { id: true, bestOf: true, stakes: true, participants: { select: { entityId: true, entity: { select: { name: true, shortName: true } } } } },
+      select: { id: true, bestOf: true, stakes: true, participants: { orderBy: { side: "asc" }, select: { entityId: true, entity: { select: { name: true, shortName: true } } } } },
     });
     for (const event of upcoming) {
       if (event.participants.length !== 2) continue;

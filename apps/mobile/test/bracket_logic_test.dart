@@ -93,4 +93,21 @@ void main() {
       expect(groupCompetitionIds([child("playoffs", "Playoffs")]), isEmpty);
     });
   });
+
+  group("soloBracketPhases (tournoi 1 contre 1, J27)", () {
+    CompetitionChildDto child(String id, String name) => CompetitionChildDto((b) => b
+      ..id = id
+      ..name = name
+      ..kind = "tournament"
+      ..hasEvents = true);
+
+    test("garde les phases à arbre du plus petit au plus grand, sans les poules", () {
+      final children = [child("p1", "Round 1 Pools"), child("t64", "Top 64"), child("p2", "Round 2 Pools"), child("t8", "Top 8")];
+      expect([for (final c in soloBracketPhases(children)) c.id], ["t8", "t64"]);
+    });
+
+    test("aucune phase à arbre : liste vide", () {
+      expect(soloBracketPhases([child("p1", "Round 1 Pools")]), isEmpty);
+    });
+  });
 }

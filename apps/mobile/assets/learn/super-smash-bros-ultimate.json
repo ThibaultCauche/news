@@ -1,0 +1,117 @@
+{
+  "name": "Super Smash Bros. Ultimate",
+  "articles": [
+    {
+      "id": "le-jeu",
+      "title": "Le jeu en 3 minutes",
+      "summary": "Un combat de plateforme où l'on éjecte l'adversaire.",
+      "icon": "game",
+      "visual": {"type": "stats", "items": [
+        {"big": "1 vs 1", "sub": "Deux joueurs"},
+        {"big": "3", "sub": "Vies chacun (les stocks)"}
+      ]},
+      "essential": "Dans Smash, on ne vide pas une barre de vie : plus on est touché, plus on est projeté loin. Le but est d'éjecter son adversaire hors de l'écran. Chaque joueur a 3 vies, les [[stock]] : celui qui perd les siennes en premier perd la manche.",
+      "details": [
+        {
+          "title": "Comment on gagne une manche",
+          "visual": {"type": "flow", "items": [
+            {"icon": "target", "label": "Toucher l'adversaire"},
+            {"icon": "bolt", "label": "Il est projeté plus loin"},
+            {"icon": "close", "label": "Il sort de l'écran"}
+          ]},
+          "body": "Chaque coup augmente un pourcentage affiché sous le personnage. Plus il est élevé, plus le joueur vole loin au coup suivant. Sorti de l'écran, il perd un [[stock]]."
+        },
+        {
+          "title": "Un personnage par joueur",
+          "visual": {"type": "chips", "items": [
+            {"icon": "person", "title": "Plus de 80 personnages", "sub": "Chacun son style"},
+            {"icon": "swap", "title": "Changement possible", "sub": "Entre deux manches"}
+          ]},
+          "body": "Chaque joueur choisit un personnage, et peut en changer entre deux manches. Les spécialistes d'un personnage sont très reconnaissables, à regarder pour s'y retrouver."
+        }
+      ],
+      "gradient": 0,
+      "quiz": [
+        {"q": "Comment perd-on une vie ?", "choices": ["En atteignant 0 point de vie", "En étant éjecté de l'écran", "En lâchant sa manette"], "answer": 1, "why": "Il n'y a pas de barre de vie : on perd un stock quand on est projeté hors de l'écran."}
+      ]
+    },
+    {
+      "id": "regarder-un-match",
+      "title": "Comprendre un match",
+      "summary": "Manches, sets : lire un score.",
+      "icon": "watch",
+      "visual": {"type": "stats", "items": [
+        {"big": "3–1", "sub": "Manches gagnées dans un set"},
+        {"big": "2 ou 3", "sub": "Manches pour gagner un set"}
+      ]},
+      "essential": "Un match de tournoi est un [[set]] : plusieurs manches entre les mêmes joueurs. En général il faut gagner 2 manches ; en finale, 3. Le score affiché est celui du set, par exemple 3–2.",
+      "details": [
+        {
+          "title": "Lire le score",
+          "visual": {"type": "stats", "items": [{"big": "3 – 2", "sub": "Le joueur de gauche gagne le set"}]},
+          "body": "Ici, le joueur de gauche a gagné 3 manches contre 2 : il remporte le set. L'appli montre aussi qui a gagné chaque manche."
+        },
+        {
+          "title": "Un seul vainqueur par set",
+          "body": "Pas d'égalité possible : un set se joue jusqu'à ce qu'un joueur atteigne le nombre de manches nécessaires, au plus 3 ou 5 manches."
+        }
+      ],
+      "gradient": 3,
+      "quiz": [
+        {"q": "Un set se termine sur 3–2. Qui gagne ?", "choices": ["Le joueur à 3", "Il y a égalité", "Le joueur à 2"], "answer": 0, "why": "Le premier à atteindre le nombre de manches requis gagne le set."}
+      ]
+    },
+    {
+      "id": "les-tournois",
+      "title": "Les gros tournois",
+      "summary": "Des centaines de joueurs, un top 8 sur scène.",
+      "icon": "emoji",
+      "visual": {"type": "flow", "items": [
+        {"icon": "roles", "label": "Poules"},
+        {"icon": "shield", "label": "Top 64"},
+        {"icon": "emoji", "label": "Top 8"}
+      ]},
+      "essential": "Un gros tournoi réunit parfois plus de 1 000 joueurs. On les répartit d'abord en [[poule]]s, les meilleurs passent à l'étape suivante, et il en reste huit pour le [[top 8]], le moment que tout le monde regarde. Le tournoi se joue en [[double élimination]].",
+      "details": [
+        {
+          "title": "La double élimination",
+          "visual": {"type": "chips", "items": [
+            {"icon": "shield", "title": "Tableau des gagnants", "sub": "On y reste tant qu'on gagne"},
+            {"icon": "replay", "title": "Tableau des perdants", "sub": "Une défaite de plus et c'est fini"}
+          ]},
+          "body": "Une première défaite ne suffit pas à éliminer : on tombe dans le tableau des perdants ([[losers]]) et on peut remonter. La deuxième défaite élimine. Le vainqueur du tableau des [[winners]] arrive en finale avec une vie d'avance."
+        },
+        {
+          "title": "Les majors",
+          "visual": {"type": "chips", "items": [
+            {"icon": "public", "title": "Genesis, CEO, Riptide…", "sub": "Les plus gros tournois en présentiel"},
+            {"icon": "calendar", "title": "Un week-end", "sub": "Poules le vendredi, top 8 le dimanche"}
+          ]},
+          "body": "L'appli suit les plus gros tournois. Chacun dure un week-end : la phase de poules occupe les premiers jours, le top 8 se joue le dernier jour."
+        }
+      ],
+      "gradient": 5,
+      "quiz": [
+        {"q": "Après une première défaite en double élimination, que se passe-t-il ?", "choices": ["On est éliminé", "On passe dans le tableau des perdants", "On rejoue le même set"], "answer": 1, "why": "On est éliminé à la deuxième défaite seulement."}
+      ]
+    },
+    {
+      "id": "essayer",
+      "title": "Envie d'essayer ?",
+      "summary": "Sur Nintendo Switch.",
+      "icon": "game",
+      "visual": {"type": "chips", "items": [
+        {"icon": "touch", "title": "Sur Nintendo Switch", "sub": "Jeu vendu séparément"},
+        {"icon": "check", "title": "Facile à prendre en main", "sub": "Un bouton d'attaque suffit pour commencer"}
+      ]},
+      "essential": "Smash Ultimate se joue sur Nintendo Switch. Il est simple à prendre en main : on peut s'amuser dès la première partie, puis progresser pendant des années.",
+      "details": [
+        {
+          "title": "Par où commencer",
+          "body": "Le mode en ligne et les parties entre amis suffisent pour commencer. Regarder un top 8 aide aussi à comprendre ce que font les meilleurs joueurs."
+        }
+      ],
+      "gradient": 6
+    }
+  ]
+}

@@ -3,6 +3,8 @@
 
 export const PICKEM_BONUS = 5;
 export const PICKEM_FORMATS = ["single_elim", "double_elim", "triple_elim"];
+// Au-delà, le tableau n'est plus lisible à pronostiquer (J27 : un « Top 64 » de Smash compte 126 sets, son « Top 8 » 14).
+export const PICKEM_MAX_MATCHES = 32;
 
 export interface PickemMatch {
   id: string;

@@ -9,6 +9,7 @@ import "../../core/games.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/async_view.dart";
+import "../../widgets/compact_match_row.dart";
 import "../../widgets/event_card.dart";
 import "../../widgets/follow_button.dart";
 import "../../widgets/section_card.dart";
@@ -20,6 +21,12 @@ import "../next_match/next_match_screen.dart";
 
 final entityProvider = FutureProvider.autoDispose.family<EntityResponseDto, String>((ref, id) async {
   final response = await ref.watch(apiClientProvider).getEntitiesApi().entitiesControllerGetById(id: id);
+  return response.data!;
+});
+
+/// Poule d'un joueur (J27) : les sets de son groupe, pas les centaines des autres (`GET /v1/entities/:id/pool`).
+final entityPoolProvider = FutureProvider.autoDispose.family<EntityPoolDto, String>((ref, id) async {
+  final response = await ref.watch(apiClientProvider).getEntitiesApi().entitiesControllerPool(id: id);
   return response.data!;
 });
 
@@ -48,7 +55,7 @@ class TeamScreen extends ConsumerWidget {
       ),
       body: switch (entity) {
         _ when entity.hasValue => _TeamBody(entity: entity.value!, scoresHidden: scoresHidden),
-        AsyncError() => ErrorState(message: "Impossible de charger cette équipe.", onRetry: () => ref.invalidate(entityProvider(entityId))),
+        AsyncError() => ErrorState(message: "Impossible de charger cette fiche.", onRetry: () => ref.invalidate(entityProvider(entityId))),
         _ => const SkeletonCards(count: 3, height: 120),
       },
     );
@@ -74,6 +81,54 @@ class _TeamBody extends ConsumerWidget {
     final h = remaining.inHours;
     final m = remaining.inMinutes % 60;
     return h > 0 ? "$h h $m" : "$m min";
+  }
+
+  // Joueur d'un jeu 1 contre 1 (J27) : sa poule, ses résultats par tournoi et ses adversaires les plus rencontrés.
+  List<Widget> _playerSections(BuildContext context, WidgetRef ref) {
+    final pool = ref.watch(entityPoolProvider(entity.id)).value;
+    return [
+      if (pool != null && pool.events.isNotEmpty) ...[
+        const SizedBox(height: AppSpacing.lg),
+        SectionLabel("SA POULE · ${pool.group}".toUpperCase()),
+        const SizedBox(height: AppSpacing.sm),
+        for (final event in pool.events)
+          CompactMatchRow(
+            event: event,
+            scoresHidden: scoresHidden,
+            followedEntityIds: {entity.id},
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
+          ),
+      ],
+      if (entity.tournaments.isNotEmpty) ...[
+        const SizedBox(height: AppSpacing.lg),
+        const SectionLabel("TOURNOIS"),
+        const SizedBox(height: AppSpacing.sm),
+        SectionCard(
+          child: Column(
+            children: [
+              for (final t in entity.tournaments)
+                _InfoRow(label: t.name, value: scoresHidden ? "—" : "${t.wins}–${t.losses}"),
+            ],
+          ),
+        ),
+      ],
+      if (entity.rivals.isNotEmpty) ...[
+        const SizedBox(height: AppSpacing.lg),
+        const SectionLabel("ADVERSAIRES FRÉQUENTS"),
+        const SizedBox(height: AppSpacing.sm),
+        SectionCard(
+          child: Column(
+            children: [
+              for (final r in entity.rivals)
+                InkWell(
+                  onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TeamScreen(entityId: r.entityId, breadcrumb: entity.name))),
+                  child: _InfoRow(label: r.name, value: scoresHidden ? "—" : "${r.wins}–${r.losses}"),
+                ),
+            ],
+          ),
+        ),
+      ],
+    ];
   }
 
   @override
@@ -140,9 +195,31 @@ class _TeamBody extends ConsumerWidget {
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: entity.nextEvent!.id))),
           ),
         ],
+        if (entity.kind == "player") ..._playerSections(context, ref),
         const SizedBox(height: AppSpacing.lg),
         ForumEntryCard(kind: "entity", targetId: entity.id),
       ],
+    );
+  }
+}
+
+/// Une ligne « libellé … valeur » d'une fiche (tournois, adversaires).
+class _InfoRow extends StatelessWidget {
+  const _InfoRow({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: AppSpacing.xs),
+      child: Row(
+        children: [
+          Expanded(child: Text(label, maxLines: 1, overflow: TextOverflow.ellipsis)),
+          Text(value, style: const TextStyle(fontWeight: FontWeight.w700)),
+        ],
+      ),
     );
   }
 }

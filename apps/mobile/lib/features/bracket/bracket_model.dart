@@ -38,6 +38,13 @@ Stage stageOf(String apiName) {
     final tail = match == null ? "" : ", match $match";
     return (title: "Repêchage, tour $round$tail", de: "du repêchage, tour $round$tail", ring: "TOUR $round");
   }
+  // Tournois à 64 joueurs ou plus (Smash, J27) : le tableau principal a aussi des « tours ».
+  if (!isLower && base.startsWith("round")) {
+    final round = RegExp(r"round (\d+)").firstMatch(name)?.group(1) ?? "";
+    final match = RegExp(r"match (\d+)").firstMatch(name)?.group(1);
+    final tail = match == null ? "" : ", match $match";
+    return (title: "Tableau principal, tour $round$tail", de: "du tableau principal, tour $round$tail", ring: "TOUR $round");
+  }
   final (title, de, ring) = switch (base) {
     "quarterfinal" => ("Quart de finale$suffix", "du quart de finale$suffix", "QUARTS"),
     "semifinal" => ("Demi-finale$suffix", "de la demi-finale$suffix", "DEMIES"),
@@ -320,7 +327,8 @@ class TeamLine {
 /// Une phrase par équipe suivie encore présente dans le tableau. Le prochain match d'une
 /// équipe est le match en direct, sinon le plus proche qui la compte parmi ses
 /// participants, sinon la suite de son dernier match (liens gagnant/perdant).
-List<TeamLine> followedTeamLines(BracketResponseDto bracket, Set<String> followedEntityIds, DateTime now) {
+/// `solo` (joueurs, J27) : le nom en entier plutôt que le code de trois lettres, et des phrases au masculin.
+List<TeamLine> followedTeamLines(BracketResponseDto bracket, Set<String> followedEntityIds, DateTime now, {bool solo = false}) {
   final byId = {for (final n in bracket.nodes) n.eventId: n};
   final outgoing = <String, Map<String, BracketNodeDto?>>{};
   for (final l in bracket.links) {
@@ -333,7 +341,8 @@ List<TeamLine> followedTeamLines(BracketResponseDto bracket, Set<String> followe
   for (final entityId in followedEntityIds) {
     final played = bracket.nodes.where((n) => n.participants.any((p) => p.entityId == entityId)).toList()..sort(byStart);
     if (played.isEmpty) continue;
-    final code = teamCode(played.first.participants.firstWhere((p) => p.entityId == entityId));
+    final participant = played.first.participants.firstWhere((p) => p.entityId == entityId);
+    final code = solo ? participant.name : teamCode(participant);
 
     final live = played.firstWhereOrNull((n) => n.status == "live");
     final upcoming = played.where((n) => !_isFinished(n) && n.status != "live").toList();
@@ -343,7 +352,7 @@ List<TeamLine> followedTeamLines(BracketResponseDto bracket, Set<String> followe
       final won = last.participants.any((p) => p.entityId == entityId && p.isWinner == true);
       next = outgoing[last.eventId]?[won ? "winner" : "loser"];
       if (next == null || _isFinished(next)) {
-        lines.add(TeamLine(entityId: entityId, headline: won ? "$code est championne." : "$code est éliminée du tournoi.", matchId: last.eventId));
+        lines.add(TeamLine(entityId: entityId, headline: won ? (solo ? "$code est champion." : "$code est championne.") : (solo ? "$code est éliminé du tournoi." : "$code est éliminée du tournoi."), matchId: last.eventId));
         continue;
       }
     }
@@ -355,7 +364,7 @@ List<TeamLine> followedTeamLines(BracketResponseDto bracket, Set<String> followe
         : start != null
             ? "$code joue ${scheduleLabel(start, now)} : $title."
             : "Prochain match de $code : $title, date à venir.";
-    lines.add(TeamLine(entityId: entityId, headline: headline, stakes: _stakes(code, next, outgoing[next.eventId]), matchId: next.eventId));
+    lines.add(TeamLine(entityId: entityId, headline: headline, stakes: _stakes(code, next, outgoing[next.eventId], solo: solo), matchId: next.eventId));
   }
   return lines;
 }
@@ -363,11 +372,12 @@ List<TeamLine> followedTeamLines(BracketResponseDto bracket, Set<String> followe
 String _lowerFirst(String s) => s.isEmpty ? s : s[0].toLowerCase() + s.substring(1);
 
 /// « Si G2 gagne, elle va en demi-finale 1 ; sinon elle passe au repêchage. »
-String _stakes(String code, BracketNodeDto match, Map<String, BracketNodeDto?>? out) {
+String _stakes(String code, BracketNodeDto match, Map<String, BracketNodeDto?>? out, {bool solo = false}) {
   final win = out?["winner"];
-  if (win == null) return "Si $code gagne, elle est championne ; sinon elle termine deuxième.";
-  final onWin = "Si $code gagne, elle va en ${_lowerFirst(stageOf(win.name).title)}";
-  return out?["loser"] == null ? "$onWin ; sinon elle est éliminée." : "$onWin ; sinon elle passe au repêchage.";
+  final who = solo ? "il" : "elle";
+  if (win == null) return "Si $code gagne, $who est champion${solo ? "" : "ne"} ; sinon $who termine deuxième.";
+  final onWin = "Si $code gagne, $who va en ${_lowerFirst(stageOf(win.name).title)}";
+  return out?["loser"] == null ? "$onWin ; sinon $who est éliminé${solo ? "" : "e"}." : "$onWin ; sinon $who passe au repêchage.";
 }
 
 // ─── Cases d'un match ──────────────────────────────────────────────────────

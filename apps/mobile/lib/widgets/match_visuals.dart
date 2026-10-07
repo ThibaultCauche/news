@@ -3,6 +3,7 @@ import "package:cached_network_image/cached_network_image.dart";
 import "spoiler_hold.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:news_api_client/news_api_client.dart";
 import "package:palette_generator/palette_generator.dart";
 import "../theme/app_theme.dart";
 import "../theme/tokens.dart";
@@ -199,4 +200,10 @@ class _CrownPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(_CrownPainter oldDelegate) => false;
+}
+
+/// Initiales d'un participant sans logo (un joueur, ou une équipe dont le logo manque) : trois lettres de son nom court.
+String participantInitials(EventParticipantDto p) {
+  final raw = (p.shortName ?? p.name).trim();
+  return (raw.length <= 3 ? raw : raw.substring(0, 3)).toUpperCase();
 }

@@ -12,12 +12,15 @@ export const DOMAIN_EVENTS_CHANNEL = "news:domain-events";
 // EntityQualified/EntityEliminated (J5, reporté du J4) : une entité précise d'une
 // compétition passe qualifiée ou est éliminée (`standing.qualified`/`lives_left`) —
 // pas de match unique derrière, donc `entityId` plutôt que `eventId`.
+// EventCalled (J27) : les joueurs d'un set sont appelés à leur station (start.gg, état « appelé ») ; le set n'a pas
+// encore commencé et n'a souvent aucun horaire prévu, c'est le seul signal « ça va jouer ».
 export type DomainEventType =
   | "EventScheduled"
   | "EventStarted"
   | "EventFinished"
   | "ScoreChanged"
   | "EventStartingSoon"
+  | "EventCalled"
   | "BracketAdvanced"
   | "StandingChanged"
   | "EntityQualified"

@@ -2,7 +2,7 @@ import { randomUUID } from "node:crypto";
 import { BadRequestException, ConflictException, ForbiddenException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
-import { groupVote, invalidPickemMatch, PICKEM_FORMATS, pickemFinalId, pickemStanding, pickemWeights, PickemMatch, scorePickemMatch } from "@news/domain";
+import { groupVote, invalidPickemMatch, PICKEM_FORMATS, PICKEM_MAX_MATCHES, pickemFinalId, pickemStanding, pickemWeights, PickemMatch, scorePickemMatch } from "@news/domain";
 import { ArrayMaxSize, IsArray, IsUUID, ValidateNested } from "class-validator";
 import { Type } from "class-transformer";
 import { PRISMA } from "../db/db.module";
@@ -151,6 +151,7 @@ export class PickemService {
       },
     });
     if (!competition || !competition.format || !PICKEM_FORMATS.includes(competition.format)) throw new NotFoundException("Pas de pick'em pour cette étape");
+    if (competition.events.length > PICKEM_MAX_MATCHES) throw new NotFoundException("Tableau trop grand pour un pick'em");
     const ids = new Set(competition.events.map((e) => e.id));
     const matches: PickemMatch[] = competition.events.map((e) => ({
       id: e.id,

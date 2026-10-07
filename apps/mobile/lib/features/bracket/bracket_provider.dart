@@ -58,3 +58,11 @@ String _placeholderLabel(BracketLinkDto link, Map<String, BracketNodeDto> byId) 
   final fromLabel = from.participants.isEmpty ? stageOf(from.name).title.toLowerCase() : from.participants.map((p) => p.shortName ?? p.name).join(" vs ");
   return "$verb $fromLabel";
 }
+
+/// Phases à arbre d'un tournoi 1 contre 1 (J27) : « Top 8 », « Top 64 »… du plus petit au plus grand, pour ouvrir sur
+/// l'essentiel. Les poules (« Round 1 Pools ») n'ont pas d'arbre à montrer.
+List<CompetitionChildDto> soloBracketPhases(List<CompetitionChildDto> children) {
+  final top = RegExp(r"top\s*(\d+)", caseSensitive: false);
+  int size(CompetitionChildDto c) => int.parse(top.firstMatch(c.name)!.group(1)!);
+  return children.where((c) => top.hasMatch(c.name)).toList()..sort((a, b) => size(a).compareTo(size(b)));
+}

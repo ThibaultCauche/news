@@ -26,8 +26,34 @@ export class EntityOrganizationDto {
   @ApiProperty({ type: [String], description: "Slugs des jeux où la structure a une équipe" }) games!: string[];
 }
 
+// Bilan d'un joueur dans un tournoi (J27) : « Genesis X3 : 6-2 ».
+export class EntityTournamentDto {
+  @ApiProperty() competitionId!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty() wins!: number;
+  @ApiProperty() losses!: number;
+}
+
+// Adversaire fréquent d'un joueur (J27) : bilan contre lui.
+export class EntityRivalDto {
+  @ApiProperty() entityId!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty() wins!: number;
+  @ApiProperty() losses!: number;
+}
+
+// Poule d'un joueur (J27) : les sets du groupe où il joue, pas les centaines des autres groupes.
+export class EntityPoolDto {
+  @ApiProperty({ nullable: true, type: String }) group!: string | null;
+  @ApiProperty({ nullable: true, type: String }) phaseName!: string | null;
+  @ApiProperty({ nullable: true, type: String }) tournamentName!: string | null;
+  @ApiProperty({ nullable: true, type: String }) tournamentId!: string | null;
+  @ApiProperty({ type: [EventSummaryDto] }) events!: EventSummaryDto[];
+}
+
 export class EntityResponseDto {
   @ApiProperty() id!: string;
+  @ApiProperty({ description: "team ou player" }) kind!: string;
   @ApiProperty() name!: string;
   @ApiProperty({ nullable: true, type: String }) shortName!: string | null;
   @ApiProperty({ nullable: true, type: String }) region!: string | null;
@@ -38,6 +64,8 @@ export class EntityResponseDto {
   @ApiProperty() winStreak!: number;
   @ApiProperty({ nullable: true, type: EventSummaryDto }) lastEvent!: EventSummaryDto | null;
   @ApiProperty({ nullable: true, type: EventSummaryDto }) nextEvent!: EventSummaryDto | null;
+  @ApiProperty({ type: [EntityTournamentDto], description: "Joueurs : bilan par tournoi, le plus récent d'abord" }) tournaments!: EntityTournamentDto[];
+  @ApiProperty({ type: [EntityRivalDto], description: "Joueurs : les trois adversaires les plus rencontrés" }) rivals!: EntityRivalDto[];
   @ApiProperty() sourceUpdatedAt!: string;
 }
 
@@ -69,11 +97,17 @@ export class EntitiesService {
   }
 
   // Équipes ayant au moins un match dans une compétition de ce jeu (onglet Équipes,
-  // J9) : pas de rattachement direct équipe → jeu dans le modèle, on le déduit des matchs.
+  // J9) : pas de rattachement direct équipe → jeu dans le modèle, on le déduit des matchs. Les joueurs (J27) sont des
+  // centaines par tournoi : seuls ceux qui ont atteint une phase à arbre (Top 64, Top 8) y figurent.
   async listByGame(game: string): Promise<EntityListItemDto[]> {
     if (!isKnownGame(game)) throw new BadRequestException("Jeu inconnu");
     return this.prisma.entity.findMany({
-      where: { kind: "team", participants: { some: { event: { competition: { game } } } } },
+      where: {
+        OR: [
+          { kind: "team", participants: { some: { event: { competition: { game } } } } },
+          { kind: "player", participants: { some: { event: { competition: { game, hasBracket: true } } } } },
+        ],
+      },
       select: { id: true, name: true, shortName: true, imageUrl: true },
       orderBy: { name: "asc" },
     });
@@ -114,6 +148,66 @@ export class EntitiesService {
     return { id: organization.id, name: organization.name, teamCount: organization.entities.length, games: [...games].sort() };
   }
 
+  // Résultats d'un joueur par tournoi et adversaires les plus rencontrés (J27), depuis nos propres sets terminés.
+  private async playerHistory(entityId: string): Promise<{ tournaments: EntityTournamentDto[]; rivals: EntityRivalDto[] }> {
+    const rows = await this.prisma.eventParticipant.findMany({
+      where: { entityId, isWinner: { not: null }, event: { status: "finished" } },
+      orderBy: { event: { startsAt: "desc" } },
+      take: HISTORY_LIMIT,
+      select: {
+        isWinner: true,
+        event: {
+          select: {
+            startsAt: true,
+            competition: { select: { id: true, name: true, parent: { select: { id: true, name: true } } } },
+            participants: { select: { entityId: true, entity: { select: { name: true } } } },
+          },
+        },
+      },
+    });
+    const byTournament = new Map<string, EntityTournamentDto>();
+    const byRival = new Map<string, EntityRivalDto>();
+    for (const row of rows) {
+      // Le tournoi est la série (« Genesis X3 »), pas la phase (« Top 8 »).
+      const tournament = row.event.competition.parent ?? row.event.competition;
+      const t = byTournament.get(tournament.id) ?? { competitionId: tournament.id, name: tournament.name, wins: 0, losses: 0 };
+      if (row.isWinner) t.wins += 1;
+      else t.losses += 1;
+      byTournament.set(tournament.id, t);
+      for (const other of row.event.participants.filter((p) => p.entityId !== entityId)) {
+        const r = byRival.get(other.entityId) ?? { entityId: other.entityId, name: other.entity.name, wins: 0, losses: 0 };
+        if (row.isWinner) r.wins += 1;
+        else r.losses += 1;
+        byRival.set(other.entityId, r);
+      }
+    }
+    // Un adversaire n'est « fréquent » qu'à partir de deux rencontres.
+    const rivals = [...byRival.values()].filter((r) => r.wins + r.losses >= 2).sort((a, b) => b.wins + b.losses - (a.wins + a.losses) || a.name.localeCompare(b.name)).slice(0, 3);
+    return { tournaments: [...byTournament.values()], rivals };
+  }
+
+  // Poule d'un joueur (J27) : son groupe le plus récent dans une phase sans arbre, avec tous les sets de ce groupe.
+  async poolOf(id: string): Promise<EntityPoolDto> {
+    const entity = await this.prisma.entity.findUnique({ where: { id }, select: { id: true } });
+    if (!entity) throw new NotFoundException("Joueur introuvable");
+    const recent = await this.prisma.event.findMany({
+      where: { participants: { some: { entityId: id } }, competition: { hasBracket: false } },
+      orderBy: [{ startsAt: { sort: "desc", nulls: "last" } }, { createdAt: "desc" }],
+      take: 20,
+      select: { competitionId: true, result: true },
+    });
+    const latest = recent.find((e) => (e.result as { group?: string | null } | null)?.group);
+    const group = (latest?.result as { group?: string | null } | null)?.group ?? null;
+    if (!latest || !group) return { group: null, phaseName: null, tournamentName: null, tournamentId: null, events: [] };
+    const events = await this.prisma.event.findMany({
+      where: { competitionId: latest.competitionId, result: { path: ["group"], equals: group } },
+      orderBy: [{ startsAt: { sort: "asc", nulls: "last" } }, { name: "asc" }],
+      include: eventSummaryInclude,
+    });
+    const competition = await this.prisma.competition.findUnique({ where: { id: latest.competitionId }, select: { name: true, parent: { select: { id: true, name: true } } } });
+    return { group, phaseName: competition?.name ?? null, tournamentName: competition?.parent?.name ?? null, tournamentId: competition?.parent?.id ?? null, events: events.map(toEventSummary) };
+  }
+
   private async buildResponse(entity: Entity): Promise<EntityResponseDto> {
     const history = await this.prisma.eventParticipant.findMany({
       where: { entityId: entity.id, isWinner: { not: null }, event: { status: "finished" } },
@@ -140,8 +234,10 @@ export class EntitiesService {
       }),
     ]);
 
+    const { tournaments, rivals } = entity.kind === "player" ? await this.playerHistory(entity.id) : { tournaments: [], rivals: [] };
     const response: EntityResponseDto = {
       id: entity.id,
+      kind: entity.kind,
       name: entity.name,
       shortName: entity.shortName,
       region: entity.region,
@@ -152,6 +248,8 @@ export class EntitiesService {
       winStreak,
       lastEvent: lastEvent ? toEventSummary(lastEvent) : null,
       nextEvent: nextEvent ? toEventSummary(nextEvent) : null,
+      tournaments,
+      rivals,
       sourceUpdatedAt: entity.updatedAt.toISOString(),
     };
     return response;

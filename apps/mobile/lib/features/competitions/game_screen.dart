@@ -7,6 +7,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 
+import "../../core/games.dart";
 import "../../core/settings_provider.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
@@ -118,7 +119,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
             child: _SeasonTabs(
-              labels: [..._tabs, if (forumEnabled) "Discussions", if (hasLearn) "Apprendre"],
+              labels: [for (final t in _tabs) t == "Équipes" && gameIsSolo(game.slug) ? "Joueurs" : t, if (forumEnabled) "Discussions", if (hasLearn) "Apprendre"],
               selectedIndex: _tabIndex,
               onSelected: (i) => setState(() => _tabIndex = i),
             ),
@@ -240,11 +241,11 @@ class _TeamsTab extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return AsyncView(
       value: ref.watch(gameTeamsProvider(game.slug)),
-      errorMessage: "Impossible de charger les équipes.",
+      errorMessage: gameIsSolo(game.slug) ? "Impossible de charger les joueurs." : "Impossible de charger les équipes.",
       onRetry: () => ref.invalidate(gameTeamsProvider(game.slug)),
       builder: (value) => value.isEmpty
-          ? const Center(
-              child: Text("Aucune équipe pour l'instant.", style: TextStyle(color: AppColors.textSecondary)),
+          ? Center(
+              child: Text(gameIsSolo(game.slug) ? "Aucun joueur pour l'instant." : "Aucune équipe pour l'instant.", style: TextStyle(color: AppColors.textSecondary)),
             )
           : ListView(
               padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.xl),

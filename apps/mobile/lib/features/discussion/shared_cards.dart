@@ -82,7 +82,7 @@ class _TeamCard extends ConsumerWidget {
         onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TeamScreen(entityId: entityId, breadcrumb: "Retour"))),
         child: Row(
           children: [
-            const Icon(Icons.shield_outlined, color: AppColors.brass),
+            Icon(team.kind == "player" ? Icons.person_outline_rounded : Icons.shield_outlined, color: AppColors.brass),
             const SizedBox(width: AppSpacing.md),
             Expanded(
               child: Column(

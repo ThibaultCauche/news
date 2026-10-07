@@ -5,7 +5,7 @@ import { IngestionService } from "./ingestion.service";
 // Phrase d'enjeu des matchs à venir d'une phase suisse (J23), écrite par le worker contre le vrai Postgres de dev.
 describe("phrase d'enjeu de la phase suisse (intégration)", () => {
   const prisma = new PrismaClient();
-  const service = new IngestionService(prisma, {} as never, { publish: jest.fn() } as never);
+  const service = new IngestionService(prisma, {}, { publish: jest.fn() } as never);
 
   const tag = randomUUID().slice(0, 8);
   let categoryId: string;

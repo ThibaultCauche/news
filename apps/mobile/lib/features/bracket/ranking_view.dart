@@ -87,7 +87,7 @@ class _HowItWorks extends StatelessWidget {
     final style = Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textTertiary);
     return Text(
       [
-        "Chaque équipe est classée selon l'étape où elle en est, puis selon son bilan (victoires – défaites) dans cette étape.",
+        "Chaque équipe (ou joueur) est classée selon l'étape où elle en est, puis selon son bilan (victoires – défaites) dans cette étape.",
         if (swiss) "En phase suisse, 3 victoires qualifient et 3 défaites éliminent.",
       ].join(" "),
       style: style,

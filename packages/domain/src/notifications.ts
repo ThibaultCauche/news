@@ -6,7 +6,7 @@ export type SubscriptionTargetType = "category" | "competition" | "competition_f
 export type SubscriptionLevel = "all" | "key_moments";
 export type DevicePlatform = "android" | "ios";
 
-export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination" | "organization_joined";
+export type NotificationType = "reminder" | "called" | "start" | "result" | "qualification" | "elimination" | "organization_joined";
 
 // Ce que reçoit un nouveau suivi selon sa cible (J21) : une équipe → début et résultat ; une compétition,
 // une famille ou une catégorie → le résultat seulement ; un match précis → tout, c'est une demande
@@ -33,6 +33,7 @@ export function isTypeEnabled(type: NotificationType, setting: NotificationTypeS
     case "reminder":
       return setting.notifyMatchReminder;
     case "start":
+    case "called":
       return setting.notifyMatchStart;
     case "result":
       return setting.notifyMatchResult;
@@ -58,6 +59,7 @@ export const MAX_NOTIFICATIONS_PER_HOUR = 3;
 // de la table = ignorés par le worker).
 export const DOMAIN_EVENT_NOTIFICATION_TYPES: Partial<Record<DomainEventType, NotificationType>> = {
   EventStartingSoon: "reminder",
+  EventCalled: "called",
   EventStarted: "start",
   EventFinished: "result",
   EntityQualified: "qualification",
@@ -117,6 +119,8 @@ export function buildNotificationText(
     case "reminder":
       if (needsPrediction) return { title: "Bientôt, sans pronostic", body: `${subjectName} commence dans 15 minutes, tu n'as pas encore pronostiqué.` };
       return { title: "Bientôt", body: `${subjectName} commence dans 15 minutes.` };
+    case "called":
+      return { title: "Appelés à leur station", body: `${subjectName} : les joueurs sont appelés, ça va commencer.` };
     case "start":
       return { title: "Ça commence", body: `${subjectName} vient de commencer.` };
     case "result":

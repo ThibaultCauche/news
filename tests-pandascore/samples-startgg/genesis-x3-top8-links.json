@@ -1,0 +1,180 @@
+{
+ "bracketType": "DOUBLE_ELIMINATION",
+ "sets": {
+  "pageInfo": {
+   "totalPages": 1
+  },
+  "nodes": [
+   {
+    "id": 99355748,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "set",
+      "prereqId": "99355747",
+      "prereqPlacement": 1
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "set",
+      "prereqId": "99355763",
+      "prereqPlacement": 1
+     }
+    ]
+   },
+   {
+    "id": 99355747,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "set",
+      "prereqId": "99355745",
+      "prereqPlacement": 1
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "set",
+      "prereqId": "99355746",
+      "prereqPlacement": 1
+     }
+    ]
+   },
+   {
+    "id": 99355763,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "set",
+      "prereqId": "99355747",
+      "prereqPlacement": 2
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "set",
+      "prereqId": "99355762",
+      "prereqPlacement": 1
+     }
+    ]
+   },
+   {
+    "id": 99355762,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "set",
+      "prereqId": "99355760",
+      "prereqPlacement": 1
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "set",
+      "prereqId": "99355761",
+      "prereqPlacement": 1
+     }
+    ]
+   },
+   {
+    "id": 99355745,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "seed",
+      "prereqId": "38514820",
+      "prereqPlacement": null
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "seed",
+      "prereqId": "38514823",
+      "prereqPlacement": null
+     }
+    ]
+   },
+   {
+    "id": 99355746,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "seed",
+      "prereqId": "38514821",
+      "prereqPlacement": null
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "seed",
+      "prereqId": "38514822",
+      "prereqPlacement": null
+     }
+    ]
+   },
+   {
+    "id": 99355760,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "set",
+      "prereqId": "99355746",
+      "prereqPlacement": 2
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "set",
+      "prereqId": "99355758",
+      "prereqPlacement": 1
+     }
+    ]
+   },
+   {
+    "id": 99355761,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "set",
+      "prereqId": "99355745",
+      "prereqPlacement": 2
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "set",
+      "prereqId": "99355759",
+      "prereqPlacement": 1
+     }
+    ]
+   },
+   {
+    "id": 99355758,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "set",
+      "prereqId": "99355754",
+      "prereqPlacement": 1
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "set",
+      "prereqId": "99355755",
+      "prereqPlacement": 1
+     }
+    ]
+   },
+   {
+    "id": 99355759,
+    "slots": [
+     {
+      "slotIndex": 0,
+      "prereqType": "set",
+      "prereqId": "99355756",
+      "prereqPlacement": 1
+     },
+     {
+      "slotIndex": 1,
+      "prereqType": "set",
+      "prereqId": "99355757",
+      "prereqPlacement": 1
+     }
+    ]
+   }
+  ]
+ }
+}

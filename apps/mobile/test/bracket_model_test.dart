@@ -74,6 +74,13 @@ void main() {
       expect(stageOf("Grand Final: TBD vs TBD").title, "Grande finale");
     });
 
+    test("lit les noms des tournois de Smash (J27)", () {
+      expect(stageOf("Upper bracket semifinal 2: Sonix vs Zomba").title, "Demi-finale 2");
+      expect(stageOf("Upper bracket round 1 match 3: TBD vs TBD").title, "Tableau principal, tour 1, match 3");
+      expect(stageOf("Lower bracket round 1 match 2: A vs B").title, "Repêchage, tour 1, match 2");
+      expect(stageOf("Grand final reset: TBD vs TBD").title, "Grande finale");
+    });
+
     test("donne la forme avec « du / de la » et l'étiquette d'anneau", () {
       expect(stageOf("Upper Bracket Quarterfinal 1").de, "du quart de finale 1");
       expect(stageOf("Upper Bracket Semifinal 1").de, "de la demi-finale 1");
@@ -193,6 +200,19 @@ void main() {
         ])
         ..links.clear());
       expect(followedTeamLines(bracket, {"g2"}, now).single.headline, "G2 est championne.");
+    });
+
+    test("joueurs (J27) : le nom en entier et des phrases au masculin", () {
+      final live = followedTeamLines(_partial(), {"g2"}, now, solo: true).single;
+      expect(live.headline, "G2 joue en ce moment : Finale du tableau principal.");
+      expect(live.stakes, "Si G2 gagne, il va en grande finale ; sinon il passe au repêchage.");
+      final bracket = _partial().rebuild((b) => b
+        ..nodes.replace([
+          _n("gf", "Grand Final", 0, "finished", teams: [_p("G2", score: 3, win: true), _p("FNC", score: 1, win: false)]),
+        ])
+        ..links.clear());
+      expect(followedTeamLines(bracket, {"g2"}, now, solo: true).single.headline, "G2 est champion.");
+      expect(followedTeamLines(bracket, {"fnc"}, now, solo: true).single.headline, "FNC est éliminé du tournoi.");
     });
   });
 

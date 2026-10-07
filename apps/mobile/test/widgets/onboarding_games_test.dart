@@ -38,6 +38,7 @@ void main() {
 
 EntityResponseDto _team(String name, String game, String region) => EntityResponseDto((b) => b
   ..id = "$game-$name"
+  ..kind = "team"
   ..name = name
   ..shortName = "G2"
   ..game = game

@@ -5,6 +5,10 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/games.dart";
 import "../../core/iterable_x.dart";
+import "../../core/settings_provider.dart";
+import "../../widgets/compact_match_row.dart";
+import "../next_match/next_match_screen.dart";
+import "../team/team_screen.dart" show entityPoolProvider;
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
 import "../forum/forum_entry.dart";
@@ -16,6 +20,7 @@ import "../../widgets/group_bracket_tree.dart";
 import "../follows/follows_provider.dart";
 import "../../widgets/bracket_match_card.dart";
 import "../../widgets/horizontal_bracket.dart";
+import "../../widgets/section_label.dart";
 import "../../widgets/ornate_frame.dart";
 import "../../widgets/spoiler_hold.dart";
 import "pickem.dart";
@@ -51,12 +56,15 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 160,
-        leading: TextButton.icon(
-          onPressed: () => Navigator.of(context).maybePop(),
-          icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
-          label: Text(gameLabel(game), maxLines: 1, softWrap: false, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary)),
-        ),
+        // Un tournoi 1 contre 1 a une action de plus (chaîne de discussion) et un nom de jeu long : flèche seule.
+        leadingWidth: gameIsSolo(game) ? 56 : 160,
+        leading: gameIsSolo(game)
+            ? IconButton(onPressed: () => Navigator.of(context).maybePop(), icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary))
+            : TextButton.icon(
+                onPressed: () => Navigator.of(context).maybePop(),
+                icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
+                label: Text(gameLabel(game), maxLines: 1, softWrap: false, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary)),
+              ),
         actions: [
           LearnHelpButton(articleId: "regarder-un-match", game: game),
           ShareButton(kind: ShareDtoKindEnum.competition, refId: widget.competitionId),
@@ -73,6 +81,7 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
           title: widget.title,
           subtitle: widget.subtitle,
           children: value.children.toList(),
+          solo: gameIsSolo(game),
           chosenTab: _chosenTab,
           onTabSelected: (i) => setState(() => _chosenTab = i),
         ),
@@ -87,6 +96,7 @@ class _BracketBody extends ConsumerWidget {
     required this.title,
     required this.subtitle,
     required this.children,
+    required this.solo,
     required this.chosenTab,
     required this.onTabSelected,
   });
@@ -95,11 +105,13 @@ class _BracketBody extends ConsumerWidget {
   final String title;
   final String subtitle;
   final List<CompetitionChildDto> children;
+  final bool solo;
   final int? chosenTab;
   final ValueChanged<int> onTabSelected;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    if (solo) return _SoloBody(competitionId: competitionId, title: title, subtitle: subtitle, children: children, chosenTab: chosenTab, onTabSelected: onTabSelected);
     final groupIds = groupCompetitionIds(children);
     final playoffs = children.firstWhereOrNull((c) => c.name.toLowerCase().contains("playoff"));
     final playoffsBracket = playoffs == null ? null : ref.watch(bracketProvider(playoffs.id)).value;
@@ -154,6 +166,100 @@ class _BracketBody extends ConsumerWidget {
   }
 }
 
+/// Tournoi 1 contre 1 (Smash, J27) : un onglet par phase à arbre (« Top 8 » d'abord, « Top 64 » pour le tableau complet), puis
+/// le classement. Les poules (des dizaines de groupes) n'ont pas d'arbre : leurs sets existent pour les suivis et les
+/// notifications, pas pour un écran.
+class _SoloBody extends ConsumerWidget {
+  const _SoloBody({required this.competitionId, required this.title, required this.subtitle, required this.children, required this.chosenTab, required this.onTabSelected});
+
+  final String competitionId;
+  final String title;
+  final String subtitle;
+  final List<CompetitionChildDto> children;
+  final int? chosenTab;
+  final ValueChanged<int> onTabSelected;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final phases = soloBracketPhases(children);
+    // Des poules (« Round 1 Pools ») sans arbre : un onglet montre celle des joueurs qu'on suit.
+    final hasPools = children.length > phases.length;
+    final labels = [for (final p in phases) p.name, if (hasPools) "Poules", "Classement"];
+    final tabIndex = (chosenTab ?? 0).clamp(0, labels.length - 1);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(child: Text(title, style: Theme.of(context).textTheme.headlineMedium)),
+                  const BracketViewToggle(),
+                ],
+              ),
+              Text(subtitle, style: const TextStyle(color: AppColors.textSecondary)),
+            ],
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+          child: _BracketTabs(selectedIndex: tabIndex, onSelected: onTabSelected, labels: labels),
+        ),
+        const SizedBox(height: AppSpacing.md),
+        Expanded(
+          child: tabIndex < phases.length
+              // Une clé par phase : sans elle, Flutter garde la vue du Top 8 (calée sur son petit dessin) pour le Top 64, qui reste vide.
+              ? _FinalsTab(key: ValueKey(phases[tabIndex].id), competitionId: phases[tabIndex].id, solo: true)
+              : hasPools && tabIndex == phases.length
+                  ? _PoolsTab(competitionId: competitionId)
+                  : RankingView(competitionId: competitionId),
+        ),
+      ],
+    );
+  }
+}
+
+/// Poules d'un tournoi 1 contre 1 (J27) : seulement celle de chaque joueur suivi, pas les dizaines de groupes.
+class _PoolsTab extends ConsumerWidget {
+  const _PoolsTab({required this.competitionId});
+
+  final String competitionId;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final followed = [for (final f in ref.watch(followsProvider).value ?? const <FollowStateDto>[]) if (f.targetType == "entity") f.targetId];
+    final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
+    final pools = [
+      for (final id in followed)
+        if (ref.watch(entityPoolProvider(id)).value case final pool? when pool.tournamentId == competitionId && pool.events.isNotEmpty) (id, pool),
+    ];
+    if (pools.isEmpty) return const _EmptyMessage("Suis un joueur pour voir sa poule ici.");
+    return ListView(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      children: [
+        for (final (id, pool) in pools) ...[
+          Text("Poule ${pool.group}", style: Theme.of(context).textTheme.titleMedium),
+          const SizedBox(height: AppSpacing.sm),
+          for (final event in pool.events)
+            CompactMatchRow(
+              event: event,
+              scoresHidden: scoresHidden,
+              followedEntityIds: {id},
+              onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
+            ),
+          const SizedBox(height: AppSpacing.lg),
+        ],
+      ],
+    );
+  }
+}
+
+/// Nombre de matchs au-delà duquel l'arbre en cercle devient illisible.
+const _maxCircleNodes = 32;
+
 // Indices des onglets : 0, 1 et 2 sont ceux de `defaultBracketTab` ; le classement global (J23) vient après.
 const _groupsTab = 0;
 const _finalsTab = 1;
@@ -161,17 +267,21 @@ const _lowerTab = 2;
 const _rankingTab = 3;
 
 class _BracketTabs extends StatelessWidget {
-  const _BracketTabs({required this.selectedIndex, required this.onSelected, required this.showLower});
+  const _BracketTabs({required this.selectedIndex, required this.onSelected, this.showLower = true, this.labels});
 
   final int selectedIndex;
   final ValueChanged<int> onSelected;
   final bool showLower;
+
+  /// Onglets propres à un écran (tournoi 1 contre 1, J27) ; sinon ceux du tournoi par équipes.
+  final List<String>? labels;
   static const _allLabels = ["Groupes", "Phase finale", "Repêchage", "Classement"];
 
   @override
   Widget build(BuildContext context) {
     // (indice de l'onglet, libellé) : sans repêchage, les indices ne se suivent plus.
-    final tabs = [for (var i = 0; i < _allLabels.length; i++) if (showLower || i != _lowerTab) (i, _allLabels[i])];
+    final own = labels;
+    final tabs = own != null ? [for (var i = 0; i < own.length; i++) (i, own[i])] : [for (var i = 0; i < _allLabels.length; i++) if (showLower || i != _lowerTab) (i, _allLabels[i])];
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.pill)),
@@ -241,8 +351,9 @@ class _GroupsTab extends ConsumerWidget {
 /// Écran 02/07 : arbre radial par équipes (le tableau haut + le match décisif ; le tableau
 /// bas vit dans l'onglet Repêchage), avec en tête la phrase de chaque équipe suivie.
 class _FinalsTab extends ConsumerWidget {
-  const _FinalsTab({required this.competitionId});
+  const _FinalsTab({super.key, required this.competitionId, this.solo = false});
   final String competitionId;
+  final bool solo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -258,7 +369,7 @@ class _FinalsTab extends ConsumerWidget {
             errorMessage: "Impossible de charger l'arbre.",
             onRetry: () => ref.invalidate(bracketProvider(competitionId)),
             skeleton: const Center(child: Skeleton(width: 280, height: 280, radius: 140)),
-            builder: (value) => _FinalsView(bracket: value, follows: follows),
+            builder: (value) => _FinalsView(bracket: value, follows: follows, solo: solo),
           ),
         ),
       ],
@@ -267,14 +378,16 @@ class _FinalsTab extends ConsumerWidget {
 }
 
 class _FinalsView extends ConsumerWidget {
-  const _FinalsView({required this.bracket, required this.follows});
+  const _FinalsView({required this.bracket, required this.follows, this.solo = false});
   final BracketResponseDto bracket;
   final List<FollowStateDto>? follows;
+  final bool solo;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final followed = (follows ?? const []).where((f) => f.targetType == "entity").map((f) => f.targetId).toSet();
-    final circle = ref.watch(bracketViewProvider) == BracketView.circle;
+    // Au-delà de 32 sets (un Top 64 de Smash en compte plus de 80), les cercles se chevauchent : la pyramide, qui défile, s'impose.
+    final circle = bracket.nodes.length <= _maxCircleNodes && ref.watch(bracketViewProvider) == BracketView.circle;
     // En cercle : le tableau principal en haut, le repêchage en bas, séparés par une ligne.
     final lowerIds = {for (final n in bracket.nodes) if (isLowerBracketName(n.name)) n.eventId};
     // Le perdant de la finale du haut rejoint la finale du repêchage : son cercle n'est pas dessiné (le match est déjà en haut),
@@ -289,7 +402,7 @@ class _FinalsView extends ConsumerWidget {
     final halves = mainAndLowerHalves(tree, bracket);
     // Le repêchage : sa seconde moitié reflète la première, pour une symétrie verticale parfaite.
     if (halves != null) assignSectors(tree, halves, mirrored: {?lowerFinal});
-    final lines = followedTeamLines(bracket, followed, DateTime.now());
+    final lines = followedTeamLines(bracket, followed, DateTime.now(), solo: solo);
     if (tree.center == null) return const _EmptyMessage("Phase finale pas encore commencée.");
 
     final legend = const Text(
@@ -307,6 +420,11 @@ class _FinalsView extends ConsumerWidget {
           Padding(padding: const EdgeInsets.only(top: AppSpacing.xs), child: Text(line.stakes!, style: const TextStyle(color: AppColors.textPrimary, fontSize: 13))),
     ];
 
+    // Un grand tableau (Top 64) : une liste par tour. Dessiné en pyramide, il mesure 4 500 points de haut et l'écran du
+    // téléphone n'affiche rien (vu sur un Android réel) ; une liste se lit aussi mieux à cette taille.
+    if (bracket.nodes.length > _maxCircleNodes) {
+      return _BracketRoundsList(bracket: bracket, followed: followed, headlines: headlines);
+    }
     if (circle) {
       return ListView(
         padding: const EdgeInsets.all(AppSpacing.md),
@@ -337,6 +455,60 @@ class _FinalsView extends ConsumerWidget {
           ConstrainedBox(constraints: const BoxConstraints(maxHeight: 96), child: SingleChildScrollView(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: stakes))),
         ],
       ),
+    );
+  }
+}
+
+/// Les matchs d'un grand tableau, tour par tour (du premier tour à la finale), deux cases par ligne.
+class _BracketRoundsList extends StatelessWidget {
+  const _BracketRoundsList({required this.bracket, required this.followed, required this.headlines});
+
+  final BracketResponseDto bracket;
+  final Set<String> followed;
+  final List<Widget> headlines;
+
+  @override
+  Widget build(BuildContext context) {
+    final byId = {for (final n in bracket.nodes) n.eventId: n};
+    final incoming = <String, List<BracketLinkDto>>{};
+    for (final l in bracket.links) {
+      incoming.putIfAbsent(l.toEventId, () => []).add(l);
+    }
+    // Tour radial de l'API : plus il est grand, plus le match est tôt. Le tableau principal avant le repêchage.
+    final ordered = [...bracket.nodes]..sort((a, b) {
+        final byRound = b.round.compareTo(a.round);
+        if (byRound != 0) return byRound;
+        final byLower = (isLowerBracketName(a.name) ? 1 : 0).compareTo(isLowerBracketName(b.name) ? 1 : 0);
+        return byLower != 0 ? byLower : a.name.compareTo(b.name);
+      });
+    // « Repêchage, tour 3, match 2 » → « Repêchage, tour 3 » : un titre par tour.
+    String roundTitle(BracketNodeDto n) => stageOf(n.name).title.replaceAll(RegExp(r", match \d+$"), "").replaceAll(RegExp(r"(?<!tour) \d+$"), "");
+    final groups = <String, List<BracketNodeDto>>{};
+    for (final n in ordered) {
+      groups.putIfAbsent(roundTitle(n), () => []).add(n);
+    }
+    final live = bracket.nodes.firstWhereOrNull((n) => n.status == "live")?.eventId;
+    return ListView(
+      padding: const EdgeInsets.all(AppSpacing.md),
+      children: [
+        ...headlines,
+        for (final entry in groups.entries) ...[
+          Padding(padding: const EdgeInsets.only(top: AppSpacing.md, bottom: AppSpacing.sm), child: SectionLabel(entry.key.toUpperCase())),
+          Wrap(
+            spacing: AppSpacing.sm,
+            runSpacing: AppSpacing.sm,
+            children: [
+              for (final n in entry.value)
+                BracketMatchCard(
+                  node: n,
+                  sides: matchSides(n, incoming[n.eventId] ?? const [], byId),
+                  followed: followed,
+                  emphasis: n.eventId == live ? CardEmphasis.live : CardEmphasis.none,
+                ),
+            ],
+          ),
+        ],
+      ],
     );
   }
 }

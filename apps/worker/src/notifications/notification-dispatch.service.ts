@@ -93,7 +93,7 @@ export class NotificationDispatchService {
     }
 
     for (const sub of subscriptions) {
-      const subEnabled = type === "reminder" ? sub.notifyReminder : type === "start" ? sub.notifyStart : sub.notifyResult;
+      const subEnabled = type === "reminder" ? sub.notifyReminder : type === "start" || type === "called" ? sub.notifyStart : sub.notifyResult;
       // Le rappel T-15 absorbe l'ancien rappel de pronostic (J21) : sans pronostic, il part même si le
       // rappel simple est coupé, avec la phrase qui le dit.
       const needsPrediction = type === "reminder" && event.participants.length === 2 && (await this.needsPredictionNudge(sub.user, event.id));

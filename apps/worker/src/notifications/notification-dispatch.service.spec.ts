@@ -172,6 +172,22 @@ describe("NotificationDispatchService (intégration)", () => {
     expect(await prisma.device.findUnique({ where: { id: device.id } })).toBeNull();
   });
 
+  it("joueurs appelés à leur station (J27) : une notification pour l'abonné au joueur, une seule fois, au tag du match", async () => {
+    await prisma.device.deleteMany({ where: { userId } });
+    await prisma.device.create({ data: { id: randomUUID(), userId, installId: randomUUID(), platform: "android", pushToken: "token-called" } });
+    const eventId = (await createFinishedEvent("Upper bracket semifinal 1: Test A vs Test B").then(async (id) => {
+      await prisma.event.update({ where: { id }, data: { status: "scheduled" } });
+      return id;
+    }));
+
+    await dispatch.handle({ type: "EventCalled", eventId, competitionId });
+    await dispatch.handle({ type: "EventCalled", eventId, competitionId });
+
+    expect(await prisma.notificationLog.count({ where: { userId, eventId, type: "called" } })).toBe(1);
+    expect(fcm.send).toHaveBeenCalledTimes(1);
+    expect(fcm.send).toHaveBeenCalledWith("token-called", "Appelés à leur station", expect.stringContaining("les joueurs sont appelés"), expect.anything(), `event-${eventId}`, undefined);
+  });
+
   it("envoie un tag par match, pour que rappel, début et résultat se remplacent (J21)", async () => {
     await prisma.device.create({ data: { id: randomUUID(), userId, installId: randomUUID(), platform: "android", pushToken: "token-tag" } });
     const eventId = await createFinishedEvent("Test G2 vs Test PRX (tag)");

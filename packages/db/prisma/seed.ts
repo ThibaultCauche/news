@@ -60,6 +60,17 @@ const GLOSSARY_TERMS: { term: string; text: string }[] = [
   { term: "baron", text: "Le monstre neutre le plus puissant de la carte. L'équipe qui le tue renforce ses soldats et attaque plus facilement les tours." },
   { term: "jungle", text: "Le territoire entre les trois voies, rempli de monstres. Le « jungler » s'y déplace pour aider les autres joueurs par surprise." },
   { term: "side", text: "Le côté de la carte, bleu ou rouge. Le côté bleu choisit son champion en premier à la draft ; le côté rouge choisit en dernier." },
+  // Super Smash Bros. Ultimate (J27) : mots du guide et des tournois.
+  { term: "stock", text: "Une vie. Chaque joueur en a 3 : quand on est éjecté de l'écran, on perd un stock. Le dernier joueur qui en garde un gagne la manche." },
+  { term: "set", text: "Une confrontation entre deux joueurs, jouée en plusieurs manches : la première personne à 2 manches (ou 3 en finale) gagne le set." },
+  {
+    term: "double élimination",
+    text: "On est éliminé à la deuxième défaite, pas à la première. Une première défaite envoie dans le tableau des perdants, où l'on peut encore remonter jusqu'à la finale.",
+  },
+  { term: "winners", text: "Le tableau des gagnants : on y reste tant qu'on ne perd pas. Son vainqueur arrive en grande finale avec une « vie d'avance »." },
+  { term: "losers", text: "Le tableau des perdants : on y tombe après une première défaite. Une seconde défaite élimine du tournoi." },
+  { term: "top 8", text: "Les huit derniers joueurs en lice, joués sur scène et diffusés. C'est la partie d'un tournoi que presque tout le monde regarde." },
+  { term: "poule", text: "Au début d'un gros tournoi, les joueurs sont répartis en petits tableaux (poules) pour que chacun joue plusieurs sets. Les meilleurs passent à l'étape suivante." },
 ];
 
 // Structures (J23, #A4) : rattache les équipes déjà en base à leur structure (même nom normalisé dans plusieurs

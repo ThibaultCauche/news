@@ -209,6 +209,7 @@ class _SettingsBody extends ConsumerWidget {
           child: Column(
             children: [
               _StaticRow(label: "E-sport", caption: "Données PandaScore"),
+              _StaticRow(label: "Smash Ultimate", caption: "Données start.gg"),
               Divider(height: AppSpacing.lg),
               _StaticRow(label: "Contexte des compétitions", caption: "Liquipedia, licence CC-BY-SA"),
             ],

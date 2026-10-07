@@ -2,7 +2,7 @@ import { Controller, Get, Param, Query, Req, Res } from "@nestjs/common";
 import { ApiOkResponse, ApiQuery } from "@nestjs/swagger";
 import type { Request, Response } from "express";
 import { sendWithEtag } from "../common/etag";
-import { EntitiesService, EntityListItemDto, EntityResponseDto } from "./entities.service";
+import { EntitiesService, EntityListItemDto, EntityPoolDto, EntityResponseDto } from "./entities.service";
 
 // GET /v1/entities/:id — écran 10 Fiche équipe (docs/03 §4).
 @Controller("entities")
@@ -22,6 +22,13 @@ export class EntitiesController {
   @ApiOkResponse({ type: EntityResponseDto })
   async getByShortName(@Param("shortName") shortName: string, @Query("game") game: string | undefined, @Req() req: Request, @Res() res: Response): Promise<void> {
     sendWithEtag(req, res, await this.entities.getByShortName(shortName, game));
+  }
+
+  // GET /v1/entities/:id/pool — la poule d'un joueur (J27).
+  @Get(":id/pool")
+  @ApiOkResponse({ type: EntityPoolDto })
+  async pool(@Param("id") id: string, @Req() req: Request, @Res() res: Response): Promise<void> {
+    sendWithEtag(req, res, await this.entities.poolOf(id));
   }
 
   @Get(":id")

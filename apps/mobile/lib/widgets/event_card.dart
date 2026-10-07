@@ -175,11 +175,11 @@ class EventCard extends ConsumerWidget {
             // au centre avec de grandes marges vides de chaque côté.
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              TeamBadge(imageUrl: teamA!.imageUrl, diameter: 56, crowned: crownFor(teamA)),
+              TeamBadge(imageUrl: teamA!.imageUrl, diameter: 56, fallback: participantInitials(teamA), crowned: crownFor(teamA)),
               ?scoreText(score != null ? teamA.score : null),
               centerBadge(20),
               ?scoreText(score != null ? teamB!.score : null),
-              TeamBadge(imageUrl: teamB!.imageUrl, diameter: 56, crowned: crownFor(teamB)),
+              TeamBadge(imageUrl: teamB!.imageUrl, diameter: 56, fallback: participantInitials(teamB), crowned: crownFor(teamB)),
             ],
           )
         : null;

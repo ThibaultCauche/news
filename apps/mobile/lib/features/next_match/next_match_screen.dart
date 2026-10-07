@@ -13,6 +13,7 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
 import "package:news_api_client/news_api_client.dart";
 import "package:url_launcher/url_launcher.dart";
+import "../../core/games.dart";
 import "../../core/api_providers.dart";
 import "../../core/date_x.dart";
 import "../../core/settings_provider.dart";
@@ -261,7 +262,9 @@ class _NextMatchBody extends ConsumerWidget {
         // l'identifiant interne du site tiers, ce qui reviendrait à le
         // scraper — règle 7 de CLAUDE.md). Masqué tant que le score l'est :
         // la page de résultats spoilerait un match qu'on masque nous-mêmes.
-        if (event.participants.length == 2 && (status == EventStatusKind.scheduled || !scoresHidden)) _ExternalDetailsLink(event: event),
+        // La recherche vlr.gg et l'option payante de PandaScore ne concernent que Valorant ; pour Smash, la source est citée (J27).
+        if (event.participants.length == 2 && event.competition.game == "valorant" && (status == EventStatusKind.scheduled || !scoresHidden)) _ExternalDetailsLink(event: event),
+        if (gameIsSolo(event.competition.game)) const _StartGgAttribution(),
       ],
     );
   }
@@ -574,6 +577,22 @@ class _ExternalDetailsLink extends StatelessWidget {
   }
 }
 
+/// Attribution exigée par les conditions d'utilisation de l'API start.gg (J27), sous les résultats d'un tournoi.
+class _StartGgAttribution extends StatelessWidget {
+  const _StartGgAttribution();
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: TextButton.icon(
+        onPressed: () => launchUrl(Uri.https("www.start.gg"), mode: LaunchMode.externalApplication),
+        icon: const Icon(Icons.open_in_new_rounded, size: 16),
+        label: const Text("Résultats : start.gg"),
+      ),
+    );
+  }
+}
+
 /// Gagnant de chaque carte, rien de plus (règle 6 de CLAUDE.md — pas de score
 /// en rounds, pas de nom de carte, limite du plan gratuit PandaScore).
 class _MapsSection extends StatelessWidget {
@@ -584,6 +603,18 @@ class _MapsSection extends StatelessWidget {
   String _nameFor(String entityId) {
     final participant = event.participants.firstWhere((p) => p.entityId == entityId, orElse: () => event.participants.first);
     return participant.shortName ?? participant.name;
+  }
+
+  List<String> _characterLines(List<MapResultDto> maps) {
+    final lines = [for (final m in maps) _charactersLine(m)];
+    if (lines.toSet().length == 1) return ["Personnages : ${lines.first}"];
+    return [for (var i = 0; i < maps.length; i++) "Manche ${maps[i].position} : ${lines[i]}"];
+  }
+
+  // « Sonix (Sonic) contre Zomba (R.O.B.) » : les joueurs dans l'ordre du match, avec leur personnage s'il est connu.
+  String _charactersLine(MapResultDto map) {
+    final byEntity = {for (final c in map.characters) c.entityId: c.character};
+    return event.participants.map((p) => byEntity[p.entityId] == null ? (p.shortName ?? p.name) : "${p.shortName ?? p.name} (${byEntity[p.entityId]})").join(" contre ");
   }
 
   // "45:38", pas de nom de carte à côté (indisponible en plan gratuit) : la
@@ -599,18 +630,20 @@ class _MapsSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final maps = event.maps.where((m) => m.winnerEntityId != null).toList()..sort((a, b) => a.position.compareTo(b.position));
+    // Jeu 1 contre 1 (J27) : des manches, pas des cartes, et le personnage de chaque joueur quand il est saisi.
+    final solo = gameIsSolo(event.competition.game);
     return SectionCard(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SectionLabel("CARTES"),
+          SectionLabel(solo ? "MANCHES" : "CARTES"),
           const SizedBox(height: AppSpacing.sm),
           for (final map in maps)
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 2),
               child: Row(
                 children: [
-                  Text("Carte ${map.position}", style: Theme.of(context).textTheme.bodyMedium),
+                  Text("${solo ? "Manche" : "Carte"} ${map.position}", style: Theme.of(context).textTheme.bodyMedium),
                   if (map.durationSeconds != null) ...[
                     const SizedBox(width: AppSpacing.xs),
                     Text(_formatDuration(map.durationSeconds!), style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textTertiary)),
@@ -620,6 +653,12 @@ class _MapsSection extends StatelessWidget {
                 ],
               ),
             ),
+          if (solo && maps.any((m) => m.characters.isNotEmpty)) ...[
+            const SizedBox(height: AppSpacing.sm),
+            // Les mêmes personnages à chaque manche (le cas courant) : une seule ligne, pas quatre.
+            for (final line in _characterLines(maps.where((m) => m.characters.isNotEmpty).toList()))
+              Text(line, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: AppColors.textTertiary)),
+          ],
         ],
       ),
     );
@@ -714,8 +753,10 @@ class _RecentFormSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final headToHead = event.context.headToHead;
-    String nameFor(String entityId) =>
-        event.participants.firstWhere((p) => p.entityId == entityId, orElse: () => event.participants.first).shortName ?? "?";
+    String nameFor(String entityId) {
+      final p = event.participants.firstWhere((p) => p.entityId == entityId, orElse: () => event.participants.first);
+      return p.shortName ?? p.name;
+    }
 
     return SectionCard(
       child: Column(

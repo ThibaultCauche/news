@@ -14,6 +14,7 @@ export interface StreamDTO {
 const TWITCH_DIRECTORY: Record<string, string> = {
   valorant: "https://www.twitch.tv/directory/category/valorant",
   "league-of-legends": "https://www.twitch.tv/directory/category/league-of-legends",
+  "super-smash-bros-ultimate": "https://www.twitch.tv/directory/category/super-smash-bros-ultimate",
 };
 
 export function moreStreamersUrl(game: string | null | undefined): string | null {

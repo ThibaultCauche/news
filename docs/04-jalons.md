@@ -940,23 +940,34 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 ---
 
-## J27 — Super Smash Bros. Ultimate (ajouté 2026-10-06)
+## J27 — Super Smash Bros. Ultimate (ajouté 2026-10-06) — **Fait (2026-10-08)**, sans autres jeux de combat ni vérification d'un major réel
 
 **Origine** : `docs/06` #I2 ; **remplace TFT** (absent de PandaScore). Format différent : duels 1 contre 1 entre **joueurs**, double élimination à des centaines d'inscrits.
 
 **Périmètre**
-- [ ] Adaptateur **start.gg** (API GraphQL officielle, token gratuit, 80 req/min) : tournois, événements, phases, poules, sets ; réutilisable ensuite pour Street Fighter 6 et Tekken 8.
-- [ ] Entités « joueur » (pas d'équipe) ; double élimination à grande échelle (poules puis top 8), séries BO3 puis BO5.
-- [ ] Filtre des tournois (majors seulement au début).
-- [ ] Tuto « l'essentiel en une page » + glossaire (stock, top 8, winners/losers).
+- [x] Adaptateur **start.gg** (API GraphQL officielle, token gratuit, 80 req/min) : tournois, événements, phases, poules, sets ; réutilisable ensuite pour Street Fighter 6 et Tekken 8 (`packages/providers/src/startgg`).
+- [x] Entités « joueur » (pas d'équipe) ; double élimination à grande échelle (poules puis top 64 et top 8), séries BO3 puis BO5.
+- [x] Filtre des tournois : événement Singles de **256 inscrits ou plus**, ou sélection de start.gg (`staffPicks`), ou préfixe de slug ajouté à la main (majors seulement au début, à élargir selon la demande).
+- [x] Tuto « l'essentiel en une page » + glossaire (stock, set, top 8, winners/losers, poule, double élimination).
 
-**À vérifier avant de coder** : conditions d'utilisation de l'API start.gg (non lues dans `docs/01b`) ; personnage joué par manche, pas toujours saisi.
+**Ajouts décidés le 2026-10-08, faits dans ce jalon** (idées d'élargissement, hors autres jeux de combat) :
+- [x] **Top 64 à l'écran** : démo `pnpm db:demo-startgg top64` (le vrai Top 64 et des poules de Genesis X3, lus chez start.gg avec le token, rien de versionné). Au-delà de 32 sets l'arbre s'affiche **en liste, tour par tour** (les cercles se chevauchent, et une pyramide de 4 500 points de haut n'affichait **rien** sur un Android réel, alors qu'elle passait les tests).
+- [x] **Joueurs appelés à leur station** : état « appelé » de start.gg → domaine `EventCalled` → notification « Appelés à leur station » (réglage « début » du compte et du suivi), au tag du match.
+- [x] **Personnages par manche** (Top 64 et Top 8 seulement, quand ils sont saisis) : requête à part par phase à arbre, `result.games[].characters`, `MapResultDto.characters`, ligne « Sonix (Sonic) contre Zomba (R.O.B.) » sous « Manches » de l'écran du match.
+- [x] **Pick'em du Top 8** : le moteur du J25 sert tel quel (`double_elim` accepté) ; limité à 32 matchs (`PICKEM_MAX_MATCHES`) donc pas de pick'em sur un Top 64.
+- [x] **Page joueur enrichie** : bilan par tournoi, trois adversaires les plus rencontrés (deux rencontres au moins), « Sa poule » ; `EntityResponseDto.kind/tournaments/rivals`, `GET /v1/entities/:id/pool`.
+- [x] **Poules lisibles** : onglet « Poules » du tournoi (la poule de chaque joueur suivi) et section « Sa poule » de la page joueur ; le groupe (`displayIdentifier`) est gardé dans `result.group`.
+- [x] **Carte de partage d'un set** : le partage existant (`CompactMatchRow`) sert, avec initiales ; l'icône de la carte « joueur » diffère de celle d'une équipe.
 
-**Règle** : aucun logo, image ni personnage Nintendo (comme la règle Riot) ; illustrations avec nos widgets.
+**Conditions d'utilisation de l'API : lues le 2026-10-07** (`docs/01b`) : usage gratuit non commercial permis ; attribution, minimum de données, pas de copie en base au-delà du nécessaire. **Personnage par manche** : renseigné en top 8 d'un major, non ingéré (fiabilité des poules non vérifiée).
+
+**Règle** : le vrai logo du jeu est utilisé, comme pour Valorant et League of Legends (décision de l'utilisateur) ; **à trancher avec les autres avant la bêta Google Play**.
 
 **Critères d'acceptation**
-- [ ] Un major Smash Ultimate récent s'affiche avec son top 8 lisible et le tableau complet accessible.
-- [ ] Suivre un joueur envoie les notifications de ses sets.
+- [x] Un major Smash Ultimate s'affiche avec son top 8 lisible et le tableau complet accessible (démo `pnpm db:demo-startgg` rejouant le Top 8 réel de Genesis X3, vérifié sur téléphone Android). Le « Top 64 » (vrai tableau de Genesis X3) a été vu à l'écran, en pyramide. **L'ingestion réelle d'un major complet reste à vérifier** (premier à venir : Genesis X4, février 2027).
+- [x] Suivre un joueur envoie les notifications de ses sets (vérifié sur téléphone : « Ça commence » reçu, appli en arrière-plan).
+
+**Reporté** : pronostics sur un set isolé, rappel T-15 d'un set (pas d'horaire prévu chez start.gg ; remplacé par « appelés à leur station »), personnages des poules, iOS, déclaration de confidentialité de l'appli citant start.gg (**obligatoire avant la bêta**).
 
 ---
 

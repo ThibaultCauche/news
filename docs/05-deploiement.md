@@ -45,6 +45,7 @@ Copier `.env.example` en `.env` sur le NAS et remplir, en plus des secrets déj�
 - `POSTGRES_PASSWORD` (nouveau mot de passe, différent du `news`/`news` de dev).
 - `IMAGE=ghcr.io/<compte-github>/news` (sinon l'image est reconstruite localement plutôt que tirée de GHCR).
 - `SENTRY_DSN` si un projet Sentry a été créé (un pour l'API/le worker Node, un pour l'appli Flutter).
+- `STARTGG_TOKEN` (J27) : token personnel start.gg pour Smash Ultimate (un seul token par produit, conditions d'utilisation dans `docs/01b`). Sans lui le worker l'indique au démarrage et ne charge pas le jeu. Après la mise à jour, rejouer `pnpm db:seed` pour le glossaire Smash.
 - `ALERT_WEBHOOK_URL` : une URL `https://ntfy.sh/<sujet-privé-choisi>` suffit (aucune inscription), ou un webhook Discord/Slack.
 - `PUBLIC_PATH_PREFIX` : laisser **vide** avec Tailscale Funnel (il retire déjà le préfixe avant de relayer, vérifié en vrai à l'étape 3) — seulement utile derrière un reverse proxy qui, lui, ne le retire pas.
 

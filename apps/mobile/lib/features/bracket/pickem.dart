@@ -286,7 +286,7 @@ class _PickemScreenState extends ConsumerState<PickemScreen> {
         ];
 
     final status = editable
-        ? "Touche l'équipe qui va gagner chaque match. Plus on approche de la finale, plus le match rapporte (de 1 à 4 points), +5 points si tout est juste, +3 si ton champion gagne."
+        ? "Touche l'équipe ou le joueur qui va gagner chaque match. Plus on approche de la finale, plus le match rapporte (de 1 à 4 points), +5 points si tout est juste, +3 si ton champion gagne."
         : hidden
             ? "Le tableau est verrouillé. Les résultats sont masqués (sans spoil)."
             : settledAll

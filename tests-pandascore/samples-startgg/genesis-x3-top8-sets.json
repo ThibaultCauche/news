@@ -1,0 +1,1634 @@
+[
+ {
+  "id": 99355748,
+  "identifier": "D",
+  "round": 3,
+  "fullRoundText": "Grand Final",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 22402320,
+  "startAt": 1771189200,
+  "startedAt": 1771205959,
+  "completedAt": 1771207254,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 4,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 5,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "set",
+    "prereqId": "99355747",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 22402320,
+     "name": "Sonix",
+     "participants": [
+      {
+       "gamerTag": "Sonix",
+       "user": {
+        "id": 165614
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "set",
+    "prereqId": "99355763",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 21487825,
+     "name": "CTG | Zomba",
+     "participants": [
+      {
+       "gamerTag": "Zomba",
+       "user": {
+        "id": 252388
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 2
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355747,
+  "identifier": "C",
+  "round": 2,
+  "fullRoundText": "Winners Final",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 22402320,
+  "startAt": 1771189200,
+  "startedAt": 1771202164,
+  "completedAt": 1771202766,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "set",
+    "prereqId": "99355745",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 22069644,
+     "name": "AREA310 | ドラ右",
+     "participants": [
+      {
+       "gamerTag": "ドラ右",
+       "user": {
+        "id": 1815290
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 0
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "set",
+    "prereqId": "99355746",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 22402320,
+     "name": "Sonix",
+     "participants": [
+      {
+       "gamerTag": "Sonix",
+       "user": {
+        "id": 165614
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355763,
+  "identifier": "K",
+  "round": -6,
+  "fullRoundText": "Losers Final",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 21487825,
+  "startAt": 1771189200,
+  "startedAt": 1771204795,
+  "completedAt": 1771205737,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 22069644,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22069644,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 4,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 5,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "set",
+    "prereqId": "99355747",
+    "prereqPlacement": 2,
+    "entrant": {
+     "id": 22069644,
+     "name": "AREA310 | ドラ右",
+     "participants": [
+      {
+       "gamerTag": "ドラ右",
+       "user": {
+        "id": 1815290
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 2
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "set",
+    "prereqId": "99355762",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 21487825,
+     "name": "CTG | Zomba",
+     "participants": [
+      {
+       "gamerTag": "Zomba",
+       "user": {
+        "id": 252388
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355762,
+  "identifier": "J",
+  "round": -5,
+  "fullRoundText": "Losers Semi-Final",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 21487825,
+  "startAt": 1771189200,
+  "startedAt": 1771202911,
+  "completedAt": 1771204467,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 22129359,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22129359,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 4,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 5,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "set",
+    "prereqId": "99355760",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 21487825,
+     "name": "CTG | Zomba",
+     "participants": [
+      {
+       "gamerTag": "Zomba",
+       "user": {
+        "id": 252388
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "set",
+    "prereqId": "99355761",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 22129359,
+     "name": "あcola",
+     "participants": [
+      {
+       "gamerTag": "あcola",
+       "user": {
+        "id": 1787719
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 2
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355745,
+  "identifier": "A",
+  "round": 1,
+  "fullRoundText": "Winners Semi-Final",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 22069644,
+  "startAt": 1771189200,
+  "startedAt": 1771194687,
+  "completedAt": 1771196192,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 22164865,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 22069644,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22069644,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 4,
+    "winnerId": 22164865,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 5,
+    "winnerId": 22069644,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22069644
+      },
+      "character": {
+       "name": "Min Min"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "seed",
+    "prereqId": "38514820",
+    "prereqPlacement": null,
+    "entrant": {
+     "id": 22069644,
+     "name": "AREA310 | ドラ右",
+     "participants": [
+      {
+       "gamerTag": "ドラ右",
+       "user": {
+        "id": 1815290
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "seed",
+    "prereqId": "38514823",
+    "prereqPlacement": null,
+    "entrant": {
+     "id": 22164865,
+     "name": "E36 | Hurt",
+     "participants": [
+      {
+       "gamerTag": "Hurt",
+       "user": {
+        "id": 836465
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 2
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355746,
+  "identifier": "B",
+  "round": 1,
+  "fullRoundText": "Winners Semi-Final",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 22402320,
+  "startAt": 1771189200,
+  "startedAt": 1771196392,
+  "completedAt": 1771197655,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22384483
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22384483
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22402320,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22384483
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22402320
+      },
+      "character": {
+       "name": "Sonic"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "seed",
+    "prereqId": "38514821",
+    "prereqPlacement": null,
+    "entrant": {
+     "id": 22384483,
+     "name": "CF | Monte",
+     "participants": [
+      {
+       "gamerTag": "Monte",
+       "user": {
+        "id": 953880
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 0
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "seed",
+    "prereqId": "38514822",
+    "prereqPlacement": null,
+    "entrant": {
+     "id": 22402320,
+     "name": "Sonix",
+     "participants": [
+      {
+       "gamerTag": "Sonix",
+       "user": {
+        "id": 165614
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355760,
+  "identifier": "H",
+  "round": -4,
+  "fullRoundText": "Losers Quarter-Final",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 21487825,
+  "startAt": 1771189200,
+  "startedAt": 1771200163,
+  "completedAt": 1771200924,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22384483
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22384483
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22384483
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "set",
+    "prereqId": "99355746",
+    "prereqPlacement": 2,
+    "entrant": {
+     "id": 22384483,
+     "name": "CF | Monte",
+     "participants": [
+      {
+       "gamerTag": "Monte",
+       "user": {
+        "id": 953880
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 0
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "set",
+    "prereqId": "99355758",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 21487825,
+     "name": "CTG | Zomba",
+     "participants": [
+      {
+       "gamerTag": "Zomba",
+       "user": {
+        "id": 252388
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355761,
+  "identifier": "I",
+  "round": -4,
+  "fullRoundText": "Losers Quarter-Final",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 22129359,
+  "startAt": 1771189200,
+  "startedAt": 1771198571,
+  "completedAt": 1771199707,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 22164865,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 22129359,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22129359,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 4,
+    "winnerId": 22129359,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22164865
+      },
+      "character": {
+       "name": "Snake"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "set",
+    "prereqId": "99355745",
+    "prereqPlacement": 2,
+    "entrant": {
+     "id": 22164865,
+     "name": "E36 | Hurt",
+     "participants": [
+      {
+       "gamerTag": "Hurt",
+       "user": {
+        "id": 836465
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 1
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "set",
+    "prereqId": "99355759",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 22129359,
+     "name": "あcola",
+     "participants": [
+      {
+       "gamerTag": "あcola",
+       "user": {
+        "id": 1787719
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355758,
+  "identifier": "F",
+  "round": -3,
+  "fullRoundText": "Losers Round 1",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 21487825,
+  "startAt": 1771189200,
+  "startedAt": 1771193278,
+  "completedAt": 1771194570,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22027739
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22027739
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22027739,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22027739
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 4,
+    "winnerId": 21487825,
+    "selections": [
+     {
+      "entrant": {
+       "id": 21487825
+      },
+      "character": {
+       "name": "R.O.B."
+      }
+     },
+     {
+      "entrant": {
+       "id": 22027739
+      },
+      "character": {
+       "name": "Mr. Game & Watch"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "set",
+    "prereqId": "99355754",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 21487825,
+     "name": "CTG | Zomba",
+     "participants": [
+      {
+       "gamerTag": "Zomba",
+       "user": {
+        "id": 252388
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "set",
+    "prereqId": "99355755",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 22027739,
+     "name": "FENNEL | Miya",
+     "participants": [
+      {
+       "gamerTag": "Miya",
+       "user": {
+        "id": 1002311
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 1
+      }
+     }
+    }
+   }
+  ]
+ },
+ {
+  "id": 99355759,
+  "identifier": "G",
+  "round": -3,
+  "fullRoundText": "Losers Round 1",
+  "state": 3,
+  "totalGames": 5,
+  "winnerId": 22129359,
+  "startAt": 1771189200,
+  "startedAt": 1771191648,
+  "completedAt": 1771193175,
+  "phaseGroup": {
+   "id": 3192141,
+   "displayIdentifier": "ULT1",
+   "phase": {
+    "id": 2195696
+   }
+  },
+  "games": [
+   {
+    "orderNum": 1,
+    "winnerId": 22129359,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22120738
+      },
+      "character": {
+       "name": "Diddy Kong"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 2,
+    "winnerId": 22129359,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22120738
+      },
+      "character": {
+       "name": "Diddy Kong"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 3,
+    "winnerId": 22120738,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22120738
+      },
+      "character": {
+       "name": "Diddy Kong"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   },
+   {
+    "orderNum": 4,
+    "winnerId": 22129359,
+    "selections": [
+     {
+      "entrant": {
+       "id": 22120738
+      },
+      "character": {
+       "name": "Diddy Kong"
+      }
+     },
+     {
+      "entrant": {
+       "id": 22129359
+      },
+      "character": {
+       "name": "Steve"
+      }
+     }
+    ]
+   }
+  ],
+  "slots": [
+   {
+    "slotIndex": 0,
+    "prereqType": "set",
+    "prereqId": "99355756",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 22129359,
+     "name": "あcola",
+     "participants": [
+      {
+       "gamerTag": "あcola",
+       "user": {
+        "id": 1787719
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 3
+      }
+     }
+    }
+   },
+   {
+    "slotIndex": 1,
+    "prereqType": "set",
+    "prereqId": "99355757",
+    "prereqPlacement": 1,
+    "entrant": {
+     "id": 22120738,
+     "name": "TSM | Tweek",
+     "participants": [
+      {
+       "gamerTag": "Tweek",
+       "user": {
+        "id": 10213
+       }
+      }
+     ]
+    },
+    "standing": {
+     "stats": {
+      "score": {
+       "value": 1
+      }
+     }
+    }
+   }
+  ]
+ }
+]

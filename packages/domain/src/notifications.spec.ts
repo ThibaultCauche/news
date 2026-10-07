@@ -130,6 +130,8 @@ describe("textes de qualification (J23)", () => {
   });
 
   it("annonce une équipe de plus dans une structure suivie", () => {
+    expect(buildNotificationText("called", "Grand final: Sonix vs Zomba", false, null)).toEqual({ title: "Appelés à leur station", body: "Grand final: Sonix vs Zomba : les joueurs sont appelés, ça va commencer." });
+    expect(isTypeEnabled("called", { notifyMatchReminder: false, notifyMatchStart: true, notifyMatchResult: false, notifyQualification: false, notifyPredictionReminders: false })).toBe(true);
     expect(buildNotificationText("organization_joined", "Team Liquid", false, null, false, "League of Legends").body).toBe(
       "Team Liquid joue aussi en League of Legends : tu la suis déjà.",
     );

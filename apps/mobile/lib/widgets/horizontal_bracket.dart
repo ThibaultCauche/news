@@ -48,6 +48,10 @@ class _HorizontalBracketState extends State<HorizontalBracket> {
   final _scroll = ScrollController();
   final _transform = TransformationController();
   bool _centered = false;
+  // Fenêtre pour laquelle la vue a été calée, et geste de la personne : tant qu'elle n'a pas touché au dessin, on
+  // recale si la fenêtre change (le premier calcul peut tomber sur une hauteur provisoire, d'où un écran vide).
+  Size? _centeredFor;
+  bool _interacted = false;
 
   @override
   void dispose() {
@@ -69,8 +73,9 @@ class _HorizontalBracketState extends State<HorizontalBracket> {
   }
 
   void _centerBoth(Size viewport, Size content, Offset topLeft) {
-    if (_centered) return;
+    if (_interacted || (_centered && _centeredFor == viewport)) return;
     _centered = true;
+    _centeredFor = viewport;
     double fit(double target, double view, double size) => size <= view ? 0 : (-(target - (view - 0) / 2)).clamp(view - size, 0.0);
     _transform.value = Matrix4.translationValues(
       fit(topLeft.dx + bracketCardWidth / 2, viewport.width, content.width),
@@ -143,6 +148,7 @@ class _HorizontalBracketState extends State<HorizontalBracket> {
         _centerBoth(Size(constraints.maxWidth, constraints.maxHeight), Size(width, height), nextTopLeft);
         return InteractiveViewer(
           transformationController: _transform,
+          onInteractionStart: (_) => _interacted = true,
           constrained: false,
           minScale: 0.5,
           maxScale: 1.6,
