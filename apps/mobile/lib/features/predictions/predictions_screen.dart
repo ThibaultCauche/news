@@ -17,6 +17,7 @@ import "../competitions/competitions_data.dart";
 import "../learn/learn_screen.dart";
 import "../next_match/next_match_screen.dart";
 import "../profile/community_providers.dart";
+import "../bracket/pickem.dart";
 import "../profile/groups_screen.dart";
 
 /// Jeu « Pronostics » (docs/04 J11), ouvert depuis l'onglet Jeux : tes groupes d'amis (tous jeux
@@ -36,6 +37,7 @@ class PredictionsScreen extends ConsumerWidget {
           onRefresh: () async {
             ref.invalidate(predictionsProvider);
             ref.invalidate(groupsProvider);
+            ref.invalidate(myPickemsProvider);
           },
           child: ListView(
             padding: const EdgeInsets.all(AppSpacing.md),
@@ -44,7 +46,7 @@ class PredictionsScreen extends ConsumerWidget {
               const SizedBox(height: AppSpacing.xs),
               const Text("Devine les résultats en points fictifs et compare-toi à tes amis.", style: TextStyle(color: AppColors.textSecondary)),
               const SizedBox(height: AppSpacing.lg),
-              if (!signedIn) const _GuestCard() else ...const [GroupsSection(), SizedBox(height: AppSpacing.lg), _UpcomingSection()],
+              if (!signedIn) const _GuestCard() else ...const [GroupsSection(), SizedBox(height: AppSpacing.lg), MyPickemsSection(), _UpcomingSection()],
               const SizedBox(height: AppSpacing.xl * 2),
             ],
           ),

@@ -4,6 +4,7 @@ import { PrismaClient } from "@news/db";
 import {
   canPredict,
   canSeeFriendsPicks,
+  earnedBadges,
   generateGroupCode,
   GROUP_MAX_MEMBERS,
   normalizeGroupCode,
@@ -12,7 +13,7 @@ import {
   pseudoProblem,
 } from "@news/domain";
 import { PRISMA } from "../db/db.module";
-import { FriendsPicksDto, GroupDetailDto, GroupDto, PredictionDto, ProfileCampDto, PredictionStatsDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
+import { BadgeDto, FriendsPicksDto, GroupDetailDto, GroupDto, PredictionDto, ProfileCampDto, PredictionStatsDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
 
 const PSEUDO_MESSAGES = {
   length: "Le pseudo doit faire entre 3 et 20 caractères",
@@ -40,7 +41,23 @@ export class CommunityService {
       emailVerified: user.emailVerified,
       pseudoChangeWaitDays: pseudoChangeWaitDays(user.pseudoChangedAt, new Date()),
       stats: await this.getStats(userId),
+      badges: await this.getBadges(userId),
     };
+  }
+
+  /** Badges (J25) : déduits des pick'em et des phases suisses jouées, cosmétiques. */
+  private async getBadges(userId: string): Promise<BadgeDto[]> {
+    const [competitions, bonuses, swiss] = await Promise.all([
+      this.prisma.bracketPick.findMany({ where: { userId }, select: { competitionId: true }, distinct: ["competitionId"] }),
+      this.prisma.bracketPickBonus.findMany({ where: { userId }, select: { kind: true } }),
+      this.prisma.stagePick.findMany({ where: { userId, settledAt: { not: null } }, select: { entityIds: true, points: true } }),
+    ]);
+    return earnedBadges({
+      pickemsPlayed: competitions.length,
+      perfectBrackets: bonuses.filter((b) => b.kind === "perfect").length,
+      championsCalled: bonuses.filter((b) => b.kind === "champion").length,
+      perfectSwiss: swiss.filter((s) => (s.entityIds as string[]).length >= 4 && s.points === (s.entityIds as string[]).length).length,
+    });
   }
 
   async updateProfile(userId: string, dto: PutProfileDto): Promise<ProfileDto> {
@@ -90,7 +107,7 @@ export class CommunityService {
     }
     const user = await this.prisma.appUser.findUnique({ where: { id: userId } });
     if (!user?.pseudo) throw new NotFoundException("Joueur introuvable");
-    return { userId, pseudo: user.pseudo, avatarUrl: await this.avatarUrlOf(user.avatarEntityId), stats: await this.getStats(userId), camps: await this.campsOf(userId) };
+    return { userId, pseudo: user.pseudo, avatarUrl: await this.avatarUrlOf(user.avatarEntityId), stats: await this.getStats(userId), camps: await this.campsOf(userId), badges: await this.getBadges(userId) };
   }
 
   /** Camps du forum encore valables (équipe toujours suivie). */
@@ -115,6 +132,11 @@ export class CommunityService {
       where: { userId },
       select: { points: true, settledAt: true, event: { select: { startsAt: true } } },
     });
+    // Le pick'em de tableau compte dans les mêmes points (J25, docs/07) ; ni série ni bons pronostics.
+    const pickemPoints =
+      ((await this.prisma.bracketPick.aggregate({ where: { userId }, _sum: { points: true } }))._sum.points ?? 0) +
+      ((await this.prisma.bracketPickBonus.aggregate({ where: { userId }, _sum: { points: true } }))._sum.points ?? 0) +
+      ((await this.prisma.stagePick.aggregate({ where: { userId }, _sum: { points: true } }))._sum.points ?? 0);
     const settled = predictions.filter((p) => p.settledAt !== null).sort((a, b) => (a.event.startsAt?.getTime() ?? 0) - (b.event.startsAt?.getTime() ?? 0));
     let current = 0;
     let best = 0;
@@ -123,7 +145,7 @@ export class CommunityService {
       best = Math.max(best, current);
     }
     return {
-      points: predictions.reduce((sum, p) => sum + (p.points ?? 0), 0),
+      points: predictions.reduce((sum, p) => sum + (p.points ?? 0), 0) + pickemPoints,
       predictionsCount: predictions.length,
       settledCount: settled.length,
       correctCount: settled.filter((p) => (p.points ?? 0) > 0).length,
@@ -231,10 +253,14 @@ export class CommunityService {
     });
     if (!group) throw new NotFoundException("Groupe introuvable");
     const predictions = await this.prisma.prediction.findMany({ where: { userId: { in: group.members.map((m) => m.userId) }, ...(game ? { event: { competition: { game } } } : {}) }, select: { userId: true, points: true } });
+    // Le pick'em de tableau compte dans les mêmes points (J25, docs/07).
+    const bracketPicks = await this.prisma.bracketPick.findMany({ where: { userId: { in: group.members.map((m) => m.userId) }, points: { not: null }, ...(game ? { competition: { game } } : {}) }, select: { userId: true, points: true } });
+    const bracketBonuses = await this.prisma.bracketPickBonus.findMany({ where: { userId: { in: group.members.map((m) => m.userId) }, ...(game ? { competition: { game } } : {}) }, select: { userId: true, points: true } });
     const avatarEntityIds = group.members.map((m) => m.user.avatarEntityId).filter((id): id is string => id !== null);
     const avatars = new Map((await this.prisma.entity.findMany({ where: { id: { in: avatarEntityIds } }, select: { id: true, imageUrl: true } })).map((e) => [e.id, e.imageUrl]));
+    const stagePicks = await this.prisma.stagePick.findMany({ where: { userId: { in: group.members.map((m) => m.userId) }, points: { not: null }, ...(game ? { competition: { game } } : {}) }, select: { userId: true, points: true } });
     const entries = group.members.map((m) => {
-      const mine = predictions.filter((p) => p.userId === m.userId);
+      const mine = [...predictions, ...bracketPicks, ...bracketBonuses, ...stagePicks].filter((p) => p.userId === m.userId);
       return {
         userId: m.userId,
         pseudo: m.user.pseudo ?? "?",

@@ -30,6 +30,7 @@ import {
   titleProblem,
 } from "@news/domain";
 import { CacheService } from "../cache/cache.service";
+import { PickemService } from "../community/pickem.service";
 import { PRISMA } from "../db/db.module";
 import {
   BlockedUserDto,
@@ -81,6 +82,7 @@ export class ForumService {
     @Inject(PRISMA) private readonly prisma: PrismaClient,
     private readonly cache: CacheService,
     private readonly config: ConfigService,
+    private readonly pickem: PickemService,
   ) {}
 
   // ---- Accès ----
@@ -487,12 +489,16 @@ export class ForumService {
       if (thread.kind === "live") throw badRequest("SHARE_NOT_ALLOWED", "On ne partage pas dans le direct");
       if (body) checkText();
       const { kind, refId } = dto.share;
-      if (kind === "competition") {
+      if (kind === "competition" || kind === "pickem") {
         if (!(await this.prisma.competition.findUnique({ where: { id: refId }, select: { id: true } }))) throw new NotFoundException("Compétition introuvable");
       } else if (kind === "team") {
         if (!(await this.prisma.entity.findFirst({ where: { id: refId, kind: "team" }, select: { id: true } }))) throw new NotFoundException("Équipe introuvable");
       } else {
         if (!(await this.prisma.event.findUnique({ where: { id: refId }, select: { id: true } }))) throw new NotFoundException("Match introuvable");
+      }
+      if (kind === "pickem") {
+        if (!isPrivateThreadKind(thread.kind)) throw badRequest("SHARE_PRIVATE_ONLY", "Un tableau se partage dans un groupe ou en message privé");
+        if (!(await this.prisma.bracketPick.findFirst({ where: { userId: user.id, competitionId: refId }, select: { id: true } }))) throw badRequest("NO_PICKEM", "Tu n'as pas rempli de tableau pour cette compétition");
       }
       if (kind === "prediction") {
         if (!isPrivateThreadKind(thread.kind)) throw badRequest("SHARE_PRIVATE_ONLY", "Un pronostic se partage dans un groupe ou en message privé");
@@ -763,7 +769,15 @@ export class ForumService {
   private async buildShares(viewerId: string | null, rows: MessageRow[]): Promise<Map<string, ForumSharedDto>> {
     const shares = new Map<string, ForumSharedDto>();
     for (const r of rows) {
-      if ((r.kind === "event" || r.kind === "competition" || r.kind === "team") && r.refId) shares.set(r.id, { kind: r.kind, refId: r.refId, pickedEntityId: null, pickedScore: null, otherScore: null, locked: false });
+      if ((r.kind === "event" || r.kind === "competition" || r.kind === "team") && r.refId) shares.set(r.id, { kind: r.kind, refId: r.refId, pickedEntityId: null, pickedScore: null, otherScore: null, locked: false, pickemPicked: null, pickemTotal: null, pickemPoints: null });
+    }
+    const pickemRows = rows.filter((r) => r.kind === "pickem" && r.refId);
+    if (pickemRows.length > 0) {
+      const summaries = await this.pickem.shareSummaries(viewerId, pickemRows.map((r) => ({ userId: r.userId, competitionId: r.refId! })));
+      for (const r of pickemRows) {
+        const s = summaries.get(`${r.userId}:${r.refId}`);
+        shares.set(r.id, { kind: "pickem", refId: r.refId!, pickedEntityId: s?.championEntityId ?? null, pickedScore: null, otherScore: null, locked: s?.locked ?? true, pickemPicked: s?.picked ?? null, pickemTotal: s?.total ?? null, pickemPoints: s?.points ?? null });
+      }
     }
     const predictionRows = rows.filter((r) => r.kind === "prediction" && r.refId);
     if (predictionRows.length === 0) return shares;
@@ -782,6 +796,9 @@ export class ForumService {
         pickedScore: visible ? prediction.pickedScore : null,
         otherScore: visible ? prediction.otherScore : null,
         locked: !visible,
+        pickemPicked: null,
+        pickemTotal: null,
+        pickemPoints: null,
       });
     }
     return shares;

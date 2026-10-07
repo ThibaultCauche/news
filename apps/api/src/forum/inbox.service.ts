@@ -13,7 +13,7 @@ const forbidden = (code: string, message: string) => new ForbiddenException({ st
 const threadInclude = { _count: { select: { messages: { where: { hiddenAt: null } } } } } as const;
 type ThreadRow = ForumThread & { _count: { messages: number } };
 
-const SHARE_PREVIEWS: Record<string, string> = { event: "a partagé un match", competition: "a partagé une compétition", team: "a partagé une équipe", prediction: "a partagé un pronostic" };
+const SHARE_PREVIEWS: Record<string, string> = { event: "a partagé un match", competition: "a partagé une compétition", team: "a partagé une équipe", prediction: "a partagé un pronostic", pickem: "a partagé son tableau" };
 
 // Boîte « Discussion » (J24) : mes fils (groupes, messages privés, fils suivis ou où j'ai écrit) avec leurs
 // non-lus, contacts pour écrire en privé, recherche de discussions publiques. Les règles d'accès (membre

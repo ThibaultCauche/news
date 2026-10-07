@@ -67,6 +67,8 @@ model Competition {
   standings  Standing[]
   favorites  FavoriteCompetition[]
   stagePicks StagePick[]
+  bracketPicks   BracketPick[]
+  bracketBonuses BracketPickBonus[]
   createdAt  DateTime      @default(now()) @map("created_at")
   updatedAt  DateTime      @updatedAt @map("updated_at")
 
@@ -105,6 +107,9 @@ model StagePick {
   competitionId String      @map("competition_id")
   competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
   entityIds     Json        @map("entity_ids")
+  // Points réglés une seule fois à la fin de l'étape (J25) : un par équipe qualifiée devinée.
+  points        Int?
+  settledAt     DateTime?   @map("settled_at")
   createdAt     DateTime    @default(now()) @map("created_at")
   updatedAt     DateTime    @updatedAt @map("updated_at")
 
@@ -147,6 +152,7 @@ model Event {
   linksFrom        EventLink[]        @relation("EventLinkFrom")
   linksTo          EventLink[]        @relation("EventLinkTo")
   notificationLogs NotificationLog[]
+  bracketPicks     BracketPick[]
   predictions      Prediction[]
   createdAt        DateTime           @default(now()) @map("created_at")
   updatedAt        DateTime           @updatedAt @map("updated_at")
@@ -280,6 +286,8 @@ model AppUser {
   favoriteGames    FavoriteGame[]
   favoriteCompetitions FavoriteCompetition[]
   stagePicks           StagePick[]
+  bracketPicks         BracketPick[]
+  bracketBonuses       BracketPickBonus[]
   predictions      Prediction[]
   learnProgress    LearnProgress[]
   ownedGroups      FriendGroup[]
@@ -686,4 +694,40 @@ model ForumPollVote {
 
   @@id([messageId, userId])
   @@map("forum_poll_vote")
+}
+
+// Pick'em de tableau (J25, docs/07) : un vainqueur choisi par match du tableau, verrouillé au premier match.
+// `points` reste nul tant que le match n'est pas terminé (le worker le remplit une seule fois).
+model BracketPick {
+  id             String      @id @default(uuid())
+  userId         String      @map("user_id")
+  user           AppUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  competitionId  String      @map("competition_id")
+  competition    Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  eventId        String      @map("event_id")
+  event          Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  pickedEntityId String      @map("picked_entity_id")
+  points         Int?
+  settledAt      DateTime?   @map("settled_at")
+  createdAt      DateTime    @default(now()) @map("created_at")
+  updatedAt      DateTime    @updatedAt @map("updated_at")
+
+  @@unique([userId, eventId])
+  @@index([competitionId])
+  @@map("bracket_pick")
+}
+
+// Bonus du pick'em (`kind` : « perfect » = tableau parfait, « champion » = bon vainqueur de la finale) : une ligne par
+// personne, compétition et type, créée une seule fois.
+model BracketPickBonus {
+  kind          String      @default("perfect")
+  userId        String      @map("user_id")
+  user          AppUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  competitionId String      @map("competition_id")
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  points        Int
+  createdAt     DateTime    @default(now()) @map("created_at")
+
+  @@id([userId, competitionId, kind])
+  @@map("bracket_pick_bonus")
 }

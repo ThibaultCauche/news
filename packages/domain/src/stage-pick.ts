@@ -25,3 +25,15 @@ export function scoreStagePick(picks: string[], qualifiedIds: Set<string>, elimi
   }
   return { correct, wrong, pending: picks.length - correct - wrong };
 }
+
+/** Points d'un pronostic de phase suisse (J25) : un par équipe choisie qui s'est qualifiée. */
+export const STAGE_PICK_POINT = 1;
+
+export function stagePickPoints(picks: string[], qualifiedIds: Set<string>): number {
+  return picks.filter((id) => qualifiedIds.has(id)).length * STAGE_PICK_POINT;
+}
+
+/** L'étape est terminée quand le sort de chaque équipe est réglé (qualifiée ou éliminée). */
+export function isStageSettled(teamIds: string[], qualifiedIds: Set<string>, eliminatedIds: Set<string>): boolean {
+  return teamIds.length > 0 && teamIds.every((id) => qualifiedIds.has(id) || eliminatedIds.has(id));
+}

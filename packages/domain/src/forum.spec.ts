@@ -91,3 +91,11 @@ describe("forum", () => {
     });
   });
 });
+
+import { FORUM_MESSAGE_KINDS as MESSAGE_KINDS, FORUM_SHARE_KINDS as SHARE_KINDS } from "./forum";
+
+describe("types de messages et de partages", () => {
+  it("chaque type partageable est aussi un type de message (sinon le client généré refuse la page entière)", () => {
+    for (const kind of SHARE_KINDS) expect(MESSAGE_KINDS).toContain(kind);
+  });
+});

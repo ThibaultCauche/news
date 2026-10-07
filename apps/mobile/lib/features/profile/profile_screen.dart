@@ -137,6 +137,8 @@ class _AccountSections extends ConsumerWidget {
         _PseudoHeader(profile: profile),
         const SizedBox(height: AppSpacing.md),
         StatsCard(stats: profile.stats),
+        const SizedBox(height: AppSpacing.lg),
+        BadgesRow(badges: profile.badges.toList()),
       ],
     );
   }
@@ -435,6 +437,42 @@ class StatsCardState extends ConsumerState<StatsCard> {
           if (hidden) const Padding(padding: EdgeInsets.only(top: AppSpacing.sm), child: Text("Sans spoil : appui long pour afficher.", style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.caption))),
         ],
       ),
+    );
+  }
+}
+
+/// Badges (J25) : cosmétiques, gagnés par l'activité. Ceux qu'on n'a pas encore sont grisés ; un appui donne la condition.
+class BadgesRow extends StatelessWidget {
+  const BadgesRow({super.key, required this.badges});
+
+  final List<BadgeDto> badges;
+
+  @override
+  Widget build(BuildContext context) {
+    if (badges.isEmpty) return const SizedBox.shrink();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const SectionLabel("BADGES"),
+        const SizedBox(height: AppSpacing.sm),
+        Wrap(
+          spacing: 8,
+          runSpacing: 8,
+          children: [
+            for (final b in badges)
+              Tooltip(
+                message: b.description,
+                triggerMode: TooltipTriggerMode.tap,
+                child: Chip(
+                  avatar: Icon(b.earned ? Icons.workspace_premium_rounded : Icons.lock_outline_rounded, size: 18, color: b.earned ? AppColors.brass : AppColors.textTertiary),
+                  label: Text(b.label, style: TextStyle(color: b.earned ? AppColors.textPrimary : AppColors.textTertiary)),
+                  side: BorderSide(color: b.earned ? AppColors.brass : AppColors.surfaceBorder),
+                  visualDensity: VisualDensity.compact,
+                ),
+              ),
+          ],
+        ),
+      ],
     );
   }
 }

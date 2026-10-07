@@ -73,6 +73,8 @@ class PlayerProfileScreen extends ConsumerWidget {
             ],
             const SizedBox(height: AppSpacing.lg),
             StatsCard(stats: value.stats),
+            const SizedBox(height: AppSpacing.lg),
+            BadgesRow(badges: value.badges.toList()),
           ],
         ),
       ),

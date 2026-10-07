@@ -88,7 +88,10 @@ export class ForumSharedDto {
   @ApiPropertyOptional({ nullable: true, type: String, description: "Pronostic partagé : équipe choisie, seulement une fois le match commencé (ou pour son auteur)" }) pickedEntityId!: string | null;
   @ApiPropertyOptional({ nullable: true, type: Number }) pickedScore!: number | null;
   @ApiPropertyOptional({ nullable: true, type: Number }) otherScore!: number | null;
-  @ApiProperty({ description: "Pronostic partagé encore caché (le match n'a pas commencé)" }) locked!: boolean;
+  @ApiProperty({ description: "Pronostic ou tableau partagé encore caché (le match ou le tournoi n'a pas commencé)" }) locked!: boolean;
+  @ApiPropertyOptional({ nullable: true, type: Number, description: "Tableau partagé : nombre de matchs choisis et total, visibles même avant le début" }) pickemPicked!: number | null;
+  @ApiPropertyOptional({ nullable: true, type: Number }) pickemTotal!: number | null;
+  @ApiPropertyOptional({ nullable: true, type: Number, description: "Tableau partagé : points marqués, une fois le tournoi commencé" }) pickemPoints!: number | null;
 }
 
 export class ForumPollOptionDto {

@@ -23,12 +23,21 @@ export class PredictionStatsDto {
   @ApiProperty() bestStreak!: number;
 }
 
+// Badge (J25) : cosmétique, déduit de l'activité (`packages/domain/src/badges.ts`).
+export class BadgeDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() label!: string;
+  @ApiProperty() description!: string;
+  @ApiProperty() earned!: boolean;
+}
+
 export class ProfileDto {
   @ApiPropertyOptional({ nullable: true, type: String }) pseudo!: string | null;
   @ApiPropertyOptional({ nullable: true, type: String }) avatarUrl!: string | null;
   @ApiProperty() emailVerified!: boolean;
   @ApiProperty({ description: "Jours à attendre avant de pouvoir changer de pseudo (0 = possible)" }) pseudoChangeWaitDays!: number;
   @ApiProperty({ type: PredictionStatsDto }) stats!: PredictionStatsDto;
+  @ApiProperty({ type: [BadgeDto] }) badges!: BadgeDto[];
 }
 
 export class ProfileCampDto {
@@ -44,6 +53,7 @@ export class PublicProfileDto {
   @ApiPropertyOptional({ nullable: true, type: String }) avatarUrl!: string | null;
   @ApiProperty({ type: PredictionStatsDto }) stats!: PredictionStatsDto;
   @ApiProperty({ type: [ProfileCampDto], description: "Camps du forum (une équipe par jeu)" }) camps!: ProfileCampDto[];
+  @ApiProperty({ type: [BadgeDto] }) badges!: BadgeDto[];
 }
 
 export class PutPredictionDto {

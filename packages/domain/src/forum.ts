@@ -55,9 +55,9 @@ export function dmTargetId(a: string, b: string): string {
 }
 
 /** Types de message : le texte, trois cartes partagées (un identifiant, jamais de lien libre) et le sondage. */
-export const FORUM_MESSAGE_KINDS = ["text", "event", "competition", "prediction", "team", "poll"] as const;
+export const FORUM_MESSAGE_KINDS = ["text", "event", "competition", "prediction", "team", "poll", "pickem"] as const;
 export type ForumMessageKind = (typeof FORUM_MESSAGE_KINDS)[number];
-export const FORUM_SHARE_KINDS = ["event", "competition", "prediction", "team"] as const;
+export const FORUM_SHARE_KINDS = ["event", "competition", "prediction", "team", "pickem"] as const;
 export type ForumShareKind = (typeof FORUM_SHARE_KINDS)[number];
 
 export const POLL_MIN_OPTIONS = 2;

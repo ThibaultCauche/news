@@ -1,6 +1,7 @@
 import "package:firebase_core/firebase_core.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter/material.dart";
+import "../../features/bracket/pickem.dart";
 import "../../features/forum/thread_screen.dart";
 import "../../features/next_match/next_match_screen.dart";
 import "local_notifications.dart";
@@ -38,6 +39,9 @@ void openFromNotification(NotificationTarget data) {
   final threadId = data["threadId"];
   if (threadId is String) {
     navigatorKey.currentState?.push(MaterialPageRoute(builder: (_) => ForumThreadScreen(threadId: threadId)));
+  } else if (data["kind"] == "pickem" && data["competitionId"] is String) {
+    final context = navigatorKey.currentContext;
+    if (context != null) openPickemScreen(context, data["competitionId"] as String);
   } else if (data["eventId"] is String) {
     openMatch(data["eventId"] as String);
   }

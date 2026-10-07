@@ -35,6 +35,8 @@ export class StagePickDto {
   // Le pronostic de la personne connectée (ids d'équipes).
   @ApiProperty({ type: [String] }) picks!: string[];
   @ApiProperty({ nullable: true, type: StagePickScoreDto }) score!: StagePickScoreDto | null;
+  // Points versés à la fin de l'étape (un par équipe qualifiée devinée) ; nul tant que l'étape n'est pas finie.
+  @ApiProperty({ nullable: true, type: Number }) points!: number | null;
 }
 
 export class PutStagePickDto {
@@ -96,6 +98,7 @@ export class StagePickService {
         .map((t) => ({ ...t, state: qualified.has(t.entityId) ? "qualified" : eliminated.has(t.entityId) ? "eliminated" : "playing" })),
       picks,
       score: picks.length > 0 ? scoreStagePick(picks, qualified, eliminated) : null,
+      points: saved?.settledAt ? (saved.points ?? 0) : null,
     };
   }
 

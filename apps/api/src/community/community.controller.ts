@@ -6,6 +6,7 @@ import { CurrentUser } from "../auth/current-user.decorator";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { CreateGroupDto, FriendsPicksDto, GroupDetailDto, GroupDto, JoinGroupDto, PredictionDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
 import { CommunityService } from "./community.service";
+import { MyPickemDto, PickemDto, PickemGroupsDto, PickemService, PutPickemDto } from "./pickem.service";
 import { PutStagePickDto, StagePickDto, StagePickService } from "./stage-pick.service";
 
 // Profil, pronostics et groupes d'amis (J11, docs/04) : tout exige un compte connecté.
@@ -15,6 +16,7 @@ export class CommunityController {
   constructor(
     private readonly community: CommunityService,
     private readonly stagePicks: StagePickService,
+    private readonly pickem: PickemService,
   ) {}
 
   @Get("me/profile")
@@ -58,6 +60,31 @@ export class CommunityController {
   @ApiOkResponse({ type: StagePickDto })
   putStagePick(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string, @Body() dto: PutStagePickDto): Promise<StagePickDto> {
     return this.stagePicks.put(user.id, id, dto);
+  }
+
+  // Pick'em de tableau (J25) : le vainqueur de chaque match, avant le premier match.
+  @Get("competitions/:id/pickem")
+  @ApiOkResponse({ type: PickemDto })
+  getPickem(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<PickemDto> {
+    return this.pickem.get(user.id, id);
+  }
+
+  @Put("competitions/:id/pickem")
+  @ApiOkResponse({ type: PickemDto })
+  putPickem(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string, @Body() dto: PutPickemDto): Promise<PickemDto> {
+    return this.pickem.put(user.id, id, dto);
+  }
+
+  @Get("competitions/:id/pickem/groups")
+  @ApiOkResponse({ type: PickemGroupsDto })
+  getPickemGroups(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<PickemGroupsDto> {
+    return this.pickem.groups(user.id, id);
+  }
+
+  @Get("me/pickems")
+  @ApiOkResponse({ type: [MyPickemDto] })
+  myPickems(@CurrentUser() user: AuthUser): Promise<MyPickemDto[]> {
+    return this.pickem.mine(user.id);
   }
 
   @Get("events/:id/friends-picks")

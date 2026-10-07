@@ -90,6 +90,8 @@ class _AutoRefreshState extends ConsumerState<AutoRefresh> with WidgetsBindingOb
     ref.invalidate(homeProvider);
     ref.invalidate(followsProvider);
     ref.invalidate(predictionsProvider);
+    // Points et badges évoluent au fil des matchs (règlement par le worker) : le profil suit.
+    ref.invalidate(profileProvider);
     ref.invalidate(inboxProvider);
     ref.invalidate(eventProvider);
     if (ref.read(tabIndexProvider) == _agendaTab) ref.invalidate(agendaProvider);

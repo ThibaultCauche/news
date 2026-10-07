@@ -8,6 +8,7 @@ import "../../theme/tokens.dart";
 import "../../widgets/compact_match_row.dart";
 import "../../widgets/section_card.dart";
 import "../bracket/bracket_provider.dart";
+import "../bracket/pickem.dart";
 import "../competitions/game_screen.dart" show openCompetitionPage;
 import "../forum/forum_providers.dart";
 import "../../core/games.dart";
@@ -44,6 +45,7 @@ class SharedCard extends ConsumerWidget {
       ForumSharedDtoKindEnum.competition => _CompetitionCard(competitionId: shared.refId),
       ForumSharedDtoKindEnum.prediction => _PredictionCard(shared: shared, pseudo: pseudo),
       ForumSharedDtoKindEnum.team => _TeamCard(entityId: shared.refId),
+      ForumSharedDtoKindEnum.pickem => _PickemShareCard(shared: shared, pseudo: pseudo),
       _ => _EventCard(eventId: shared.refId),
     };
   }
@@ -163,6 +165,42 @@ class _PredictionCard extends ConsumerWidget {
             Icon(shared.locked ? Icons.lock_outline_rounded : Icons.emoji_events_outlined, color: AppColors.gold),
             const SizedBox(width: AppSpacing.md),
             Expanded(child: Text(text, style: AppTextStyles.bodyStrong)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Tableau de pick'em partagé : le nombre de choix se voit toujours, le champion et les points au début du tournoi
+/// (décidé par le serveur). Un appui ouvre mon propre tableau pour cette compétition.
+class _PickemShareCard extends ConsumerWidget {
+  const _PickemShareCard({required this.shared, required this.pseudo});
+
+  final ForumSharedDto shared;
+  final String pseudo;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final detail = ref.watch(competitionDetailProvider(shared.refId)).value;
+    final parentName = detail?.parentId == null ? null : ref.watch(competitionDetailProvider(detail!.parentId!)).value?.name;
+    final name = detail == null ? "ce tournoi" : (parentName == null || detail.name.contains(parentName) ? detail.name : "$parentName · ${detail.name}");
+    final hidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
+    final champion = shared.pickedEntityId == null ? null : ref.watch(entityProvider(shared.pickedEntityId!)).value;
+    final picked = shared.pickemPicked ?? 0;
+    final total = shared.pickemTotal ?? 0;
+    final text = shared.locked
+        ? "$pseudo a rempli son tableau ($picked/$total matchs) pour $name. Il sera dévoilé au début du tournoi."
+        : "$pseudo mise sur ${champion?.name ?? "?"} pour $name ($picked/$total matchs)${hidden || shared.pickemPoints == null ? "" : ", ${shared.pickemPoints} pts"}.";
+    return SectionCard(
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => PickemScreen(competitionId: shared.refId))),
+        child: Row(
+          children: [
+            Icon(shared.locked ? Icons.lock_outline_rounded : Icons.account_tree_outlined, color: AppColors.brass),
+            const SizedBox(width: AppSpacing.md),
+            Expanded(child: Text(text, style: AppTextStyles.bodyStrong)),
+            const Icon(Icons.chevron_right_rounded, color: AppColors.textTertiary),
           ],
         ),
       ),

@@ -18,6 +18,7 @@ import "../../widgets/bracket_match_card.dart";
 import "../../widgets/horizontal_bracket.dart";
 import "../../widgets/ornate_frame.dart";
 import "../../widgets/spoiler_hold.dart";
+import "pickem.dart";
 import "radial_bracket.dart";
 import "bracket_model.dart";
 import "bracket_view.dart";
@@ -248,12 +249,19 @@ class _FinalsTab extends ConsumerWidget {
     final bracket = ref.watch(bracketProvider(competitionId));
     final follows = ref.watch(followsProvider).value;
 
-    return AsyncView(
-      value: bracket,
-      errorMessage: "Impossible de charger l'arbre.",
-      onRetry: () => ref.invalidate(bracketProvider(competitionId)),
-      skeleton: const Center(child: Skeleton(width: 280, height: 280, radius: 140)),
-      builder: (value) => _FinalsView(bracket: value, follows: follows),
+    return Column(
+      children: [
+        PickemCard(competitionId: competitionId),
+        Expanded(
+          child: AsyncView(
+            value: bracket,
+            errorMessage: "Impossible de charger l'arbre.",
+            onRetry: () => ref.invalidate(bracketProvider(competitionId)),
+            skeleton: const Center(child: Skeleton(width: 280, height: 280, radius: 140)),
+            builder: (value) => _FinalsView(bracket: value, follows: follows),
+          ),
+        ),
+      ],
     );
   }
 }

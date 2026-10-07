@@ -93,9 +93,10 @@ class StagePickCard extends ConsumerWidget {
       return const [Text("Le pronostic est fermé : la phase suisse a commencé.", style: TextStyle(color: AppColors.textSecondary))];
     }
     final score = pick.score;
+    final points = pick.points;
     final summary = hideResults || score == null
         ? "${pick.picks.length} équipes choisies. Résultats masqués (sans spoil)."
-        : "${score.correct} bonne${score.correct > 1 ? "s" : ""} · ${score.wrong} ratée${score.wrong > 1 ? "s" : ""} · ${score.pending} en cours";
+        : "${score.correct} bonne${score.correct > 1 ? "s" : ""} · ${score.wrong} ratée${score.wrong > 1 ? "s" : ""} · ${score.pending} en cours${points == null ? "" : " · $points point${points > 1 ? "s" : ""}"}";
     return [
       Text(summary, style: const TextStyle(fontWeight: FontWeight.w600)),
       const SizedBox(height: AppSpacing.sm),
