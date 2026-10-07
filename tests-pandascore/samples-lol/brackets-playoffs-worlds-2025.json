@@ -1,0 +1,1380 @@
+[
+ {
+  "id": 1244381,
+  "name": "Grand final: T1 vs KT",
+  "status": "finished",
+  "results": [
+   {
+    "score": 3,
+    "team_id": 126061
+   },
+   {
+    "score": 2,
+    "team_id": 63
+   }
+  ],
+  "live": {
+   "supported": false,
+   "url": null,
+   "opens_at": null
+  },
+  "begin_at": "2025-11-09T07:23:50Z",
+  "detailed_stats": true,
+  "end_at": "2025-11-09T12:09:50Z",
+  "forfeit": false,
+  "winner_id": 126061,
+  "winner_type": "Team",
+  "draw": false,
+  "slug": "kt-rolster-2025-11-09",
+  "games": [
+   {
+    "complete": true,
+    "id": 272974,
+    "position": 1,
+    "status": "finished",
+    "length": 2169,
+    "finished": true,
+    "begin_at": "2025-11-09T07:23:50Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-09T08:09:55Z",
+    "forfeit": false,
+    "match_id": 1244381,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272975,
+    "position": 2,
+    "status": "finished",
+    "length": 2552,
+    "finished": true,
+    "begin_at": "2025-11-09T08:25:48Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-09T09:15:33Z",
+    "forfeit": false,
+    "match_id": 1244381,
+    "winner_type": "Team",
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272976,
+    "position": 3,
+    "status": "finished",
+    "length": 2212,
+    "finished": true,
+    "begin_at": "2025-11-09T09:33:17Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-09T10:17:40Z",
+    "forfeit": false,
+    "match_id": 1244381,
+    "winner_type": "Team",
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272977,
+    "position": 4,
+    "status": "finished",
+    "length": 1780,
+    "finished": true,
+    "begin_at": "2025-11-09T10:32:33Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-09T11:09:55Z",
+    "forfeit": false,
+    "match_id": 1244381,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272978,
+    "position": 5,
+    "status": "finished",
+    "length": 2206,
+    "finished": true,
+    "begin_at": "2025-11-09T11:25:05Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-09T12:09:50Z",
+    "forfeit": false,
+    "match_id": 1244381,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   }
+  ],
+  "tournament_id": 17664,
+  "modified_at": "2025-11-09T12:26:33Z",
+  "match_type": "best_of",
+  "number_of_games": 5,
+  "scheduled_at": "2025-11-09T07:25:00Z",
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 63,
+     "name": "KT Rolster",
+     "location": "KR",
+     "slug": "kt-rolster",
+     "modified_at": "2026-09-18T08:31:50Z",
+     "acronym": "KT",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+    }
+   }
+  ],
+  "previous_matches": [
+   {
+    "type": "winner",
+    "match_id": 1244379
+   },
+   {
+    "type": "winner",
+    "match_id": 1244380
+   }
+  ],
+  "original_scheduled_at": "2025-11-09T07:00:00Z",
+  "game_advantage": null,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/ADaZLxI3uWg",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=ADaZLxI3uWg"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   }
+  ]
+ },
+ {
+  "id": 1244380,
+  "name": "Semifinal 2: T1 vs TES",
+  "status": "finished",
+  "results": [
+   {
+    "score": 3,
+    "team_id": 126061
+   },
+   {
+    "score": 0,
+    "team_id": 126059
+   }
+  ],
+  "live": {
+   "supported": false,
+   "url": null,
+   "opens_at": null
+  },
+  "begin_at": "2025-11-02T07:10:33Z",
+  "detailed_stats": true,
+  "end_at": "2025-11-02T09:30:17Z",
+  "forfeit": false,
+  "winner_id": 126061,
+  "winner_type": "Team",
+  "draw": false,
+  "slug": "top-esports-vs-t1-2025-11-02",
+  "games": [
+   {
+    "complete": true,
+    "id": 272969,
+    "position": 1,
+    "status": "finished",
+    "length": 1812,
+    "finished": true,
+    "begin_at": "2025-11-02T07:10:34Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-02T07:52:35Z",
+    "forfeit": false,
+    "match_id": 1244380,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272970,
+    "position": 2,
+    "status": "finished",
+    "length": 1630,
+    "finished": true,
+    "begin_at": "2025-11-02T08:06:19Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-02T08:41:27Z",
+    "forfeit": false,
+    "match_id": 1244380,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272971,
+    "position": 3,
+    "status": "finished",
+    "length": 1735,
+    "finished": true,
+    "begin_at": "2025-11-02T08:56:11Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-02T09:30:17Z",
+    "forfeit": false,
+    "match_id": 1244380,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   }
+  ],
+  "tournament_id": 17664,
+  "modified_at": "2025-11-02T09:56:47Z",
+  "match_type": "best_of",
+  "number_of_games": 5,
+  "scheduled_at": "2025-11-02T07:00:00Z",
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126059,
+     "name": "Top Esports",
+     "location": "CN",
+     "slug": "top-esports",
+     "modified_at": "2026-10-06T11:02:59Z",
+     "acronym": "TES",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "previous_matches": [
+   {
+    "type": "winner",
+    "match_id": 1244377
+   },
+   {
+    "type": "winner",
+    "match_id": 1244378
+   }
+  ],
+  "original_scheduled_at": "2025-11-02T07:00:00Z",
+  "game_advantage": null,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/1Z_bBZsLhyg",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=1Z_bBZsLhyg"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   }
+  ]
+ },
+ {
+  "id": 1244379,
+  "name": "Semifinal 1: GEN vs KT",
+  "status": "finished",
+  "results": [
+   {
+    "score": 3,
+    "team_id": 63
+   },
+   {
+    "score": 1,
+    "team_id": 2882
+   }
+  ],
+  "live": {
+   "supported": false,
+   "url": null,
+   "opens_at": null
+  },
+  "begin_at": "2025-11-01T07:10:14Z",
+  "detailed_stats": true,
+  "end_at": "2025-11-01T10:49:14Z",
+  "forfeit": false,
+  "winner_id": 63,
+  "winner_type": "Team",
+  "draw": false,
+  "slug": "gen-g-2025-11-01",
+  "games": [
+   {
+    "complete": true,
+    "id": 272964,
+    "position": 1,
+    "status": "finished",
+    "length": 2806,
+    "finished": true,
+    "begin_at": "2025-11-01T07:10:15Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-01T08:04:27Z",
+    "forfeit": false,
+    "match_id": 1244379,
+    "winner_type": "Team",
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272965,
+    "position": 2,
+    "status": "finished",
+    "length": 2348,
+    "finished": true,
+    "begin_at": "2025-11-01T08:17:11Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-01T09:04:00Z",
+    "forfeit": false,
+    "match_id": 1244379,
+    "winner_type": "Team",
+    "winner": {
+     "id": 2882,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272966,
+    "position": 3,
+    "status": "finished",
+    "length": 1740,
+    "finished": true,
+    "begin_at": "2025-11-01T09:16:41Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-01T09:53:27Z",
+    "forfeit": false,
+    "match_id": 1244379,
+    "winner_type": "Team",
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272967,
+    "position": 4,
+    "status": "finished",
+    "length": 2108,
+    "finished": true,
+    "begin_at": "2025-11-01T10:06:27Z",
+    "detailed_stats": true,
+    "end_at": "2025-11-01T10:49:15Z",
+    "forfeit": false,
+    "match_id": 1244379,
+    "winner_type": "Team",
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    }
+   }
+  ],
+  "tournament_id": 17664,
+  "modified_at": "2025-11-01T11:17:18Z",
+  "match_type": "best_of",
+  "number_of_games": 5,
+  "scheduled_at": "2025-11-01T07:10:00Z",
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2882,
+     "name": "Gen.G",
+     "location": "KR",
+     "slug": "geng",
+     "modified_at": "2026-10-06T11:02:37Z",
+     "acronym": "GEN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 63,
+     "name": "KT Rolster",
+     "location": "KR",
+     "slug": "kt-rolster",
+     "modified_at": "2026-09-18T08:31:50Z",
+     "acronym": "KT",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+    }
+   }
+  ],
+  "previous_matches": [
+   {
+    "type": "winner",
+    "match_id": 1244375
+   },
+   {
+    "type": "winner",
+    "match_id": 1244376
+   }
+  ],
+  "original_scheduled_at": "2025-11-01T07:00:00Z",
+  "game_advantage": null,
+  "streams_list": [
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   }
+  ]
+ },
+ {
+  "id": 1244378,
+  "name": "Quarterfinal 4: AL vs T1",
+  "status": "finished",
+  "results": [
+   {
+    "score": 3,
+    "team_id": 126061
+   },
+   {
+    "score": 2,
+    "team_id": 129971
+   }
+  ],
+  "live": {
+   "supported": false,
+   "url": null,
+   "opens_at": null
+  },
+  "begin_at": "2025-10-31T07:08:19Z",
+  "detailed_stats": true,
+  "end_at": "2025-10-31T11:41:00Z",
+  "forfeit": false,
+  "winner_id": 126061,
+  "winner_type": "Team",
+  "draw": false,
+  "slug": "2025-10-31",
+  "games": [
+   {
+    "complete": true,
+    "id": 272959,
+    "position": 1,
+    "status": "finished",
+    "length": 2161,
+    "finished": true,
+    "begin_at": "2025-10-31T07:08:20Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-31T07:51:14Z",
+    "forfeit": false,
+    "match_id": 1244378,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272960,
+    "position": 2,
+    "status": "finished",
+    "length": 1892,
+    "finished": true,
+    "begin_at": "2025-10-31T08:04:19Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-31T08:42:24Z",
+    "forfeit": false,
+    "match_id": 1244378,
+    "winner_type": "Team",
+    "winner": {
+     "id": 129971,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272961,
+    "position": 3,
+    "status": "finished",
+    "length": 2287,
+    "finished": true,
+    "begin_at": "2025-10-31T08:55:32Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-31T09:42:27Z",
+    "forfeit": false,
+    "match_id": 1244378,
+    "winner_type": "Team",
+    "winner": {
+     "id": 129971,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272962,
+    "position": 4,
+    "status": "finished",
+    "length": 2192,
+    "finished": true,
+    "begin_at": "2025-10-31T09:54:24Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-31T10:38:23Z",
+    "forfeit": false,
+    "match_id": 1244378,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272963,
+    "position": 5,
+    "status": "finished",
+    "length": 2114,
+    "finished": true,
+    "begin_at": "2025-10-31T10:58:09Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-31T11:41:01Z",
+    "forfeit": false,
+    "match_id": 1244378,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    }
+   }
+  ],
+  "tournament_id": 17664,
+  "modified_at": "2025-10-31T11:51:57Z",
+  "match_type": "best_of",
+  "number_of_games": 5,
+  "scheduled_at": "2025-10-31T07:10:00Z",
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 129971,
+     "name": "Anyone's Legend",
+     "location": "CN",
+     "slug": "anyone-s-legend",
+     "modified_at": "2026-10-06T11:02:39Z",
+     "acronym": "AL",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/129971/1083px_anyone_s_legend_full_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "previous_matches": [],
+  "original_scheduled_at": "2025-10-31T07:00:00Z",
+  "game_advantage": null,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/QyralKwpGew",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=QyralKwpGew"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   }
+  ]
+ },
+ {
+  "id": 1244377,
+  "name": "Quarterfinal 3: G2 vs TES",
+  "status": "finished",
+  "results": [
+   {
+    "score": 3,
+    "team_id": 126059
+   },
+   {
+    "score": 1,
+    "team_id": 88
+   }
+  ],
+  "live": {
+   "supported": false,
+   "url": null,
+   "opens_at": null
+  },
+  "begin_at": "2025-10-30T07:08:48Z",
+  "detailed_stats": true,
+  "end_at": "2025-10-30T10:20:53Z",
+  "forfeit": false,
+  "winner_id": 126059,
+  "winner_type": "Team",
+  "draw": false,
+  "slug": "2025-10-30",
+  "games": [
+   {
+    "complete": true,
+    "id": 272954,
+    "position": 1,
+    "status": "finished",
+    "length": 1830,
+    "finished": true,
+    "begin_at": "2025-10-30T07:08:49Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-30T07:47:43Z",
+    "forfeit": false,
+    "match_id": 1244377,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126059,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272955,
+    "position": 2,
+    "status": "finished",
+    "length": 1944,
+    "finished": true,
+    "begin_at": "2025-10-30T08:00:03Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-30T08:41:28Z",
+    "forfeit": false,
+    "match_id": 1244377,
+    "winner_type": "Team",
+    "winner": {
+     "id": 88,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272956,
+    "position": 3,
+    "status": "finished",
+    "length": 1757,
+    "finished": true,
+    "begin_at": "2025-10-30T08:54:10Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-30T09:32:09Z",
+    "forfeit": false,
+    "match_id": 1244377,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126059,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272957,
+    "position": 4,
+    "status": "finished",
+    "length": 1764,
+    "finished": true,
+    "begin_at": "2025-10-30T09:43:44Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-30T10:20:53Z",
+    "forfeit": false,
+    "match_id": 1244377,
+    "winner_type": "Team",
+    "winner": {
+     "id": 126059,
+     "type": "Team"
+    }
+   }
+  ],
+  "tournament_id": 17664,
+  "modified_at": "2025-10-30T12:46:05Z",
+  "match_type": "best_of",
+  "number_of_games": 5,
+  "scheduled_at": "2025-10-30T07:10:00Z",
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 88,
+     "name": "G2 Esports",
+     "location": "DE",
+     "slug": "g2-esports",
+     "modified_at": "2026-10-06T11:02:46Z",
+     "acronym": "G2",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126059,
+     "name": "Top Esports",
+     "location": "CN",
+     "slug": "top-esports",
+     "modified_at": "2026-10-06T11:02:59Z",
+     "acronym": "TES",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "previous_matches": [],
+  "original_scheduled_at": "2025-10-30T07:00:00Z",
+  "game_advantage": null,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/iYj3TWrgeSg",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=iYj3TWrgeSg"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   }
+  ]
+ },
+ {
+  "id": 1244376,
+  "name": "Quarterfinal 2: KT vs CFO",
+  "status": "finished",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 130355
+   },
+   {
+    "score": 3,
+    "team_id": 63
+   }
+  ],
+  "live": {
+   "supported": false,
+   "url": null,
+   "opens_at": null
+  },
+  "begin_at": "2025-10-29T07:08:30Z",
+  "detailed_stats": true,
+  "end_at": "2025-10-29T09:21:24Z",
+  "forfeit": false,
+  "winner_id": 63,
+  "winner_type": "Team",
+  "draw": false,
+  "slug": "2025-10-29",
+  "games": [
+   {
+    "complete": true,
+    "id": 272949,
+    "position": 1,
+    "status": "finished",
+    "length": 1971,
+    "finished": true,
+    "begin_at": "2025-10-29T07:08:30Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-29T07:47:31Z",
+    "forfeit": false,
+    "match_id": 1244376,
+    "winner_type": "Team",
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272950,
+    "position": 2,
+    "status": "finished",
+    "length": 1472,
+    "finished": true,
+    "begin_at": "2025-10-29T07:59:43Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-29T08:31:07Z",
+    "forfeit": false,
+    "match_id": 1244376,
+    "winner_type": "Team",
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272951,
+    "position": 3,
+    "status": "finished",
+    "length": 1759,
+    "finished": true,
+    "begin_at": "2025-10-29T08:43:59Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-29T09:21:25Z",
+    "forfeit": false,
+    "match_id": 1244376,
+    "winner_type": "Team",
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    }
+   }
+  ],
+  "tournament_id": 17664,
+  "modified_at": "2025-10-29T09:59:12Z",
+  "match_type": "best_of",
+  "number_of_games": 5,
+  "scheduled_at": "2025-10-29T07:10:00Z",
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 63,
+     "name": "KT Rolster",
+     "location": "KR",
+     "slug": "kt-rolster",
+     "modified_at": "2026-09-18T08:31:50Z",
+     "acronym": "KT",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 130355,
+     "name": "CTBC Flying Oyster",
+     "location": "TW",
+     "slug": "ctbc-flying-oyster",
+     "modified_at": "2026-10-06T11:03:01Z",
+     "acronym": "CFO",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "previous_matches": [],
+  "original_scheduled_at": "2025-10-29T07:00:00Z",
+  "game_advantage": null,
+  "streams_list": [
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   }
+  ]
+ },
+ {
+  "id": 1244375,
+  "name": "Quarterfinal 1: GEN vs HLE",
+  "status": "finished",
+  "results": [
+   {
+    "score": 3,
+    "team_id": 2882
+   },
+   {
+    "score": 1,
+    "team_id": 2883
+   }
+  ],
+  "live": {
+   "supported": false,
+   "url": null,
+   "opens_at": null
+  },
+  "begin_at": "2025-10-28T07:08:42Z",
+  "detailed_stats": true,
+  "end_at": "2025-10-28T10:56:19Z",
+  "forfeit": false,
+  "winner_id": 2882,
+  "winner_type": "Team",
+  "draw": false,
+  "slug": "2025-10-28",
+  "games": [
+   {
+    "complete": true,
+    "id": 272944,
+    "position": 1,
+    "status": "finished",
+    "length": 2008,
+    "finished": true,
+    "begin_at": "2025-10-28T07:08:43Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-28T07:48:05Z",
+    "forfeit": false,
+    "match_id": 1244375,
+    "winner_type": "Team",
+    "winner": {
+     "id": 2882,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272945,
+    "position": 2,
+    "status": "finished",
+    "length": 3531,
+    "finished": true,
+    "begin_at": "2025-10-28T08:00:39Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-28T09:07:51Z",
+    "forfeit": false,
+    "match_id": 1244375,
+    "winner_type": "Team",
+    "winner": {
+     "id": 2882,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272946,
+    "position": 3,
+    "status": "finished",
+    "length": 1905,
+    "finished": true,
+    "begin_at": "2025-10-28T09:21:35Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-28T10:02:06Z",
+    "forfeit": false,
+    "match_id": 1244375,
+    "winner_type": "Team",
+    "winner": {
+     "id": 2883,
+     "type": "Team"
+    }
+   },
+   {
+    "complete": true,
+    "id": 272947,
+    "position": 4,
+    "status": "finished",
+    "length": 1923,
+    "finished": true,
+    "begin_at": "2025-10-28T10:15:11Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-28T10:56:20Z",
+    "forfeit": false,
+    "match_id": 1244375,
+    "winner_type": "Team",
+    "winner": {
+     "id": 2882,
+     "type": "Team"
+    }
+   }
+  ],
+  "tournament_id": 17664,
+  "modified_at": "2025-10-28T11:26:01Z",
+  "match_type": "best_of",
+  "number_of_games": 5,
+  "scheduled_at": "2025-10-28T07:10:00Z",
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2882,
+     "name": "Gen.G",
+     "location": "KR",
+     "slug": "geng",
+     "modified_at": "2026-10-06T11:02:37Z",
+     "acronym": "GEN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2883,
+     "name": "Hanwha Life Esports",
+     "location": "KR",
+     "slug": "hanwha-life-esports",
+     "modified_at": "2026-10-06T11:02:49Z",
+     "acronym": "HLE",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "previous_matches": [],
+  "original_scheduled_at": "2025-10-28T07:00:00Z",
+  "game_advantage": null,
+  "streams_list": [
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   }
+  ]
+ }
+]

@@ -12,6 +12,7 @@ import "../features/follows/follows_provider.dart";
 import "../features/home/home_screen.dart";
 import "../features/next_match/next_match_screen.dart";
 import "../features/team/team_screen.dart";
+import "../features/bracket/ranking_view.dart" show rankingProvider;
 import "../features/valorant_season/season_data.dart";
 import "clock.dart";
 import "navigation.dart";
@@ -99,6 +100,7 @@ class _AutoRefreshState extends ConsumerState<AutoRefresh> with WidgetsBindingOb
     ref.invalidate(catalogProvider);
     ref.invalidate(competitionDetailProvider);
     ref.invalidate(bracketProvider);
+    ref.invalidate(rankingProvider);
     ref.invalidate(entityProvider);
     ref.invalidate(valorantSeasonProvider);
     ref.invalidate(gameTeamsProvider);

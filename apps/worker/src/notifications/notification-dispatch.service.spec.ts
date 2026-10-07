@@ -119,6 +119,47 @@ describe("NotificationDispatchService (intégration)", () => {
     expect(logs[0].eventId).toBeNull();
   });
 
+  it("une équipe éliminée de deux compétitions est notifiée deux fois, chaque texte nomme sa compétition (J23)", async () => {
+    const serie = await prisma.competition.create({ data: { id: randomUUID(), categoryId, kind: "serie", name: "Worlds 2026" } });
+    const swiss = await prisma.competition.create({ data: { id: randomUUID(), categoryId, parentId: serie.id, kind: "tournament", name: "Group Stage" } });
+    const other = await prisma.competition.create({ data: { id: randomUUID(), categoryId, kind: "tournament", name: "Autre tournoi" } });
+    try {
+      await dispatch.handle({ type: "EntityEliminated", entityId, competitionId: swiss.id });
+      await dispatch.handle({ type: "EntityEliminated", entityId, competitionId: swiss.id });
+      await dispatch.handle({ type: "EntityEliminated", entityId, competitionId: other.id });
+
+      const logs = await prisma.notificationLog.findMany({ where: { userId, entityId, type: "elimination" } });
+      expect(logs.map((l) => l.competitionId).sort()).toEqual([swiss.id, other.id].sort());
+      const bodies = (fcm.send as jest.Mock).mock.calls.map((c) => c[2] as string);
+      expect(bodies).toContain("Test G2 est éliminée de Worlds 2026.");
+      expect(bodies).toContain("Test G2 est éliminée de Autre tournoi.");
+    } finally {
+      await prisma.notificationLog.deleteMany({ where: { userId, type: "elimination" } });
+      await prisma.competition.deleteMany({ where: { id: { in: [swiss.id, other.id] } } });
+      await prisma.competition.delete({ where: { id: serie.id } });
+    }
+  });
+
+  it("une équipe qui rejoint une structure suivie le dit aux abonnés de la structure, une fois (J23)", async () => {
+    const organization = await prisma.organization.create({ data: { id: randomUUID(), key: `test-org-${randomUUID().slice(0, 8)}`, name: "Test Structure" } });
+    const lolCompetition = await prisma.competition.create({ data: { id: randomUUID(), categoryId, kind: "tournament", name: "LoL tournoi", game: "league-of-legends" } });
+    const sub = await prisma.subscription.create({ data: { id: randomUUID(), userId, targetType: "organization", targetId: organization.id, level: "all" } });
+    try {
+      await dispatch.handle({ type: "OrganizationTeamJoined", entityId, organizationId: organization.id, competitionId: lolCompetition.id });
+      await dispatch.handle({ type: "OrganizationTeamJoined", entityId, organizationId: organization.id, competitionId: lolCompetition.id });
+
+      const logs = await prisma.notificationLog.findMany({ where: { userId, entityId, type: "organization_joined" } });
+      expect(logs).toHaveLength(1);
+      const bodies = (fcm.send as jest.Mock).mock.calls.map((c) => c[2] as string);
+      expect(bodies).toContain("Test Structure joue aussi en League of Legends : tu la suis déjà.");
+    } finally {
+      await prisma.notificationLog.deleteMany({ where: { userId, type: "organization_joined" } });
+      await prisma.subscription.delete({ where: { id: sub.id } });
+      await prisma.competition.delete({ where: { id: lolCompetition.id } });
+      await prisma.organization.delete({ where: { id: organization.id } });
+    }
+  });
+
   it("supprime l'appareil quand FCM signale un jeton invalide (désinstallation/réinstallation, docs/04 J4)", async () => {
     const device = await prisma.device.create({
       data: { id: randomUUID(), userId, installId: randomUUID(), platform: "android", pushToken: "dead-token" },

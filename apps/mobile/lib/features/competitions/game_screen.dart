@@ -25,6 +25,7 @@ import "../agenda/agenda_screen.dart";
 import "../team/team_screen.dart";
 import "../valorant_season/season_data.dart";
 import "competitions_data.dart";
+import "game_competitions_tab.dart";
 import "leagues_tab.dart";
 
 const _tabs = ["Compétitions", "Ligues", "Équipes", "Agenda"];
@@ -86,7 +87,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final overview = ref.watch(valorantSeasonProvider);
+    // La frise de saison n'existe que pour Valorant : on ne l'interroge pas pour un autre jeu.
+    final overview = widget.game.slug == "valorant" ? ref.watch(valorantSeasonProvider) : const AsyncData<SeasonOverview?>(null);
     final scoresHidden = ref.watch(userSettingProvider).value?.spoilerFree ?? true;
     final game = widget.game;
     final hasLearn = ref.watch(learnGamesProvider).value?.contains(game.slug) ?? false;
@@ -98,7 +100,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
           children: [
             GameLogo(slug: game.slug, size: 30),
             const SizedBox(width: AppSpacing.sm),
-            Text(game.name),
+            Flexible(child: FittedBox(fit: BoxFit.scaleDown, child: Text(game.name, maxLines: 1))),
           ],
         ),
         actions: [
@@ -129,6 +131,7 @@ class _GameScreenState extends ConsumerState<GameScreen> {
               3 => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
               4 when forumEnabled => ForumThreadsTab(game: game.slug, gameName: game.name),
               4 || 5 => LearnTab(game: game.slug),
+              _ when game.slug != "valorant" => GameCompetitionsTab(game: game),
               _ => AsyncView(
                 value: overview,
                 errorMessage: "Impossible de charger la saison.",

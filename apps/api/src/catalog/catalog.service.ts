@@ -4,9 +4,17 @@ import { PrismaClient } from "@news/db";
 import { GAME_NAMES, isMajorEvent } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
+import { championsOf, isPastAndEmpty, seriesWithEvents } from "../common/series-with-events";
 import { PRISMA } from "../db/db.module";
 
 const TTL_SECONDS = 60;
+
+// Le champion d'une série terminée (J23) : une ligne « Champion : T1 » sous le nom.
+export class CatalogChampionDto {
+  @ApiProperty() name!: string;
+  @ApiProperty({ nullable: true, type: String }) shortName!: string | null;
+  @ApiProperty({ nullable: true, type: String }) imageUrl!: string | null;
+}
 
 export class CatalogChildDto {
   @ApiProperty() id!: string;
@@ -18,6 +26,10 @@ export class CatalogChildDto {
   // Un grand rendez-vous mondial (Champions, Masters, Coupe du monde…) : seuls ceux-là vont dans « En cours », qui
   // resterait trop longue à mesure qu'on ajoute des jeux et des sports.
   @ApiProperty() major!: boolean;
+  // Dates de la série : l'onglet Compétitions d'un jeu sans frise de saison les classe en cours / à venir / terminées (J23).
+  @ApiProperty({ nullable: true, type: String }) startsAt!: string | null;
+  @ApiProperty({ nullable: true, type: String }) endsAt!: string | null;
+  @ApiProperty({ nullable: true, type: CatalogChampionDto }) champion!: CatalogChampionDto | null;
 }
 
 // Une compétition qui revient d'année en année (J10) : suivre la famille suit toutes ses éditions.
@@ -79,8 +91,15 @@ export class CatalogService {
     });
 
     const now = new Date();
+    // Une série passée et sans aucun match (ancienne édition, hors de ce qu'on ingère) n'est pas montrée : sa page serait vide.
+    const withEvents = await seriesWithEvents(this.prisma, roots.flatMap((r) => r.children.map((c) => c.id)));
+    for (const root of roots) root.children = root.children.filter((c) => !isPastAndEmpty(c, withEvents.has(c.id), now));
+    const finishedIds = roots.flatMap((r) => r.children.filter((c) => c.endsAt !== null && c.endsAt < now).map((c) => c.id));
+    const champions = await championsOf(this.prisma, finishedIds);
     const categories = new Map<string, CatalogCategoryDto>();
     for (const root of roots) {
+      // Une ligue dont plus aucune compétition ne reste n'a rien à montrer non plus.
+      if (root.children.length === 0) continue;
       const slug = root.game!;
       let category = categories.get(root.category.slug);
       if (!category) {
@@ -96,7 +115,7 @@ export class CatalogService {
         id: root.id,
         name: root.name,
         imageUrl: root.imageUrl,
-        children: root.children.map((c) => ({ id: c.id, name: c.name, familyId: c.familyId, live: isInProgress(c, now), major: isMajorEvent(root.name, c.name) })),
+        children: root.children.map((c) => ({ id: c.id, name: c.name, familyId: c.familyId, live: isInProgress(c, now), major: isMajorEvent(root.name, c.name), startsAt: c.startsAt?.toISOString() ?? null, endsAt: c.endsAt?.toISOString() ?? null, champion: champions.get(c.id) ?? null })),
         families: root.families,
         live: root.children.some((c) => isInProgress(c, now)),
       });

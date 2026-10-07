@@ -9,6 +9,7 @@ import "../../core/api_providers.dart";
 import "../../core/auth/account.dart";
 import "../../core/clock.dart";
 import "../../core/date_x.dart";
+import "../../core/games.dart";
 import "../../core/iterable_x.dart";
 import "../../core/navigation.dart";
 import "../../core/settings_provider.dart";
@@ -547,8 +548,8 @@ class MajorCard extends StatelessWidget {
   }
 }
 
-/// Invitation à découvrir Valorant tant que tous les tutos ne sont pas lus, réduite à une puce qu'on peut
-/// fermer pour de bon (J22) : « Nouveau sur Valorant ? » au départ, puis la progression.
+/// Invitation à découvrir un jeu tant que tous les tutos ne sont pas lus, réduite à une puce qu'on peut
+/// fermer pour de bon (J22) : « Nouveau sur Valorant ? » (ou LoL) au départ, puis la progression.
 class _LearnChip extends ConsumerStatefulWidget {
   const _LearnChip();
 
@@ -561,9 +562,20 @@ class _LearnChipState extends ConsumerState<_LearnChip> {
 
   @override
   Widget build(BuildContext context) {
-    final progress = learnProgress(ref, "valorant");
-    if (_dismissed || progress == null || progress.read >= progress.total) return const SizedBox.shrink();
+    // Le premier jeu dont il reste des tutos à lire (J23 : Valorant, puis League of Legends).
+    String? game;
+    ({int read, int total})? progress;
+    for (final candidate in learnableGames) {
+      final p = learnProgress(ref, candidate);
+      if (p != null && p.read < p.total) {
+        game = candidate;
+        progress = p;
+        break;
+      }
+    }
+    if (_dismissed || game == null || progress == null) return const SizedBox.shrink();
     final started = progress.read > 0;
+    final name = gameLabel(game);
     return Padding(
       padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, 0),
       child: Align(
@@ -576,7 +588,7 @@ class _LearnChipState extends ConsumerState<_LearnChip> {
             children: [
               InkWell(
                 customBorder: const StadiumBorder(),
-                onTap: () => openLearnGuide(context, "valorant"),
+                onTap: () => openLearnGuide(context, game!),
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.sm, AppSpacing.xs, AppSpacing.sm),
                   child: Row(
@@ -584,7 +596,7 @@ class _LearnChipState extends ConsumerState<_LearnChip> {
                     children: [
                       const Icon(Icons.help_outline_rounded, size: 18, color: AppColors.gold),
                       const SizedBox(width: 6),
-                      Text(started ? "Valorant : ${progress.read}/${progress.total} tutos lus" : "Nouveau sur Valorant ?", style: const TextStyle(fontWeight: FontWeight.w600)),
+                      Text(started ? "$name : ${progress.read}/${progress.total} tutos lus" : "Nouveau sur $name ?", style: const TextStyle(fontWeight: FontWeight.w600)),
                     ],
                   ),
                 ),

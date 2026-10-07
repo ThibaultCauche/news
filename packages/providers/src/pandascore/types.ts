@@ -37,6 +37,7 @@ export interface RawTournament {
   league: RawLeague;
   teams?: RawTeam[];
   has_bracket?: boolean;
+  videogame?: { slug: string } | null;
 }
 
 export interface RawGame {

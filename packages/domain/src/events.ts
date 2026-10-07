@@ -21,12 +21,15 @@ export type DomainEventType =
   | "BracketAdvanced"
   | "StandingChanged"
   | "EntityQualified"
-  | "EntityEliminated";
+  | "EntityEliminated"
+  | "OrganizationTeamJoined";
 
 export interface DomainEventMessage {
   type: DomainEventType;
   eventId?: string;
   entityId?: string;
+  // `OrganizationTeamJoined` (J23) : la structure suivie qui vient d'accueillir cette équipe (nouveau jeu).
+  organizationId?: string;
   competitionId: string;
 }
 

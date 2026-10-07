@@ -24,6 +24,9 @@ Stage stageOf(String apiName) {
   final isLower = name.contains("lower bracket");
   final base = name.replaceFirst(RegExp(r"^(upper|lower) bracket\s*"), "").replaceFirst(RegExp(r"\s*\d+\s*$"), "").trim();
 
+  // Ronde de phase suisse (J23) : « Round 3: G2 vs T1 ».
+  final swissRound = RegExp(r"^round (\d+)$").firstMatch(name)?.group(1);
+  if (swissRound != null) return (title: "Ronde $swissRound", de: "de la ronde $swissRound", ring: "RONDE $swissRound");
   if (name.startsWith("opening match")) return (title: "Ouverture$suffix", de: "de l'ouverture$suffix", ring: "OUVERTURE");
   if (name.startsWith("winners")) return (title: "Match des vainqueurs", de: "du match des vainqueurs", ring: "VAINQUEURS");
   if (name.startsWith("elimination")) return (title: "Match d'élimination", de: "du match d'élimination", ring: "ÉLIMINATION");

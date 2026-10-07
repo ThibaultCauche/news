@@ -2,6 +2,7 @@ import "../../widgets/empty_mark.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
+import "../../core/games.dart";
 import "../../core/iterable_x.dart";
 import "../../domain/event_status.dart";
 import "../../theme/tokens.dart";
@@ -20,6 +21,7 @@ import "radial_bracket.dart";
 import "bracket_model.dart";
 import "bracket_view.dart";
 import "bracket_provider.dart";
+import "ranking_view.dart";
 
 /// Écrans 02 (arbre radial), 05 (repêchage) et 07 (arbre terminé) — `docs/02`.
 /// `competitionId` est le niveau "Champions 2026" (la série) : ses enfants
@@ -43,17 +45,18 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
   @override
   Widget build(BuildContext context) {
     final detail = ref.watch(competitionDetailProvider(widget.competitionId));
+    final game = detail.value?.game ?? "valorant";
 
     return Scaffold(
       appBar: AppBar(
-        leadingWidth: 112,
+        leadingWidth: 160,
         leading: TextButton.icon(
           onPressed: () => Navigator.of(context).maybePop(),
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
-          label: const Text("Valorant", maxLines: 1, softWrap: false, overflow: TextOverflow.ellipsis, style: TextStyle(color: AppColors.textSecondary)),
+          label: Text(gameLabel(game), maxLines: 1, softWrap: false, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary)),
         ),
         actions: [
-          const LearnHelpButton(articleId: "regarder-un-match"),
+          LearnHelpButton(articleId: "regarder-un-match", game: game),
           ForumActionButton(kind: "competition", targetId: widget.competitionId),
           CompetitionFavoriteButton(competitionId: widget.competitionId, name: widget.title),
           CompetitionFollowButton(competitionId: widget.competitionId, name: widget.title)],
@@ -63,6 +66,7 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
         errorMessage: "Impossible de charger cette compétition.",
         onRetry: () => ref.invalidate(competitionDetailProvider(widget.competitionId)),
         builder: (value) => _BracketBody(
+          competitionId: widget.competitionId,
           title: widget.title,
           subtitle: widget.subtitle,
           children: value.children.toList(),
@@ -76,6 +80,7 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
 
 class _BracketBody extends ConsumerWidget {
   const _BracketBody({
+    required this.competitionId,
     required this.title,
     required this.subtitle,
     required this.children,
@@ -83,6 +88,7 @@ class _BracketBody extends ConsumerWidget {
     required this.onTabSelected,
   });
 
+  final String competitionId;
   final String title;
   final String subtitle;
   final List<CompetitionChildDto> children;
@@ -93,11 +99,15 @@ class _BracketBody extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final groupIds = groupCompetitionIds(children);
     final playoffs = children.firstWhereOrNull((c) => c.name.toLowerCase().contains("playoff"));
-    final tabIndex = chosenTab ??
+    final playoffsBracket = playoffs == null ? null : ref.watch(bracketProvider(playoffs.id)).value;
+    // Un tableau à simple élimination (Worlds, MSI…) n'a pas de repêchage : l'onglet serait toujours vide.
+    final hasLower = playoffsBracket?.format != "single_elim";
+    var tabIndex = chosenTab ??
         defaultBracketTab(
           groups: [for (final id in groupIds) ref.watch(bracketProvider(id)).value],
-          playoffs: playoffs == null ? null : ref.watch(bracketProvider(playoffs.id)).value,
+          playoffs: playoffsBracket,
         );
+    if (!hasLower && tabIndex == _lowerTab) tabIndex = _finalsTab;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -121,15 +131,16 @@ class _BracketBody extends ConsumerWidget {
         ),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-          child: _BracketTabs(selectedIndex: tabIndex, onSelected: onTabSelected),
+          child: _BracketTabs(selectedIndex: tabIndex, onSelected: onTabSelected, showLower: hasLower),
         ),
         const SizedBox(height: AppSpacing.md),
         Expanded(
           child: switch (tabIndex) {
-            0 => _GroupsTab(groupIds: groupIds),
-            1 => playoffs == null
+            _groupsTab => _GroupsTab(groupIds: groupIds),
+            _finalsTab => playoffs == null
                 ? const _EmptyMessage("Phase finale pas encore commencée.")
                 : _FinalsTab(competitionId: playoffs.id),
+            _rankingTab => RankingView(competitionId: competitionId),
             _ => playoffs == null
                 ? const _EmptyMessage("Repêchage pas encore commencé.")
                 : _RepechageTab(competitionId: playoffs.id),
@@ -140,21 +151,30 @@ class _BracketBody extends ConsumerWidget {
   }
 }
 
+// Indices des onglets : 0, 1 et 2 sont ceux de `defaultBracketTab` ; le classement global (J23) vient après.
+const _groupsTab = 0;
+const _finalsTab = 1;
+const _lowerTab = 2;
+const _rankingTab = 3;
+
 class _BracketTabs extends StatelessWidget {
-  const _BracketTabs({required this.selectedIndex, required this.onSelected});
+  const _BracketTabs({required this.selectedIndex, required this.onSelected, required this.showLower});
 
   final int selectedIndex;
   final ValueChanged<int> onSelected;
-  static const _labels = ["Groupes", "Phase finale", "Repêchage"];
+  final bool showLower;
+  static const _allLabels = ["Groupes", "Phase finale", "Repêchage", "Classement"];
 
   @override
   Widget build(BuildContext context) {
+    // (indice de l'onglet, libellé) : sans repêchage, les indices ne se suivent plus.
+    final tabs = [for (var i = 0; i < _allLabels.length; i++) if (showLower || i != _lowerTab) (i, _allLabels[i])];
     return Container(
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.pill)),
       child: Row(
         children: [
-          for (var i = 0; i < _labels.length; i++)
+          for (final (i, label) in tabs)
             Expanded(
               child: GestureDetector(
                 onTap: () => onSelected(i),
@@ -168,7 +188,7 @@ class _BracketTabs extends StatelessWidget {
                   alignment: Alignment.center,
                   child: FittedBox(
                     child: Text(
-                      _labels[i],
+                      label,
                       style: TextStyle(
                         color: selectedIndex == i ? AppColors.textPrimary : AppColors.textSecondary,
                         fontWeight: selectedIndex == i ? FontWeight.w600 : FontWeight.w400,

@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Query, Req, Res } from "@nestjs/common";
-import { ApiOkResponse } from "@nestjs/swagger";
+import { ApiOkResponse, ApiQuery } from "@nestjs/swagger";
 import type { Request, Response } from "express";
 import { sendWithEtag } from "../common/etag";
 import { EntitiesService, EntityListItemDto, EntityResponseDto } from "./entities.service";
@@ -18,9 +18,10 @@ export class EntitiesController {
 
   // Avant `:id` : sinon Nest matcherait "by-short-name" comme un `id`.
   @Get("by-short-name/:shortName")
+  @ApiQuery({ name: "game", required: false, type: String, description: "Slug du jeu, pour départager deux équipes de même nom court" })
   @ApiOkResponse({ type: EntityResponseDto })
-  async getByShortName(@Param("shortName") shortName: string, @Req() req: Request, @Res() res: Response): Promise<void> {
-    sendWithEtag(req, res, await this.entities.getByShortName(shortName));
+  async getByShortName(@Param("shortName") shortName: string, @Query("game") game: string | undefined, @Req() req: Request, @Res() res: Response): Promise<void> {
+    sendWithEtag(req, res, await this.entities.getByShortName(shortName, game));
   }
 
   @Get(":id")

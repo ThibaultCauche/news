@@ -1,4 +1,6 @@
+import { randomUUID } from "node:crypto";
 import { PrismaClient } from "@prisma/client";
+import { organizationKey } from "@news/domain";
 
 // Glossaire (docs/03 §7, écran 04) : textes écrits une fois, pas générés — c'est la
 // seule utilisation manuelle de `context_snippet`, le reste (pourquoi ce match
@@ -46,7 +48,38 @@ const GLOSSARY_TERMS: { term: string; text: string }[] = [
   { term: "retake", text: "Les défenseurs reprennent un site après que les attaquants y ont posé le spike." },
   { term: "ban", text: "Dans le choix des cartes d'un match pro, une équipe élimine une carte qu'elle ne veut pas jouer." },
   { term: "pick", text: "Dans le choix des cartes d'un match pro, une équipe choisit une carte qu'elle veut jouer." },
+  // League of Legends (J23) : mots des phrases d'enjeu et du guide.
+  {
+    term: "phase suisse",
+    text: "Format où chaque équipe joue plusieurs rondes contre des adversaires de même bilan. 3 victoires qualifient pour la suite, 3 défaites éliminent : on joue donc au plus 5 matchs.",
+  },
+  { term: "play-in", text: "Tournoi de qualification avant la phase principale : les équipes les moins bien classées y jouent leur place." },
+  { term: "draft", text: "Avant chaque partie, les équipes bannissent puis choisissent à tour de rôle les champions qu'elles vont jouer. Une partie se gagne souvent là." },
+  { term: "nexus", text: "La base de chaque équipe. Détruire le nexus adverse gagne la partie." },
+  { term: "dragon", text: "Un monstre neutre. Le tuer donne un avantage durable à toute l'équipe ; quatre dragons donnent un bonus très fort." },
+  { term: "baron", text: "Le monstre neutre le plus puissant de la carte. L'équipe qui le tue renforce ses soldats et attaque plus facilement les tours." },
+  { term: "jungle", text: "Le territoire entre les trois voies, rempli de monstres. Le « jungler » s'y déplace pour aider les autres joueurs par surprise." },
+  { term: "side", text: "Le côté de la carte, bleu ou rouge. Le côté bleu choisit son champion en premier à la draft ; le côté rouge choisit en dernier." },
 ];
+
+// Structures (J23, #A4) : rattache les équipes déjà en base à leur structure (même nom normalisé dans plusieurs
+// jeux). Les nouvelles équipes sont rattachées par le worker à l'ingestion ; ce rattrapage ne sert qu'une fois.
+async function backfillOrganizations(prisma: PrismaClient): Promise<number> {
+  const teams = await prisma.entity.findMany({ where: { kind: "team", organizationId: null }, select: { id: true, name: true, imageUrl: true } });
+  let linked = 0;
+  for (const team of teams) {
+    const key = organizationKey(team.name);
+    if (!key) continue;
+    const organization = await prisma.organization.upsert({
+      where: { key },
+      create: { id: randomUUID(), key, name: team.name, imageUrl: team.imageUrl },
+      update: {},
+    });
+    await prisma.entity.update({ where: { id: team.id }, data: { organizationId: organization.id } });
+    linked += 1;
+  }
+  return linked;
+}
 
 async function main() {
   const prisma = new PrismaClient();
@@ -59,6 +92,7 @@ async function main() {
       });
     }
     console.log(`Glossaire : ${GLOSSARY_TERMS.length} termes à jour.`);
+    console.log(`Structures : ${await backfillOrganizations(prisma)} équipes rattachées.`);
   } finally {
     await prisma.$disconnect();
   }

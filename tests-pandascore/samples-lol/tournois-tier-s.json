@@ -1,0 +1,1378 @@
+[
+ {
+  "id": 22048,
+  "name": "Playoffs",
+  "type": "offline",
+  "country": null,
+  "begin_at": "2026-11-03T22:00:00Z",
+  "detailed_stats": true,
+  "end_at": "2026-11-15T01:00:00Z",
+  "winner_id": null,
+  "winner_type": "Team",
+  "teams": [],
+  "slug": "league-of-legends-world-championship-2026-playoffs",
+  "region": "NA",
+  "serie_id": 11014,
+  "serie": {
+   "id": 11014,
+   "name": "",
+   "year": 2026,
+   "begin_at": "2026-10-15T08:00:00Z",
+   "end_at": "2026-11-15T01:00:00Z",
+   "winner_id": null,
+   "winner_type": "Team",
+   "slug": "league-of-legends-world-championship-2026",
+   "modified_at": "2026-09-25T09:27:42Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2026"
+  },
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "modified_at": "2026-09-25T09:27:42Z",
+  "league_id": 297,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "prizepool": null,
+  "tier": "s",
+  "videogame_title": null,
+  "has_bracket": true,
+  "live_supported": true,
+  "expected_roster": []
+ },
+ {
+  "id": 22047,
+  "name": "Group Stage",
+  "type": "offline",
+  "country": null,
+  "begin_at": "2026-10-23T17:00:00Z",
+  "detailed_stats": true,
+  "end_at": "2026-11-01T04:00:00Z",
+  "winner_id": null,
+  "winner_type": "Team",
+  "teams": [
+   {
+    "id": 88,
+    "name": "G2 Esports",
+    "acronym": "G2",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+    "location": "DE"
+   },
+   {
+    "id": 390,
+    "name": "Team Liquid",
+    "acronym": "TL",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/390/ezgif_1497965c786bdb14.png",
+    "location": "NL"
+   },
+   {
+    "id": 411,
+    "name": "Invictus Gaming",
+    "acronym": "IG",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/411/invictus_gaminglogo_square.png",
+    "location": "CN"
+   },
+   {
+    "id": 1566,
+    "name": "Bilibili Gaming",
+    "acronym": "BLG",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+    "location": "CN"
+   },
+   {
+    "id": 2882,
+    "name": "Gen.G",
+    "acronym": "GEN",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+    "location": "KR"
+   },
+   {
+    "id": 2883,
+    "name": "Hanwha Life Esports",
+    "acronym": "HLE",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+    "location": "KR"
+   },
+   {
+    "id": 126059,
+    "name": "Top Esports",
+    "acronym": "TES",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+    "location": "CN"
+   },
+   {
+    "id": 126061,
+    "name": "T1",
+    "acronym": "T1",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+    "location": "KR"
+   },
+   {
+    "id": 126536,
+    "name": "Movistar KOI",
+    "acronym": "MKOI",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+    "location": "ES"
+   },
+   {
+    "id": 129971,
+    "name": "Anyone's Legend",
+    "acronym": "AL",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+    "location": "CN"
+   },
+   {
+    "id": 130355,
+    "name": "CTBC Flying Oyster",
+    "acronym": "CFO",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+    "location": "TW"
+   },
+   {
+    "id": 132531,
+    "name": "Dplus KIA",
+    "acronym": "DK",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/132531/800px_dplus_lightmode.png",
+    "location": "KR"
+   },
+   {
+    "id": 136066,
+    "name": "LYON",
+    "acronym": "LY",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/136066/lyon__25282024_american_team_2529logo_square.png",
+    "location": "MX"
+   },
+   {
+    "id": 136073,
+    "name": "Team Secret Whales",
+    "acronym": "TSW",
+    "image_url": "https://cdn-api.pandascore.co/images/team/image/136073/1200px_secret_whales_lightmode.png",
+    "location": "VN"
+   }
+  ],
+  "slug": "league-of-legends-world-championship-2026-group-stage",
+  "region": "NA",
+  "serie_id": 11014,
+  "serie": {
+   "id": 11014,
+   "name": "",
+   "year": 2026,
+   "begin_at": "2026-10-15T08:00:00Z",
+   "end_at": "2026-11-15T01:00:00Z",
+   "winner_id": null,
+   "winner_type": "Team",
+   "slug": "league-of-legends-world-championship-2026",
+   "modified_at": "2026-09-25T09:27:42Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2026"
+  },
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "modified_at": "2026-10-06T11:03:06Z",
+  "league_id": 297,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "prizepool": null,
+  "tier": "s",
+  "videogame_title": null,
+  "has_bracket": false,
+  "live_supported": true,
+  "expected_roster": [
+   {
+    "team": {
+     "id": 88,
+     "name": "G2 Esports",
+     "location": "DE",
+     "slug": "g2-esports",
+     "modified_at": "2026-10-06T11:02:46Z",
+     "acronym": "G2",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 871,
+      "name": "Hans sama",
+      "role": "adc",
+      "slug": "hans-sama",
+      "modified_at": "2026-10-06T11:02:45Z",
+      "birthday": "1999-09-02",
+      "first_name": "Steven",
+      "last_name": "Liv",
+      "nationality": "FR",
+      "age": 27,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/871/g2_hans_sama_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 1132,
+      "name": "Caps",
+      "role": "mid",
+      "slug": "caps",
+      "modified_at": "2026-10-06T11:02:45Z",
+      "birthday": "1999-11-17",
+      "first_name": "Rasmus",
+      "last_name": "Winther",
+      "nationality": "DK",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/1132/g2_caps_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 1718,
+      "name": "BrokenBlade",
+      "role": "top",
+      "slug": "broken-blade",
+      "modified_at": "2026-10-06T11:02:42Z",
+      "birthday": "2000-01-19",
+      "first_name": "Sergen",
+      "last_name": "Çelik",
+      "nationality": "DE",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/1718/g2_broken_blade_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 14980,
+      "name": "Labrov",
+      "role": "sup",
+      "slug": "labrov",
+      "modified_at": "2026-10-06T11:02:46Z",
+      "birthday": "2002-02-12",
+      "first_name": "Labros",
+      "last_name": "Papoutsakis",
+      "nationality": "GR",
+      "age": 24,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/14980/g2_labrov_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 45258,
+      "name": "SkewMond",
+      "role": "jun",
+      "slug": "skewmond",
+      "modified_at": "2026-10-06T11:02:45Z",
+      "birthday": "2004-08-09",
+      "first_name": "Rudy",
+      "last_name": "Semaan",
+      "nationality": "FR",
+      "age": 22,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/45258/g2_skew_mond_2025_split_3.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 390,
+     "name": "Team Liquid",
+     "location": "NL",
+     "slug": "liquid",
+     "modified_at": "2026-10-06T11:02:42Z",
+     "acronym": "TL",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/390/ezgif_1497965c786bdb14.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/390/526px_team_liquid_2024_darkmode.png"
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 47,
+      "name": "CoreJJ",
+      "role": "sup",
+      "slug": "corejj",
+      "modified_at": "2026-10-06T11:02:42Z",
+      "birthday": "1994-06-22",
+      "first_name": "Jo",
+      "last_name": "Yong-in",
+      "nationality": "KR",
+      "age": 32,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/47/tl_core_jj_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 8845,
+      "name": "Josedeodo",
+      "role": "jun",
+      "slug": "josedeodo",
+      "modified_at": "2026-10-06T11:02:41Z",
+      "birthday": "2000-05-22",
+      "first_name": "Brandon Joel",
+      "last_name": "Villegas",
+      "nationality": "AR",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/8845/13f6e895701f06c39c6095fab73817a8.png"
+     },
+     {
+      "active": true,
+      "id": 21861,
+      "name": "Morgan",
+      "role": "top",
+      "slug": "morgan",
+      "modified_at": "2026-10-06T11:02:39Z",
+      "birthday": "2001-09-26",
+      "first_name": "Park",
+      "last_name": "Ru-han",
+      "nationality": "KR",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/21861/bro_morgan_2022_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 32065,
+      "name": "Yeon",
+      "role": "adc",
+      "slug": "yeon",
+      "modified_at": "2026-10-06T11:02:41Z",
+      "birthday": "2001-01-07",
+      "first_name": "Sean",
+      "last_name": "Sung",
+      "nationality": "US",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/32065/tl_yeon_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 38348,
+      "name": "Quid",
+      "role": "mid",
+      "slug": "quid",
+      "modified_at": "2026-10-06T11:02:41Z",
+      "birthday": "2004-04-27",
+      "first_name": "Lim",
+      "last_name": "Hyeon-seung",
+      "nationality": "KR",
+      "age": 22,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/38348/100_t_quid_2025_split_3.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 411,
+     "name": "Invictus Gaming",
+     "location": "CN",
+     "slug": "invictus-gaming",
+     "modified_at": "2026-10-06T11:03:06Z",
+     "acronym": "IG",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/411/invictus_gaminglogo_square.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/411/175px_invictus_gaming_darkmode.png"
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 390,
+      "name": "Rookie",
+      "role": "mid",
+      "slug": "rookie",
+      "modified_at": "2026-10-06T11:03:05Z",
+      "birthday": "1997-03-11",
+      "first_name": "Song",
+      "last_name": "Eui-jin",
+      "nationality": "KR",
+      "age": 29,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/390/ig_rookie_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 2170,
+      "name": "Meiko",
+      "role": "sup",
+      "slug": "meiko",
+      "modified_at": "2026-10-06T11:03:06Z",
+      "birthday": "1998-06-06",
+      "first_name": "Ye",
+      "last_name": "Tian",
+      "nationality": "CN",
+      "age": 28,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/2170/ig_meiko_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 3480,
+      "name": "TheShy",
+      "role": "top",
+      "slug": "theshy",
+      "modified_at": "2026-10-06T11:03:03Z",
+      "birthday": "1999-11-11",
+      "first_name": "Seung-Lok",
+      "last_name": "Kang",
+      "nationality": "KR",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/3480/ig_the_shy_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 21978,
+      "name": "Wei",
+      "role": "jun",
+      "slug": "wei",
+      "modified_at": "2026-10-06T11:03:04Z",
+      "birthday": "2002-11-09",
+      "first_name": "Yangwei",
+      "last_name": "Yan",
+      "nationality": "CN",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/21978/ig_wei_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 31762,
+      "name": "JiaQi",
+      "role": "adc",
+      "slug": "jiaqi",
+      "modified_at": "2026-10-06T11:03:05Z",
+      "birthday": "2004-05-31",
+      "first_name": "Jiaqi",
+      "last_name": "Zi",
+      "nationality": "CN",
+      "age": 22,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/31762/fpx_jia_qi_2025_split_3.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 1566,
+     "name": "Bilibili Gaming",
+     "location": "CN",
+     "slug": "bilibili-gaming",
+     "modified_at": "2026-10-06T11:02:52Z",
+     "acronym": "BLG",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+     "dark_mode_image_url": null
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 2509,
+      "name": "knight",
+      "role": "mid",
+      "slug": "sg-knight",
+      "modified_at": "2026-10-06T11:02:52Z",
+      "birthday": "2000-05-22",
+      "first_name": "Ding",
+      "last_name": "Zhuo",
+      "nationality": "CN",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/2509/blg_knight_msi_2025.png"
+     },
+     {
+      "active": true,
+      "id": 8176,
+      "name": "Viper",
+      "role": "adc",
+      "slug": "viper-309f5be7-0007-492a-8d90-854914e5563d",
+      "modified_at": "2026-10-06T11:02:52Z",
+      "birthday": "2000-10-19",
+      "first_name": "Park",
+      "last_name": "Do-hyeon",
+      "nationality": "KR",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/8176/edg_viper_2022_worlds.png"
+     },
+     {
+      "active": true,
+      "id": 23415,
+      "name": "Bin",
+      "role": "top",
+      "slug": "bin",
+      "modified_at": "2026-10-06T11:02:50Z",
+      "birthday": "2003-09-28",
+      "first_name": "Zebin",
+      "last_name": "Chen",
+      "nationality": "CN",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/23415/blg_bin_msi_2025.png"
+     },
+     {
+      "active": true,
+      "id": 23421,
+      "name": "ON",
+      "role": "sup",
+      "slug": "owo",
+      "modified_at": "2026-10-06T11:02:52Z",
+      "birthday": "2003-05-12",
+      "first_name": "Wenjun",
+      "last_name": "Luo",
+      "nationality": "CN",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/23421/blg_on_msi_2025.png"
+     },
+     {
+      "active": true,
+      "id": 27836,
+      "name": "XUN",
+      "role": "jun",
+      "slug": "xun",
+      "modified_at": "2026-10-06T11:02:51Z",
+      "birthday": "2002-02-05",
+      "first_name": "Lixun",
+      "last_name": "Peng",
+      "nationality": "CN",
+      "age": 24,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/27836/jdg_xun_2025_split_1.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 2882,
+     "name": "Gen.G",
+     "location": "KR",
+     "slug": "geng",
+     "modified_at": "2026-10-06T11:02:37Z",
+     "acronym": "GEN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+     "dark_mode_image_url": null
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 1121,
+      "name": "Ruler",
+      "role": "adc",
+      "slug": "ruler",
+      "modified_at": "2026-10-06T11:02:36Z",
+      "birthday": "1998-12-29",
+      "first_name": "Park",
+      "last_name": "Jae-hyuk",
+      "nationality": "KR",
+      "age": 27,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/1121/jdg_ruler_2024_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 3524,
+      "name": "Kiin",
+      "role": "top",
+      "slug": "kiin",
+      "modified_at": "2026-10-06T11:02:33Z",
+      "birthday": "1999-05-28",
+      "first_name": "Kim",
+      "last_name": "Gi-in ",
+      "nationality": "KR",
+      "age": 27,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/3524/kt_kiin_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 15000,
+      "name": "Chovy",
+      "role": "mid",
+      "slug": "chovy",
+      "modified_at": "2026-10-06T11:02:36Z",
+      "birthday": "2001-03-03",
+      "first_name": "Jeong",
+      "last_name": "Ji-hoon",
+      "nationality": "KR",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/15000/gen_chovy_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 18112,
+      "name": "Canyon",
+      "role": "jun",
+      "slug": "canyon",
+      "modified_at": "2026-10-06T11:02:36Z",
+      "birthday": "2001-06-18",
+      "first_name": "Kim",
+      "last_name": "Geon-bu",
+      "nationality": "KR",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/18112/dk_canyon_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 38359,
+      "name": "Duro",
+      "role": "sup",
+      "slug": "duro",
+      "modified_at": "2026-10-06T11:02:37Z",
+      "birthday": "2002-02-04",
+      "first_name": "Joo",
+      "last_name": "Min-kyu",
+      "nationality": "KR",
+      "age": 24,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/38359/fox.y_duro_2024_split_2.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 2883,
+     "name": "Hanwha Life Esports",
+     "location": "KR",
+     "slug": "hanwha-life-esports",
+     "modified_at": "2026-10-06T11:02:49Z",
+     "acronym": "HLE",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+     "dark_mode_image_url": null
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 19285,
+      "name": "Gumayusi",
+      "role": "adc",
+      "slug": "gumayusi",
+      "modified_at": "2026-10-06T11:02:49Z",
+      "birthday": "2002-02-06",
+      "first_name": "Lee",
+      "last_name": "Min-hyeon",
+      "nationality": "KR",
+      "age": 24,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/19285/t1_gumayusi_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 20290,
+      "name": "Kanavi",
+      "role": "jun",
+      "slug": "kanavi",
+      "modified_at": "2026-10-06T11:02:49Z",
+      "birthday": "2000-11-02",
+      "first_name": "Jinhhyeok",
+      "last_name": "Seo",
+      "nationality": "KR",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/20290/tes_kanavi_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 25391,
+      "name": "Zeka",
+      "role": "mid",
+      "slug": "zeka",
+      "modified_at": "2026-10-06T11:02:49Z",
+      "birthday": "2002-11-28",
+      "first_name": "Kim",
+      "last_name": "Geon-woo",
+      "nationality": "KR",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/25391/drx_zeka_2022_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 31220,
+      "name": "Delight",
+      "role": "sup",
+      "slug": "crescent",
+      "modified_at": "2026-10-06T11:02:49Z",
+      "birthday": "2002-09-12",
+      "first_name": "Yoo",
+      "last_name": "Hwan-joong ",
+      "nationality": "KR",
+      "age": 24,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/31220/gen_delight_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 31391,
+      "name": "Zeus",
+      "role": "top",
+      "slug": "zeus-choi-woo-je",
+      "modified_at": "2026-10-06T11:02:47Z",
+      "birthday": "2004-01-31",
+      "first_name": "Choi",
+      "last_name": "Woo-je",
+      "nationality": "KR",
+      "age": 22,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/31391/t1_zeus_2023_split_2.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 126059,
+     "name": "Top Esports",
+     "location": "CN",
+     "slug": "top-esports",
+     "modified_at": "2026-10-06T11:02:59Z",
+     "acronym": "TES",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+     "dark_mode_image_url": null
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 8951,
+      "name": "JackeyLove",
+      "role": "adc",
+      "slug": "jackeylove",
+      "modified_at": "2026-10-06T11:02:59Z",
+      "birthday": "2000-11-18",
+      "first_name": "Wenbo",
+      "last_name": "Yu",
+      "nationality": "CN",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/8951/tes_jackey_love_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 8953,
+      "name": "Tian",
+      "role": "jun",
+      "slug": "tian",
+      "modified_at": "2026-10-06T11:02:59Z",
+      "birthday": "2000-07-24",
+      "first_name": "Tianliang",
+      "last_name": "Gao",
+      "nationality": "CN",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/8953/wbg_tian_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 19390,
+      "name": "Zhuo",
+      "role": "sup",
+      "slug": "sun-f5131463-e506-49cd-bf14-e55624945ed0",
+      "modified_at": "2026-10-06T11:02:59Z",
+      "birthday": "2001-02-13",
+      "first_name": "Xuzhuo",
+      "last_name": "Wang",
+      "nationality": "CN",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/19390/jdg_zhuo_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 27849,
+      "name": "Creme",
+      "role": "mid",
+      "slug": "crime",
+      "modified_at": "2026-10-06T11:02:59Z",
+      "birthday": "2003-12-14",
+      "first_name": "Jian",
+      "last_name": "Lin",
+      "nationality": "CN",
+      "age": 22,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/27849/tes_creme_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 52786,
+      "name": "ZUIAN",
+      "role": "top",
+      "slug": "zuian",
+      "modified_at": "2026-10-06T11:02:57Z",
+      "birthday": "2005-05-23",
+      "first_name": "Cheng",
+      "last_name": "Zi-Hao",
+      "nationality": "CN",
+      "age": 21,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/52786/tes_zuian_2026_split_2.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 585,
+      "name": "Faker",
+      "role": "mid",
+      "slug": "faker",
+      "modified_at": "2026-10-06T11:02:56Z",
+      "birthday": "1996-05-07",
+      "first_name": "Lee",
+      "last_name": "Sang-hyeok",
+      "nationality": "KR",
+      "age": 30,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/585/t1_faker_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 8158,
+      "name": "Keria",
+      "role": "sup",
+      "slug": "keria",
+      "modified_at": "2026-10-06T11:02:57Z",
+      "birthday": "2002-10-14",
+      "first_name": "Ryu",
+      "last_name": "Min-seok",
+      "nationality": "KR",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/8158/t1_keria_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 19282,
+      "name": "Doran",
+      "role": "top",
+      "slug": "doran-2686e2c9-bd34-47fb-9d17-87debb7be1b6",
+      "modified_at": "2026-10-06T11:02:55Z",
+      "birthday": "2000-07-22",
+      "first_name": "Choi",
+      "last_name": "Hyeon-joon",
+      "nationality": "KR",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/19282/gen_doran_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 31392,
+      "name": "Oner",
+      "role": "jun",
+      "slug": "oner",
+      "modified_at": "2026-10-06T11:02:56Z",
+      "birthday": "2002-12-24",
+      "first_name": "Moon",
+      "last_name": "Hyeon-joon",
+      "nationality": "KR",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/31392/t1_oner_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 38351,
+      "name": "Peyz",
+      "role": "adc",
+      "slug": "peyz",
+      "modified_at": "2026-10-06T11:02:57Z",
+      "birthday": "2005-12-05",
+      "first_name": "Kim",
+      "last_name": "Su-hwan",
+      "nationality": "KR",
+      "age": 20,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/38351/jdg_peyz_2025_split_1.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 126536,
+     "name": "Movistar KOI",
+     "location": "ES",
+     "slug": "mad-lions-league-of-legends",
+     "modified_at": "2026-10-06T11:02:55Z",
+     "acronym": "MKOI",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+     "dark_mode_image_url": null
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 24428,
+      "name": "Elyoya",
+      "role": "jun",
+      "slug": "elyoya",
+      "modified_at": "2026-10-06T11:02:54Z",
+      "birthday": "2000-03-13",
+      "first_name": "Javier",
+      "last_name": "Prades",
+      "nationality": "ES",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/24428/mkoi_elyoya_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 25655,
+      "name": "Supa",
+      "role": "adc",
+      "slug": "supa",
+      "modified_at": "2026-10-06T11:02:55Z",
+      "birthday": "2000-10-23",
+      "first_name": "David",
+      "last_name": "Martinez Garcia",
+      "nationality": "ES",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/25655/mkoi_supa_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 32062,
+      "name": "Jojopyun",
+      "role": "mid",
+      "slug": "jojopyun",
+      "modified_at": "2026-10-06T11:02:55Z",
+      "birthday": "2004-10-01",
+      "first_name": "Joseph",
+      "last_name": "Pyun",
+      "nationality": "CA",
+      "age": 22,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/32062/mkoi_jojopyun_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 37551,
+      "name": "Myrwn",
+      "role": "top",
+      "slug": "myrwn",
+      "modified_at": "2026-10-06T11:02:53Z",
+      "birthday": "2003-06-13",
+      "first_name": "Alex",
+      "last_name": "Villarejo",
+      "nationality": "ES",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/37551/mkoi_myrwn_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 42376,
+      "name": "Alvaro",
+      "role": "sup",
+      "slug": "alvaro",
+      "modified_at": "2026-10-06T11:02:55Z",
+      "birthday": "2003-07-15",
+      "first_name": "Álvaro Fernández",
+      "last_name": "del Amo",
+      "nationality": "ES",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/42376/mkoi_alvaro_2025_split_3.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 129971,
+     "name": "Anyone's Legend",
+     "location": "CN",
+     "slug": "anyone-s-legend",
+     "modified_at": "2026-10-06T11:02:39Z",
+     "acronym": "AL",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/129971/1083px_anyone_s_legend_full_darkmode.png"
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 958,
+      "name": "Tarzan",
+      "role": "jun",
+      "slug": "tarzan",
+      "modified_at": "2026-10-06T11:02:39Z",
+      "birthday": "1999-08-23",
+      "first_name": "Lee",
+      "last_name": "Seung-yong",
+      "nationality": "KR",
+      "age": 27,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/958/al_tarzan_msi_2025.png"
+     },
+     {
+      "active": true,
+      "id": 8962,
+      "name": "Hope",
+      "role": "adc",
+      "slug": "hopezz",
+      "modified_at": "2026-10-06T11:02:39Z",
+      "birthday": "2000-09-29",
+      "first_name": "Jie",
+      "last_name": "Wang",
+      "nationality": "CN",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/8962/al_hope_msi_2025.png"
+     },
+     {
+      "active": true,
+      "id": 18448,
+      "name": "Breathe",
+      "role": "top",
+      "slug": "curse",
+      "modified_at": "2026-10-06T11:02:37Z",
+      "birthday": "2001-02-19",
+      "first_name": "Chen",
+      "last_name": "Chen",
+      "nationality": "CN",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/18448/wbg_breathe_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 27865,
+      "name": "Shanks",
+      "role": "mid",
+      "slug": "shanks-cui-xiao-jun",
+      "modified_at": "2026-10-06T11:02:39Z",
+      "birthday": "2001-05-13",
+      "first_name": "Xiaojun",
+      "last_name": "Cui",
+      "nationality": "CN",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/27865/al_shanks_msi_2025.png"
+     },
+     {
+      "active": true,
+      "id": 31221,
+      "name": "Kael",
+      "role": "sup",
+      "slug": "khael-kim-jin-hong",
+      "modified_at": "2026-10-06T11:02:39Z",
+      "birthday": "2004-02-11",
+      "first_name": "Kim",
+      "last_name": " Jin-hong",
+      "nationality": "KR",
+      "age": 22,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/31221/al_kael_msi_2025.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 130355,
+     "name": "CTBC Flying Oyster",
+     "location": "TW",
+     "slug": "ctbc-flying-oyster",
+     "modified_at": "2026-10-06T11:03:01Z",
+     "acronym": "CFO",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+     "dark_mode_image_url": null
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 7604,
+      "name": "Rest",
+      "role": "top",
+      "slug": "rest",
+      "modified_at": "2026-10-06T11:03:00Z",
+      "birthday": "1998-12-11",
+      "first_name": "Shih-Chieh",
+      "last_name": "Hsu",
+      "nationality": "TW",
+      "age": 27,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/7604/cfo_rest_2024_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 17487,
+      "name": "Kino",
+      "role": "sup",
+      "slug": "kino",
+      "modified_at": "2026-10-06T11:03:01Z",
+      "birthday": "1998-04-12",
+      "first_name": "Hsin-Jung",
+      "last_name": "Chu Wu",
+      "nationality": "TW",
+      "age": 28,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/17487/byg_kino_2021_split_2__25282_2529.png"
+     },
+     {
+      "active": true,
+      "id": 23651,
+      "name": "Shad0w",
+      "role": "jun",
+      "slug": "shadow-zhiqiang-zhao",
+      "modified_at": "2026-10-06T11:03:01Z",
+      "birthday": "2001-02-25",
+      "first_name": "Zhiqiang",
+      "last_name": "Zhao",
+      "nationality": "IT",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/23651/blg_shad0w_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 25145,
+      "name": "Doggo",
+      "role": "adc",
+      "slug": "doggo",
+      "modified_at": "2026-10-06T11:03:01Z",
+      "birthday": "2003-01-14",
+      "first_name": "Tzuchuan",
+      "last_name": "Chiu",
+      "nationality": "TW",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/25145/up_doggo_2024_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 38371,
+      "name": "Pout",
+      "role": "mid",
+      "slug": "pout",
+      "modified_at": "2026-10-06T11:03:01Z",
+      "birthday": "2003-10-02",
+      "first_name": "Han",
+      "last_name": "In-woong",
+      "nationality": "KR",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/38371/nip_pout_2023_split_2.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 132531,
+     "name": "Dplus KIA",
+     "location": "KR",
+     "slug": "dplus-kia",
+     "modified_at": "2026-10-06T11:03:03Z",
+     "acronym": "DK",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/132531/800px_dplus_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132531/800px_dplus_darkmode.png"
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 8166,
+      "name": "ShowMaker",
+      "role": "mid",
+      "slug": "showmaker",
+      "modified_at": "2026-10-06T11:03:02Z",
+      "birthday": "2000-07-22",
+      "first_name": "Heo",
+      "last_name": "Su",
+      "nationality": "KR",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/8166/dk_show_maker_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 35023,
+      "name": "Lucid",
+      "role": "jun",
+      "slug": "lucid",
+      "modified_at": "2026-10-06T11:03:02Z",
+      "birthday": "2005-01-28",
+      "first_name": "Choi",
+      "last_name": "Yong-hyeok",
+      "nationality": "KR",
+      "age": 21,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/35023/dk.c_lucid_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 42273,
+      "name": "Smash",
+      "role": "adc",
+      "slug": "smash-sin-geum-jae",
+      "modified_at": "2026-10-06T11:03:03Z",
+      "birthday": "2006-07-20",
+      "first_name": "Sin",
+      "last_name": "Geum-jae",
+      "nationality": "KR",
+      "age": 20,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/42273/t1.ea_smash_2024_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 45858,
+      "name": "Career",
+      "role": "sup",
+      "slug": "career",
+      "modified_at": "2026-10-06T11:03:03Z",
+      "birthday": "2004-08-29",
+      "first_name": "Oh",
+      "last_name": "Hyeong-seok",
+      "nationality": "KR",
+      "age": 22,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/45858/drx.c_career_2023_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 45859,
+      "name": "Siwoo",
+      "role": "top",
+      "slug": "siwoo",
+      "modified_at": "2026-10-06T11:03:02Z",
+      "birthday": "2007-11-24",
+      "first_name": "Jeon",
+      "last_name": "Si-woo",
+      "nationality": "KR",
+      "age": 18,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/45859/dk.c_siwoo_2024_split_2.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 136066,
+     "name": "LYON",
+     "location": "MX",
+     "slug": "lyon",
+     "modified_at": "2026-10-06T11:02:53Z",
+     "acronym": "LY",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/136066/lyon__25282024_american_team_2529logo_square.png",
+     "dark_mode_image_url": null
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 3468,
+      "name": "Dhokla",
+      "role": "top",
+      "slug": "dhokla",
+      "modified_at": "2026-10-06T11:02:52Z",
+      "birthday": "1997-07-17",
+      "first_name": "Niship",
+      "last_name": "Doshi",
+      "nationality": "US",
+      "age": 29,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/3468/ezgif_5_4f27ddb481.png"
+     },
+     {
+      "active": true,
+      "id": 18036,
+      "name": "Inspired",
+      "role": "jun",
+      "slug": "inspired",
+      "modified_at": "2026-10-06T11:02:53Z",
+      "birthday": "2002-01-24",
+      "first_name": "Kacper",
+      "last_name": "Sloma",
+      "nationality": "PL",
+      "age": 24,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/18036/fly_inspired_2025_msi.png"
+     },
+     {
+      "active": true,
+      "id": 22992,
+      "name": "Isles",
+      "role": "sup",
+      "slug": "isles",
+      "modified_at": "2026-10-06T11:02:53Z",
+      "birthday": "2001-03-07",
+      "first_name": "Jonah",
+      "last_name": "Rosario",
+      "nationality": "AU",
+      "age": 25,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/22992/dig_isles_2025_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 31224,
+      "name": "Berserker",
+      "role": "adc",
+      "slug": "berserker",
+      "modified_at": "2026-10-06T11:02:53Z",
+      "birthday": "2003-05-25",
+      "first_name": "Kim ",
+      "last_name": "Min-cheol",
+      "nationality": "KR",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/31224/c9_berserker_2023_split_1.png"
+     },
+     {
+      "active": true,
+      "id": 38340,
+      "name": "Saint",
+      "role": "mid",
+      "slug": "saint",
+      "modified_at": "2026-10-06T11:02:53Z",
+      "birthday": "2005-01-01",
+      "first_name": "Kang",
+      "last_name": "Sung-in",
+      "nationality": "KR",
+      "age": 21,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/38340/lyon_saint_2025_split_1.png"
+     }
+    ]
+   },
+   {
+    "team": {
+     "id": 136073,
+     "name": "Team Secret Whales",
+     "location": "VN",
+     "slug": "team-secret-whales",
+     "modified_at": "2026-10-06T11:02:47Z",
+     "acronym": "TSW",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/136073/1200px_secret_whales_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136073/1200px_secret_whales_darkmode.png"
+    },
+    "players": [
+     {
+      "active": true,
+      "id": 15317,
+      "name": "Bie",
+      "role": "sup",
+      "slug": "bie",
+      "modified_at": "2026-10-06T11:02:47Z",
+      "birthday": "1999-12-09",
+      "first_name": "Trần",
+      "last_name": "Đức Hiếu",
+      "nationality": "VN",
+      "age": 26,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/15317/dino_bie_vcs_2025_finals.png"
+     },
+     {
+      "active": true,
+      "id": 23327,
+      "name": "Pun",
+      "role": "top",
+      "slug": "kaido",
+      "modified_at": "2026-10-06T11:02:46Z",
+      "birthday": "2002-07-29",
+      "first_name": "Nguyễn",
+      "last_name": "Đăng Khoa",
+      "nationality": "VN",
+      "age": 24,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/23327/tsw_pun_2025_split_3.png"
+     },
+     {
+      "active": true,
+      "id": 33531,
+      "name": "Eddie",
+      "role": "adc",
+      "slug": "eddie",
+      "modified_at": "2026-10-06T11:02:47Z",
+      "birthday": "2003-06-17",
+      "first_name": "Công Nghĩa",
+      "last_name": "Hoàng",
+      "nationality": "VN",
+      "age": 23,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/33531/tsw_eddie_2025_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 50231,
+      "name": "Hizto",
+      "role": "jun",
+      "slug": "bwhizto",
+      "modified_at": "2026-10-06T11:02:46Z",
+      "birthday": "2007-09-15",
+      "first_name": "Lê Văn ",
+      "last_name": "Hoàng Hải",
+      "nationality": "VN",
+      "age": 19,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/50231/tsw_hizto_2025_split_2.png"
+     },
+     {
+      "active": true,
+      "id": 57927,
+      "name": "Dire",
+      "role": "mid",
+      "slug": "dire",
+      "modified_at": "2026-10-06T11:02:47Z",
+      "birthday": "2006-11-22",
+      "first_name": "Đức",
+      "last_name": "Trần Duy",
+      "nationality": "VN",
+      "age": 19,
+      "image_url": "https://cdn-api.pandascore.co/images/player/image/57927/tsw_dire_2025_split_2.png"
+     }
+    ]
+   }
+  ]
+ }
+]

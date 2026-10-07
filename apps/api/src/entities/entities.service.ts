@@ -17,11 +17,22 @@ const HISTORY_LIMIT = 100;
 // `entityId` à l'ingestion (seul `EventParticipant.score`/`isWinner`, la série,
 // l'est) — hors périmètre du J6, le score de série suffit au critère d'acceptation.
 // Pas de "Transferts et effectif" non plus : aucune source de roster branchée.
+// Structure d'une équipe (J23, #A4) : renvoyée seulement quand elle compte au moins deux équipes (une équipe
+// seule dans sa structure n'a rien de plus à suivre), pour afficher « Suivre toute G2 ».
+export class EntityOrganizationDto {
+  @ApiProperty() id!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty() teamCount!: number;
+  @ApiProperty({ type: [String], description: "Slugs des jeux où la structure a une équipe" }) games!: string[];
+}
+
 export class EntityResponseDto {
   @ApiProperty() id!: string;
   @ApiProperty() name!: string;
   @ApiProperty({ nullable: true, type: String }) shortName!: string | null;
   @ApiProperty({ nullable: true, type: String }) region!: string | null;
+  @ApiProperty({ nullable: true, type: String, description: "Slug du jeu de l'équipe" }) game!: string | null;
+  @ApiProperty({ nullable: true, type: EntityOrganizationDto }) organization!: EntityOrganizationDto | null;
   @ApiProperty() wins!: number;
   @ApiProperty() losses!: number;
   @ApiProperty() winStreak!: number;
@@ -72,10 +83,35 @@ export class EntitiesService {
   // sert à l'onboarding (écran 12, J6), qui suggère des équipes par leur nom
   // sans connaître leur id à l'avance (pas de recherche générique côté API,
   // ce cas précis suffit pour l'instant).
-  async getByShortName(shortName: string): Promise<EntityResponseDto> {
-    const entity = await this.prisma.entity.findFirst({ where: { shortName: { equals: shortName, mode: "insensitive" } } });
+  async getByShortName(shortName: string, game?: string): Promise<EntityResponseDto> {
+    // `game` départage « G2 » de Valorant et « G2 » de League of Legends (J23).
+    const entity = await this.prisma.entity.findFirst({
+      where: {
+        shortName: { equals: shortName, mode: "insensitive" },
+        ...(game ? { participants: { some: { event: { competition: { game } } } } } : {}),
+      },
+    });
     if (!entity) throw new NotFoundException("Équipe introuvable");
     return this.getById(entity.id);
+  }
+
+  private async organizationOf(organizationId: string | null): Promise<EntityOrganizationDto | null> {
+    if (!organizationId) return null;
+    const organization = await this.prisma.organization.findUnique({
+      where: { id: organizationId },
+      select: {
+        id: true,
+        name: true,
+        entities: { select: { participants: { take: 1, select: { event: { select: { competition: { select: { game: true } } } } } } } },
+      },
+    });
+    if (!organization || organization.entities.length < 2) return null;
+    const games = new Set<string>();
+    for (const team of organization.entities) {
+      const game = team.participants[0]?.event.competition.game;
+      if (game) games.add(game);
+    }
+    return { id: organization.id, name: organization.name, teamCount: organization.entities.length, games: [...games].sort() };
   }
 
   private async buildResponse(entity: Entity): Promise<EntityResponseDto> {
@@ -109,6 +145,8 @@ export class EntitiesService {
       name: entity.name,
       shortName: entity.shortName,
       region: entity.region,
+      game: lastEvent?.competition.game ?? nextEvent?.competition.game ?? null,
+      organization: await this.organizationOf(entity.organizationId),
       wins,
       losses: history.length - wins,
       winStreak,

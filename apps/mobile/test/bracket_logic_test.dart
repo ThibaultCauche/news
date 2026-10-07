@@ -81,7 +81,8 @@ void main() {
     CompetitionChildDto child(String id, String name) => CompetitionChildDto((b) => b
       ..id = id
       ..name = name
-      ..kind = "tournament");
+      ..kind = "tournament"
+      ..hasEvents = true);
 
     test("garde seulement les poules, triées par nom quel que soit l'ordre reçu", () {
       final children = [child("d", "Group D"), child("playoffs", "Playoffs"), child("b", "Group B"), child("a", "Group A"), child("c", "Group C")];

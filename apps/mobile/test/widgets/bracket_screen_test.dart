@@ -14,7 +14,8 @@ import "../follows_test_helpers.dart";
 CompetitionChildDto _child(String id, String name) => CompetitionChildDto((b) => b
   ..id = id
   ..name = name
-  ..kind = "tournament");
+  ..kind = "tournament"
+  ..hasEvents = true);
 
 // Détail du match "g-open1" (Ouverture 1 de la poule) : sert à vérifier
 // qu'un tap sur sa case dans `GroupBracketTree` ouvre bien `NextMatchScreen`.

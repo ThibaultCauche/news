@@ -2,7 +2,7 @@ import { Controller, Get, Param, Query, Req, Res } from "@nestjs/common";
 import { ApiOkResponse } from "@nestjs/swagger";
 import type { Request, Response } from "express";
 import { sendWithEtag } from "../common/etag";
-import { BracketResponseDto, CompetitionResponseDto, CompetitionRootDto, CompetitionsService } from "./competitions.service";
+import { BracketResponseDto, CompetitionResponseDto, CompetitionRootDto, CompetitionsService, RankingResponseDto } from "./competitions.service";
 
 @Controller("competitions")
 export class CompetitionsController {
@@ -29,5 +29,12 @@ export class CompetitionsController {
   @ApiOkResponse({ type: BracketResponseDto })
   async getBracket(@Param("id") id: string, @Req() req: Request, @Res() res: Response): Promise<void> {
     sendWithEtag(req, res, await this.competitions.getBracket(id));
+  }
+
+  // GET /v1/competitions/:id/ranking — classement global (J23, #M1).
+  @Get(":id/ranking")
+  @ApiOkResponse({ type: RankingResponseDto })
+  async getRanking(@Param("id") id: string, @Req() req: Request, @Res() res: Response): Promise<void> {
+    sendWithEtag(req, res, await this.competitions.getRanking(id));
   }
 }

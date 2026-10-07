@@ -5,6 +5,7 @@ import "package:news_api_client/news_api_client.dart";
 import "../../theme/app_theme.dart";
 import "../../core/api_providers.dart";
 import "../../core/date_x.dart";
+import "../../core/games.dart";
 import "../../core/settings_provider.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/async_view.dart";
@@ -102,6 +103,10 @@ class _TeamBody extends ConsumerWidget {
             ),
           ],
         ),
+        if (entity.organization != null) ...[
+          const SizedBox(height: AppSpacing.md),
+          OrganizationFollowTile(organization: entity.organization!),
+        ],
         const SizedBox(height: AppSpacing.lg),
         Row(
           children: [
@@ -137,6 +142,48 @@ class _TeamBody extends ConsumerWidget {
         const SizedBox(height: AppSpacing.lg),
         ForumEntryCard(kind: "entity", targetId: entity.id),
       ],
+    );
+  }
+}
+
+/// « Suivre toute G2 » (J23, #A4) : la structure regroupe les équipes de même nom dans plusieurs jeux. Suivre la
+/// structure suit chacune de ses équipes, et celles qui la rejoindront.
+class OrganizationFollowTile extends ConsumerWidget {
+  const OrganizationFollowTile({super.key, required this.organization});
+
+  final EntityOrganizationDto organization;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final following = isFollowing(ref.watch(followsProvider).value, FollowTargetType.organization, organization.id);
+    final games = organization.games.map(gameLabel).join(", ");
+    return SectionCard(
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Toute ${organization.name}", style: const TextStyle(fontWeight: FontWeight.w600)),
+                Text(
+                  "${organization.teamCount} équipes${games.isEmpty ? "" : " · $games"}",
+                  style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: AppSpacing.sm),
+          FollowButton(
+            following: following,
+            onPressed: () => runOrShowError(
+              context,
+              () => following
+                  ? ref.read(followsControllerProvider).unfollow(FollowTargetType.organization, organization.id)
+                  : ref.read(followsControllerProvider).follow(FollowTargetType.organization, organization.id, name: organization.name),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

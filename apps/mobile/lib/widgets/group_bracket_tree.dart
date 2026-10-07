@@ -10,6 +10,7 @@ import "../features/bracket/bracket_model.dart";
 import "../features/bracket/bracket_provider.dart";
 import "../features/bracket/bracket_view.dart";
 import "../features/bracket/radial_bracket.dart";
+import "../features/bracket/swiss_view.dart";
 import "../features/follows/follows_provider.dart";
 import "../theme/app_theme.dart";
 import "bracket_match_card.dart";
@@ -47,7 +48,7 @@ class GroupBracketTree extends ConsumerWidget {
           padding: const EdgeInsets.all(AppSpacing.sm),
           decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.chip)),
           child: switch (bracket) {
-            _ when bracket.hasValue => _Tree(name: name, bracket: bracket.value!, followViewPreference: followViewPreference),
+            _ when bracket.hasValue => _Tree(name: name, bracket: bracket.value!, followViewPreference: followViewPreference, competitionId: competitionId),
             AsyncError() => ErrorState(message: "Poule indisponible.", compact: true, onRetry: () => ref.invalidate(bracketProvider(competitionId))),
             _ => const Skeleton(height: 120, radius: AppRadii.chip),
           },
@@ -115,14 +116,26 @@ GslShape? _detectByLinks(BracketResponseDto bracket) {
 }
 
 class _Tree extends ConsumerWidget {
-  const _Tree({required this.name, required this.bracket, required this.followViewPreference});
+  const _Tree({required this.name, required this.bracket, required this.followViewPreference, required this.competitionId});
 
+  final String competitionId;
   final String name;
   final BracketResponseDto bracket;
   final bool followViewPreference;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Phase suisse (J23) : ni poule GSL ni arbre, une colonne par ronde.
+    if (bracket.format == "swiss") {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(name.toUpperCase(), style: AppTextStyles.sectionTitle.copyWith(fontSize: 14, color: AppColors.brass)),
+          const SizedBox(height: AppSpacing.sm),
+          SwissView(bracket: bracket, competitionId: competitionId),
+        ],
+      );
+    }
     final detected = detectGslShape(bracket);
     // PandaScore nomme les ouvertures par leurs équipes (« TYLOO vs G2 ») : on les rebaptise
     // « Ouverture 1/2 » pour que chaque case ait un titre lisible.

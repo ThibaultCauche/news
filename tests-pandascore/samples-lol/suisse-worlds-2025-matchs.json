@@ -1,0 +1,7002 @@
+[
+ {
+  "slug": "2025-10-15-59deb4c9-dd99-4e1e-be38-44470bc2f9a5",
+  "end_at": "2025-10-15T05:52:43Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 132315
+   },
+   {
+    "score": 1,
+    "team_id": 136073
+   }
+  ],
+  "original_scheduled_at": "2025-10-15T11:00:00Z",
+  "winner": {
+   "id": 136073,
+   "name": "Team Secret Whales",
+   "location": "VN",
+   "slug": "team-secret-whales",
+   "modified_at": "2026-10-06T11:02:47Z",
+   "acronym": "TSW",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/136073/1200px_secret_whales_lightmode.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136073/1200px_secret_whales_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244338",
+   "opens_at": "2025-10-15T05:00:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-15T05:11:41Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272891,
+    "position": 1,
+    "status": "finished",
+    "length": 2009,
+    "finished": true,
+    "begin_at": "2025-10-15T05:11:42Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-15T05:52:44Z",
+    "forfeit": false,
+    "match_id": 1244338,
+    "winner": {
+     "id": 136073,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244338,
+  "name": "Round 1: VKS vs TSW",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-15T06:20:01Z",
+  "winner_id": 136073,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 132315,
+     "name": "Vivo Keyd Stars",
+     "location": "BR",
+     "slug": "vivo-keyd-stars",
+     "modified_at": "2026-08-31T02:21:15Z",
+     "acronym": "VKS",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/132315/214px_keyd_stars_2022_allmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132315/214px_keyd_stars_2022_allmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 136073,
+     "name": "Team Secret Whales",
+     "location": "VN",
+     "slug": "team-secret-whales",
+     "modified_at": "2026-10-06T11:02:47Z",
+     "acronym": "TSW",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/136073/1200px_secret_whales_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136073/1200px_secret_whales_darkmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-15T05:15:00Z"
+ },
+ {
+  "slug": "2025-10-15-0b7b2446-347f-4b8e-9625-c13c45ac9a30",
+  "end_at": "2025-10-15T06:51:11Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 130355
+   },
+   {
+    "score": 0,
+    "team_id": 394
+   }
+  ],
+  "original_scheduled_at": "2025-10-15T08:00:00Z",
+  "winner": {
+   "id": 130355,
+   "name": "CTBC Flying Oyster",
+   "location": "TW",
+   "slug": "ctbc-flying-oyster",
+   "modified_at": "2026-10-06T11:03:01Z",
+   "acronym": "CFO",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244335",
+   "opens_at": "2025-10-15T06:00:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-15T06:12:23Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272888,
+    "position": 1,
+    "status": "finished",
+    "length": 1921,
+    "finished": true,
+    "begin_at": "2025-10-15T06:12:24Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-15T06:51:12Z",
+    "forfeit": false,
+    "match_id": 1244335,
+    "winner": {
+     "id": 130355,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244335,
+  "name": "Round 1: CFO vs FNC",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-15T07:17:46Z",
+  "winner_id": 130355,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 130355,
+     "name": "CTBC Flying Oyster",
+     "location": "TW",
+     "slug": "ctbc-flying-oyster",
+     "modified_at": "2026-10-06T11:03:01Z",
+     "acronym": "CFO",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 394,
+     "name": "Fnatic",
+     "location": "GB",
+     "slug": "fnatic",
+     "modified_at": "2026-07-21T06:09:55Z",
+     "acronym": "FNC",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/394/220px_fnaticlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-15T06:15:00Z"
+ },
+ {
+  "slug": "2025-10-15-5cafb082-817a-4929-8ad7-bf80769f0254",
+  "end_at": "2025-10-15T07:49:40Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 63
+   },
+   {
+    "score": 0,
+    "team_id": 126536
+   }
+  ],
+  "original_scheduled_at": "2025-10-15T12:00:00Z",
+  "winner": {
+   "id": 63,
+   "name": "KT Rolster",
+   "location": "KR",
+   "slug": "kt-rolster",
+   "modified_at": "2026-09-18T08:31:50Z",
+   "acronym": "KT",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244339",
+   "opens_at": "2025-10-15T06:55:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-15T07:12:01Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272892,
+    "position": 1,
+    "status": "finished",
+    "length": 2009,
+    "finished": true,
+    "begin_at": "2025-10-15T07:12:02Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-15T07:49:40Z",
+    "forfeit": false,
+    "match_id": 1244339,
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244339,
+  "name": "Round 1: KT vs MKOI",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-15T08:19:00Z",
+  "winner_id": 63,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 63,
+     "name": "KT Rolster",
+     "location": "KR",
+     "slug": "kt-rolster",
+     "modified_at": "2026-09-18T08:31:50Z",
+     "acronym": "KT",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126536,
+     "name": "Movistar KOI",
+     "location": "ES",
+     "slug": "mad-lions-league-of-legends",
+     "modified_at": "2026-10-06T11:02:55Z",
+     "acronym": "MKOI",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-15T07:10:00Z"
+ },
+ {
+  "slug": "2025-10-15-907bd53c-2073-48a8-b28c-d10eef9a9432",
+  "end_at": "2025-10-15T08:47:05Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 1566
+   },
+   {
+    "score": 1,
+    "team_id": 1537
+   }
+  ],
+  "original_scheduled_at": "2025-10-15T09:00:00Z",
+  "winner": {
+   "id": 1537,
+   "name": "100 Thieves",
+   "location": "US",
+   "slug": "100-thieves",
+   "modified_at": "2025-09-24T08:57:45Z",
+   "acronym": "100",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/1537/100_thieves_alternatelogo_square.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/1537/190px_100_thieves_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244336",
+   "opens_at": "2025-10-15T07:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-15T08:09:46Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272889,
+    "position": 1,
+    "status": "finished",
+    "length": 1870,
+    "finished": true,
+    "begin_at": "2025-10-15T08:09:47Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-15T08:47:05Z",
+    "forfeit": false,
+    "match_id": 1244336,
+    "winner": {
+     "id": 1537,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244336,
+  "name": "Round 1: BLG vs 100",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-15T09:10:53Z",
+  "winner_id": 1537,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1566,
+     "name": "Bilibili Gaming",
+     "location": "CN",
+     "slug": "bilibili-gaming",
+     "modified_at": "2026-10-06T11:02:52Z",
+     "acronym": "BLG",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1537,
+     "name": "100 Thieves",
+     "location": "US",
+     "slug": "100-thieves",
+     "modified_at": "2025-09-24T08:57:45Z",
+     "acronym": "100",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1537/100_thieves_alternatelogo_square.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/1537/190px_100_thieves_darkmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-15T08:00:00Z"
+ },
+ {
+  "slug": "2025-10-15-187a96c7-9700-4d3c-aaef-bf830de58d44",
+  "end_at": "2025-10-15T09:53:57Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 311
+   },
+   {
+    "score": 1,
+    "team_id": 126061
+   }
+  ],
+  "original_scheduled_at": "2025-10-15T06:00:00Z",
+  "winner": {
+   "id": 126061,
+   "name": "T1",
+   "location": "KR",
+   "slug": "t1",
+   "modified_at": "2026-10-06T11:02:57Z",
+   "acronym": "T1",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244332",
+   "opens_at": "2025-10-15T08:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-15T09:11:21Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272886,
+    "position": 1,
+    "status": "finished",
+    "length": 2066,
+    "finished": true,
+    "begin_at": "2025-10-15T09:11:22Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-15T09:53:57Z",
+    "forfeit": false,
+    "match_id": 1244332,
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244332,
+  "name": "Round 1: FLY vs T1",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-15T10:51:06Z",
+  "winner_id": 126061,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 311,
+     "name": "FlyQuest",
+     "location": "US",
+     "slug": "flyquest",
+     "modified_at": "2026-09-28T14:17:41Z",
+     "acronym": "FLY",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/311/fly_questlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-15T09:00:00Z"
+ },
+ {
+  "slug": "2025-10-15-de7a4c83-3372-436c-a04e-a4e14ca70db7",
+  "end_at": "2025-10-15T11:02:27Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 2883
+   },
+   {
+    "score": 1,
+    "team_id": 129971
+   }
+  ],
+  "original_scheduled_at": "2025-10-15T10:00:00Z",
+  "winner": {
+   "id": 129971,
+   "name": "Anyone's Legend",
+   "location": "CN",
+   "slug": "anyone-s-legend",
+   "modified_at": "2026-10-06T11:02:39Z",
+   "acronym": "AL",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/129971/1083px_anyone_s_legend_full_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244337",
+   "opens_at": "2025-10-15T10:00:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-15T10:13:23Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272890,
+    "position": 1,
+    "status": "finished",
+    "length": 2474,
+    "finished": true,
+    "begin_at": "2025-10-15T10:13:24Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-15T11:02:27Z",
+    "forfeit": false,
+    "match_id": 1244337,
+    "winner": {
+     "id": 129971,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244337,
+  "name": "Round 1: HLE vs AL",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-15T12:29:58Z",
+  "winner_id": 129971,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2883,
+     "name": "Hanwha Life Esports",
+     "location": "KR",
+     "slug": "hanwha-life-esports",
+     "modified_at": "2026-10-06T11:02:49Z",
+     "acronym": "HLE",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 129971,
+     "name": "Anyone's Legend",
+     "location": "CN",
+     "slug": "anyone-s-legend",
+     "modified_at": "2026-10-06T11:02:39Z",
+     "acronym": "AL",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/129971/1083px_anyone_s_legend_full_darkmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-15T10:15:00Z"
+ },
+ {
+  "slug": "2025-10-15-e4f6b72a-31bf-4199-9327-da52d1caaf52",
+  "end_at": "2025-10-15T12:01:51Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 88
+   },
+   {
+    "score": 1,
+    "team_id": 126059
+   }
+  ],
+  "original_scheduled_at": "2025-10-15T07:00:00Z",
+  "winner": {
+   "id": 126059,
+   "name": "Top Esports",
+   "location": "CN",
+   "slug": "top-esports",
+   "modified_at": "2026-10-06T11:02:59Z",
+   "acronym": "TES",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244333",
+   "opens_at": "2025-10-15T11:05:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-15T11:22:29Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272887,
+    "position": 1,
+    "status": "finished",
+    "length": 1945,
+    "finished": true,
+    "begin_at": "2025-10-15T11:22:30Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-15T12:01:52Z",
+    "forfeit": false,
+    "match_id": 1244333,
+    "winner": {
+     "id": 126059,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244333,
+  "name": "Round 1: G2 vs TES",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-15T12:31:37Z",
+  "winner_id": 126059,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 88,
+     "name": "G2 Esports",
+     "location": "DE",
+     "slug": "g2-esports",
+     "modified_at": "2026-10-06T11:02:46Z",
+     "acronym": "G2",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126059,
+     "name": "Top Esports",
+     "location": "CN",
+     "slug": "top-esports",
+     "modified_at": "2026-10-06T11:02:59Z",
+     "acronym": "TES",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-15T11:20:00Z"
+ },
+ {
+  "slug": "2025-10-15",
+  "end_at": "2025-10-15T12:56:32Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 2882
+   },
+   {
+    "score": 0,
+    "team_id": 126702
+   }
+  ],
+  "original_scheduled_at": "2025-10-15T05:00:00Z",
+  "winner": {
+   "id": 2882,
+   "name": "Gen.G",
+   "location": "KR",
+   "slug": "geng",
+   "modified_at": "2026-10-06T11:02:37Z",
+   "acronym": "GEN",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244331",
+   "opens_at": "2025-10-15T12:05:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-15T12:21:21Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272885,
+    "position": 1,
+    "status": "finished",
+    "length": 1642,
+    "finished": true,
+    "begin_at": "2025-10-15T12:21:22Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-15T12:56:33Z",
+    "forfeit": false,
+    "match_id": 1244331,
+    "winner": {
+     "id": 2882,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244331,
+  "name": "Round 1: GEN vs TLN",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-15T13:24:31Z",
+  "winner_id": 2882,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2882,
+     "name": "Gen.G",
+     "location": "KR",
+     "slug": "geng",
+     "modified_at": "2026-10-06T11:02:37Z",
+     "acronym": "GEN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126702,
+     "name": "PSG Talon",
+     "location": "HK",
+     "slug": "talon-esports-league-of-legends",
+     "modified_at": "2026-07-21T12:33:40Z",
+     "acronym": "TLN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126702/220px_psg_talonlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-15T12:20:00Z"
+ },
+ {
+  "slug": "2025-10-16-2e5f430a-a119-48b6-b0ed-18c53575e2f0",
+  "end_at": "2025-10-16T05:44:35Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 311
+   },
+   {
+    "score": 0,
+    "team_id": 132315
+   }
+  ],
+  "original_scheduled_at": "2025-10-16T12:00:00Z",
+  "winner": {
+   "id": 311,
+   "name": "FlyQuest",
+   "location": "US",
+   "slug": "flyquest",
+   "modified_at": "2026-09-28T14:17:41Z",
+   "acronym": "FLY",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/311/fly_questlogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244348",
+   "opens_at": "2025-10-16T04:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-16T05:04:34Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272900,
+    "position": 1,
+    "status": "finished",
+    "length": 1878,
+    "finished": true,
+    "begin_at": "2025-10-16T05:04:35Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-16T05:44:36Z",
+    "forfeit": false,
+    "match_id": 1244348,
+    "winner": {
+     "id": 311,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244348,
+  "name": "Round 2: FLY vs VKS",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-16T06:11:39Z",
+  "winner_id": 311,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 311,
+     "name": "FlyQuest",
+     "location": "US",
+     "slug": "flyquest",
+     "modified_at": "2026-09-28T14:17:41Z",
+     "acronym": "FLY",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/311/fly_questlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 132315,
+     "name": "Vivo Keyd Stars",
+     "location": "BR",
+     "slug": "vivo-keyd-stars",
+     "modified_at": "2026-08-31T02:21:15Z",
+     "acronym": "VKS",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/132315/214px_keyd_stars_2022_allmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132315/214px_keyd_stars_2022_allmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-16T05:00:00Z"
+ },
+ {
+  "slug": "2025-10-16-57130dfd-c6df-446a-b06e-90d5bf3daf76",
+  "end_at": "2025-10-16T06:36:55Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 63
+   },
+   {
+    "score": 0,
+    "team_id": 136073
+   }
+  ],
+  "original_scheduled_at": "2025-10-16T07:00:00Z",
+  "winner": {
+   "id": 63,
+   "name": "KT Rolster",
+   "location": "KR",
+   "slug": "kt-rolster",
+   "modified_at": "2026-09-18T08:31:50Z",
+   "acronym": "KT",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244342",
+   "opens_at": "2025-10-16T05:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-16T06:02:35Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272895,
+    "position": 1,
+    "status": "finished",
+    "length": 1686,
+    "finished": true,
+    "begin_at": "2025-10-16T06:02:36Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-16T06:36:56Z",
+    "forfeit": false,
+    "match_id": 1244342,
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244342,
+  "name": "Round 2: KT vs TSW",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-16T07:02:36Z",
+  "winner_id": 63,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 63,
+     "name": "KT Rolster",
+     "location": "KR",
+     "slug": "kt-rolster",
+     "modified_at": "2026-09-18T08:31:50Z",
+     "acronym": "KT",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 136073,
+     "name": "Team Secret Whales",
+     "location": "VN",
+     "slug": "team-secret-whales",
+     "modified_at": "2026-10-06T11:02:47Z",
+     "acronym": "TSW",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/136073/1200px_secret_whales_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136073/1200px_secret_whales_darkmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-16T06:00:00Z"
+ },
+ {
+  "slug": "2025-10-16-4c4c2a50-7c6a-47ce-9bde-2efb322f3a9a",
+  "end_at": "2025-10-16T07:31:08Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 126536
+   },
+   {
+    "score": 1,
+    "team_id": 88
+   }
+  ],
+  "original_scheduled_at": "2025-10-16T10:00:00Z",
+  "winner": {
+   "id": 88,
+   "name": "G2 Esports",
+   "location": "DE",
+   "slug": "g2-esports",
+   "modified_at": "2026-10-06T11:02:46Z",
+   "acronym": "G2",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244346",
+   "opens_at": "2025-10-16T06:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-16T06:54:35Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272898,
+    "position": 1,
+    "status": "finished",
+    "length": 1701,
+    "finished": true,
+    "begin_at": "2025-10-16T06:54:35Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-16T07:31:09Z",
+    "forfeit": false,
+    "match_id": 1244346,
+    "winner": {
+     "id": 88,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244346,
+  "name": "Round 2: MKOI vs G2",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-16T07:57:17Z",
+  "winner_id": 88,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126536,
+     "name": "Movistar KOI",
+     "location": "ES",
+     "slug": "mad-lions-league-of-legends",
+     "modified_at": "2026-10-06T11:02:55Z",
+     "acronym": "MKOI",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 88,
+     "name": "G2 Esports",
+     "location": "DE",
+     "slug": "g2-esports",
+     "modified_at": "2026-10-06T11:02:46Z",
+     "acronym": "G2",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-16T07:00:00Z"
+ },
+ {
+  "slug": "2025-10-16-80866a01-e6a0-4558-b7ae-c436542c1cba",
+  "end_at": "2025-10-16T08:21:42Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 126059
+   },
+   {
+    "score": 0,
+    "team_id": 1537
+   }
+  ],
+  "original_scheduled_at": "2025-10-16T05:00:00Z",
+  "winner": {
+   "id": 126059,
+   "name": "Top Esports",
+   "location": "CN",
+   "slug": "top-esports",
+   "modified_at": "2026-10-06T11:02:59Z",
+   "acronym": "TES",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244340",
+   "opens_at": "2025-10-16T07:35:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-16T07:49:03Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272893,
+    "position": 1,
+    "status": "finished",
+    "length": 1580,
+    "finished": true,
+    "begin_at": "2025-10-16T07:49:04Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-16T08:21:42Z",
+    "forfeit": false,
+    "match_id": 1244340,
+    "winner": {
+     "id": 126059,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244340,
+  "name": "Round 2: TES vs 100",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-16T09:07:13Z",
+  "winner_id": 126059,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126059,
+     "name": "Top Esports",
+     "location": "CN",
+     "slug": "top-esports",
+     "modified_at": "2026-10-06T11:02:59Z",
+     "acronym": "TES",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1537,
+     "name": "100 Thieves",
+     "location": "US",
+     "slug": "100-thieves",
+     "modified_at": "2025-09-24T08:57:45Z",
+     "acronym": "100",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1537/100_thieves_alternatelogo_square.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/1537/190px_100_thieves_darkmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-16T07:50:00Z"
+ },
+ {
+  "slug": "2025-10-16-2c20daa0-3486-4547-8158-fe688ef0cc38",
+  "end_at": "2025-10-16T09:20:23Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 126061
+   },
+   {
+    "score": 1,
+    "team_id": 130355
+   }
+  ],
+  "original_scheduled_at": "2025-10-16T08:00:00Z",
+  "winner": {
+   "id": 130355,
+   "name": "CTBC Flying Oyster",
+   "location": "TW",
+   "slug": "ctbc-flying-oyster",
+   "modified_at": "2026-10-06T11:03:01Z",
+   "acronym": "CFO",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244344",
+   "opens_at": "2025-10-16T08:25:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-16T08:39:16Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272896,
+    "position": 1,
+    "status": "finished",
+    "length": 1942,
+    "finished": true,
+    "begin_at": "2025-10-16T08:39:17Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-16T09:20:24Z",
+    "forfeit": false,
+    "match_id": 1244344,
+    "winner": {
+     "id": 130355,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244344,
+  "name": "Round 2: T1 vs CFO",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-16T09:46:41Z",
+  "winner_id": 130355,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 130355,
+     "name": "CTBC Flying Oyster",
+     "location": "TW",
+     "slug": "ctbc-flying-oyster",
+     "modified_at": "2026-10-06T11:03:01Z",
+     "acronym": "CFO",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-16T08:40:00Z"
+ },
+ {
+  "slug": "2025-10-16-4d5dc190-986a-4eb9-9333-af0bafe67d92",
+  "end_at": "2025-10-16T10:40:03Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 129971
+   },
+   {
+    "score": 0,
+    "team_id": 2882
+   }
+  ],
+  "original_scheduled_at": "2025-10-16T06:00:00Z",
+  "winner": {
+   "id": 129971,
+   "name": "Anyone's Legend",
+   "location": "CN",
+   "slug": "anyone-s-legend",
+   "modified_at": "2026-10-06T11:02:39Z",
+   "acronym": "AL",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/129971/1083px_anyone_s_legend_full_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244341",
+   "opens_at": "2025-10-16T09:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-16T09:59:58Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272894,
+    "position": 1,
+    "status": "finished",
+    "length": 1935,
+    "finished": true,
+    "begin_at": "2025-10-16T09:59:59Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-16T10:40:04Z",
+    "forfeit": false,
+    "match_id": 1244341,
+    "winner": {
+     "id": 129971,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244341,
+  "name": "Round 2: AL vs GEN",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-16T11:18:14Z",
+  "winner_id": 129971,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 129971,
+     "name": "Anyone's Legend",
+     "location": "CN",
+     "slug": "anyone-s-legend",
+     "modified_at": "2026-10-06T11:02:39Z",
+     "acronym": "AL",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/129971/1083px_anyone_s_legend_full_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2882,
+     "name": "Gen.G",
+     "location": "KR",
+     "slug": "geng",
+     "modified_at": "2026-10-06T11:02:37Z",
+     "acronym": "GEN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-16T10:00:00Z"
+ },
+ {
+  "slug": "2025-10-16-c86fedbb-adc4-4b8e-83e1-fd21902ba750",
+  "end_at": "2025-10-16T11:33:41Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 1566
+   },
+   {
+    "score": 0,
+    "team_id": 394
+   }
+  ],
+  "original_scheduled_at": "2025-10-16T09:00:00Z",
+  "winner": {
+   "id": 1566,
+   "name": "Bilibili Gaming",
+   "location": "CN",
+   "slug": "bilibili-gaming",
+   "modified_at": "2026-10-06T11:02:52Z",
+   "acronym": "BLG",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244345",
+   "opens_at": "2025-10-16T10:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-16T10:57:13Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272897,
+    "position": 1,
+    "status": "finished",
+    "length": 1673,
+    "finished": true,
+    "begin_at": "2025-10-16T10:57:14Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-16T11:33:41Z",
+    "forfeit": false,
+    "match_id": 1244345,
+    "winner": {
+     "id": 1566,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/WS4oEa5mUiw",
+    "official": true,
+    "raw_url": "https://www.youtube.com/watch?v=WS4oEa5mUiw"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244345,
+  "name": "Round 2: BLG vs FNC",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-16T12:27:10Z",
+  "winner_id": 1566,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1566,
+     "name": "Bilibili Gaming",
+     "location": "CN",
+     "slug": "bilibili-gaming",
+     "modified_at": "2026-10-06T11:02:52Z",
+     "acronym": "BLG",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 394,
+     "name": "Fnatic",
+     "location": "GB",
+     "slug": "fnatic",
+     "modified_at": "2026-07-21T06:09:55Z",
+     "acronym": "FNC",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/394/220px_fnaticlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-16T11:00:00Z"
+ },
+ {
+  "slug": "2025-10-16-8f506284-8017-485e-9ee5-8e010ed383b5",
+  "end_at": "2025-10-16T12:25:51Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 126702
+   },
+   {
+    "score": 1,
+    "team_id": 2883
+   }
+  ],
+  "original_scheduled_at": "2025-10-16T11:00:00Z",
+  "winner": {
+   "id": 2883,
+   "name": "Hanwha Life Esports",
+   "location": "KR",
+   "slug": "hanwha-life-esports",
+   "modified_at": "2026-10-06T11:02:49Z",
+   "acronym": "HLE",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244347",
+   "opens_at": "2025-10-16T11:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-16T11:49:04Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272899,
+    "position": 1,
+    "status": "finished",
+    "length": 1693,
+    "finished": true,
+    "begin_at": "2025-10-16T11:49:05Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-16T12:25:51Z",
+    "forfeit": false,
+    "match_id": 1244347,
+    "winner": {
+     "id": 2883,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244347,
+  "name": "Round 2: TLN vs HLE",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-16T13:10:59Z",
+  "winner_id": 2883,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126702,
+     "name": "PSG Talon",
+     "location": "HK",
+     "slug": "talon-esports-league-of-legends",
+     "modified_at": "2026-07-21T12:33:40Z",
+     "acronym": "TLN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126702/220px_psg_talonlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2883,
+     "name": "Hanwha Life Esports",
+     "location": "KR",
+     "slug": "hanwha-life-esports",
+     "modified_at": "2026-10-06T11:02:49Z",
+     "acronym": "HLE",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-16T12:00:00Z"
+ },
+ {
+  "slug": "2025-10-17-938bb8f7-e625-45e2-b8d8-702ac329d852",
+  "end_at": "2025-10-17T09:30:43Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 63
+   },
+   {
+    "score": 0,
+    "team_id": 126059
+   }
+  ],
+  "original_scheduled_at": "2025-10-17T11:00:00Z",
+  "winner": {
+   "id": 63,
+   "name": "KT Rolster",
+   "location": "KR",
+   "slug": "kt-rolster",
+   "modified_at": "2026-09-18T08:31:50Z",
+   "acronym": "KT",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244350",
+   "opens_at": "2025-10-17T07:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-17T08:05:16Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272904,
+    "position": 1,
+    "status": "finished",
+    "length": 1979,
+    "finished": true,
+    "begin_at": "2025-10-17T08:05:17Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-17T08:43:23Z",
+    "forfeit": false,
+    "match_id": 1244350,
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272905,
+    "position": 2,
+    "status": "finished",
+    "length": 1760,
+    "finished": true,
+    "begin_at": "2025-10-17T08:59:16Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-17T09:30:43Z",
+    "forfeit": false,
+    "match_id": 1244350,
+    "winner": {
+     "id": 63,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Z5Edl9_3zv0",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Z5Edl9_3zv0"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244350,
+  "name": "Round 3: KT vs TES",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-17T10:37:15Z",
+  "winner_id": 63,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 63,
+     "name": "KT Rolster",
+     "location": "KR",
+     "slug": "kt-rolster",
+     "modified_at": "2026-09-18T08:31:50Z",
+     "acronym": "KT",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/63/kt_rolsterlogo_profile.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/63/kt_rolster_2021_full_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126059,
+     "name": "Top Esports",
+     "location": "CN",
+     "slug": "top-esports",
+     "modified_at": "2026-10-06T11:02:59Z",
+     "acronym": "TES",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-17T08:00:00Z"
+ },
+ {
+  "slug": "2025-10-17-ba326dc2-ba16-405f-8396-22955774c0b2",
+  "end_at": "2025-10-17T12:18:11Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 130355
+   },
+   {
+    "score": 2,
+    "team_id": 129971
+   }
+  ],
+  "original_scheduled_at": "2025-10-17T08:00:00Z",
+  "winner": {
+   "id": 129971,
+   "name": "Anyone's Legend",
+   "location": "CN",
+   "slug": "anyone-s-legend",
+   "modified_at": "2026-10-06T11:02:39Z",
+   "acronym": "AL",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/129971/1083px_anyone_s_legend_full_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244349",
+   "opens_at": "2025-10-17T09:35:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-17T09:55:51Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272901,
+    "position": 1,
+    "status": "finished",
+    "length": 2303,
+    "finished": true,
+    "begin_at": "2025-10-17T09:55:51Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-17T10:35:54Z",
+    "forfeit": false,
+    "match_id": 1244349,
+    "winner": {
+     "id": 130355,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272902,
+    "position": 2,
+    "status": "finished",
+    "length": 1810,
+    "finished": true,
+    "begin_at": "2025-10-17T10:48:51Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-17T11:27:59Z",
+    "forfeit": false,
+    "match_id": 1244349,
+    "winner": {
+     "id": 129971,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272903,
+    "position": 3,
+    "status": "finished",
+    "length": 1791,
+    "finished": true,
+    "begin_at": "2025-10-17T11:42:15Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-17T12:18:11Z",
+    "forfeit": false,
+    "match_id": 1244349,
+    "winner": {
+     "id": 129971,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Z5Edl9_3zv0",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Z5Edl9_3zv0"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244349,
+  "name": "Round 3: CFO vs AL",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-20T12:08:02Z",
+  "winner_id": 129971,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 130355,
+     "name": "CTBC Flying Oyster",
+     "location": "TW",
+     "slug": "ctbc-flying-oyster",
+     "modified_at": "2026-10-06T11:03:01Z",
+     "acronym": "CFO",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 129971,
+     "name": "Anyone's Legend",
+     "location": "CN",
+     "slug": "anyone-s-legend",
+     "modified_at": "2026-10-06T11:02:39Z",
+     "acronym": "AL",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/129971/1083px_anyone_s_legend_full_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/129971/1083px_anyone_s_legend_full_darkmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-17T09:50:00Z"
+ },
+ {
+  "slug": "2025-10-18-f4b88d45-29eb-4056-950a-d2272df33865",
+  "end_at": "2025-10-18T08:45:47Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 136073
+   },
+   {
+    "score": 1,
+    "team_id": 311
+   }
+  ],
+  "original_scheduled_at": "2025-10-18T10:00:00Z",
+  "winner": {
+   "id": 311,
+   "name": "FlyQuest",
+   "location": "US",
+   "slug": "flyquest",
+   "modified_at": "2026-09-28T14:17:41Z",
+   "acronym": "FLY",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/311/fly_questlogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244354",
+   "opens_at": "2025-10-18T07:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-18T08:05:00Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272909,
+    "position": 1,
+    "status": "finished",
+    "length": 1937,
+    "finished": true,
+    "begin_at": "2025-10-18T08:05:00Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-18T08:45:48Z",
+    "forfeit": false,
+    "match_id": 1244354,
+    "winner": {
+     "id": 311,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Umhh9JHrZRo",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Umhh9JHrZRo"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244354,
+  "name": "Round 3: TSW vs FLY",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-20T12:10:37Z",
+  "winner_id": 311,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 136073,
+     "name": "Team Secret Whales",
+     "location": "VN",
+     "slug": "team-secret-whales",
+     "modified_at": "2026-10-06T11:02:47Z",
+     "acronym": "TSW",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/136073/1200px_secret_whales_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136073/1200px_secret_whales_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 311,
+     "name": "FlyQuest",
+     "location": "US",
+     "slug": "flyquest",
+     "modified_at": "2026-09-28T14:17:41Z",
+     "acronym": "FLY",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/311/fly_questlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-18T08:00:00Z"
+ },
+ {
+  "slug": "2025-10-18-2a6eabc9-5943-4825-bca1-d1f9b0a86ff4",
+  "end_at": "2025-10-18T09:51:45Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 2882
+   },
+   {
+    "score": 0,
+    "team_id": 126061
+   }
+  ],
+  "original_scheduled_at": "2025-10-18T09:00:00Z",
+  "winner": {
+   "id": 2882,
+   "name": "Gen.G",
+   "location": "KR",
+   "slug": "geng",
+   "modified_at": "2026-10-06T11:02:37Z",
+   "acronym": "GEN",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244353",
+   "opens_at": "2025-10-18T08:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": false,
+  "begin_at": "2025-10-18T09:07:45Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272908,
+    "position": 1,
+    "status": "finished",
+    "length": 1663,
+    "finished": true,
+    "begin_at": "2025-10-18T09:07:46Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-18T09:51:45Z",
+    "forfeit": false,
+    "match_id": 1244353,
+    "winner": {
+     "id": 2882,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Umhh9JHrZRo",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Umhh9JHrZRo"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244353,
+  "name": "Round 3: GEN vs T1",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-20T12:11:14Z",
+  "winner_id": 2882,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2882,
+     "name": "Gen.G",
+     "location": "KR",
+     "slug": "geng",
+     "modified_at": "2026-10-06T11:02:37Z",
+     "acronym": "GEN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-18T09:00:00Z"
+ },
+ {
+  "slug": "2025-10-18",
+  "end_at": "2025-10-18T10:41:43Z",
+  "results": [
+   {
+    "score": 1,
+    "team_id": 88
+   },
+   {
+    "score": 0,
+    "team_id": 1566
+   }
+  ],
+  "original_scheduled_at": "2025-10-18T08:00:00Z",
+  "winner": {
+   "id": 88,
+   "name": "G2 Esports",
+   "location": "DE",
+   "slug": "g2-esports",
+   "modified_at": "2026-10-06T11:02:46Z",
+   "acronym": "G2",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244352",
+   "opens_at": "2025-10-18T10:00:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-18T10:07:18Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272907,
+    "position": 1,
+    "status": "finished",
+    "length": 1683,
+    "finished": true,
+    "begin_at": "2025-10-18T10:07:18Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-18T10:41:44Z",
+    "forfeit": false,
+    "match_id": 1244352,
+    "winner": {
+     "id": 88,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Umhh9JHrZRo",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Umhh9JHrZRo"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244352,
+  "name": "Round 3: G2 vs BLG",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-20T12:11:48Z",
+  "winner_id": 88,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 88,
+     "name": "G2 Esports",
+     "location": "DE",
+     "slug": "g2-esports",
+     "modified_at": "2026-10-06T11:02:46Z",
+     "acronym": "G2",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1566,
+     "name": "Bilibili Gaming",
+     "location": "CN",
+     "slug": "bilibili-gaming",
+     "modified_at": "2026-10-06T11:02:52Z",
+     "acronym": "BLG",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-18T10:15:00Z"
+ },
+ {
+  "slug": "2025-10-18-bbe78980-1ad2-4b33-aa3f-370f6f070f1c",
+  "end_at": "2025-10-18T11:28:52Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 1537
+   },
+   {
+    "score": 1,
+    "team_id": 2883
+   }
+  ],
+  "original_scheduled_at": "2025-10-18T11:00:00Z",
+  "winner": {
+   "id": 2883,
+   "name": "Hanwha Life Esports",
+   "location": "KR",
+   "slug": "hanwha-life-esports",
+   "modified_at": "2026-10-06T11:02:49Z",
+   "acronym": "HLE",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244355",
+   "opens_at": "2025-10-18T10:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 1,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": false,
+  "begin_at": "2025-10-18T10:57:28Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272910,
+    "position": 1,
+    "status": "finished",
+    "length": 1490,
+    "finished": true,
+    "begin_at": "2025-10-18T10:57:28Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-18T11:28:53Z",
+    "forfeit": false,
+    "match_id": 1244355,
+    "winner": {
+     "id": 2883,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Umhh9JHrZRo",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Umhh9JHrZRo"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244355,
+  "name": "Round 3: 100 vs HLE",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-20T12:14:33Z",
+  "winner_id": 2883,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1537,
+     "name": "100 Thieves",
+     "location": "US",
+     "slug": "100-thieves",
+     "modified_at": "2025-09-24T08:57:45Z",
+     "acronym": "100",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1537/100_thieves_alternatelogo_square.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/1537/190px_100_thieves_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2883,
+     "name": "Hanwha Life Esports",
+     "location": "KR",
+     "slug": "hanwha-life-esports",
+     "modified_at": "2026-10-06T11:02:49Z",
+     "acronym": "HLE",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-18T11:00:00Z"
+ },
+ {
+  "slug": "2025-10-19-0536ef2f-f3e4-42d3-81ba-895360b8ce2b",
+  "end_at": "2025-10-19T10:11:58Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 126536
+   },
+   {
+    "score": 1,
+    "team_id": 394
+   }
+  ],
+  "original_scheduled_at": "2025-10-19T11:00:00Z",
+  "winner": {
+   "id": 126536,
+   "name": "Movistar KOI",
+   "location": "ES",
+   "slug": "mad-lions-league-of-legends",
+   "modified_at": "2026-10-06T11:02:55Z",
+   "acronym": "MKOI",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244357",
+   "opens_at": "2025-10-19T07:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-19T08:04:38Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272914,
+    "position": 1,
+    "status": "finished",
+    "length": 1620,
+    "finished": true,
+    "begin_at": "2025-10-19T08:04:39Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-19T08:38:29Z",
+    "forfeit": false,
+    "match_id": 1244357,
+    "winner": {
+     "id": 126536,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272915,
+    "position": 2,
+    "status": "finished",
+    "length": 1606,
+    "finished": true,
+    "begin_at": "2025-10-19T08:50:12Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-19T09:24:50Z",
+    "forfeit": false,
+    "match_id": 1244357,
+    "winner": {
+     "id": 394,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272916,
+    "position": 3,
+    "status": "finished",
+    "length": 1738,
+    "finished": true,
+    "begin_at": "2025-10-19T09:36:05Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-19T10:11:58Z",
+    "forfeit": false,
+    "match_id": 1244357,
+    "winner": {
+     "id": 126536,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Dabyr_1Mvxw",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Dabyr_1Mvxw"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244357,
+  "name": "Round 3: MKOI vs FNC",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-20T12:23:11Z",
+  "winner_id": 126536,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126536,
+     "name": "Movistar KOI",
+     "location": "ES",
+     "slug": "mad-lions-league-of-legends",
+     "modified_at": "2026-10-06T11:02:55Z",
+     "acronym": "MKOI",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 394,
+     "name": "Fnatic",
+     "location": "GB",
+     "slug": "fnatic",
+     "modified_at": "2026-07-21T06:09:55Z",
+     "acronym": "FNC",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/394/220px_fnaticlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-19T08:00:00Z"
+ },
+ {
+  "slug": "2025-10-19",
+  "end_at": "2025-10-19T13:00:02Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 132315
+   },
+   {
+    "score": 1,
+    "team_id": 126702
+   }
+  ],
+  "original_scheduled_at": "2025-10-19T08:00:00Z",
+  "winner": {
+   "id": 132315,
+   "name": "Vivo Keyd Stars",
+   "location": "BR",
+   "slug": "vivo-keyd-stars",
+   "modified_at": "2026-08-31T02:21:15Z",
+   "acronym": "VKS",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/132315/214px_keyd_stars_2022_allmode.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132315/214px_keyd_stars_2022_allmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244356",
+   "opens_at": "2025-10-19T10:15:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-19T10:33:17Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272911,
+    "position": 1,
+    "status": "finished",
+    "length": 1534,
+    "finished": true,
+    "begin_at": "2025-10-19T10:33:17Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-19T11:07:19Z",
+    "forfeit": false,
+    "match_id": 1244356,
+    "winner": {
+     "id": 132315,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272912,
+    "position": 2,
+    "status": "finished",
+    "length": 2058,
+    "finished": true,
+    "begin_at": "2025-10-19T11:18:52Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-19T12:02:13Z",
+    "forfeit": false,
+    "match_id": 1244356,
+    "winner": {
+     "id": 126702,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272913,
+    "position": 3,
+    "status": "finished",
+    "length": 2073,
+    "finished": true,
+    "begin_at": "2025-10-19T12:15:23Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-19T13:00:03Z",
+    "forfeit": false,
+    "match_id": 1244356,
+    "winner": {
+     "id": 132315,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Dabyr_1Mvxw",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Dabyr_1Mvxw"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244356,
+  "name": "Round 3: VKS vs TLN",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-20T12:27:53Z",
+  "winner_id": 132315,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 132315,
+     "name": "Vivo Keyd Stars",
+     "location": "BR",
+     "slug": "vivo-keyd-stars",
+     "modified_at": "2026-08-31T02:21:15Z",
+     "acronym": "VKS",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/132315/214px_keyd_stars_2022_allmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132315/214px_keyd_stars_2022_allmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126702,
+     "name": "PSG Talon",
+     "location": "HK",
+     "slug": "talon-esports-league-of-legends",
+     "modified_at": "2026-07-21T12:33:40Z",
+     "acronym": "TLN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126702/220px_psg_talonlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-19T10:30:00Z"
+ },
+ {
+  "slug": "2025-10-23",
+  "end_at": "2025-10-22T09:49:06Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 2883
+   },
+   {
+    "score": 0,
+    "team_id": 130355
+   }
+  ],
+  "original_scheduled_at": "2025-10-23T08:00:00Z",
+  "winner": {
+   "id": 2883,
+   "name": "Hanwha Life Esports",
+   "location": "KR",
+   "slug": "hanwha-life-esports",
+   "modified_at": "2026-10-06T11:02:49Z",
+   "acronym": "HLE",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244367",
+   "opens_at": "2025-10-22T07:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-22T08:06:34Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272923,
+    "position": 1,
+    "status": "finished",
+    "length": 1883,
+    "finished": true,
+    "begin_at": "2025-10-22T08:06:35Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-22T08:47:13Z",
+    "forfeit": false,
+    "match_id": 1244367,
+    "winner": {
+     "id": 2883,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272924,
+    "position": 2,
+    "status": "finished",
+    "length": 2081,
+    "finished": true,
+    "begin_at": "2025-10-22T09:05:00Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-22T09:49:07Z",
+    "forfeit": false,
+    "match_id": 1244367,
+    "winner": {
+     "id": 2883,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/4tUDedEkBoA",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=4tUDedEkBoA"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244367,
+  "name": "Round 4: HLE vs CFO",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-22T10:36:44Z",
+  "winner_id": 2883,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2883,
+     "name": "Hanwha Life Esports",
+     "location": "KR",
+     "slug": "hanwha-life-esports",
+     "modified_at": "2026-10-06T11:02:49Z",
+     "acronym": "HLE",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2883/hanwha-life-esports-1s04vbu0.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 130355,
+     "name": "CTBC Flying Oyster",
+     "location": "TW",
+     "slug": "ctbc-flying-oyster",
+     "modified_at": "2026-10-06T11:03:01Z",
+     "acronym": "CFO",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-22T08:00:00Z"
+ },
+ {
+  "slug": "2025-10-22-7ba49232-1c27-4452-90d3-72b1f2ef0960",
+  "end_at": "2025-10-22T12:48:19Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 88
+   },
+   {
+    "score": 1,
+    "team_id": 311
+   }
+  ],
+  "original_scheduled_at": "2025-10-22T08:00:00Z",
+  "winner": {
+   "id": 88,
+   "name": "G2 Esports",
+   "location": "DE",
+   "slug": "g2-esports",
+   "modified_at": "2026-10-06T11:02:46Z",
+   "acronym": "G2",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+   "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244365",
+   "opens_at": "2025-10-22T10:00:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-22T10:10:42Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272917,
+    "position": 1,
+    "status": "finished",
+    "length": 2288,
+    "finished": true,
+    "begin_at": "2025-10-22T10:10:43Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-22T11:00:00Z",
+    "forfeit": false,
+    "match_id": 1244365,
+    "winner": {
+     "id": 311,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272918,
+    "position": 2,
+    "status": "finished",
+    "length": 1894,
+    "finished": true,
+    "begin_at": "2025-10-22T11:11:40Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-22T11:52:14Z",
+    "forfeit": false,
+    "match_id": 1244365,
+    "winner": {
+     "id": 88,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272919,
+    "position": 3,
+    "status": "finished",
+    "length": 2083,
+    "finished": true,
+    "begin_at": "2025-10-22T12:04:57Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-22T12:48:19Z",
+    "forfeit": false,
+    "match_id": 1244365,
+    "winner": {
+     "id": 88,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/4tUDedEkBoA",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=4tUDedEkBoA"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244365,
+  "name": "Round 4: G2 vs FLY",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-22T13:17:13Z",
+  "winner_id": 88,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 88,
+     "name": "G2 Esports",
+     "location": "DE",
+     "slug": "g2-esports",
+     "modified_at": "2026-10-06T11:02:46Z",
+     "acronym": "G2",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/88/g2-esports.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/88/231px_g2_esports_2019_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 311,
+     "name": "FlyQuest",
+     "location": "US",
+     "slug": "flyquest",
+     "modified_at": "2026-09-28T14:17:41Z",
+     "acronym": "FLY",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/311/fly_questlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-22T10:15:00Z"
+ },
+ {
+  "slug": "2025-10-24-190dd719-2ff3-45bf-9793-663be84b8a27",
+  "end_at": "2025-10-23T10:31:15Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 126536
+   },
+   {
+    "score": 1,
+    "team_id": 136073
+   }
+  ],
+  "original_scheduled_at": "2025-10-24T08:00:00Z",
+  "winner": {
+   "id": 126536,
+   "name": "Movistar KOI",
+   "location": "ES",
+   "slug": "mad-lions-league-of-legends",
+   "modified_at": "2026-10-06T11:02:55Z",
+   "acronym": "MKOI",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244369",
+   "opens_at": "2025-10-23T07:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-23T08:07:33Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272929,
+    "position": 1,
+    "status": "finished",
+    "length": 2075,
+    "finished": true,
+    "begin_at": "2025-10-23T08:07:33Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-23T08:48:35Z",
+    "forfeit": false,
+    "match_id": 1244369,
+    "winner": {
+     "id": 136073,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272930,
+    "position": 2,
+    "status": "finished",
+    "length": 2116,
+    "finished": true,
+    "begin_at": "2025-10-23T09:00:24Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-23T09:42:31Z",
+    "forfeit": false,
+    "match_id": 1244369,
+    "winner": {
+     "id": 126536,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272931,
+    "position": 3,
+    "status": "finished",
+    "length": 1765,
+    "finished": true,
+    "begin_at": "2025-10-23T09:56:31Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-23T10:31:16Z",
+    "forfeit": false,
+    "match_id": 1244369,
+    "winner": {
+     "id": 126536,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/Uj_ESci-F4g",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=Uj_ESci-F4g"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244369,
+  "name": "Round 4: MKOI vs TSW",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-23T11:27:40Z",
+  "winner_id": 126536,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126536,
+     "name": "Movistar KOI",
+     "location": "ES",
+     "slug": "mad-lions-league-of-legends",
+     "modified_at": "2026-10-06T11:02:55Z",
+     "acronym": "MKOI",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 136073,
+     "name": "Team Secret Whales",
+     "location": "VN",
+     "slug": "team-secret-whales",
+     "modified_at": "2026-10-06T11:02:47Z",
+     "acronym": "TSW",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/136073/1200px_secret_whales_lightmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/136073/1200px_secret_whales_darkmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-23T08:00:00Z"
+ },
+ {
+  "slug": "2025-10-22-eb53d748-c200-4b80-b23a-2281d4b2ab5f",
+  "end_at": "2025-10-23T12:13:21Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 2882
+   },
+   {
+    "score": 0,
+    "team_id": 126059
+   }
+  ],
+  "original_scheduled_at": "2025-10-22T11:00:00Z",
+  "winner": {
+   "id": 2882,
+   "name": "Gen.G",
+   "location": "KR",
+   "slug": "geng",
+   "modified_at": "2026-10-06T11:02:37Z",
+   "acronym": "GEN",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244366",
+   "opens_at": "2025-10-23T10:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-23T10:51:25Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272920,
+    "position": 1,
+    "status": "finished",
+    "length": 1495,
+    "finished": true,
+    "begin_at": "2025-10-23T10:51:26Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-23T11:23:47Z",
+    "forfeit": false,
+    "match_id": 1244366,
+    "winner": {
+     "id": 2882,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272921,
+    "position": 2,
+    "status": "finished",
+    "length": 1767,
+    "finished": true,
+    "begin_at": "2025-10-23T11:37:52Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-23T12:13:21Z",
+    "forfeit": false,
+    "match_id": 1244366,
+    "winner": {
+     "id": 2882,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244366,
+  "name": "Round 4: GEN vs TES",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-23T12:55:33Z",
+  "winner_id": 2882,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 2882,
+     "name": "Gen.G",
+     "location": "KR",
+     "slug": "geng",
+     "modified_at": "2026-10-06T11:02:37Z",
+     "acronym": "GEN",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/2882/699px_gen.g_esports_2026_allmode.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126059,
+     "name": "Top Esports",
+     "location": "CN",
+     "slug": "top-esports",
+     "modified_at": "2026-10-06T11:02:59Z",
+     "acronym": "TES",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-23T11:00:00Z"
+ },
+ {
+  "slug": "2025-10-23-f09d97dd-4861-4049-9b52-50438fcece70",
+  "end_at": "2025-10-24T09:47:00Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 1566
+   },
+   {
+    "score": 0,
+    "team_id": 132315
+   }
+  ],
+  "original_scheduled_at": "2025-10-23T11:00:00Z",
+  "winner": {
+   "id": 1566,
+   "name": "Bilibili Gaming",
+   "location": "CN",
+   "slug": "bilibili-gaming",
+   "modified_at": "2026-10-06T11:02:52Z",
+   "acronym": "BLG",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244368",
+   "opens_at": "2025-10-24T07:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-24T08:09:32Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272926,
+    "position": 1,
+    "status": "finished",
+    "length": 1794,
+    "finished": true,
+    "begin_at": "2025-10-24T08:09:33Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-24T08:43:10Z",
+    "forfeit": false,
+    "match_id": 1244368,
+    "winner": {
+     "id": 1566,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272927,
+    "position": 2,
+    "status": "finished",
+    "length": 2631,
+    "finished": true,
+    "begin_at": "2025-10-24T08:56:25Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-24T09:47:01Z",
+    "forfeit": false,
+    "match_id": 1244368,
+    "winner": {
+     "id": 1566,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244368,
+  "name": "Round 4: BLG vs VKS",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-24T11:19:55Z",
+  "winner_id": 1566,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1566,
+     "name": "Bilibili Gaming",
+     "location": "CN",
+     "slug": "bilibili-gaming",
+     "modified_at": "2026-10-06T11:02:52Z",
+     "acronym": "BLG",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 132315,
+     "name": "Vivo Keyd Stars",
+     "location": "BR",
+     "slug": "vivo-keyd-stars",
+     "modified_at": "2026-08-31T02:21:15Z",
+     "acronym": "VKS",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/132315/214px_keyd_stars_2022_allmode.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/132315/214px_keyd_stars_2022_allmode.png"
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-24T08:00:00Z"
+ },
+ {
+  "slug": "2025-10-24-e0e3308b-5f59-41f8-871c-145521056b43",
+  "end_at": "2025-10-24T11:45:54Z",
+  "results": [
+   {
+    "score": 0,
+    "team_id": 1537
+   },
+   {
+    "score": 2,
+    "team_id": 126061
+   }
+  ],
+  "original_scheduled_at": "2025-10-24T11:00:00Z",
+  "winner": {
+   "id": 126061,
+   "name": "T1",
+   "location": "KR",
+   "slug": "t1",
+   "modified_at": "2026-10-06T11:02:57Z",
+   "acronym": "T1",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244370",
+   "opens_at": "2025-10-24T09:55:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-24T10:06:59Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272932,
+    "position": 1,
+    "status": "finished",
+    "length": 2495,
+    "finished": true,
+    "begin_at": "2025-10-24T10:06:59Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-24T10:56:17Z",
+    "forfeit": false,
+    "match_id": 1244370,
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272933,
+    "position": 2,
+    "status": "finished",
+    "length": 1801,
+    "finished": true,
+    "begin_at": "2025-10-24T11:09:26Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-24T11:45:55Z",
+    "forfeit": false,
+    "match_id": 1244370,
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "en",
+    "embed_url": "https://www.youtube.com/embed/4htOqHI9E5k",
+    "official": false,
+    "raw_url": "https://www.youtube.com/watch?v=4htOqHI9E5k"
+   },
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244370,
+  "name": "Round 4: 100 vs T1",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-24T13:52:14Z",
+  "winner_id": 126061,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1537,
+     "name": "100 Thieves",
+     "location": "US",
+     "slug": "100-thieves",
+     "modified_at": "2025-09-24T08:57:45Z",
+     "acronym": "100",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1537/100_thieves_alternatelogo_square.png",
+     "dark_mode_image_url": "https://cdn-api.pandascore.co/dark_images/team/dark_image/1537/190px_100_thieves_darkmode.png"
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-24T10:10:00Z"
+ },
+ {
+  "slug": "2025-10-25-85d19b57-09e0-455d-a6d8-60d99a318a47",
+  "end_at": "2025-10-25T07:11:02Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 130355
+   },
+   {
+    "score": 0,
+    "team_id": 311
+   }
+  ],
+  "original_scheduled_at": "2025-10-25T08:00:00Z",
+  "winner": {
+   "id": 130355,
+   "name": "CTBC Flying Oyster",
+   "location": "TW",
+   "slug": "ctbc-flying-oyster",
+   "modified_at": "2026-10-06T11:03:01Z",
+   "acronym": "CFO",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244372",
+   "opens_at": "2025-10-25T04:45:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-25T05:07:20Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272938,
+    "position": 1,
+    "status": "finished",
+    "length": 2708,
+    "finished": true,
+    "begin_at": "2025-10-25T05:07:21Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-25T06:17:25Z",
+    "forfeit": false,
+    "match_id": 1244372,
+    "winner": {
+     "id": 130355,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272939,
+    "position": 2,
+    "status": "finished",
+    "length": 1631,
+    "finished": true,
+    "begin_at": "2025-10-25T06:34:34Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-25T07:11:03Z",
+    "forfeit": false,
+    "match_id": 1244372,
+    "winner": {
+     "id": 130355,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244372,
+  "name": "Round 5: CFO vs FLY",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-25T08:06:08Z",
+  "winner_id": 130355,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 130355,
+     "name": "CTBC Flying Oyster",
+     "location": "TW",
+     "slug": "ctbc-flying-oyster",
+     "modified_at": "2026-10-06T11:03:01Z",
+     "acronym": "CFO",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/130355/ctbc_flying_oysterlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 311,
+     "name": "FlyQuest",
+     "location": "US",
+     "slug": "flyquest",
+     "modified_at": "2026-09-28T14:17:41Z",
+     "acronym": "FLY",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/311/fly_questlogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-25T05:00:00Z"
+ },
+ {
+  "slug": "2025-10-25-c97553f6-cf56-4a58-9a37-4ebe099b513b",
+  "end_at": "2025-10-25T09:50:16Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 126059
+   },
+   {
+    "score": 1,
+    "team_id": 1566
+   }
+  ],
+  "original_scheduled_at": "2025-10-25T05:00:00Z",
+  "winner": {
+   "id": 126059,
+   "name": "Top Esports",
+   "location": "CN",
+   "slug": "top-esports",
+   "modified_at": "2026-10-06T11:02:59Z",
+   "acronym": "TES",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244371",
+   "opens_at": "2025-10-25T07:15:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-25T07:30:23Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272935,
+    "position": 1,
+    "status": "finished",
+    "length": 1699,
+    "finished": true,
+    "begin_at": "2025-10-25T07:30:24Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-25T08:04:25Z",
+    "forfeit": false,
+    "match_id": 1244371,
+    "winner": {
+     "id": 1566,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272936,
+    "position": 2,
+    "status": "finished",
+    "length": 1717,
+    "finished": true,
+    "begin_at": "2025-10-25T08:16:31Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-25T08:51:30Z",
+    "forfeit": false,
+    "match_id": 1244371,
+    "winner": {
+     "id": 126059,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272937,
+    "position": 3,
+    "status": "finished",
+    "length": 2153,
+    "finished": true,
+    "begin_at": "2025-10-25T09:07:20Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-25T09:50:17Z",
+    "forfeit": false,
+    "match_id": 1244371,
+    "winner": {
+     "id": 126059,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244371,
+  "name": "Round 5: TES vs BLG",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-25T10:18:05Z",
+  "winner_id": 126059,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126059,
+     "name": "Top Esports",
+     "location": "CN",
+     "slug": "top-esports",
+     "modified_at": "2026-10-06T11:02:59Z",
+     "acronym": "TES",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126059/top_esportslogo_square.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 1566,
+     "name": "Bilibili Gaming",
+     "location": "CN",
+     "slug": "bilibili-gaming",
+     "modified_at": "2026-10-06T11:02:52Z",
+     "acronym": "BLG",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/1566/qw_yi_qu_j.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-25T07:30:00Z"
+ },
+ {
+  "slug": "2025-10-25-0cbc56e1-5d36-4dbd-9db1-536a7d5ab017",
+  "end_at": "2025-10-25T11:51:36Z",
+  "results": [
+   {
+    "score": 2,
+    "team_id": 126061
+   },
+   {
+    "score": 0,
+    "team_id": 126536
+   }
+  ],
+  "original_scheduled_at": "2025-10-25T11:00:00Z",
+  "winner": {
+   "id": 126061,
+   "name": "T1",
+   "location": "KR",
+   "slug": "t1",
+   "modified_at": "2026-10-06T11:02:57Z",
+   "acronym": "T1",
+   "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+   "dark_mode_image_url": null
+  },
+  "game_advantage": null,
+  "detailed_stats": true,
+  "tournament": {
+   "id": 17663,
+   "name": "Group Stage",
+   "type": "offline",
+   "country": "CN",
+   "begin_at": "2025-10-15T05:00:00Z",
+   "detailed_stats": true,
+   "end_at": "2025-10-25T11:51:00Z",
+   "winner_id": null,
+   "slug": "league-of-legends-world-championship-2025-swiss-stage",
+   "winner_type": "Team",
+   "region": "ASIA",
+   "serie_id": 9720,
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "prizepool": null,
+   "tier": "s",
+   "has_bracket": false,
+   "live_supported": true
+  },
+  "live": {
+   "supported": true,
+   "url": "wss://live.pandascore.co/matches/1244373",
+   "opens_at": "2025-10-25T10:00:00.000000Z"
+  },
+  "match_type": "best_of",
+  "number_of_games": 3,
+  "league": {
+   "id": 297,
+   "name": "Worlds",
+   "url": null,
+   "slug": "league-of-legends-world-championship",
+   "modified_at": "2023-12-06T15:53:28Z",
+   "image_url": "https://cdn-api.pandascore.co/images/league/image/297/worlds-png"
+  },
+  "rescheduled": true,
+  "begin_at": "2025-10-25T10:11:34Z",
+  "winner_type": "Team",
+  "videogame": {
+   "id": 1,
+   "name": "LoL",
+   "slug": "league-of-legends"
+  },
+  "status": "finished",
+  "games": [
+   {
+    "complete": true,
+    "id": 272941,
+    "position": 1,
+    "status": "finished",
+    "length": 1974,
+    "finished": true,
+    "begin_at": "2025-10-25T10:11:35Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-25T10:51:10Z",
+    "forfeit": false,
+    "match_id": 1244373,
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   },
+   {
+    "complete": true,
+    "id": 272942,
+    "position": 2,
+    "status": "finished",
+    "length": 2479,
+    "finished": true,
+    "begin_at": "2025-10-25T11:03:08Z",
+    "detailed_stats": true,
+    "end_at": "2025-10-25T11:51:37Z",
+    "forfeit": false,
+    "match_id": 1244373,
+    "winner": {
+     "id": 126061,
+     "type": "Team"
+    },
+    "winner_type": "Team"
+   }
+  ],
+  "league_id": 297,
+  "streams_list": [
+   {
+    "main": false,
+    "language": "ko",
+    "embed_url": "https://play.sooplive.co.kr/aflol/embed",
+    "official": false,
+    "raw_url": "https://play.sooplive.co.kr/aflol"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": "https://www.bilibili.com/blackboard/live/live-activity-player.html?cid=6",
+    "official": false,
+    "raw_url": "https://live.bilibili.com/6"
+   },
+   {
+    "main": false,
+    "language": "zh",
+    "embed_url": null,
+    "official": false,
+    "raw_url": "http://www.huya.com/lpl"
+   },
+   {
+    "main": true,
+    "language": "en",
+    "embed_url": "https://player.twitch.tv/?channel=riotgames",
+    "official": true,
+    "raw_url": "https://www.twitch.tv/riotgames"
+   },
+   {
+    "main": false,
+    "language": "pt",
+    "embed_url": "https://player.twitch.tv/?channel=LTASul",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/LTASul"
+   },
+   {
+    "main": false,
+    "language": "es",
+    "embed_url": "https://player.twitch.tv/?channel=lvpes",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/lvpes"
+   },
+   {
+    "main": false,
+    "language": "fr",
+    "embed_url": "https://player.twitch.tv/?channel=otplol_",
+    "official": false,
+    "raw_url": "https://www.twitch.tv/otplol_"
+   }
+  ],
+  "videogame_title": null,
+  "forfeit": false,
+  "serie_id": 9720,
+  "tournament_id": 17663,
+  "draw": false,
+  "id": 1244373,
+  "name": "Round 5: T1 vs MKOI",
+  "videogame_version": {
+   "name": "15.20.1",
+   "current": false
+  },
+  "modified_at": "2025-10-25T12:30:47Z",
+  "winner_id": 126061,
+  "serie": {
+   "id": 9720,
+   "name": "",
+   "year": 2025,
+   "begin_at": "2025-10-14T08:00:00Z",
+   "end_at": "2025-11-09T12:09:00Z",
+   "winner_id": 126061,
+   "slug": "league-of-legends-world-championship-2025",
+   "winner_type": "Team",
+   "modified_at": "2025-11-11T11:06:05Z",
+   "league_id": 297,
+   "season": null,
+   "full_name": "2025"
+  },
+  "opponents": [
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126061,
+     "name": "T1",
+     "location": "KR",
+     "slug": "t1",
+     "modified_at": "2026-10-06T11:02:57Z",
+     "acronym": "T1",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126061/t_oscq04.png",
+     "dark_mode_image_url": null
+    }
+   },
+   {
+    "type": "Team",
+    "opponent": {
+     "id": 126536,
+     "name": "Movistar KOI",
+     "location": "ES",
+     "slug": "mad-lions-league-of-legends",
+     "modified_at": "2026-10-06T11:02:55Z",
+     "acronym": "MKOI",
+     "image_url": "https://cdn-api.pandascore.co/images/team/image/126536/movistar_ko_ilogo_square.png",
+     "dark_mode_image_url": null
+    }
+   }
+  ],
+  "scheduled_at": "2025-10-25T10:15:00Z"
+ }
+]

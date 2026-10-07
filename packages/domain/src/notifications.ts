@@ -2,18 +2,18 @@
 // base/réseau ici : la résolution des destinataires et l'envoi restent dans le worker.
 import { DomainEventType } from "./events";
 
-export type SubscriptionTargetType = "category" | "competition" | "competition_family" | "entity" | "event";
+export type SubscriptionTargetType = "category" | "competition" | "competition_family" | "entity" | "organization" | "event";
 export type SubscriptionLevel = "all" | "key_moments";
 export type DevicePlatform = "android" | "ios";
 
-export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination";
+export type NotificationType = "reminder" | "start" | "result" | "qualification" | "elimination" | "organization_joined";
 
 // Ce que reçoit un nouveau suivi selon sa cible (J21) : une équipe → début et résultat ; une compétition,
 // une famille ou une catégorie → le résultat seulement ; un match précis → tout, c'est une demande
 // explicite. Le rappel T-15 d'une équipe ou d'une compétition ne vient que sur demande.
 export function defaultSubscriptionNotifications(targetType: SubscriptionTargetType): { notifyReminder: boolean; notifyStart: boolean; notifyResult: boolean } {
   if (targetType === "event") return { notifyReminder: true, notifyStart: true, notifyResult: true };
-  if (targetType === "entity") return { notifyReminder: false, notifyStart: true, notifyResult: true };
+  if (targetType === "entity" || targetType === "organization") return { notifyReminder: false, notifyStart: true, notifyResult: true };
   return { notifyReminder: false, notifyStart: false, notifyResult: true };
 }
 
@@ -38,11 +38,12 @@ export function isTypeEnabled(type: NotificationType, setting: NotificationTypeS
       return setting.notifyMatchResult;
     case "qualification":
     case "elimination":
+    case "organization_joined":
       return setting.notifyQualification;
   }
 }
 
-export const SUBSCRIPTION_TARGET_TYPES: SubscriptionTargetType[] = ["category", "competition", "competition_family", "entity", "event"];
+export const SUBSCRIPTION_TARGET_TYPES: SubscriptionTargetType[] = ["category", "competition", "competition_family", "entity", "organization", "event"];
 export const SUBSCRIPTION_LEVELS: SubscriptionLevel[] = ["all", "key_moments"];
 export const DEVICE_PLATFORMS: DevicePlatform[] = ["android", "ios"];
 
@@ -61,6 +62,7 @@ export const DOMAIN_EVENT_NOTIFICATION_TYPES: Partial<Record<DomainEventType, No
   EventFinished: "result",
   EntityQualified: "qualification",
   EntityEliminated: "elimination",
+  OrganizationTeamJoined: "organization_joined",
 };
 
 export interface NotificationCandidate {
@@ -101,7 +103,16 @@ export interface NotificationText {
 // pour l'affichage, qui reste réversible. `subjectName` est le nom du match pour
 // reminder/start/result, celui de l'entité pour qualification/elimination (J5).
 // `needsPrediction` : le rappel T-15 dit aussi que le pronostic manque (J21, remplace l'ancien rappel à T-30).
-export function buildNotificationText(type: NotificationType, subjectName: string, spoilerFree: boolean, winnerName: string | null, needsPrediction = false): NotificationText {
+// `context` : pour qualification/elimination, la compétition (« Worlds 2026 ») ; pour organization_joined, le jeu
+// (« League of Legends »).
+export function buildNotificationText(
+  type: NotificationType,
+  subjectName: string,
+  spoilerFree: boolean,
+  winnerName: string | null,
+  needsPrediction = false,
+  context: string | null = null,
+): NotificationText {
   switch (type) {
     case "reminder":
       if (needsPrediction) return { title: "Bientôt, sans pronostic", body: `${subjectName} commence dans 15 minutes, tu n'as pas encore pronostiqué.` };
@@ -112,9 +123,11 @@ export function buildNotificationText(type: NotificationType, subjectName: strin
       if (spoilerFree || !winnerName) return { title: "Terminé", body: `${subjectName} est terminé.` };
       return { title: "Résultat", body: `${winnerName} a gagné : ${subjectName}.` };
     case "qualification":
-      return { title: "Qualifiée !", body: `${subjectName} est qualifiée pour la suite.` };
+      return { title: "Qualifiée !", body: context ? `${subjectName} est qualifiée pour la suite de ${context}.` : `${subjectName} est qualifiée pour la suite.` };
     case "elimination":
-      return { title: "Éliminée", body: `${subjectName} est éliminée.` };
+      return { title: "Éliminée", body: context ? `${subjectName} est éliminée de ${context}.` : `${subjectName} est éliminée.` };
+    case "organization_joined":
+      return { title: "Une équipe de plus", body: context ? `${subjectName} joue aussi en ${context} : tu la suis déjà.` : `${subjectName} a une nouvelle équipe : tu la suis déjà.` };
   }
 }
 

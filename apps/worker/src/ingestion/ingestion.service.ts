@@ -4,10 +4,12 @@ import { Prisma, PrismaClient } from "@news/db";
 import {
   BracketFormat,
   CompetitionDTO,
+  buildSwissMatchStakes,
   computeIngestionLatencyMs,
   computePayloadHash,
   computeStandings,
   createLogger,
+  detectBracketFormat,
   diffEventStatus,
   diffStandings,
   EntityDTO,
@@ -15,9 +17,12 @@ import {
   EventStateSnapshot,
   EventStatus,
   familyNameOf,
-  GSL_QUALIFIED_COUNT,
+  defaultSubscriptionNotifications,
+  isSwissMatchName,
+  organizationKey,
   shouldUpsert,
   StandingMatchInput,
+  standingsOptionsFor,
 } from "@news/domain";
 import { PandaScoreProvider } from "@news/providers";
 import { PRISMA } from "../db/db.module";
@@ -122,23 +127,55 @@ export class IngestionService {
     });
   }
 
-  private async upsertEntity(dto: EntityDTO): Promise<string> {
+  private async upsertEntity(dto: EntityDTO, competitionId: string): Promise<string> {
     const { objectId } = await upsertByProviderRef(this.prisma, {
       provider: dto.provider,
       objectType: "entity",
       externalId: dto.externalId,
       raw: dto,
       write: async (existingId) => {
-        const data = { kind: dto.kind, name: dto.name, shortName: dto.shortName, imageUrl: dto.imageUrl, region: dto.region };
+        const organizationId = await this.resolveOrganization(dto);
+        const data = { kind: dto.kind, name: dto.name, shortName: dto.shortName, imageUrl: dto.imageUrl, region: dto.region, organizationId };
         if (existingId) {
+          const before = await this.prisma.entity.findUnique({ where: { id: existingId }, select: { organizationId: true } });
           await this.prisma.entity.update({ where: { id: existingId }, data });
+          if (organizationId && before?.organizationId !== organizationId) await this.followOrganizationFor(organizationId, existingId, competitionId);
           return existingId;
         }
         const created = await this.prisma.entity.create({ data: { id: randomUUID(), ...data } });
+        if (organizationId) await this.followOrganizationFor(organizationId, created.id, competitionId);
         return created.id;
       },
     });
     return objectId;
+  }
+
+  // Structure d'une équipe (J23, #A4) : « G2 » de Valorant et « G2 » de League of Legends se retrouvent dans la
+  // même structure sans rien faire, parce que leurs noms donnent la même clé (`organizationKey`).
+  private async resolveOrganization(dto: EntityDTO): Promise<string | null> {
+    const key = dto.kind === "team" ? organizationKey(dto.name) : null;
+    if (!key) return null;
+    const organization = await this.prisma.organization.upsert({
+      where: { key },
+      create: { id: randomUUID(), key, name: dto.name, imageUrl: dto.imageUrl },
+      update: {},
+    });
+    if (!organization.imageUrl && dto.imageUrl) await this.prisma.organization.update({ where: { id: organization.id }, data: { imageUrl: dto.imageUrl } });
+    return organization.id;
+  }
+
+  // Une équipe qui rejoint une structure déjà suivie (la même structure arrive dans un nouveau jeu) : ses abonnés
+  // la suivent aussi, comme ceux qui ont suivi « toute la structure ».
+  private async followOrganizationFor(organizationId: string, entityId: string, competitionId: string): Promise<void> {
+    const followers = await this.prisma.subscription.findMany({ where: { targetType: "organization", targetId: organizationId }, select: { userId: true } });
+    if (followers.length === 0) return;
+    // Une équipe de plus dans une structure déjà suivie : on le dit aux abonnés (notification « organization_joined »).
+    await this.eventBus.publish({ type: "OrganizationTeamJoined", entityId, organizationId, competitionId });
+    const defaults = defaultSubscriptionNotifications("entity");
+    await this.prisma.subscription.createMany({
+      data: followers.map((f) => ({ id: randomUUID(), userId: f.userId, targetType: "entity", targetId: entityId, level: "all", ...defaults })),
+      skipDuplicates: true,
+    });
   }
 
   private async upsertEvent(dto: EventDTO): Promise<void> {
@@ -198,10 +235,14 @@ export class IngestionService {
       });
     }
 
+    // Phase suisse (J23) : pas de bracket chez PandaScore, donc pas de job « structure » ; le format se reconnaît aux
+    // noms « Round N: … » et suffit à calculer le classement (3 victoires qualifient, 3 défaites éliminent).
+    if (!payloadUnchanged && isSwissMatchName(dto.name)) await this.detectSwiss(competitionRef.objectId);
+
     // `side` = rang de l'adversaire chez le fournisseur (0 = gauche, 1 = droite) : sans lui, l'ordre
     // des équipes suivait l'ordre physique des lignes et changeait d'un affichage à l'autre (J10).
     for (const [side, participant] of dto.participants.entries()) {
-      const entityId = await this.upsertEntity(participant.entity);
+      const entityId = await this.upsertEntity(participant.entity, competitionRef.objectId);
       await this.prisma.eventParticipant.upsert({
         where: { eventId_entityId: { eventId, entityId } },
         create: { id: randomUUID(), eventId, entityId, side, score: participant.score, isWinner: participant.isWinner },
@@ -219,9 +260,11 @@ export class IngestionService {
       }
       // Structure (bracket/classement) : pas d'attente du prochain passage du job
       // "structure" (5 min) pour un match qui vient de se terminer (docs/03 §3).
-      const competition = await this.prisma.competition.findUnique({ where: { id: competitionRef.objectId }, select: { hasBracket: true } });
+      const competition = await this.prisma.competition.findUnique({ where: { id: competitionRef.objectId }, select: { hasBracket: true, format: true } });
       if (competition?.hasBracket) {
         await this.syncStructure(competitionRef.objectId).catch((err) => logger.error(err, "échec de la synchro structure après fin de match"));
+      } else if (competition?.format === "swiss") {
+        await this.syncStandings(competitionRef.objectId, "swiss").catch((err) => logger.error(err, "échec du classement suisse après fin de match"));
       }
     }
 
@@ -230,6 +273,15 @@ export class IngestionService {
     for (const type of diffEventStatus(previousSnapshot, nextSnapshot)) {
       await this.eventBus.publish({ type, eventId, competitionId: competitionRef.objectId });
     }
+  }
+
+  private async detectSwiss(competitionId: string): Promise<void> {
+    const competition = await this.prisma.competition.findUnique({ where: { id: competitionId }, select: { format: true } });
+    if (competition?.format === "swiss") return;
+    const names = await this.prisma.event.findMany({ where: { competitionId }, select: { name: true } });
+    if (detectBracketFormat(names) !== "swiss") return;
+    await this.prisma.competition.update({ where: { id: competitionId }, data: { format: "swiss" } });
+    logger.info({ competitionId }, "phase suisse reconnue");
   }
 
   async runCatalogue(): Promise<void> {
@@ -272,8 +324,15 @@ export class IngestionService {
       return;
     }
     const recentCutoff = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000);
+    // Un tournoi à venir n'est interrogé que la veille de son début (J23) : avec deux jeux, les phases finales encore
+    // lointaines coûtaient à elles seules ~100 requêtes par heure sans rien apporter (aucune équipe connue).
+    const soon = new Date(Date.now() + 24 * 60 * 60 * 1000);
     const targets = await this.prisma.competition.findMany({
-      where: { kind: "tournament", hasBracket: true, OR: [{ status: { in: ["scheduled", "live"] } }, { endsAt: { gte: recentCutoff } }] },
+      where: {
+        kind: "tournament",
+        hasBracket: true,
+        OR: [{ status: "live" }, { status: "scheduled", startsAt: { lte: soon } }, { endsAt: { gte: recentCutoff } }],
+      },
       select: { id: true },
     });
     for (const competition of targets) {
@@ -285,7 +344,15 @@ export class IngestionService {
         logger.error({ err, competitionId: competition.id }, "échec de la synchro structure");
       });
     }
-    logger.info({ count: targets.length, quota: this.provider.quota.getUsageRatio() }, "structure ingérée");
+    // Phases suisses sans bracket : classement recalculé depuis nos matchs, sans appel au fournisseur.
+    const swissTargets = await this.prisma.competition.findMany({
+      where: { kind: "tournament", hasBracket: false, format: "swiss", OR: [{ status: { in: ["scheduled", "live"] } }, { endsAt: { gte: recentCutoff } }] },
+      select: { id: true },
+    });
+    for (const competition of swissTargets) {
+      await this.syncStandings(competition.id, "swiss").catch((err) => logger.error({ err, competitionId: competition.id }, "échec du classement suisse"));
+    }
+    logger.info({ count: targets.length, swiss: swissTargets.length, quota: this.provider.quota.getUsageRatio() }, "structure ingérée");
   }
 
   // Liens de bracket : upsert par match (une source a un unique lien "winner" et un
@@ -331,6 +398,23 @@ export class IngestionService {
     await this.syncStandings(competitionId, structure.format);
   }
 
+  // Phrase d'enjeu des matchs à venir d'une phase suisse (J23), d'après le bilan actuel des deux équipes : « Match
+  // décisif : le vainqueur est qualifié… ». Stockée sur le match pour que les listes (Agenda, Accueil) l'affichent
+  // sans recalcul ; seul un changement est écrit.
+  private async refreshSwissStakes(competitionId: string, standings: { entityExternalId: string; wins: number; losses: number }[]): Promise<void> {
+    const record = new Map(standings.map((s) => [s.entityExternalId, s]));
+    const upcoming = await this.prisma.event.findMany({
+      where: { competitionId, status: { in: ["scheduled", "live"] } },
+      select: { id: true, bestOf: true, stakes: true, participants: { select: { entityId: true, entity: { select: { name: true, shortName: true } } } } },
+    });
+    for (const event of upcoming) {
+      if (event.participants.length !== 2) continue;
+      const teams = event.participants.map((p) => ({ name: p.entity.shortName ?? p.entity.name, wins: record.get(p.entityId)?.wins ?? 0, losses: record.get(p.entityId)?.losses ?? 0 }));
+      const stakes = buildSwissMatchStakes(teams, event.bestOf);
+      if (stakes !== event.stakes) await this.prisma.event.update({ where: { id: event.id }, data: { stakes } });
+    }
+  }
+
   // Classements recalculés depuis nos event/event_participant (règle : le standings
   // gratuit de PandaScore ne donne que le rang, docs/01). `maxLives` généralise le
   // nombre de défaites tolérées selon le format (docs/03 §2).
@@ -343,9 +427,8 @@ export class IngestionService {
       status: e.status as EventStatus,
       participants: e.participants.map((p) => ({ entityExternalId: p.entityId, score: p.score, isWinner: p.isWinner })),
     }));
-    const maxLives = format === "triple_elim" ? 3 : format === "single_elim" ? 1 : 2;
-    const qualifiedCount = format === "groups_gsl" ? GSL_QUALIFIED_COUNT : undefined;
-    const standings = computeStandings(matches, { maxLives, qualifiedCount });
+    const standings = computeStandings(matches, standingsOptionsFor(format));
+    if (format === "swiss") await this.refreshSwissStakes(competitionId, standings);
 
     // Avant d'écrire : l'ancien classement sert à détecter qui vient de passer
     // qualifié ou d'être éliminé (notifications "qualification"/"élimination",

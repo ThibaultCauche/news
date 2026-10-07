@@ -29,7 +29,7 @@ class LeagueScreen extends StatelessWidget {
           icon: const Icon(Icons.chevron_left_rounded, color: AppColors.textSecondary),
           label: Text(game.name, overflow: TextOverflow.ellipsis, style: const TextStyle(color: AppColors.textSecondary)),
         ),
-        actions: [const LearnHelpButton(articleId: "circuit"), LeagueFollowButton(league: league)],
+        actions: [LearnHelpButton(articleId: "circuit", game: game.slug), LeagueFollowButton(league: league)],
       ),
       body: ListView(
         padding: const EdgeInsets.all(AppSpacing.md),

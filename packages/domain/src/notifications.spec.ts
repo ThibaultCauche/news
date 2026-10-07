@@ -118,3 +118,20 @@ describe("résumé du matin", () => {
     expect(body).toBe("2 matchs de tes suivis, le premier à 4 h : A vs B.");
   });
 });
+
+describe("textes de qualification (J23)", () => {
+  it("nomme la compétition quand on la connaît", () => {
+    expect(buildNotificationText("qualification", "G2", false, null, false, "Worlds 2026").body).toBe("G2 est qualifiée pour la suite de Worlds 2026.");
+    expect(buildNotificationText("elimination", "G2", false, null, false, "Worlds 2026").body).toBe("G2 est éliminée de Worlds 2026.");
+  });
+
+  it("garde le texte d'avant sans compétition", () => {
+    expect(buildNotificationText("qualification", "G2", false, null).body).toBe("G2 est qualifiée pour la suite.");
+  });
+
+  it("annonce une équipe de plus dans une structure suivie", () => {
+    expect(buildNotificationText("organization_joined", "Team Liquid", false, null, false, "League of Legends").body).toBe(
+      "Team Liquid joue aussi en League of Legends : tu la suis déjà.",
+    );
+  });
+});

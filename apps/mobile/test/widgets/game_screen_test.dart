@@ -118,7 +118,8 @@ void main() {
             ..children.add(CompetitionChildDto((c) => c
               ..id = "groupA"
               ..name = "Group A"
-              ..kind = "tournament")))),
+              ..kind = "tournament"
+              ..hasEvents = true)))),
           competitionDetailProvider("groupA").overrideWith((ref) async => CompetitionResponseDto((b) => b
             ..id = "groupA"
             ..name = "Group A"

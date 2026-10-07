@@ -1,6 +1,9 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
+import { computeStandings, standingsOptionsFor } from "@news/domain";
+import { PandaScoreClient } from "./client";
 import { normalizeCompetitionsFromTournament, normalizeMatch, normalizeStructure } from "./normalize";
+import { PandaScoreProvider } from "./provider";
 import { RawMatch, RawTournament } from "./types";
 
 // Fixtures = vraies réponses PandaScore, gardées dans tests-pandascore/samples/
@@ -102,5 +105,83 @@ describe("normalizeStructure", () => {
     const structure = normalizeStructure(matches);
     expect(structure.format).toBe("double_elim");
     expect(structure.links.length).toBeGreaterThan(0);
+  });
+});
+
+// Vraies réponses PandaScore League of Legends (tests-pandascore/samples-lol/) : Worlds 2025 et 2026.
+const LOL_SAMPLES = join(__dirname, "../../../../tests-pandascore/samples-lol");
+const loadLol = <T>(file: string): T => JSON.parse(readFileSync(join(LOL_SAMPLES, file), "utf8"));
+
+describe("League of Legends (J23)", () => {
+  it("donne le jeu du tournoi à sa ligue, sa série et son tournoi", () => {
+    const [tournament] = loadLol<RawTournament[]>("tournois-tier-s.json");
+    const competitions = normalizeCompetitionsFromTournament(tournament);
+    expect(competitions.map((c) => c.game)).toEqual(["league-of-legends", "league-of-legends", "league-of-legends"]);
+  });
+
+  it("reconnaît la phase suisse des Worlds par les noms « Round N: … »", () => {
+    const matches = loadLol<RawMatch[]>("suisse-worlds-2025-matchs.json");
+    expect(normalizeStructure(matches).format).toBe("swiss");
+  });
+
+  it("phase suisse terminée : 8 qualifiées (3 victoires) et 8 éliminées (3 défaites)", () => {
+    const matches = loadLol<RawMatch[]>("suisse-worlds-2025-matchs.json").map(normalizeMatch);
+    const standings = computeStandings(
+      matches.map((m) => ({
+        status: m.status,
+        participants: m.participants.map((p) => ({ entityExternalId: p.entity.externalId, score: p.score, isWinner: p.isWinner })),
+      })),
+      standingsOptionsFor("swiss"),
+    );
+    expect(standings).toHaveLength(16);
+    expect(standings.filter((s) => s.qualified)).toHaveLength(8);
+    expect(standings.filter((s) => s.livesLeft === 0)).toHaveLength(8);
+    expect(standings.filter((s) => s.qualified && s.livesLeft === 0)).toHaveLength(0);
+  });
+
+  it("le gagnant de chaque partie est donné pour les matchs de tier S (Worlds 2025)", () => {
+    const games = [...loadLol<RawMatch[]>("suisse-worlds-2025-matchs.json"), ...loadLol<RawMatch[]>("brackets-playoffs-worlds-2025.json")].flatMap((m) => m.games ?? []);
+    expect(games.length).toBeGreaterThan(50);
+    expect(games.every((g) => g.winner?.id != null)).toBe(true);
+  });
+});
+
+describe("PandaScoreProvider, deux jeux", () => {
+  const fakeClient = (calls: string[]) =>
+    ({
+      quota: {},
+      get: async (path: string) => {
+        calls.push(path);
+        return [];
+      },
+    }) as unknown as PandaScoreClient;
+
+  it("ne demande les matchs LoL qu'avec les tournois suivis, et rien au rythme du direct sans tournoi en cours", async () => {
+    const calls: string[] = [];
+    const provider = new PandaScoreProvider(fakeClient(calls));
+    expect(await provider.listEvents({ onlyLive: true })).toEqual([]);
+    // Valorant : un appel direct ; LoL : un appel catalogue (2 requêtes) pour connaître les tournois, aucun appel de matchs.
+    expect(calls.filter((c) => c.startsWith("/valorant/matches/running"))).toHaveLength(1);
+    expect(calls.filter((c) => c.includes("/lol/matches"))).toHaveLength(0);
+  });
+
+  it("filtre les tournois LoL de tier S/A", async () => {
+    const calls: string[] = [];
+    await new PandaScoreProvider(fakeClient(calls)).listCompetitions();
+    expect(calls).toContain("/lol/tournaments/running?per_page=50&filter[tier]=s,a");
+    expect(calls).toContain("/valorant/tournaments/running?per_page=50");
+  });
+});
+
+describe("nom d'une série dont le nom complet n'est que l'année", () => {
+  it("remet le nom de la ligue devant : « Worlds 2026 »", () => {
+    const [tournament] = loadLol<RawTournament[]>("tournois-tier-s.json");
+    const [, serie] = normalizeCompetitionsFromTournament(tournament);
+    expect(serie.name).toBe("Worlds 2026");
+  });
+
+  it("garde un nom complet déjà lisible : « Champions 2026 »", () => {
+    const [tournament] = load<RawTournament[]>("tournois-en-cours.json");
+    expect(normalizeCompetitionsFromTournament(tournament)[1].name).toBe("Champions 2026");
   });
 });

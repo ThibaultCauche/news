@@ -8,10 +8,10 @@ import "../../core/auth/account.dart";
 import "../../core/notifications/push_service.dart";
 import "../account/account_gate.dart";
 
-/// Catégorie/compétition/entité/événement (docs/03 §2) : type applicatif,
+/// Catégorie/compétition/entité/structure/événement (docs/03 §2, J23) : type applicatif,
 /// converti vers l'énum propre à chaque DTO généré (`CreateSubscriptionDto`,
 /// `SubscriptionTargetDto`) au moment de l'appel.
-enum FollowTargetType { category, competition, competitionFamily, entity, event }
+enum FollowTargetType { category, competition, competitionFamily, entity, organization, event }
 
 /// Valeur échangée avec l'API (`competition_family`), différente du nom Dart de l'énum.
 extension FollowTargetTypeWire on FollowTargetType {
@@ -154,6 +154,7 @@ CreateSubscriptionDtoTargetTypeEnum _toCreateEnum(FollowTargetType t) => switch 
   FollowTargetType.competition => CreateSubscriptionDtoTargetTypeEnum.competition,
   FollowTargetType.competitionFamily => CreateSubscriptionDtoTargetTypeEnum.competitionFamily,
   FollowTargetType.entity => CreateSubscriptionDtoTargetTypeEnum.entity,
+  FollowTargetType.organization => CreateSubscriptionDtoTargetTypeEnum.organization,
   FollowTargetType.event => CreateSubscriptionDtoTargetTypeEnum.event,
 };
 
@@ -162,5 +163,6 @@ SubscriptionTargetDtoTargetTypeEnum _toTargetEnum(FollowTargetType t) => switch 
   FollowTargetType.competition => SubscriptionTargetDtoTargetTypeEnum.competition,
   FollowTargetType.competitionFamily => SubscriptionTargetDtoTargetTypeEnum.competitionFamily,
   FollowTargetType.entity => SubscriptionTargetDtoTargetTypeEnum.entity,
+  FollowTargetType.organization => SubscriptionTargetDtoTargetTypeEnum.organization,
   FollowTargetType.event => SubscriptionTargetDtoTargetTypeEnum.event,
 };

@@ -5,13 +5,16 @@ import "../../core/date_x.dart";
 import "../../core/iterable_x.dart";
 
 class SeasonStep {
-  const SeasonStep({required this.id, required this.name, required this.status, required this.startsAt, required this.endsAt});
+  const SeasonStep({required this.id, required this.name, required this.status, required this.startsAt, required this.endsAt, this.hasEvents = true});
 
   final String id;
   final String name;
   final String? status;
   final DateTime? startsAt;
   final DateTime? endsAt;
+
+  /// `false` pour une étape passée dont plus aucun match n'est en base : sa page serait vide, on ne la liste pas.
+  final bool hasEvents;
 
   bool get isMasters => name.toLowerCase().contains("masters");
 }
@@ -76,7 +79,7 @@ final valorantSeasonProvider = FutureProvider.autoDispose<SeasonOverview?>((ref)
 
   final steps = [
     for (final c in seasonChildren)
-      SeasonStep(id: c.id, name: c.name, status: c.status, startsAt: c.startsAt.toDateTime, endsAt: c.endsAt.toDateTime),
+      SeasonStep(id: c.id, name: c.name, status: c.status, startsAt: c.startsAt.toDateTime, endsAt: c.endsAt.toDateTime, hasEvents: c.hasEvents),
   ];
 
   final currentStep = _pickCurrentStep(steps, now);
@@ -95,7 +98,7 @@ final valorantSeasonProvider = FutureProvider.autoDispose<SeasonOverview?>((ref)
     ..sort((a, b) => (a.startsAt.toDateTime ?? now).compareTo(b.startsAt.toDateTime ?? now));
 
   final playedSteps = steps
-      .where((s) => s.id != currentStep.id && (s.endsAt ?? s.startsAt ?? now).isBefore(now))
+      .where((s) => s.id != currentStep.id && s.hasEvents && (s.endsAt ?? s.startsAt ?? now).isBefore(now))
       .toList();
 
   return SeasonOverview(

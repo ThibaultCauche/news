@@ -8,6 +8,7 @@ import {
   detectBracketFormat,
   diffStandings,
   StandingMatchInput,
+  standingsOptionsFor,
 } from "./bracket";
 
 // Fixtures = vraies réponses PandaScore (CLAUDE.md : "à réutiliser comme fixtures de
@@ -156,5 +157,31 @@ describe("diffStandings", () => {
   it("une nouvelle entité (pas dans l'ancien classement) qui arrive déjà qualifiée compte comme un changement", () => {
     const after = [{ entityId: "g2", qualified: true, livesLeft: 2 }];
     expect(diffStandings([], after)).toEqual({ qualifiedEntityIds: ["g2"], eliminatedEntityIds: [] });
+  });
+});
+
+describe("phase suisse : qualification et élimination", () => {
+  const win = (winner: string, loser: string): StandingMatchInput => ({
+    status: "finished",
+    participants: [
+      { entityExternalId: winner, score: 1, isWinner: true },
+      { entityExternalId: loser, score: 0, isWinner: false },
+    ],
+  });
+  const snapshot = (matches: StandingMatchInput[]) =>
+    computeStandings(matches, standingsOptionsFor("swiss")).map((s) => ({ entityId: s.entityExternalId, qualified: s.qualified, livesLeft: s.livesLeft }));
+
+  it("la 3e victoire qualifie une équipe, une seule fois", () => {
+    const two = [win("A", "B"), win("A", "C")];
+    const three = [...two, win("A", "D")];
+    expect(diffStandings(snapshot(two), snapshot(three)).qualifiedEntityIds).toEqual(["A"]);
+    // Un recalcul sans nouveau résultat ne renvoie rien.
+    expect(diffStandings(snapshot(three), snapshot(three)).qualifiedEntityIds).toEqual([]);
+  });
+
+  it("la 3e défaite élimine une équipe", () => {
+    const two = [win("A", "B"), win("C", "B")];
+    const three = [...two, win("D", "B")];
+    expect(diffStandings(snapshot(two), snapshot(three)).eliminatedEntityIds).toEqual(["B"]);
   });
 });

@@ -172,7 +172,7 @@ Ce sont des adresses JSON utilisées par les sites officiels eux-mêmes et docum
 ## À valider
 
 - [x] Lancer `node test-multijeux.mjs` : **15 jeux accessibles en gratuit** (2026-09-25).
-- [ ] Vérifier le gagnant par carte pour CS, Dota 2 et LoL sur des matchs de tier S.
+- [ ] Vérifier le gagnant par carte pour CS et Dota 2 sur des matchs de tier S. **LoL fait (2026-10-07, J23)** : renseigné pour 80 parties sur 80 aux Worlds 2025.
 - [ ] Créer une clé API-Sports gratuite et vérifier si la saison 2026-2027 de Ligue 1 est accessible en gratuit.
 - [ ] Créer un token start.gg et lire leurs conditions d'utilisation de l'API.
 - [ ] Choisir les sports prioritaires (proposition ci-dessus).

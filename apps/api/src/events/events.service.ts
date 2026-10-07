@@ -1,7 +1,7 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
-import { buildMatchStakes, moreStreamersUrl, StreamDTO } from "@news/domain";
+import { buildMatchStakes, buildSwissMatchStakes, moreStreamersUrl, StreamDTO } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { eventSummaryInclude, EventSummaryDto, toEventSummary } from "../common/event-summary.mapper";
@@ -141,15 +141,36 @@ export class EventsService {
     const winnerTarget = event.linksFrom.find((l) => l.outcome === "winner")?.toEvent.name ?? null;
     const loserTarget = event.linksFrom.find((l) => l.outcome === "loser")?.toEvent.name ?? null;
     const stakes =
-      event.linksFrom.length === 0 || !ELIMINATION_FORMATS.includes(event.competition.format ?? "")
-        ? null
-        : buildMatchStakes({ bestOf: event.bestOf, winnerTargetName: winnerTarget, loserTargetName: loserTarget });
+      event.competition.format === "swiss"
+        ? await this.swissStakes(event)
+        : event.linksFrom.length === 0 || !ELIMINATION_FORMATS.includes(event.competition.format ?? "")
+          ? null
+          : buildMatchStakes({ bestOf: event.bestOf, winnerTargetName: winnerTarget, loserTargetName: loserTarget });
 
     const entityIds = event.participants.map((p) => p.entityId);
     const recentForm = await Promise.all(entityIds.map((entityId) => this.recentFormFor(entityId, event.id)));
     const headToHead = entityIds.length === 2 ? await this.headToHeadFor(entityIds[0], entityIds[1]) : null;
 
     return { stakes, recentForm, headToHead };
+  }
+
+  // Bilan de chaque équipe dans la phase suisse avant ce match (les matchs terminés qui le précèdent).
+  private async swissStakes(event: EventWithLinks): Promise<string> {
+    const teams = await Promise.all(
+      event.participants.map(async (p) => {
+        const rows = await this.prisma.eventParticipant.findMany({
+          where: {
+            entityId: p.entityId,
+            isWinner: { not: null },
+            event: { competitionId: event.competitionId, status: "finished", id: { not: event.id }, ...(event.startsAt ? { startsAt: { lt: event.startsAt } } : {}) },
+          },
+          select: { isWinner: true },
+        });
+        const wins = rows.filter((r) => r.isWinner).length;
+        return { name: p.entity.shortName ?? p.entity.name, wins, losses: rows.length - wins };
+      }),
+    );
+    return buildSwissMatchStakes(teams, event.bestOf);
   }
 
   private async recentFormFor(entityId: string, excludeEventId: string): Promise<RecentFormEntryDto> {

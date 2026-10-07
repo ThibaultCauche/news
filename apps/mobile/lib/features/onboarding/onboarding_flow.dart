@@ -5,6 +5,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
+import "../../core/games.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/async_view.dart";
 import "../../widgets/follow_button.dart";
@@ -20,19 +21,45 @@ import "../learn/learn_screen.dart";
 // (`docs/01` — groupes tirés au sort), donc toujours trouvables via
 // `GET /v1/entities/by-short-name/:shortName`.
 const _suggestedTeams = [
-  (shortName: "G2", reason: "Favori de Champions cette année : idéal pour vivre la phase finale."),
-  (shortName: "KC", reason: "L'équipe française la plus suivie, avec la plus grosse ambiance."),
-  (shortName: "PR", reason: "Le style le plus offensif du circuit, des matchs très spectaculaires."),
+  (game: "valorant", shortName: "G2", reason: "Favori de Champions cette année : idéal pour vivre la phase finale."),
+  (game: "valorant", shortName: "KC", reason: "L'équipe française la plus suivie, avec la plus grosse ambiance."),
+  (game: "valorant", shortName: "PR", reason: "Le style le plus offensif du circuit, des matchs très spectaculaires."),
+  (game: "league-of-legends", shortName: "T1", reason: "L'équipe la plus titrée aux Worlds, portée par Faker, le joueur le plus connu."),
+  (game: "league-of-legends", shortName: "G2", reason: "Le grand nom de l'Europe : des matchs spectaculaires, et un public très présent."),
+  (game: "league-of-legends", shortName: "KC", reason: "L'équipe française la plus suivie, avec la plus grosse ambiance."),
 ];
+
+/// Les jeux que couvre l'appli (J23, #I8) et ceux qui arrivent : le choix de l'onboarding. Un jeu « bientôt » n'est pas
+/// sélectionnable.
+const onboardingGames = [("valorant", "Valorant"), ("league-of-legends", "League of Legends")];
+const _soonGames = ["Counter-Strike 2", "Rocket League"];
+
+/// Jeux cochés à l'onboarding : les suggestions d'équipes et l'aide « Je ne connais pas… » suivent ce choix.
+class OnboardingGamesNotifier extends Notifier<Set<String>> {
+  @override
+  Set<String> build() => {onboardingGames.first.$1};
+
+  /// Au moins un jeu reste coché : on ne peut pas décocher le dernier.
+  void toggle(String slug) {
+    if (state.contains(slug)) {
+      if (state.length > 1) state = {...state}..remove(slug);
+    } else {
+      state = {...state, slug};
+    }
+  }
+}
+
+final onboardingGamesProvider = NotifierProvider<OnboardingGamesNotifier, Set<String>>(OnboardingGamesNotifier.new);
 
 final suggestedTeamsProvider = FutureProvider.autoDispose<List<(EntityResponseDto, String)>>((ref) async {
   final api = ref.watch(apiClientProvider).getEntitiesApi();
+  final games = ref.watch(onboardingGamesProvider);
   // En parallèle (J18) : trois requêtes l'une après l'autre attendaient trois délais en cas de panne.
   final results = await Future.wait([
-    for (final team in _suggestedTeams)
+    for (final team in _suggestedTeams.where((t) => games.contains(t.game)))
       () async {
         try {
-          final data = (await api.entitiesControllerGetByShortName(shortName: team.shortName)).data;
+          final data = (await api.entitiesControllerGetByShortName(shortName: team.shortName, game: team.game)).data;
           return data == null ? null : (data, team.reason);
         } on DioException catch (e) {
           // Équipe pas encore ingérée dans cet environnement (404) : on l'ignore plutôt que de casser
@@ -77,18 +104,25 @@ class _OnboardingFlowState extends State<OnboardingFlow> {
   }
 }
 
-class _SubjectsPage extends StatelessWidget {
+class _SubjectsPage extends ConsumerWidget {
   const _SubjectsPage({required this.onContinue});
 
   final VoidCallback onContinue;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final games = ref.watch(onboardingGamesProvider);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          // Le contenu défile (quatre sujets et la liste des jeux dépassent un petit écran), les boutons restent en bas.
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
           Row(
             children: [
               SvgPicture.asset("assets/ornaments/monogram.svg", width: 40, height: 40),
@@ -101,7 +135,7 @@ class _SubjectsPage extends StatelessWidget {
           const SizedBox(height: AppSpacing.xs),
           const PageSubtitle("Choisis au moins un sujet. Tu pourras changer plus tard."),
           const SizedBox(height: AppSpacing.lg),
-          const _CategoryTile(label: "E-sport", caption: "1 jeu choisi", selected: true),
+          _CategoryTile(label: "E-sport", caption: games.length > 1 ? "${games.length} jeux choisis" : "1 jeu choisi", selected: true),
           const SizedBox(height: AppSpacing.sm),
           const _CategoryTile(label: "Sport", caption: "Bientôt", selected: false),
           const SizedBox(height: AppSpacing.sm),
@@ -109,25 +143,35 @@ class _SubjectsPage extends StatelessWidget {
           const SizedBox(height: AppSpacing.sm),
           const _CategoryTile(label: "Streams", caption: "Bientôt", selected: false),
           const SizedBox(height: AppSpacing.lg),
-          const SectionCard(
+          SectionCard(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("QUELS JEUX ?", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.label)),
-                SizedBox(height: AppSpacing.sm),
-                _GameRow(label: "Valorant", selected: true),
-                _GameRow(label: "League of Legends", selected: false),
-                _GameRow(label: "Counter-Strike 2", selected: false),
-                _GameRow(label: "Rocket League", selected: false),
+                const Text("QUELS JEUX ?", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.label)),
+                const SizedBox(height: AppSpacing.sm),
+                for (final (slug, name) in onboardingGames)
+                  _GameRow(label: name, selected: games.contains(slug), onTap: () => ref.read(onboardingGamesProvider.notifier).toggle(slug)),
+                for (final name in _soonGames) _GameRow(label: name, selected: false),
               ],
             ),
           ),
-          const Spacer(),
+                ],
+              ),
+            ),
+          ),
+          // Une aide par jeu coché : « Je ne connais pas Valorant », « Je ne connais pas League of Legends ».
           Center(
-            child: TextButton.icon(
-              onPressed: () => openLearnArticle(context, game: "valorant", articleId: "le-jeu"),
-              icon: const Icon(Icons.help_rounded, size: 18, color: AppColors.gold),
-              label: const Text("Je ne connais pas Valorant"),
+            child: Wrap(
+              alignment: WrapAlignment.center,
+              children: [
+                for (final (slug, name) in onboardingGames)
+                  if (games.contains(slug))
+                    TextButton.icon(
+                      onPressed: () => openLearnArticle(context, game: slug, articleId: "le-jeu"),
+                      icon: const Icon(Icons.help_rounded, size: 18, color: AppColors.gold),
+                      label: Text("Je ne connais pas $name"),
+                    ),
+              ],
             ),
           ),
           SizedBox(
@@ -165,24 +209,30 @@ class _CategoryTile extends StatelessWidget {
   }
 }
 
+/// Un jeu de la liste : cochable (`onTap`), ou grisé « bientôt » quand il n'est pas encore couvert.
 class _GameRow extends StatelessWidget {
-  const _GameRow({required this.label, required this.selected});
+  const _GameRow({required this.label, required this.selected, this.onTap});
 
   final String label;
   final bool selected;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4),
-      child: Opacity(
-        opacity: selected ? 1 : 0.4,
-        child: Row(
-          children: [
-            Icon(selected ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded, size: 18, color: selected ? AppColors.gold : AppColors.textTertiary),
-            const SizedBox(width: AppSpacing.sm),
-            Text(label),
-          ],
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 6),
+        child: Opacity(
+          opacity: onTap == null ? 0.4 : (selected ? 1 : 0.7),
+          child: Row(
+            children: [
+              Icon(selected ? Icons.check_box_rounded : Icons.check_box_outline_blank_rounded, size: 20, color: selected ? AppColors.gold : AppColors.textTertiary),
+              const SizedBox(width: AppSpacing.sm),
+              Expanded(child: Text(label)),
+              if (onTap == null) const Text("Bientôt", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
+            ],
+          ),
         ),
       ),
     );
@@ -231,9 +281,9 @@ class _TeamsPage extends ConsumerWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const PageTitle("3 équipes pour commencer"),
+          const PageTitle("Des équipes pour commencer"),
           const SizedBox(height: AppSpacing.xs),
-          const PageSubtitle("Choisies pour débuter sur Valorant, chacune pour une bonne raison."),
+          const PageSubtitle("Choisies pour débuter, chacune pour une bonne raison."),
           const SizedBox(height: AppSpacing.lg),
           Expanded(
             child: switch (teams) {
@@ -284,11 +334,11 @@ class _TeamSuggestionCard extends ConsumerWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Row(
-                  children: [
-                    Expanded(child: Text(entity.name, style: const TextStyle(fontWeight: FontWeight.w700))),
-                    if (entity.region != null) Text(entity.region!, style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
-                  ],
+                Text(entity.name, style: const TextStyle(fontWeight: FontWeight.w700)),
+                // Le jeu départage « G2 » de Valorant et « G2 » de League of Legends ; sous le nom, pour ne pas l'écraser.
+                Text(
+                  [gameLabel(entity.game), entity.region].whereType<String>().where((t) => t.isNotEmpty).join(" · "),
+                  style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption),
                 ),
                 const SizedBox(height: AppSpacing.xs),
                 Text("Pourquoi", style: TextStyle(color: AppColors.textTertiary, fontSize: AppTypography.label)),

@@ -13,6 +13,7 @@ export interface StreamDTO {
 /** Page du jeu sur Twitch, où l'on trouve tous les streamers (« Autres streamers »). */
 const TWITCH_DIRECTORY: Record<string, string> = {
   valorant: "https://www.twitch.tv/directory/category/valorant",
+  "league-of-legends": "https://www.twitch.tv/directory/category/league-of-legends",
 };
 
 export function moreStreamersUrl(game: string | null | undefined): string | null {
@@ -28,7 +29,7 @@ export function twitchChannelOf(url: string): string | null {
 // PandaScore ne marque « officielles » que les chaînes principales (`valorant`, `valorant_emea`) ;
 // les chaînes de langue de Riot (`valorant_fr`, `valorant_jpn`…) arrivent avec `official: false`, au
 // milieu des co-streamers. Leur nom les trahit.
-const RIOT_CHANNEL = /^valorant(esports)?(_|$)/;
+const RIOT_CHANNEL = /^(valorant(esports)?|lolesports|riotgames)(_|$)/;
 
 /** Ne garde que les chaînes de l'éditeur, une seule fois chacune (l'officielle l'emporte sur le doublon). */
 export function pickPublisherStreams(raw: { raw_url?: string | null; language?: string | null; official?: boolean; main?: boolean }[] | null | undefined): StreamDTO[] {

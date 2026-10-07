@@ -66,6 +66,7 @@ model Competition {
   events     Event[]
   standings  Standing[]
   favorites  FavoriteCompetition[]
+  stagePicks StagePick[]
   createdAt  DateTime      @default(now()) @map("created_at")
   updatedAt  DateTime      @updatedAt @map("updated_at")
 
@@ -82,13 +83,46 @@ model Entity {
   children     Entity[]           @relation("EntityHierarchy")
   region       String?
   imageUrl     String?            @map("image_url")
+  // Structure (J23) : « G2 » en Valorant et en LoL, rapprochées par le nom à l'ingestion.
+  organizationId   String?            @map("organization_id")
+  organization     Organization?      @relation(fields: [organizationId], references: [id])
   participants     EventParticipant[]
   standings        Standing[]
   notificationLogs NotificationLog[]
   createdAt        DateTime           @default(now()) @map("created_at")
   updatedAt        DateTime           @updatedAt @map("updated_at")
 
+  @@index([organizationId])
   @@map("entity")
+}
+
+// Pronostic d'une étape (J23) : les équipes qu'on pense voir se qualifier de la phase suisse, choisies avant son
+// début. Générique (une liste d'équipes par compétition et par personne), pas propre à un jeu (règle 3).
+model StagePick {
+  id            String      @id @default(uuid())
+  userId        String      @map("user_id")
+  user          AppUser     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  competitionId String      @map("competition_id")
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  entityIds     Json        @map("entity_ids")
+  createdAt     DateTime    @default(now()) @map("created_at")
+  updatedAt     DateTime    @updatedAt @map("updated_at")
+
+  @@unique([userId, competitionId])
+  @@map("stage_pick")
+}
+
+// Structure d'e-sport (J23, #A4) : regroupe les équipes d'un même nom dans plusieurs jeux. `key` = `organizationKey`
+// (packages/domain), créée à l'ingestion de la première équipe.
+model Organization {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  name      String
+  imageUrl  String?  @map("image_url")
+  entities  Entity[]
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@map("organization")
 }
 
 model Event {
@@ -101,6 +135,9 @@ model Event {
   startsAt         DateTime?          @map("starts_at")
   endsAt           DateTime?          @map("ends_at")
   bestOf           Int?               @map("best_of")
+  // Phrase d'enjeu calculée par le worker quand elle dépend des autres matchs (phase suisse : ce que chaque équipe
+  // joue selon son bilan, J23). `null` : l'API retombe sur la règle fixe de la compétition.
+  stakes           String?
   result           Json?
   // Chaînes de diffusion de l'éditeur (PandaScore `streams_list`, filtrées par `pickPublisherStreams`), J21.
   streams          Json?
@@ -242,6 +279,7 @@ model AppUser {
   notificationLogs NotificationLog[]
   favoriteGames    FavoriteGame[]
   favoriteCompetitions FavoriteCompetition[]
+  stagePicks           StagePick[]
   predictions      Prediction[]
   learnProgress    LearnProgress[]
   ownedGroups      FriendGroup[]
@@ -446,11 +484,14 @@ model NotificationLog {
   event    Event?   @relation(fields: [eventId], references: [id])
   entityId String?  @map("entity_id")
   entity   Entity?  @relation(fields: [entityId], references: [id])
+  // Compétition d'une notification d'équipe (qualifiée, éliminée) : une équipe peut être éliminée plusieurs fois,
+  // d'une compétition à l'autre, et chaque fois mérite sa notification (J23).
+  competitionId String? @map("competition_id")
   type     String
   sentAt   DateTime @default(now()) @map("sent_at")
 
   @@unique([userId, eventId, type])
-  @@unique([userId, entityId, type])
+  @@unique([userId, entityId, competitionId, type])
   @@map("notification_log")
 }
 

@@ -6,12 +6,16 @@ import { CurrentUser } from "../auth/current-user.decorator";
 import { JwtAuthGuard } from "../auth/jwt-auth.guard";
 import { CreateGroupDto, FriendsPicksDto, GroupDetailDto, GroupDto, JoinGroupDto, PredictionDto, ProfileDto, PublicProfileDto, PutPredictionDto, PutProfileDto } from "./community.dto";
 import { CommunityService } from "./community.service";
+import { PutStagePickDto, StagePickDto, StagePickService } from "./stage-pick.service";
 
 // Profil, pronostics et groupes d'amis (J11, docs/04) : tout exige un compte connecté.
 @Controller()
 @UseGuards(JwtAuthGuard)
 export class CommunityController {
-  constructor(private readonly community: CommunityService) {}
+  constructor(
+    private readonly community: CommunityService,
+    private readonly stagePicks: StagePickService,
+  ) {}
 
   @Get("me/profile")
   @ApiOkResponse({ type: ProfileDto })
@@ -41,6 +45,19 @@ export class CommunityController {
   @ApiOkResponse({ type: PredictionDto })
   putPrediction(@CurrentUser() user: AuthUser, @Body() dto: PutPredictionDto): Promise<PredictionDto> {
     return this.community.putPrediction(user.id, dto);
+  }
+
+  // Pronostic d'une phase suisse (J23) : les équipes qu'on pense voir se qualifier, avant le premier match.
+  @Get("competitions/:id/pick")
+  @ApiOkResponse({ type: StagePickDto })
+  getStagePick(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string): Promise<StagePickDto> {
+    return this.stagePicks.get(user.id, id);
+  }
+
+  @Put("competitions/:id/pick")
+  @ApiOkResponse({ type: StagePickDto })
+  putStagePick(@CurrentUser() user: AuthUser, @Param("id", ParseUUIDPipe) id: string, @Body() dto: PutStagePickDto): Promise<StagePickDto> {
+    return this.stagePicks.put(user.id, id, dto);
   }
 
   @Get("events/:id/friends-picks")

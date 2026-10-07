@@ -3,13 +3,24 @@ import { EventStatus } from "./status";
 // Formats de bracket gérés au J5 (docs/03 §2 ; round_robin/swiss/law_process… viendront
 // avec d'autres catégories). Détecté depuis les noms de match PandaScore (pas de champ
 // de format direct côté fournisseur) plutôt que codé en dur par compétition.
-export type BracketFormat = "single_elim" | "double_elim" | "triple_elim" | "groups_gsl";
+export type BracketFormat = "single_elim" | "double_elim" | "triple_elim" | "groups_gsl" | "swiss";
 
 // Nombre d'équipes qualifiées d'une poule GSL : utilisé par le job "structure"
 // du worker (J5) ET par la phrase d'enjeu de l'agenda (J8, `buildGroupStakes`
 // dans `context.ts`) — une seule constante pour que les deux ne divergent pas.
 // Toujours 2 pour l'instant (règle 3 de CLAUDE.md : pas de champ par poule).
 export const GSL_QUALIFIED_COUNT = 2;
+
+// Phase suisse (Worlds, MSI, Masters Toronto…) : 3 victoires qualifient, 3 défaites éliminent.
+export const SWISS_WINS_TO_QUALIFY = 3;
+export const SWISS_LOSSES_TO_ELIMINATE = 3;
+
+// Vrai pour « Round 1: G2 vs T1 » ; PandaScore nomme ainsi chaque match d'une ronde suisse.
+const SWISS_MATCH_NAME = /^round \d+:/i;
+
+export function isSwissMatchName(name: string): boolean {
+  return SWISS_MATCH_NAME.test(name.trim());
+}
 
 export interface BracketMatchInput {
   externalId: string;
@@ -28,6 +39,8 @@ export interface EventLinkDTO {
 // tests-pandascore/samples/) : "Lower/Mid bracket" → double/triple élim, "Winners/
 // Elimination/Decider Match" → poule GSL, sinon simple élimination.
 export function detectBracketFormat(matches: Pick<BracketMatchInput, "name">[]): BracketFormat {
+  // Suisse : presque tous les matchs s'appellent « Round N: … » (une poule GSL n'en a aucun).
+  if (matches.length >= 4 && matches.filter((m) => isSwissMatchName(m.name)).length >= matches.length * 0.8) return "swiss";
   const names = matches.map((m) => m.name.toLowerCase());
   const hasLower = names.some((n) => n.includes("lower bracket"));
   const hasMid = names.some((n) => n.includes("mid bracket"));
@@ -101,10 +114,30 @@ export interface StandingResult {
 // (le standings gratuit de PandaScore ne donne que le rang — docs/01). `maxLives`
 // généralise le nombre de défaites tolérées (1 = simple élim, 2 = double élim/GSL,
 // 3 = triple élim) : une seule fonction pour tous les formats à bracket.
-export function computeStandings(
-  matches: StandingMatchInput[],
-  options: { maxLives: number; qualifiedCount?: number },
-): StandingResult[] {
+export interface StandingsOptions {
+  maxLives: number;
+  qualifiedCount?: number;
+  // Phase suisse : qualifié dès ce nombre de victoires, quel que soit le classement.
+  qualifyAtWins?: number;
+}
+
+/** Réglages de `computeStandings` pour chaque format (un seul endroit : le worker et le classement global s'en servent). */
+export function standingsOptionsFor(format: BracketFormat | null | undefined): StandingsOptions {
+  switch (format) {
+    case "swiss":
+      return { maxLives: SWISS_LOSSES_TO_ELIMINATE, qualifyAtWins: SWISS_WINS_TO_QUALIFY };
+    case "triple_elim":
+      return { maxLives: 3 };
+    case "single_elim":
+      return { maxLives: 1 };
+    case "groups_gsl":
+      return { maxLives: 2, qualifiedCount: GSL_QUALIFIED_COUNT };
+    default:
+      return { maxLives: 2 };
+  }
+}
+
+export function computeStandings(matches: StandingMatchInput[], options: StandingsOptions): StandingResult[] {
   const stats = new Map<string, { wins: number; losses: number; mapDiff: number }>();
   const get = (id: string) => stats.get(id) ?? { wins: 0, losses: 0, mapDiff: 0 };
 
@@ -136,7 +169,12 @@ export function computeStandings(
   return results.map((r, i) => ({
     ...r,
     rank: i + 1,
-    qualified: options.qualifiedCount != null ? i < options.qualifiedCount : null,
+    qualified:
+      options.qualifyAtWins != null
+        ? r.wins >= options.qualifyAtWins
+        : options.qualifiedCount != null
+          ? i < options.qualifiedCount
+          : null,
   }));
 }
 

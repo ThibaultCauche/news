@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Entity, Event, EventParticipant, Prisma } from "@news/db";
-import { buildGroupStakes } from "@news/domain";
+import { buildGroupStakes, buildSwissGroupStakes } from "@news/domain";
 
 type EventWithRelations = Event & {
   competition: { id: string; name: string; format: string | null; game?: string | null; parent?: { name: string } | null };
@@ -60,7 +60,7 @@ export function toEventSummary(event: EventWithRelations): EventSummaryDto {
     competition: {
       id: event.competition.id,
       name: event.competition.name,
-      stakes: event.competition.format === "groups_gsl" ? buildGroupStakes() : null,
+      stakes: event.competition.format === "groups_gsl" ? buildGroupStakes() : event.competition.format === "swiss" ? (event.stakes ?? buildSwissGroupStakes()) : null,
       game: event.competition.game ?? null,
       tournamentName: event.competition.parent?.name ?? null,
     },

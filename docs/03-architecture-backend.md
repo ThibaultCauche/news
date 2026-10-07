@@ -54,7 +54,9 @@
 |---|---|---|
 | `category` | E-sport, Sport, Politique, Élections, Espace… | `slug`, `name`, `icon` |
 | `competition` | Tout ce qui a une structure : saison VCT, Champions, phase finale, Kickoff, Top 14, loi, programme de lancement | `parent_id` (hiérarchie), `family_id` (famille de la série, J10), `category_id`, `kind`, `game` (slug du jeu, J9), `format`, `status`, `starts_at`, `ends_at`, `structure` (JSONB), `importance` |
-| `entity` | Équipe, joueur, streamer, parti/groupe, fusée, studio… | `kind`, `name`, `short_name` (G2, PRX), `parent_id`, `region`, `image_url` |
+| `entity` | Équipe, joueur, streamer, parti/groupe, fusée, studio… | `kind`, `name`, `short_name` (G2, PRX), `parent_id`, `region`, `image_url`, `organization_id` (J23) |
+| `stage_pick` | Pronostic d'une étape (J23) : les équipes qu'on pense voir se qualifier de la phase suisse, verrouillé au premier match (côté serveur) | `user_id`, `competition_id`, `entity_ids` (JSON) |
+| `organization` | Structure qui regroupe les équipes de même nom dans plusieurs jeux (« G2 » en Valorant et en LoL), rapprochées **automatiquement** par le nom normalisé à l'ingestion (J23) | `key` (unique, `organizationKey`), `name`, `image_url` |
 | `event` | Le cœur : match, vote, lancement, sortie, stream, keynote | `competition_id`, `kind`, `status`, `starts_at`, `ends_at`, `best_of`, `result` (JSONB), `importance`, `spoiler_sensitive` |
 | `event_participant` | Qui joue / qui est concerné | `event_id`, `entity_id`, `side`, `score`, `is_winner`, `seed` |
 | `event_link` | Liens de bracket (« le vainqueur de A va en B ») | `from_event_id`, `to_event_id`, `outcome` (`winner` / `loser`), `slot` |
@@ -146,7 +148,9 @@ Les endpoints suivent les écrans, pour que l'appli fasse un seul appel par écr
 |---|---|---|
 | `GET /v1/home` | 17 Accueil | Maintenant pour toi, tes suivis avec leur état, grands rendez-vous, à découvrir |
 | `GET /v1/agenda?from&to&category` | 09 Agenda | Événements par jour, statut, abonné ou non |
-| `GET /v1/competitions/:id` | 01, 06, 14, 19 | En-tête, format, frise (sous-compétitions), standings, `structure` |
+| `GET /v1/competitions/:id` | 01, 06, 14, 19 | En-tête, format, jeu, frise (sous-compétitions), standings, `structure` |
+| `GET`/`PUT /v1/competitions/:id/pick` | phase suisse | Pronostic de la personne connectée (équipes proposées, `locked`, `max`, décompte bonnes/ratées/en cours) ; `PUT` refusé (409) une fois l'étape commencée |
+| `GET /v1/competitions/:id/ranking` | classement | Classement global d'une série (J23) : toutes les équipes, statut (championne / qualifiée / en course / éliminée en…), bilan de leur dernière étape |
 | `GET /v1/competitions/:id/bracket` | 02, 05, 07 | Nœuds (événements), liens gagnant/perdant, rounds et slots, indices de mise en page |
 | `GET /v1/events/:id` | 03, 15, 24, 25, 26 | Participants, score, moments, contexte, forme récente, où regarder |
 | `GET /v1/entities/:id` | 10 Fiche équipe | Chiffres clés, dernier et prochain événement |

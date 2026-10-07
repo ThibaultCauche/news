@@ -3,6 +3,7 @@
 // entre l'API (catalogue, favoris) et les adaptateurs.
 export const GAME_NAMES: Record<string, string> = {
   valorant: "Valorant",
+  "league-of-legends": "League of Legends",
 };
 
 export function isKnownGame(slug: string): boolean {

@@ -1,6 +1,7 @@
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/api_providers.dart";
+import "bracket_model.dart" show stageOf;
 
 /// En-tête, frise et standings d'une compétition (`/v1/competitions/:id`, J2) —
 /// réutilisé au J5 pour les groupes (écran 06) et le « 3 vies » (écran 14),
@@ -23,7 +24,10 @@ final bracketProvider = FutureProvider.autoDispose.family<BracketResponseDto, St
 /// Partagée entre l'onglet Groupes (`bracket_screen.dart`) et la carte
 /// "Maintenant" de l'écran Saison (`valorant_season_screen.dart`).
 List<String> groupCompetitionIds(List<CompetitionChildDto> children) {
-  final groups = children.where((c) => c.name.toLowerCase().contains("group")).toList()..sort((a, b) => a.name.compareTo(b.name));
+  // « Play-In » (Worlds, MSI) précède la phase de groupes ou suisse : il va d'abord, les poules ensuite par nom.
+  bool isPlayIn(CompetitionChildDto c) => c.name.toLowerCase().contains("play-in");
+  final groups = children.where((c) => c.name.toLowerCase().contains("group") || isPlayIn(c)).toList()
+    ..sort((a, b) => isPlayIn(a) != isPlayIn(b) ? (isPlayIn(a) ? -1 : 1) : a.name.compareTo(b.name));
   return groups.map((c) => c.id).toList();
 }
 
@@ -42,6 +46,8 @@ List<(String label, String? score, bool isWinner)> bracketMatchRows(
   if (node.participants.isNotEmpty) {
     return [for (final p in node.participants) (p.shortName ?? p.name, p.score?.toString(), p.isWinner == true)];
   }
+  // Premier tour d'un tableau pas encore tiré (play-in, avant le début) : le nom du match, en français, plutôt qu'une ligne vide.
+  if (incoming.isEmpty) return [(stageOf(node.name).title, null, false)];
   return [for (final l in incoming) (_placeholderLabel(l, byId), null, false)];
 }
 
@@ -49,6 +55,6 @@ String _placeholderLabel(BracketLinkDto link, Map<String, BracketNodeDto> byId) 
   final from = byId[link.fromEventId];
   final verb = link.outcome == "winner" ? "Gagnant de" : "Perdant de";
   if (from == null) return "$verb un match à venir";
-  final fromLabel = from.participants.isEmpty ? from.name : from.participants.map((p) => p.shortName ?? p.name).join(" vs ");
+  final fromLabel = from.participants.isEmpty ? stageOf(from.name).title.toLowerCase() : from.participants.map((p) => p.shortName ?? p.name).join(" vs ");
   return "$verb $fromLabel";
 }

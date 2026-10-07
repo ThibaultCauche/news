@@ -54,7 +54,7 @@ export function nearestCompetitionRule<T extends CompetitionRule>(rules: T[]): T
 // qualification qui tourne en même temps. Reconnues par leur nom, faute de champ fournisseur fiable (la
 // catégorie de tournoi ne distingue pas un Champions d'une étape régionale) ; à compléter mot à mot quand
 // de nouveaux jeux et sports arrivent.
-const MAJOR_WORDS = /\b(champions|masters|world cup|world championship|worlds|international|major)\b/i;
+const MAJOR_WORDS = /\b(champions|masters|world cup|world championship|worlds|international|major|msi|mid-season invitational|first stand)\b/i;
 const MINOR_WORDS = /\b(qualifiers?|open|closed|challengers|regional)\b/i;
 
 export function isMajorEvent(leagueName: string, serieName: string): boolean {

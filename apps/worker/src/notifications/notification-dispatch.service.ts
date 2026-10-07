@@ -7,6 +7,7 @@ import {
   createLogger,
   DomainEventMessage,
   DOMAIN_EVENT_NOTIFICATION_TYPES,
+  GAME_NAMES,
   isQuietHour,
   isTypeEnabled,
   KEY_MOMENT_MIN_IMPORTANCE,
@@ -37,8 +38,8 @@ export class NotificationDispatchService {
     // notif direct (J4/J5).
     if (!type) return;
 
-    if (type === "qualification" || type === "elimination") {
-      return this.handleEntityNotification(message.entityId, type);
+    if (type === "qualification" || type === "elimination" || type === "organization_joined") {
+      return this.handleEntityNotification(message, type);
     }
     if (!message.eventId) return;
 
@@ -160,14 +161,23 @@ export class NotificationDispatchService {
   // pas d'abonnement hiérarchique (catégorie/compétition) — seuls les abonnés
   // directs à cette équipe sont concernés (règle 5 de CLAUDE.md, même esprit).
   // Toujours traité comme un "grand moment" et jamais plafonné, comme les autres
-  // abonnements directs.
-  private async handleEntityNotification(entityId: string | undefined, type: NotificationType): Promise<void> {
+  // abonnements directs. La déduplication est par compétition (J23) : une équipe peut être
+  // éliminée de plusieurs compétitions, chacune mérite sa notification.
+  // `organization_joined` (J23) : une équipe rejoint une structure suivie (même nom dans un nouveau jeu) ;
+  // les abonnés sont ceux de la structure.
+  private async handleEntityNotification(message: DomainEventMessage, type: NotificationType): Promise<void> {
+    const entityId = message.entityId;
     if (!entityId) return;
     const entity = await this.prisma.entity.findUnique({ where: { id: entityId }, select: { name: true } });
     if (!entity) return;
 
+    const joined = type === "organization_joined";
+    const organization = joined && message.organizationId ? await this.prisma.organization.findUnique({ where: { id: message.organizationId }, select: { name: true } }) : null;
+    if (joined && !organization) return;
+    const context = joined ? await this.gameNameOf(message.competitionId) : await this.competitionLabelOf(message.competitionId);
+
     const subscriptions = await this.prisma.subscription.findMany({
-      where: { targetType: "entity", targetId: entityId },
+      where: joined ? { targetType: "organization", targetId: message.organizationId } : { targetType: "entity", targetId: entityId },
       include: { user: { include: { setting: true, devices: true } } },
     });
 
@@ -178,13 +188,13 @@ export class NotificationDispatchService {
       if (!isTypeEnabled(type, sub.user.setting)) continue;
 
       try {
-        await this.prisma.notificationLog.create({ data: { id: randomUUID(), userId: sub.userId, entityId, type } });
+        await this.prisma.notificationLog.create({ data: { id: randomUUID(), userId: sub.userId, entityId, competitionId: message.competitionId, type } });
       } catch (err) {
         if ((err as { code?: string }).code === "P2002") continue; // déjà notifié
         throw err;
       }
 
-      const { title, body } = buildNotificationText(type, entity.name, sub.user.setting?.spoilerFree ?? false, null);
+      const { title, body } = buildNotificationText(type, organization?.name ?? entity.name, sub.user.setting?.spoilerFree ?? false, null, false, context);
       for (const device of sub.user.devices) {
         if (
           device.utcOffsetMinutes !== null &&
@@ -202,6 +212,18 @@ export class NotificationDispatchService {
       }
       logger.info({ userId: sub.userId, entityId, type }, "notification traitée");
     }
+  }
+
+  // « Worlds 2026 » pour une étape « Group Stage » : le nom de la série, plus parlant que celui de l'étape.
+  private async competitionLabelOf(competitionId: string): Promise<string | null> {
+    const competition = await this.prisma.competition.findUnique({ where: { id: competitionId }, select: { name: true, kind: true, parent: { select: { name: true } } } });
+    if (!competition) return null;
+    return competition.kind === "tournament" && competition.parent ? competition.parent.name : competition.name;
+  }
+
+  private async gameNameOf(competitionId: string): Promise<string | null> {
+    const competition = await this.prisma.competition.findUnique({ where: { id: competitionId }, select: { game: true } });
+    return competition?.game ? (GAME_NAMES[competition.game] ?? null) : null;
   }
 
   // Chaîne de compétitions d'un match, de la sienne (rang 0) jusqu'à la ligue racine.

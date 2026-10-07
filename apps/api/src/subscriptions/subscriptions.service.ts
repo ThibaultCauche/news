@@ -1,5 +1,5 @@
 import { randomUUID } from "node:crypto";
-import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { Prisma, PrismaClient, Subscription } from "@news/db";
 import { defaultSubscriptionNotifications, SubscriptionTargetType, SUBSCRIPTION_LEVELS } from "@news/domain";
 import { PRISMA } from "../db/db.module";
@@ -47,12 +47,29 @@ export class SubscriptionsService {
       create: { id: randomUUID(), userId, targetType: dto.targetType, targetId: dto.targetId, ...data, ...defaults, ...definedOnly(given) },
       update: { ...data, ...definedOnly(given) },
     });
+    if (dto.targetType === "organization") await this.followOrganizationTeams(userId, dto.targetId);
     return toSubscriptionDto(sub);
+  }
+
+  // « Suivre toute G2 » (J23, #A4) : un suivi de structure vaut un suivi de chacune de ses équipes, dans tous les
+  // jeux. Les équipes qui la rejoignent plus tard sont suivies par le worker (`followOrganizationFor`).
+  private async followOrganizationTeams(userId: string, organizationId: string): Promise<void> {
+    const teams = await this.prisma.entity.findMany({ where: { organizationId }, select: { id: true } });
+    if (teams.length === 0) throw new NotFoundException("Structure introuvable");
+    const defaults = defaultSubscriptionNotifications("entity");
+    await this.prisma.subscription.createMany({
+      data: teams.map((t) => ({ id: randomUUID(), userId, targetType: "entity", targetId: t.id, level: "all", ...defaults })),
+      skipDuplicates: true,
+    });
   }
 
   // Idempotent : se désabonner de ce qui ne l'était pas ne fait rien (règle 4 de
   // CLAUDE.md, même logique que l'ingestion).
   async remove(userId: string, dto: SubscriptionTargetDto): Promise<void> {
+    if (dto.targetType === "organization") {
+      const teams = await this.prisma.entity.findMany({ where: { organizationId: dto.targetId }, select: { id: true } });
+      await this.prisma.subscription.deleteMany({ where: { userId, targetType: "entity", targetId: { in: teams.map((t) => t.id) } } });
+    }
     await this.prisma.subscription.deleteMany({ where: { userId, targetType: dto.targetType, targetId: dto.targetId } });
   }
 
@@ -61,20 +78,28 @@ export class SubscriptionsService {
     if (subs.length === 0) return [];
 
     const entityIds = subs.filter((s) => s.targetType === "entity").map((s) => s.targetId);
-    const [names, currentEvents, entityImages, entityStatuses] = await Promise.all([
+    const organizationIds = subs.filter((s) => s.targetType === "organization").map((s) => s.targetId);
+    const [names, currentEvents, entityImages, entityStatuses, organizationImages] = await Promise.all([
       this.resolveNames(subs),
       this.resolveCurrentEvents(subs),
       this.resolveEntityImages(entityIds),
       this.resolveEntityStatuses(entityIds),
+      this.resolveOrganizationImages(organizationIds),
     ]);
 
     return subs.map((sub) => ({
       ...toSubscriptionDto(sub),
       name: names.get(`${sub.targetType}:${sub.targetId}`) ?? "?",
       currentEvent: currentEvents.get(sub.id) ?? null,
-      imageUrl: sub.targetType === "entity" ? (entityImages.get(sub.targetId) ?? null) : null,
+      imageUrl: sub.targetType === "entity" ? (entityImages.get(sub.targetId) ?? null) : sub.targetType === "organization" ? (organizationImages.get(sub.targetId) ?? null) : null,
       status: sub.targetType === "entity" ? (entityStatuses.get(sub.targetId) ?? null) : null,
     }));
+  }
+
+  private async resolveOrganizationImages(organizationIds: string[]): Promise<Map<string, string | null>> {
+    if (organizationIds.length === 0) return new Map();
+    const organizations = await this.prisma.organization.findMany({ where: { id: { in: organizationIds } }, select: { id: true, imageUrl: true } });
+    return new Map(organizations.map((o) => [o.id, o.imageUrl]));
   }
 
   private async resolveEntityImages(entityIds: string[]): Promise<Map<string, string | null>> {
@@ -102,11 +127,12 @@ export class SubscriptionsService {
 
   private async resolveNames(subs: Subscription[]): Promise<Map<string, string>> {
     const ids = (targetType: string) => subs.filter((s) => s.targetType === targetType).map((s) => s.targetId);
-    const [categories, competitions, families, entities, events] = await Promise.all([
+    const [categories, competitions, families, entities, organizations, events] = await Promise.all([
       this.prisma.category.findMany({ where: { id: { in: ids("category") } }, select: { id: true, name: true } }),
       this.prisma.competition.findMany({ where: { id: { in: ids("competition") } }, select: { id: true, name: true } }),
       this.prisma.competitionFamily.findMany({ where: { id: { in: ids("competition_family") } }, select: { id: true, name: true } }),
       this.prisma.entity.findMany({ where: { id: { in: ids("entity") } }, select: { id: true, name: true } }),
+      this.prisma.organization.findMany({ where: { id: { in: ids("organization") } }, select: { id: true, name: true } }),
       this.prisma.event.findMany({ where: { id: { in: ids("event") } }, select: { id: true, name: true } }),
     ]);
     const names = new Map<string, string>();
@@ -115,6 +141,7 @@ export class SubscriptionsService {
       ["competition", competitions],
       ["competition_family", families],
       ["entity", entities],
+      ["organization", organizations],
       ["event", events],
     ] as const) {
       for (const row of rows) names.set(`${type}:${row.id}`, row.name);

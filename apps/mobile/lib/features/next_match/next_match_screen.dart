@@ -94,7 +94,7 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          const LearnHelpButton(articleId: "regarder-un-match"),
+          LearnHelpButton(articleId: "regarder-un-match", game: event.value?.competition.game ?? "valorant"),
           IconButton(
             icon: Icon(scoresHidden ? Icons.visibility_off_rounded : Icons.visibility_rounded),
             tooltip: "Sans spoil",
@@ -653,9 +653,13 @@ class _StakesSection extends StatelessWidget {
 }
 
 class StakesText extends StatefulWidget {
-  const StakesText({super.key, required this.text});
+  const StakesText({super.key, required this.text, this.style, this.textAlign});
 
   final String text;
+
+  /// Remplace le corps de texte par défaut (ex. une ligne plus petite sous une carte).
+  final TextStyle? style;
+  final TextAlign? textAlign;
 
   @override
   State<StakesText> createState() => _StakesTextState();
@@ -694,7 +698,7 @@ class _StakesTextState extends State<StakesText> {
     }
     if (cursor < widget.text.length) spans.add(TextSpan(text: widget.text.substring(cursor)));
 
-    return Text.rich(TextSpan(style: Theme.of(context).textTheme.bodyMedium, children: spans));
+    return Text.rich(TextSpan(style: widget.style ?? Theme.of(context).textTheme.bodyMedium, children: spans), textAlign: widget.textAlign);
   }
 }
 

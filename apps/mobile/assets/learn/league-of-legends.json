@@ -1,0 +1,146 @@
+{
+  "name": "League of Legends",
+  "articles": [
+    {
+      "id": "le-jeu",
+      "title": "Le jeu en 3 minutes",
+      "summary": "5 contre 5, trois voies, une base à détruire.",
+      "icon": "game",
+      "visual": {"type": "stats", "items": [
+        {"big": "5 vs 5", "sub": "Deux équipes"},
+        {"big": "30–40", "sub": "Minutes par partie, en général"}
+      ]},
+      "essential": "Deux équipes de 5 joueurs s'affrontent sur une même carte. Chacune défend sa base, le [[nexus]], et essaie de détruire celui de l'adversaire. Chaque joueur incarne un champion et se renforce au fil de la partie.",
+      "details": [
+        {
+          "title": "Comment on gagne",
+          "visual": {"type": "flow", "items": [
+            {"icon": "shield", "label": "Détruire les tours"},
+            {"icon": "flag", "label": "Ouvrir la voie"},
+            {"icon": "emoji", "label": "Détruire le nexus"}
+          ]},
+          "body": "Les tours protègent chaque voie. En les détruisant, une équipe avance vers la base adverse. Dès que le [[nexus]] tombe, la partie est gagnée : pas de manche, pas de score en rounds."
+        },
+        {
+          "title": "La carte et ses postes",
+          "visual": {"type": "chips", "items": [
+            {"icon": "arrow_down", "title": "Voie du haut", "sub": "Un joueur seul"},
+            {"icon": "target", "title": "Voie du milieu", "sub": "Un joueur seul"},
+            {"icon": "arrow_down", "title": "Voie du bas", "sub": "Deux joueurs"},
+            {"icon": "person", "title": "Jungle", "sub": "Entre les voies, aide les autres"}
+          ]},
+          "body": "Cinq postes, un par joueur : trois voies et la [[jungle]]. Le « jungler » circule entre les voies pour aider ses équipiers par surprise."
+        },
+        {
+          "title": "Les objectifs neutres",
+          "visual": {"type": "chips", "items": [
+            {"icon": "bolt", "title": "Dragon", "sub": "Un avantage durable pour toute l'équipe"},
+            {"icon": "star", "title": "Baron", "sub": "Le plus puissant, il renforce l'attaque"}
+          ]},
+          "body": "Au milieu de la carte, des monstres neutres donnent un avantage à l'équipe qui les tue : le [[dragon]] et le [[baron]]. Les matchs pros tournent souvent autour d'eux."
+        }
+      ],
+      "gradient": 0,
+      "quiz": [
+        {"q": "Comment gagne-t-on une partie ?", "choices": ["En atteignant 13 rounds", "En détruisant le nexus adverse", "En posant une bombe"], "answer": 1, "why": "Il n'y a pas de rounds : la partie se joue jusqu'à la destruction du nexus."}
+      ]
+    },
+    {
+      "id": "regarder-un-match",
+      "title": "Comprendre un match",
+      "summary": "Draft, parties, séries : lire un score.",
+      "icon": "watch",
+      "visual": {"type": "stats", "items": [
+        {"big": "2–1", "sub": "Série : parties gagnées"},
+        {"big": "BO3", "sub": "La première équipe à 2 parties"}
+      ]},
+      "essential": "Un match pro se joue en plusieurs parties, souvent en [[BO3]] ou en [[BO5]] : la première équipe à gagner la majorité des parties l'emporte. L'appli affiche le score de série et l'équipe qui a gagné chaque partie.",
+      "details": [
+        {
+          "title": "Avant chaque partie : la draft",
+          "visual": {"type": "flow", "items": [
+            {"icon": "block", "label": "Bannir"},
+            {"icon": "check", "label": "Choisir"},
+            {"icon": "game", "label": "Jouer"}
+          ]},
+          "body": "Avant de jouer, les équipes bannissent puis choisissent à tour de rôle leurs champions : c'est la [[draft]]. Le côté de la carte (bleu ou rouge, le [[side]]) joue un rôle dans l'ordre des choix."
+        },
+        {
+          "title": "Deux scores",
+          "visual": {"type": "stats", "items": [
+            {"big": "2–1", "sub": "Série : parties gagnées"},
+            {"big": "1", "sub": "Partie : un seul vainqueur"}
+          ]},
+          "body": "Le score de série compte les parties gagnées. Une partie n'a pas de score : elle a un vainqueur, que l'appli indique pour chaque partie."
+        },
+        {
+          "title": "Lire un tournoi",
+          "visual": {"type": "flow", "items": [
+            {"icon": "flag", "label": "Play-in"},
+            {"icon": "calendar", "label": "Phase suisse"},
+            {"icon": "emoji", "label": "Phase finale"}
+          ]},
+          "body": "Les grands tournois enchaînent souvent un [[play-in]] pour les équipes les moins bien classées, une [[phase suisse]], puis une phase finale à élimination directe. La page de chaque compétition montre où en est chaque équipe."
+        }
+      ],
+      "gradient": 4,
+      "quiz": [
+        {"q": "Un score de série de 2–1, ça veut dire…", "choices": ["2 tours contre 1", "2 parties gagnées contre 1", "Une prolongation"], "answer": 1, "why": "Le score de série compte les parties gagnées."}
+      ]
+    },
+    {
+      "id": "circuit",
+      "title": "Le circuit pro",
+      "summary": "Ligues régionales, MSI et Worlds.",
+      "icon": "emoji",
+      "visual": {"type": "flow", "items": [
+        {"icon": "public", "label": "Ligues régionales"},
+        {"icon": "flag", "label": "MSI"},
+        {"icon": "emoji", "label": "Worlds"}
+      ]},
+      "essential": "Chaque région a sa ligue : la LCK en Corée, la LPL en Chine, la LEC en Europe, la LCS en Amérique du Nord… Les meilleures équipes se retrouvent ensuite dans des tournois internationaux : le MSI en cours d'année, puis les Worlds, où le champion du monde est couronné.",
+      "details": [
+        {
+          "title": "Les grands rendez-vous",
+          "visual": {"type": "chips", "items": [
+            {"icon": "public", "title": "Ligues régionales", "sub": "Toute l'année, par région"},
+            {"icon": "flag", "title": "First Stand et MSI", "sub": "Tournois internationaux de saison"},
+            {"icon": "emoji", "title": "Worlds", "sub": "Le championnat du monde, à l'automne"}
+          ]},
+          "body": "Les ligues régionales désignent les équipes qui se qualifient pour les tournois internationaux. Les Worlds réunissent les meilleures équipes du monde."
+        },
+        {
+          "title": "Les Worlds",
+          "visual": {"type": "flow", "items": [
+            {"icon": "flag", "label": "Play-in"},
+            {"icon": "calendar", "label": "Phase suisse"},
+            {"icon": "emoji", "label": "Phase finale"}
+          ]},
+          "body": "Dans la [[phase suisse]], une équipe est qualifiée à 3 victoires et éliminée à 3 défaites. Les équipes qualifiées jouent ensuite une phase finale à élimination directe, jusqu'à la grande finale."
+        }
+      ],
+      "gradient": 5,
+      "quiz": [
+        {"q": "Dans la phase suisse, à combien de défaites est-on éliminé ?", "choices": ["1", "3", "5"], "answer": 1, "why": "3 victoires qualifient, 3 défaites éliminent."}
+      ]
+    },
+    {
+      "id": "essayer",
+      "title": "Envie d'essayer ?",
+      "summary": "Gratuit, sur ordinateur.",
+      "icon": "game",
+      "visual": {"type": "chips", "items": [
+        {"icon": "computer", "title": "Sur ordinateur", "sub": "Windows ou Mac"},
+        {"icon": "check", "title": "Gratuit", "sub": "Avec un compte Riot"}
+      ]},
+      "essential": "League of Legends est gratuit. Pour jouer, il faut un compte Riot et le jeu, qui se télécharge depuis le site officiel.",
+      "details": [
+        {
+          "title": "Par où commencer",
+          "body": "Le jeu propose un didacticiel et des parties contre l'ordinateur. Regarder un match pro avec l'appli aide aussi à comprendre le rythme d'une partie avant de s'y mettre."
+        }
+      ],
+      "gradient": 6
+    }
+  ]
+}

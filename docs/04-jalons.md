@@ -829,28 +829,38 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 ---
 
-## J23 — League of Legends (ajouté 2026-10-06)
+## J23 — League of Legends (ajouté 2026-10-06) — **Fait (2026-10-07)**, sans répartition des gains
 
-**Origine** : `docs/06` #I1, #I7, #I8, #A4, #M1. Deuxième jeu, même adaptateur PandaScore ; Worlds 2026 en cours (la refonte du J22 passe d'abord, quitte à ne couvrir que la fin des Worlds).
+**Origine** : `docs/06` #I1, #I7, #I8, #A4, #M1. Deuxième jeu, même adaptateur PandaScore ; Worlds 2026 : play-in le 15 octobre, phase suisse le 23.
 
 **Objectif** : prouver que l'appli tient avec deux jeux, et ajouter ce qui n'a de sens qu'à partir de deux jeux.
 
 **Périmètre**
-- [ ] **#I1** Ingestion LoL (filtre par tier, quota PandaScore à mesurer), `isMajorEvent` complété mot à mot (Worlds, MSI…), **phase suisse** (nouveau format d'affichage), vérification du gagnant par carte en tier S.
-- [ ] **#M1** Classement global d'une compétition : toutes les équipes, statut (en course / éliminée en… / championne), bilan (3-0, 2-1…), gain assuré puis final (répartition par place via LPDB Liquipedia si possible, sinon dotation totale seulement).
-- [ ] **#I7** Un tuto « l'essentiel en une page » LoL + glossaire propre au jeu.
-- [ ] **#I8** Onboarding multi-jeux : vrai choix du jeu, équipes suggérées de plusieurs jeux.
-- [ ] **#A4** Suivre toute une structure : table `organization` + `entity.organizationId`, remplie par script de seed (l'admin arrive au J17), abonnement qui s'étend aux équipes ; « Suivre G2 LoL » / « Suivre toute G2 ». Camps du forum toujours par jeu.
+- [x] **#I1** Ingestion LoL : `PandaScoreProvider` prend une liste de jeux (`PANDASCORE_GAMES`, `packages/providers`). LoL est « `tierOnly` » : tournois de tier S/A seulement, et matchs demandés **par tournoi suivi** (l'API ne filtre pas les matchs par tier, 50 matchs de ligues mineures auraient chassé les Worlds). `isMajorEvent` complété (MSI, First Stand ; Worlds et Esports World Cup y étaient déjà). **Phase suisse** : format `swiss` reconnu aux noms « Round N: … » (≥ 80 % des matchs, `detectBracketFormat`), classement recalculé par le worker (3 victoires qualifient, 3 défaites éliminent, `standingsOptionsFor`), affichage `SwissView` (une colonne par ronde, matchs rangés par bilan, qualifiées et éliminées). **Gagnant par partie** : renseigné pour 80 parties sur 80 aux Worlds 2025 (phase suisse et phase finale, tier S ; `tests-pandascore/samples-lol/`), contrairement à ce que `docs/01b` craignait.
+- [x] **#M1** Classement global (`GET /v1/competitions/:id/ranking`, onglet « Classement ») : toutes les équipes de la série, statut (championne, qualifiée, en course, éliminée en…), bilan de leur dernière étape. Masqué en sans spoil jusqu'à « Afficher ». [ ] **Gains assurés puis finaux : reporté** (le champ `prizepool` de PandaScore est vide en plan gratuit, la répartition par place demanderait LPDB Liquipedia).
+- [x] **#I7** Guide « l'essentiel » LoL (`assets/learn/league-of-legends.json`, 4 tutos, quiz) et 8 termes de glossaire propres au jeu (phase suisse, play-in, draft, nexus, dragon, baron, jungle, side).
+- [x] **#I8** Onboarding : vrai choix des jeux (Valorant, League of Legends ; les autres « bientôt »), aide « Je ne connais pas… » par jeu, équipes suggérées des jeux choisis (`GET /v1/entities/by-short-name/:shortName?game=`). Page jeu LoL : onglet Compétitions par séries (en cours, à venir, récentes), puce d'apprentissage de l'Accueil à deux jeux.
+- [x] **#A4** Suivre toute une structure : table `organization` + `entity.organization_id`. **Rapprochement automatique** (décision de l'utilisateur) : deux équipes de même nom normalisé (`organizationKey` : sans accents, ponctuation ni « Team »/« Esports ») sont une même structure, à l'ingestion ; `pnpm db:seed` rattrape les équipes déjà en base. « Suivre toute G2 » (`targetType: organization`) abonne à chaque équipe, et à celles qui rejoindront la structure plus tard.
 
-**À trancher au cadrage** : répartition des gains (LPDB ou dotation seule) ; liste des structures du seed ; rendu de la phase suisse (maquette Figma).
+**Ajouts de fin de jalon (2026-10-07, après les retours sur téléphone)**
+- [x] **Compétitions passées et vides masquées** (catalogue, « Déjà joué » de Valorant) et **champion** sur les séries terminées de la liste (masqué en sans spoil). Les matchs ingérés ne sont jamais effacés : l'historique d'une compétition suivie en direct reste donc consultable ; seules les éditions antérieures à l'ingestion n'existent pas.
+- [x] **Phrase d'enjeu de la phase suisse** sur les cartes de match (`event.stakes`, calculée par le worker d'après le bilan des deux équipes : « Match décisif : le vainqueur est qualifié, le perdant éliminé »).
+- [x] **Notifications qualifiée / éliminée en phase suisse** : déjà branchées sur le classement recalculé (testé : 3ᵉ victoire = qualifiée, 3ᵉ défaite = éliminée, une seule fois). **Bug corrigé au passage** : la déduplication se faisait par équipe pour toujours (une équipe éliminée une fois ne l'était plus jamais) ; elle est désormais **par compétition** (`notification_log.competition_id`), et le texte nomme la compétition (« G2 est qualifiée pour la suite de Worlds 2026. »).
+- [x] **Pronostic de la phase suisse** (« quelles 8 équipes se qualifient ? ») : table générique `stage_pick`, `GET/PUT /v1/competitions/:id/pick`, verrouillé **côté serveur** au premier match, au plus la moitié des équipes, carte « Ton pronostic » et feuille de choix, décompte bonnes / ratées / en cours (masqué en sans spoil). **Sans points pour l'instant** : leur intégration au classement des groupes attend l'économie de récompenses du J25.
+- [x] **Alerte « ta structure joue dans un nouveau jeu »** : quand une équipe rejoint une structure suivie (même nom dans un autre jeu), les abonnés reçoivent « Team Liquid joue aussi en League of Legends : tu la suis déjà. » (`OrganizationTeamJoined`, type `organization_joined`, réglé par l'interrupteur « qualification »).
+- [x] **Explication sous le classement** : statuts, et la règle de la phase suisse quand il y en a une.
+
+**À trancher au cadrage** : répartition des gains → reportée ; liste des structures → **plus de liste, automatique** ; rendu de la phase suisse → colonnes par ronde, sans maquette Figma (quota MCP épuisé).
 
 **Hors périmètre** : images du jeu (règle Riot, comme Valorant) ; TFT (écarté, voir #I2).
 
 **Critères d'acceptation**
-- [ ] Les Worlds 2026 (au moins la phase finale) s'affichent avec leurs vraies données ; la phase suisse aussi si elle n'est pas encore terminée au moment du jalon, sinon sur des données de démonstration.
-- [ ] Classement global visible sur une compétition terminée et en cours.
-- [ ] Suivre toute une structure abonne à ses équipes des deux jeux.
-- [ ] Quota PandaScore mesuré avec deux jeux, sous la limite de 1 000 req/h.
+- [x] Les Worlds s'affichent avec leurs vraies données, phase suisse comprise. *Vérifié sur les **Worlds 2025 réels** rejoués en démonstration (`pnpm db:demo-worlds partial|finished`, 33 matchs suisses + 7 de phase finale ; le classement final redonne T1 championne, KT finaliste). Le play-in, la phase suisse et la phase finale des Worlds 2026 (15 octobre – 15 novembre) seront ingérés tels quels par le worker : **à vérifier pendant les Worlds**.*
+- [x] Classement global visible sur une compétition terminée et en cours (démo `finished` et `partial`, tests API et Flutter).
+- [x] Suivre toute une structure abonne à ses équipes des deux jeux (e2e API ; Team Liquid et LOUD déjà rapprochées entre Valorant et LoL dans la base de dev).
+- [x] Quota PandaScore mesuré avec deux jeux, sous la limite de 1 000 req/h : en régime établi, **environ 2 requêtes par passage du direct** (Valorant + CBLOL en cours, soit ~240/h), calendrier 6 par 10 min (~36/h), structure ~12 par 5 min avant la correction « veille seulement » (~144/h, à peu près divisée par deux depuis), catalogue ~8 par 6 h : **~350 à 420 req/h au total**, le compteur `used` restant autour de 45-50 % pendant les mesures (démarrages et essais compris), sous le seuil de ralentissement de 70 %. Le direct LoL ne s'appelle que si un tournoi suivi se joue. *Mesure sur ~10 min : à recontrôler pendant les Worlds, quand Valorant (Champions) et LoL joueront en même temps.*
+- [x] Tests : domain, providers (sur de vraies réponses LoL), API e2e, widgets Flutter ; `flutter analyze` propre.
+- [x] Vérifié sur un téléphone Android (CPH2359, `flutter run`, vraies données et démo `partial`) : phase suisse par rondes, classement (qualifiées en vert), « Suivre toute Team Liquid » puis retrait (les deux équipes de Valorant et de LoL suivies, puis retirées), onglets des Worlds 2026 réels (play-in en français, phase finale en cercle avec compte à rebours, classement vide avant le début), onboarding à deux jeux (équipes des deux jeux), page Valorant inchangée. **Défauts trouvés et corrigés pendant ce test** : titre de la page jeu qui débordait (« League of Legends »), onboarding qui débordait de 94 px, choix des jeux réinitialisé en changeant de page (provider libéré), nom d'équipe écrasé par « jeu · région », libellés anglais du play-in, « Bilan ? » avant le début. Reste à voir : les Worlds en vrai (15 octobre), le rendu en mode paysage de l'onboarding (la liste d'équipes y est très courte).
 
 ---
 

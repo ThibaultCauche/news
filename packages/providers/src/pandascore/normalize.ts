@@ -54,17 +54,16 @@ export function normalizeTeamEntity(team: RawTeam): EntityDTO {
   };
 }
 
-// L'adaptateur ne couvre que Valorant pour l'instant (`provider.ts`) ; à lire depuis
-// `videogame` quand d'autres jeux arriveront.
-const GAME = "valorant";
+// Jeu repris du tournoi (`videogame.slug` : « valorant », « league-of-legends », comme nos slugs de jeu).
+const DEFAULT_GAME = "valorant";
 
-export function normalizeLeague(league: RawLeague): CompetitionDTO {
+export function normalizeLeague(league: RawLeague, game: string = DEFAULT_GAME): CompetitionDTO {
   return {
     provider: PROVIDER,
     externalId: String(league.id),
     parentExternalId: null,
     kind: "league",
-    game: GAME,
+    game,
     imageUrl: league.image_url ?? null,
     name: league.name,
     status: null,
@@ -76,15 +75,22 @@ export function normalizeLeague(league: RawLeague): CompetitionDTO {
   };
 }
 
-export function normalizeSerie(serie: RawSerie): CompetitionDTO {
+// PandaScore ne donne parfois que l'année comme nom complet de la série (« 2026 » pour les Worlds) : on remet le
+// nom de la ligue devant (« Worlds 2026 »), sans quoi la série n'a ni nom lisible ni famille (`familyNameOf`).
+function serieName(serie: RawSerie, leagueName?: string): string {
+  const name = serie.full_name || serie.name;
+  return /^\d{4}$/.test(name) && leagueName ? `${leagueName} ${name}` : name;
+}
+
+export function normalizeSerie(serie: RawSerie, game: string = DEFAULT_GAME, leagueName?: string): CompetitionDTO {
   return {
     provider: PROVIDER,
     externalId: String(serie.id),
     parentExternalId: String(serie.league_id),
     kind: "serie",
-    game: GAME,
+    game,
     imageUrl: null,
-    name: serie.full_name ?? serie.name,
+    name: serieName(serie, leagueName),
     status: null,
     startsAt: serie.begin_at ? new Date(serie.begin_at) : null,
     endsAt: serie.end_at ? new Date(serie.end_at) : null,
@@ -94,7 +100,7 @@ export function normalizeSerie(serie: RawSerie): CompetitionDTO {
   };
 }
 
-export function normalizeTournament(tournament: RawTournament, now: Date = new Date()): CompetitionDTO {
+export function normalizeTournament(tournament: RawTournament, now: Date = new Date(), game: string = DEFAULT_GAME): CompetitionDTO {
   const startsAt = tournament.begin_at ? new Date(tournament.begin_at) : null;
   const endsAt = tournament.end_at ? new Date(tournament.end_at) : null;
   return {
@@ -102,7 +108,7 @@ export function normalizeTournament(tournament: RawTournament, now: Date = new D
     externalId: String(tournament.id),
     parentExternalId: String(tournament.serie_id),
     kind: "tournament",
-    game: GAME,
+    game,
     imageUrl: null,
     name: tournament.name,
     status: computeCompetitionStatus(startsAt, endsAt, tournament.winner_id != null, now),
@@ -117,7 +123,8 @@ export function normalizeTournament(tournament: RawTournament, now: Date = new D
 // Compétitions dérivées d'un seul tournoi (ligue → série → tournoi imbriqués dans
 // la réponse PandaScore) : une requête de catalogue suffit pour toute la hiérarchie.
 export function normalizeCompetitionsFromTournament(tournament: RawTournament, now: Date = new Date()): CompetitionDTO[] {
-  return [normalizeLeague(tournament.league), normalizeSerie(tournament.serie), normalizeTournament(tournament, now)];
+  const game = tournament.videogame?.slug ?? DEFAULT_GAME;
+  return [normalizeLeague(tournament.league, game), normalizeSerie(tournament.serie, game, tournament.league.name), normalizeTournament(tournament, now, game)];
 }
 
 // Score de série et gagnant de chaque carte uniquement (plan gratuit, règle 6 de

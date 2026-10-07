@@ -126,7 +126,7 @@ class FollowCard extends ConsumerWidget {
     },
     FollowTargetType.entity => () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => TeamScreen(entityId: follow.targetId, breadcrumb: "Suivis"))),
     FollowTargetType.event => () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: follow.targetId))),
-    FollowTargetType.category => null,
+    FollowTargetType.category || FollowTargetType.organization => null,
   };
 
   @override
@@ -147,7 +147,7 @@ class FollowCard extends ConsumerWidget {
                 padding: const EdgeInsets.fromLTRB(AppSpacing.xs, AppSpacing.xs, AppSpacing.xs, 0),
                 child: Row(
                   children: [
-                    if (targetType == FollowTargetType.entity) ...[
+                    if (targetType == FollowTargetType.entity || targetType == FollowTargetType.organization) ...[
                       TeamBadge(
                         imageUrl: follow.imageUrl,
                         diameter: 40,
@@ -162,6 +162,8 @@ class FollowCard extends ConsumerWidget {
                           Text(follow.name, style: Theme.of(context).textTheme.titleLarge),
                           if (targetType == FollowTargetType.competitionFamily)
                             const Text("Toutes les éditions", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
+                          if (targetType == FollowTargetType.organization)
+                            const Text("Toute la structure, dans tous les jeux", style: TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption)),
                           if (follow.status != null) Padding(padding: const EdgeInsets.only(top: 6, bottom: 8), child: _StatusPill(status: follow.status!)),
                         ],
                       ),
@@ -178,7 +180,7 @@ class FollowCard extends ConsumerWidget {
                 scoresHidden: scoresHidden,
                 onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => NextMatchScreen(eventId: event.id))),
               )
-            else
+            else if (targetType != FollowTargetType.organization)
               const Padding(
                 padding: EdgeInsets.fromLTRB(AppSpacing.xs, AppSpacing.sm, AppSpacing.xs, AppSpacing.sm),
                 child: Center(child: EmptyMark("Rien de prévu pour l'instant.")),

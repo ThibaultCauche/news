@@ -11,6 +11,7 @@ import "../theme/app_theme.dart";
 import "ornate_frame.dart";
 import "../features/competitions/game_screen.dart" show openCompetitionOfEvent;
 import "../features/follows/follows_provider.dart";
+import "../features/next_match/next_match_screen.dart" show StakesText;
 import "../theme/tokens.dart";
 import "live_dot.dart";
 import "match_context.dart";
@@ -280,6 +281,16 @@ class EventCard extends ConsumerWidget {
                         ),
                       ),
                     ),
+                    // Ce que le match joue (phase suisse, poule) : « Match décisif : le vainqueur est qualifié… » (J23).
+                    if (event.competition.stakes != null && status != EventStatusKind.finished)
+                      Padding(
+                        padding: const EdgeInsets.only(top: 2),
+                        child: StakesText(
+                          text: event.competition.stakes!,
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption, height: 1.3),
+                        ),
+                      ),
                     if (footer != null) ...[
                       const Divider(height: AppSpacing.lg),
                       footer!,

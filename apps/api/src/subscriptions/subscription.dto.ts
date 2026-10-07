@@ -61,8 +61,8 @@ export class SubscriptionDto {
 export class FollowStateDto extends SubscriptionDto {
   @ApiProperty() name!: string;
   @ApiProperty({ nullable: true, type: EventSummaryDto }) currentEvent!: EventSummaryDto | null;
-  // Logo et statut de compétition : seulement pour un suivi d'équipe
-  // (`targetType: "entity"`), `null` sinon (docs/04 J8).
+  // Logo : suivi d'équipe (`targetType: "entity"`) ou de structure (`"organization"`, J23) ; statut de
+  // compétition : équipe seulement (docs/04 J8), `null` sinon.
   @ApiProperty({ nullable: true, type: String }) imageUrl!: string | null;
   @ApiProperty({ nullable: true, type: String, enum: ["qualified", "eliminated"] }) status!: "qualified" | "eliminated" | null;
 }
