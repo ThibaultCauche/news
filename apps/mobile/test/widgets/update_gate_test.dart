@@ -4,10 +4,10 @@ import "package:flutter_test/flutter_test.dart";
 import "package:mobile/core/app_update.dart";
 import "package:mobile/widgets/update_gate.dart";
 
-Future<void> _pump(WidgetTester tester, UpdateLevel level) async {
+Future<void> _pump(WidgetTester tester, UpdateLevel level, {String? message}) async {
   await tester.pumpWidget(
     ProviderScope(
-      overrides: [appUpdateProvider.overrideWith((ref) async => AppUpdate(level))],
+      overrides: [appUpdateProvider.overrideWith((ref) async => AppUpdate(level, message: message))],
       child: const MaterialApp(home: Scaffold(body: Stack(fit: StackFit.expand, children: [Text("contenu"), UpdateGate()]))),
     ),
   );
@@ -33,5 +33,14 @@ void main() {
     await _pump(tester, UpdateLevel.required);
     expect(find.text("Mise à jour nécessaire"), findsOneWidget);
     expect(find.byIcon(Icons.close_rounded), findsNothing);
+  });
+
+  testWidgets("message de service : bandeau fermable, sans bouton de mise à jour", (tester) async {
+    await _pump(tester, UpdateLevel.none, message: "Maintenance ce soir");
+    expect(find.text("Maintenance ce soir"), findsOneWidget);
+    expect(find.text("Mettre à jour"), findsNothing);
+    await tester.tap(find.byIcon(Icons.close_rounded));
+    await tester.pump();
+    expect(find.text("Maintenance ce soir"), findsNothing);
   });
 }

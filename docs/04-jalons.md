@@ -629,7 +629,11 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 **Hors périmètre** : macOS et Linux ; le site Next.js pour le SEO.
 
-**Critères d'acceptation** : à rédiger au cadrage (`/jalon 17`). **À planifier après J16** : le nom et l'identité s'appliquent à toutes les versions.
+**Décisions du cadrage (2026-10-08)** : **web d'abord**, Windows en fin de jalon ou en « Ensuite » ; le web est **servi par l'API** (`WEB_DIR`, pas de CORS) sous `/news/` ; **pas de push web** pour l'instant ; trois lots : **A** (web, grand écran, #L2 à #L4), **B** (#L5, #L6, #J4, #J2), **C** (#J5 analytics maison, #M10 admin web).
+
+**Lot A, fait le 2026-10-08** : plateforme `web/` ajoutée, cache **drift** sur le web (`sqlite3.wasm` et `drift_worker.js` dans `web/`, versions de `pubspec.lock` : à remplacer si drift ou sqlite3 monte), Firebase web par `--dart-define` (`core/firebase_web_options.dart`), push et notifications locales coupés sur le web (`kIsWeb`), colonne centrée de 480 px (`widgets/web_column.dart`), API qui sert le build (`WEB_DIR`), CI qui construit l'artefact `web`, `docs/05` § 6 bis. **#L4** : champ `message` de `GET /v1/app/version` (`APP_MESSAGE`), bandeau fermable. **#L3** : feuille « Quoi de neuf » une seule fois par version (notes de `APP_UPDATE_NOTES`). **#L2** : sur le web, « Mettre à jour » recharge la page. Vérifié dans le navigateur (Accueil avec les vraies données, Firebase initialisé, drift chargé). **Reste** : connexion réelle sur le web (domaine à autoriser dans Firebase), iPhone Safari, #L2 pour les autres plateformes, lots B et C, Windows.
+
+**Critères d'acceptation** : (1) le site s'ouvre depuis un navigateur sur PC et iPhone, hors de la maison ; (2) connexion, Accueil, Agenda, un arbre, un pronostic et la Discussion fonctionnent ; (3) le mode hors ligne s'affiche sur le web ; (4) les fonctions sans support web sont masquées ou expliquées, jamais cassées ; (5) un message de service et une nouvelle version s'affichent chez un testeur. **À planifier après J16** : le nom et l'identité s'appliquent à toutes les versions.
 
 ---
 

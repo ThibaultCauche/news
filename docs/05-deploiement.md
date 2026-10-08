@@ -80,6 +80,15 @@ docker compose -f infra/docker-compose.yml exec backup restore.sh /backups/news-
 
 ⚠️ `restore.sh` écrase la base cible avec le contenu du dump — ne jamais le lancer contre la base de prod pour "tester", seulement contre une base de secours ou juste après une vraie panne.
 
+## 6 bis. Version web (J17)
+
+L'API sert elle-même le site (`WEB_DIR=/app/web`, dossier `infra/web` monté en lecture seule) : même origine, donc pas de CORS, et l'adresse est celle de l'API (`https://truenas-scale.tailc07204.ts.net/news/`).
+
+1. Après un push sur `main`, télécharger l'artefact **`web`** du job `mobile` de la CI (build `--base-href /news/`, `API_BASE_URL=/news`).
+2. Le dépaqueter dans `infra/web/` sur le NAS (le contenu du dossier, avec `index.html` à la racine), puis `docker compose ... up -d` (l'API doit avoir le volume `./web`).
+3. **Console Firebase** → Authentication → Paramètres → Domaines autorisés : ajouter `truenas-scale.tailc07204.ts.net` (sinon la connexion échoue sur le web).
+4. Pas de notifications push sur le web (décision du J17) ; le reste fonctionne. Les icônes du site sont celles de Flutter par défaut, à remplacer par celles de Keryx.
+
 ## 7. Bêta Android
 
 1. Retrouver/ouvrir le compte développeur Google Play (étape 1) et créer l'application.

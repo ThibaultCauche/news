@@ -107,6 +107,7 @@ describe("API v1 (e2e)", () => {
     const res = await request(app.getHttpServer()).get("/v1/app/version").expect(200);
     expect(res.body.latest).toMatch(/^\d+\.\d+\.\d+/);
     expect(res.body.minSupported).toMatch(/^\d+\.\d+\.\d+/);
+    expect(res.body).toHaveProperty("message");
   });
 
   it("GET /health répond ok", async () => {

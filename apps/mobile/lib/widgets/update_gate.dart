@@ -1,9 +1,13 @@
+import "package:flutter/foundation.dart" show kIsWeb;
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
+import "package:shared_preferences/shared_preferences.dart";
 import "package:url_launcher/url_launcher.dart";
 import "../core/app_update.dart";
 import "../theme/app_theme.dart";
 import "../theme/tokens.dart";
+
+const _whatsNewKey = "whatsNew.seenVersion";
 
 /// Vérification de version au lancement (J21) : un bandeau qu'on peut fermer sous `latest`, un écran
 /// qui bloque tout sous `minSupported`. Statique (règle 13).
@@ -16,14 +20,53 @@ class UpdateGate extends ConsumerStatefulWidget {
 
 class _UpdateGateState extends ConsumerState<UpdateGate> {
   bool _dismissed = false;
+  bool _whatsNewChecked = false;
 
-  void _open() => launchUrl(storeUri, mode: LaunchMode.externalApplication);
+  // Web : « mettre à jour » = recharger la page, qui charge la dernière version servie par l'API.
+  void _open() => kIsWeb ? launchUrl(Uri.base, webOnlyWindowName: "_self") : launchUrl(storeUri, mode: LaunchMode.externalApplication);
+
+  /// « Quoi de neuf » (J17) : les notes de la version à jour, une seule fois par version. La toute première
+  /// ouverture ne montre rien : on enregistre seulement la version.
+  Future<void> _maybeShowWhatsNew(AppUpdate update) async {
+    final version = update.version, notes = update.notes;
+    if (_whatsNewChecked || version == null || update.level != UpdateLevel.none) return;
+    _whatsNewChecked = true;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final seen = prefs.getString(_whatsNewKey);
+      if (seen == version) return;
+      await prefs.setString(_whatsNewKey, version);
+      if (seen == null || notes == null || !mounted) return;
+      await showModalBottomSheet<void>(
+        context: context,
+        builder: (_) => SafeArea(
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.lg),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text("Quoi de neuf", style: AppTextStyles.sectionTitle),
+                const SizedBox(height: AppSpacing.sm),
+                Text(notes, style: const TextStyle(color: AppColors.textSecondary)),
+              ],
+            ),
+          ),
+        ),
+      );
+    } catch (_) {}
+  }
 
   @override
   Widget build(BuildContext context) {
     final update = ref.watch(appUpdateProvider).value;
-    if (update == null || update.level == UpdateLevel.none) return const SizedBox.shrink();
+    if (update == null) return const SizedBox.shrink();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _maybeShowWhatsNew(update));
     final notes = update.notes;
+    final message = update.message;
+    if (update.level == UpdateLevel.none) {
+      return message == null || _dismissed ? const SizedBox.shrink() : _banner(message, withUpdate: false);
+    }
 
     if (update.level == UpdateLevel.required) {
       return Positioned.fill(
@@ -55,6 +98,10 @@ class _UpdateGateState extends ConsumerState<UpdateGate> {
     }
 
     if (_dismissed) return const SizedBox.shrink();
+    return _banner(message ?? notes ?? "Une mise à jour de Keryx est disponible.", withUpdate: true);
+  }
+
+  Widget _banner(String text, {required bool withUpdate}) {
     return Positioned(
       left: AppSpacing.md,
       right: AppSpacing.md,
@@ -71,8 +118,8 @@ class _UpdateGateState extends ConsumerState<UpdateGate> {
             ),
             child: Row(
               children: [
-                Expanded(child: Text(notes ?? "Une mise à jour de Keryx est disponible.", style: const TextStyle(fontSize: AppTypography.caption))),
-                TextButton(onPressed: _open, child: const Text("Mettre à jour")),
+                Expanded(child: Text(text, style: const TextStyle(fontSize: AppTypography.caption))),
+                if (withUpdate) TextButton(onPressed: _open, child: const Text("Mettre à jour")),
                 IconButton(icon: const Icon(Icons.close_rounded, size: 18), tooltip: "Fermer", onPressed: () => setState(() => _dismissed = true)),
               ],
             ),

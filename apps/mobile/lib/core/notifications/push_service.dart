@@ -1,3 +1,4 @@
+import "package:flutter/foundation.dart" show kIsWeb;
 import "package:firebase_core/firebase_core.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -20,7 +21,8 @@ class PushService {
   bool _registered = false;
 
   Future<void> ensureRegistered() async {
-    if (_registered) return;
+    // Pas de push sur le web pour l'instant (service worker et clé VAPID : décision du J17).
+    if (_registered || kIsWeb) return;
     try {
       await Firebase.initializeApp();
       final messaging = FirebaseMessaging.instance;
