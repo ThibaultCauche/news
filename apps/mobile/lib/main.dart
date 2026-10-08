@@ -1,9 +1,9 @@
 import "core/firebase_web_options.dart";
+import "widgets/responsive.dart";
 import "widgets/web_column.dart";
 import "package:dio/dio.dart" show DioException;
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_core/firebase_core.dart";
-import "package:flutter/foundation.dart" show kIsWeb;
 import "package:flutter/material.dart";
 import "package:flutter_localizations/flutter_localizations.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
@@ -89,7 +89,7 @@ class NewsRoot extends StatelessWidget {
           data: mediaQuery.copyWith(textScaler: mediaQuery.textScaler.clamp(minScaleFactor: 1, maxScaleFactor: 1.2)),
           child: child!,
         );
-        return kIsWeb ? WebColumn(child: scaled) : scaled;
+        return WebColumn(child: scaled);
       },
       home: const _AppRoot(),
     );
@@ -115,6 +115,8 @@ class _AppRootState extends ConsumerState<_AppRoot> {
 
   @override
   Widget build(BuildContext context) {
-    return _onboardingDone ? const NewsApp() : OnboardingFlow(onDone: _finishOnboarding);
+    if (_onboardingDone) return const NewsApp();
+    // Mode ordinateur : le premier lancement reste une colonne centrée plutôt que de s'étirer.
+    return Center(child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: kPageMaxWidth), child: OnboardingFlow(onDone: _finishOnboarding)));
   }
 }

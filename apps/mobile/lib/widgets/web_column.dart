@@ -1,8 +1,7 @@
 import "package:flutter/material.dart";
 
-/// Largeur maximale de l'appli sur le web : la mise en page est pensée pour un téléphone (J17).
-/// Sur un grand écran elle reste une colonne centrée ; une vraie mise en page à deux colonnes viendra si elle manque.
-const webColumnMaxWidth = 480.0;
+/// Largeur maximale de l'appli (J17) : au-delà, le contenu reste centré plutôt que de s'étirer sur un très grand écran.
+const webColumnMaxWidth = 1280.0;
 
 class WebColumn extends StatelessWidget {
   const WebColumn({super.key, required this.child});

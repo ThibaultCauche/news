@@ -1,4 +1,5 @@
 import "../../widgets/ornate_frame.dart";
+import "../../widgets/responsive.dart";
 import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:intl/intl.dart";
@@ -157,32 +158,47 @@ class _HomeBody extends ConsumerWidget {
     final soon = _startingSoon(home, excluding: featured?.id);
     final yesterday = _yesterdayResults(home);
     final hasFollows = (ref.watch(followsProvider).value ?? const []).isNotEmpty;
-    return SliverList(
-      delegate: SliverChildListDelegate([
-        if (summary != null)
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
-            child: Text(summary, style: const TextStyle(fontWeight: FontWeight.w600)),
+    final main = <Widget>[
+      if (summary != null)
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md, vertical: AppSpacing.xs),
+          child: Text(summary, style: const TextStyle(fontWeight: FontWeight.w600)),
+        ),
+      if (hasFollows) const Padding(padding: EdgeInsets.symmetric(horizontal: AppSpacing.md), child: NotificationsDisabledBanner()),
+      if (livePills.isNotEmpty || soon.isNotEmpty) _LivePills(live: livePills, soon: soon),
+      if (featured != null)
+        _Featured(
+          event: featured,
+          grandFinal: featuredFinal,
+          title: liveEvent != null || home.nowForYou?.id == featured.id ? "Maintenant pour toi" : "À suivre",
+          scoresHidden: scoresHidden,
+          // « Ensuite » seulement si ce match a lieu aujourd'hui : un match de demain n'est pas « ensuite ».
+          next: liveEvent != null ? upcoming.firstOrNull.ifToday : null,
+        ),
+      _TodayFollowed(events: todayFollowed, scoresHidden: scoresHidden),
+      if (yesterday.isNotEmpty) _YesterdayResults(events: yesterday, scoresHidden: scoresHidden),
+    ];
+    final side = <Widget>[
+      if (home.suggestion != null) _Suggestion(suggestion: home.suggestion!),
+      if (home.majors.isNotEmpty) _MajorsCarousel(majors: orderMajorsFor(home.favoriteCategory, home.majors.toList())),
+      const _LearnChip(),
+    ];
+    // Mode ordinateur (J17) : l'essentiel à gauche, les grands rendez-vous et les conseils dans une colonne à droite.
+    if (isWide(context)) {
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.only(bottom: AppSpacing.lg),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(flex: 3, child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: main)),
+              Expanded(flex: 2, child: Column(crossAxisAlignment: CrossAxisAlignment.stretch, children: side)),
+            ],
           ),
-        if (hasFollows) const Padding(padding: EdgeInsets.symmetric(horizontal: AppSpacing.md), child: NotificationsDisabledBanner()),
-        if (livePills.isNotEmpty || soon.isNotEmpty) _LivePills(live: livePills, soon: soon),
-        if (featured != null)
-          _Featured(
-            event: featured,
-            grandFinal: featuredFinal,
-            title: liveEvent != null || home.nowForYou?.id == featured.id ? "Maintenant pour toi" : "À suivre",
-            scoresHidden: scoresHidden,
-            // « Ensuite » seulement si ce match a lieu aujourd'hui : un match de demain n'est pas « ensuite ».
-            next: liveEvent != null ? upcoming.firstOrNull.ifToday : null,
-          ),
-        _TodayFollowed(events: todayFollowed, scoresHidden: scoresHidden),
-        if (yesterday.isNotEmpty) _YesterdayResults(events: yesterday, scoresHidden: scoresHidden),
-        if (home.suggestion != null) _Suggestion(suggestion: home.suggestion!),
-        if (home.majors.isNotEmpty) _MajorsCarousel(majors: orderMajorsFor(home.favoriteCategory, home.majors.toList())),
-        const _LearnChip(),
-        const SizedBox(height: 96),
-      ]),
-    );
+        ),
+      );
+    }
+    return SliverList(delegate: SliverChildListDelegate([...main, ...side, const SizedBox(height: 96)]));
   }
 }
 
@@ -562,6 +578,13 @@ class _MajorsCarousel extends StatelessWidget {
             child: Text("Les grands rendez-vous", style: AppTextStyles.sectionTitle),
           ),
           const SizedBox(height: AppSpacing.sm),
+          // Mode ordinateur : tous les rendez-vous en grille plutôt qu'à faire défiler de côté.
+          if (isWide(context))
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
+              child: Wrap(spacing: AppSpacing.sm, runSpacing: AppSpacing.sm, children: [for (final m in majors) MajorCard(major: m)]),
+            )
+          else
           SizedBox(
             height: 124,
             child: ListView.separated(
