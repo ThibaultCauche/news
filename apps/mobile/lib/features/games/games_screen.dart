@@ -3,6 +3,7 @@ import "../../theme/app_theme.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/page_title.dart";
 import "../../widgets/section_card.dart";
+import "../politics/quiz_screen.dart";
 import "../predictions/predictions_screen.dart";
 
 /// Onglet « Jeux » (docs/04 J11, ex-placeholder « Jeu du jour ») : la porte d'entrée de tous les
@@ -25,6 +26,13 @@ class GamesScreen extends StatelessWidget {
             title: "Pronostics",
             caption: "Devine les résultats en points fictifs et compare-toi à tes amis.",
             onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const PredictionsScreen())),
+          ),
+          const SizedBox(height: AppSpacing.md),
+          _GameTile(
+            icon: Icons.how_to_vote_outlined,
+            title: "Qui a voté ?",
+            caption: "Cinq questions par jour sur les votes de l'Assemblée nationale. Sans points, avec la source.",
+            onTap: () => Navigator.of(context).push(MaterialPageRoute(builder: (_) => const QuizScreen())),
           ),
         ],
       ),

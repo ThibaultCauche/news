@@ -1,6 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { Entity, Event, EventParticipant, Prisma } from "@news/db";
-import { buildGroupStakes, buildSwissGroupStakes } from "@news/domain";
+import { buildGroupStakes, buildSwissGroupStakes, VOTE_KIND, VoteResult } from "@news/domain";
+import { outcomeOf, VoteOutcomeDto } from "../politics/politics.dto";
 
 type EventWithRelations = Event & {
   competition: { id: string; name: string; format: string | null; game?: string | null; parent?: { name: string } | null };
@@ -42,6 +43,8 @@ export class EventSummaryDto {
   @ApiProperty() importance!: number;
   @ApiProperty({ type: CompetitionRefDto }) competition!: CompetitionRefDto;
   @ApiProperty({ type: [EventParticipantDto] }) participants!: EventParticipantDto[];
+  // Résultat d'un vote de l'Assemblée (J29) : ses participants sont des groupes, pas des camps, donc la liste est vide.
+  @ApiProperty({ nullable: true, type: VoteOutcomeDto }) voteOutcome!: VoteOutcomeDto | null;
 }
 
 // Représentation partagée d'un événement, réutilisée par home/agenda/events/competitions
@@ -64,9 +67,10 @@ export function toEventSummary(event: EventWithRelations): EventSummaryDto {
       game: event.competition.game ?? null,
       tournamentName: event.competition.parent?.name ?? null,
     },
+    voteOutcome: event.kind === VOTE_KIND && event.result ? outcomeOf(event.result as unknown as VoteResult) : null,
     // Une session de F1 compte une vingtaine de pilotes : les listes n'en montrent que le podium (J28), le détail
-    // de l'événement porte le classement complet.
-    participants: (event.kind === "session" ? event.participants.slice(0, 3) : event.participants).map((p) => ({
+    // de l'événement porte le classement complet. Un vote n'a pas de camps : ses groupes sont dans le détail.
+    participants: (event.kind === VOTE_KIND ? [] : event.kind === "session" ? event.participants.slice(0, 3) : event.participants).map((p) => ({
       entityId: p.entityId,
       name: p.entity.name,
       shortName: p.entity.shortName,

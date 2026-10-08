@@ -20,6 +20,7 @@ import { GlossaryModule } from "./glossary/glossary.module";
 import { HealthController } from "./health/health.controller";
 import { HomeModule } from "./home/home.module";
 import { MeModule } from "./me/me.module";
+import { PoliticsModule } from "./politics/politics.module";
 import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
 
 @Module({
@@ -42,6 +43,7 @@ import { SubscriptionsModule } from "./subscriptions/subscriptions.module";
     EventsModule,
     CompetitionsModule,
     CatalogModule,
+    PoliticsModule,
     FavoritesModule,
     EntitiesModule,
     GlossaryModule,

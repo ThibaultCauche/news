@@ -3,6 +3,8 @@ import "package:flutter/material.dart";
 import "package:flutter_svg/flutter_svg.dart";
 import "../theme/tokens.dart";
 
+const _politicalIcons = {"assemblee-nationale": Icons.account_balance_rounded, "elections": Icons.how_to_vote_outlined};
+
 /// Logo d'un jeu : fichier embarqué `assets/games/<slug>.svg` (PandaScore ne
 /// fournit aucun logo de jeu, seulement des logos de ligues). Icône de manette
 /// tant que le fichier du jeu n'a pas été ajouté.
@@ -14,13 +16,14 @@ class GameLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fallback = Icon(Icons.sports_esports_outlined, size: size * 0.6, color: AppColors.textSecondary);
+    // La politique (J29) n'a pas de logo officiel à embarquer : une icône d'institution, pas la manette des jeux.
+    final fallback = Icon(_politicalIcons[slug] ?? Icons.sports_esports_outlined, size: size * 0.6, color: _politicalIcons.containsKey(slug) ? AppColors.brass : AppColors.textSecondary);
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(color: AppColors.surface, borderRadius: BorderRadius.circular(AppRadii.chip)),
       clipBehavior: Clip.antiAlias,
-      child: SvgPicture.asset("assets/games/$slug.svg", fit: BoxFit.contain, errorBuilder: (_, _, _) => Center(child: fallback)),
+      child: _politicalIcons.containsKey(slug) ? Center(child: fallback) : SvgPicture.asset("assets/games/$slug.svg", fit: BoxFit.contain, errorBuilder: (_, _, _) => Center(child: fallback)),
     );
   }
 }

@@ -34,6 +34,19 @@ abstract final class AppColors {
   /// (J20). Le vert vif `win` reste celui des scores et des résultats ailleurs.
   static const moss = Color(0xFF7C9A5E);
   static const loss = Color(0x66F5F5F7); // gris neutre pour une défaite
+
+  /// Teintes pastel pour distinguer les listes d'un scrutin (J29c), attribuées par rang de voix : aucune ne désigne un
+  /// camp (neutralité, docs/01c). Le nom et le score de chaque liste sont toujours écrits à côté.
+  static const series = [
+    Color(0xFF8AA4FF),
+    Color(0xFFFFA98A),
+    Color(0xFF9AD98A),
+    Color(0xFFC9A6FF),
+    Color(0xFFFFD86B),
+    Color(0xFF6ED3D3),
+    Color(0xFFFF8FB3),
+    Color(0xFFB0B7C3),
+  ];
 }
 
 /// Dégradés sombres teintés pour les grandes cartes "événement" et les

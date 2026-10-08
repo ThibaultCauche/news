@@ -5,6 +5,9 @@ import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/games.dart";
 import "../formula1/f1_widgets.dart" show F1SeasonScreen;
+import "../politics/election_widgets.dart" show ElectionScreen;
+import "../politics/law_screen.dart";
+import "../politics/politics_model.dart" show lawFormat;
 import "../../core/iterable_x.dart";
 import "../../core/settings_provider.dart";
 import "../../widgets/compact_match_row.dart";
@@ -56,6 +59,10 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
     final game = detail.value?.game ?? "valorant";
     // Une saison de sport (J28) n'a ni tableau ni poules : sa page est celle du calendrier et des classements.
     if (gameIsSport(game)) return F1SeasonScreen(competitionId: widget.competitionId, title: widget.title);
+    // Un texte de loi (J29) se suit étape par étape, sans tableau ni poules.
+    if (detail.value?.format == lawFormat) return LawScreen(competitionId: widget.competitionId);
+    // Un scrutin (J29c) : date, blocage de 20 h, puis les territoires.
+    if (detail.value?.election != null) return ElectionScreen(competitionId: widget.competitionId);
 
     return Scaffold(
       appBar: AppBar(

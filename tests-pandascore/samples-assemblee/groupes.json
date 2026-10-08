@@ -1,0 +1,86 @@
+[
+ {
+  "uid": "PO840056",
+  "codeType": "GP",
+  "libelle": "Non inscrit",
+  "libelleAbrev": "NI",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845401",
+  "codeType": "GP",
+  "libelle": "Rassemblement National",
+  "libelleAbrev": "RN",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845407",
+  "codeType": "GP",
+  "libelle": "Ensemble pour la République",
+  "libelleAbrev": "EPR",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845413",
+  "codeType": "GP",
+  "libelle": "La France insoumise - Nouveau Front Populaire",
+  "libelleAbrev": "LFI-NFP",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845419",
+  "codeType": "GP",
+  "libelle": "Socialistes et apparentés",
+  "libelleAbrev": "SOC",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845425",
+  "codeType": "GP",
+  "libelle": "Droite Républicaine",
+  "libelleAbrev": "DR",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845439",
+  "codeType": "GP",
+  "libelle": "Écologiste et Social",
+  "libelleAbrev": "ECOS",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845454",
+  "codeType": "GP",
+  "libelle": "Les Démocrates",
+  "libelleAbrev": "DEM",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845470",
+  "codeType": "GP",
+  "libelle": "Horizons & Indépendants",
+  "libelleAbrev": "HOR",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845485",
+  "codeType": "GP",
+  "libelle": "Libertés, Indépendants, Outre-mer et Territoires",
+  "libelleAbrev": "LIOT",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO845514",
+  "codeType": "GP",
+  "libelle": "Gauche Démocrate et Républicaine",
+  "libelleAbrev": "GDR",
+  "legislature": "17"
+ },
+ {
+  "uid": "PO872880",
+  "codeType": "GP",
+  "libelle": "Union des droites pour la République",
+  "libelleAbrev": "UDDPLR",
+  "legislature": "17"
+ }
+]

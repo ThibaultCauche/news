@@ -119,11 +119,21 @@ Script `politique-quiz/extraire-quiz.mjs` : téléchargement des scrutins (26 Mo
 ## À valider
 
 - [x] Télécharger et analyser `Scrutins.json.zip` (17e) : fait, votes par groupe et par député disponibles (2026-09-25).
-- [ ] Analyser `Dossiers_Legislatifs.json.zip` : étapes d'un texte, dates, auteurs (pour le suivi façon colis et « qui a proposé ? »).
+- [x] Analyser `Dossiers_Legislatifs.json.zip` (2026-10-08, script `politique-quiz/probe-dossiers.mjs`, 10,7 Mo) :
+  - **3 045 dossiers de la 17ᵉ**, dont 2 036 propositions de loi ordinaires, 71 projets de loi, 85 constitutionnelles, 57 organiques ; le reste (résolutions, rapports, commissions d'enquête) n'est **pas** une loi : à filtrer par `procedureParlementaire.libelle`.
+  - **Seuls 107 sont promulgués** (acte `PROM-PUB`, avec `codeLoi` « 2024-1177 », `titreLoi`, `urlLegifrance`, `dateJO`) : la promulgation et le lien Légifrance viennent donc **du dossier de l'Assemblée**, sans PISTE.
+  - **Étapes** = arbre d'actes `codeActe` : `AN1`/`SN1`/`ANLUNI` (lecture, selon qui est saisi en premier), `*-DEPOT` (date de dépôt), `*-COM-FOND-RAPPORT` (commission), `*-DEBATS-DEC` (décision, `statutConclusion` « adoptée »), `AN2`/`SN2` (navette), `CMP`/`CMP-DEC` (accord entre les deux chambres), `CC` (Conseil constitutionnel), `PROM-PUB`. Ces codes suffisent aux 6 étapes de la maquette 19 ; la phrase « Au Sénat, en commission » se déduit du dernier acte daté.
+  - **Auteur** : `initiateur.acteurs.acteur[].acteurRef` (le premier = auteur, les autres cosignataires) et `initiateur.organes` (groupe) ; noms dans `amo`.
+  - **Lien scrutin → dossier** : `scrutin.objet.dossierLegislatif.dossierRef` (2 608 scrutins sur 8 434 en ont un). Un scrutin sur « l'ensemble du texte » (titre commençant par « l'ensemble ») est le vote qui compte ; les autres (amendements, prolongation de séance) ne s'affichent pas dans le suivi. `voteRefs` des dossiers est toujours vide : ne pas s'en servir.
 - [ ] Croiser avec le jeu de données des amendements pour retrouver le sujet des amendements (carburants, etc.).
 - [ ] Créer un compte PISTE et tester une recherche Légifrance sur une loi récente.
 - [ ] Vérifier si NosDéputés couvre la 17e législature et si La Fabrique de la Loi est encore à jour.
-- [ ] Repérer le jeu de données « résultats en temps réel » sur data.gouv.fr et son format (pour la présidentielle 2027).
+- [x] **Résultats d'élection sur data.gouv.fr** (2026-10-08, municipales 2026 comme scrutin d'essai) : il n'y a pas de flux « temps réel » à part. Le ministère de l'Intérieur publie, **par scrutin et par tour, un jeu de données** (« Elections municipales 2026 - Résultats du premier tour », id `69b82a7de5d58cc06ad35ce0` ; second tour `69c17fed9f18c7781fd11a14`) dont les **ressources CSV sont remplacées au fil du dépouillement** (le titre de la ressource porte l'horodatage : `…Communes_2026-03-23_16h14.csv`). Licence ouverte 2.0.
+  - Fichiers par niveau : « Résultats - Communes » (14 Mo au 1ᵉʳ tour, 34 836 communes), « Résultats - BV par communes » (par bureau de vote, 37 Mo), « Candidats Elus », et les mêmes pour la Polynésie et les arrondissements de Paris, Lyon, Marseille.
+  - Format : CSV UTF-8, séparateur « ; », **une ligne par commune**, chiffres puis **listes à plat** (« Numéro de panneau k », « Nom candidat k », « Libellé de liste k », « Voix k », « % Voix/exprimés k », « Elu k », « Sièges au CM k », « Sièges au CC k »), jusqu'à 5 listes au second tour. Pas de nombre de bureaux dépouillés dans le fichier des communes (il faut le fichier par bureau).
+  - Les données sont publiées « sous réserve des recours et rectifications » : afficher « résultats officiels du ministère de l'Intérieur », pas « définitifs » avant la fin de la journée.
+  - **La présidentielle 2027 aura un autre fichier** (candidats, pas de listes ; niveaux commune, département, France) : son jeu de données n'existe pas encore, l'analyseur reste à écrire et à tester **sur un scrutin partiel avant avril 2027**. `ELECTIONS` (`packages/domain/src/elections.ts`) attend son `datasetId`.
+  - **Article L52-2 du code électoral** : aucun résultat, estimation ni projection avant la fermeture du dernier bureau de vote de la métropole. Codé en dur : `electionEmbargo`, 20 h heure de Paris le jour du scrutin, dans l'adaptateur et dans l'API.
 
 ## Sources
 

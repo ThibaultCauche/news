@@ -294,6 +294,7 @@ model AppUser {
   bracketBonuses       BracketPickBonus[]
   predictions      Prediction[]
   learnProgress    LearnProgress[]
+  quizAnswers      QuizAnswer[]
   ownedGroups      FriendGroup[]
   groupMemberships FriendGroupMember[]
   // Forum (J13) : modérateur et bêta fermée (posés à la main en base), exclusion du forum,
@@ -323,6 +324,26 @@ model AppUser {
 // Progression dans les tutos (J12) : un tuto ouvert, et son quiz réussi ou non. Générique : `guide`
 // est le nom du fichier de tutos (`valorant`, `app`…), aucune colonne propre à un jeu (règle 3).
 // Pas de points : un simple compteur affiché sur le profil.
+// Réponse au quiz « Qui a voté ? » (J29b) : une par personne et par question (un vote de l'Assemblée et un groupe).
+// Le serveur corrige : la bonne réponse n'est jamais envoyée avant la réponse. Aucun point (docs/07 : les points
+// mesurent les pronostics) ; sert à la série de jours.
+model QuizAnswer {
+  id         String   @id @default(uuid())
+  userId     String   @map("user_id")
+  user       AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  /// Jour du quiz, « AAAA-MM-JJ » à Paris.
+  quizDay    String   @map("quiz_day")
+  /// « <id du vote>:<id du groupe> »
+  questionId String   @map("question_id")
+  choice     String
+  correct    Boolean
+  answeredAt DateTime @default(now()) @map("answered_at")
+
+  @@unique([userId, questionId])
+  @@index([userId, quizDay])
+  @@map("quiz_answer")
+}
+
 model LearnProgress {
   userId      String   @map("user_id")
   user        AppUser  @relation(fields: [userId], references: [id], onDelete: Cascade)

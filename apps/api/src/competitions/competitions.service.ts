@@ -2,11 +2,13 @@ import { eventSummaryInclude, EventSummaryDto, PARTICIPANT_ORDER, toEventSummary
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
-import { BracketFormat, BracketMatchInput, computeBracketRounds, computeCompetitionRanking, EventStatus } from "@news/domain";
+import { BracketFormat, BracketMatchInput, computeBracketRounds, computeCompetitionRanking, ELECTION_KIND, ELECTION_RESULT_KIND, electionEmbargo, EventStatus, LAW_FORMAT, LawStructure, VOTE_KIND, VoteResult } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { seriesWithEvents } from "../common/series-with-events";
 import { PRISMA } from "../db/db.module";
+import { electionById, ElectionOverviewDto, nationalResult, toElectionTerritories } from "../politics/elections.dto";
+import { LawDto, toLawDto } from "../politics/politics.dto";
 
 const TTL_SECONDS = 30;
 
@@ -77,6 +79,10 @@ export class CompetitionResponseDto {
   @ApiProperty({ nullable: true, type: String }) location!: string | null;
   // Sessions d'un Grand Prix, dans l'ordre (J28) ; vide pour tout le reste, dont les matchs d'e-sport (écran du bracket).
   @ApiProperty({ type: [EventSummaryDto] }) events!: EventSummaryDto[];
+  // Suivi d'une loi « façon colis » (J29), absent pour tout autre format.
+  @ApiProperty({ nullable: true, type: LawDto }) law!: LawDto | null;
+  // Page d'une élection (J29c) : date, blocage de 20 h, territoires ; `null` pour tout autre format.
+  @ApiProperty({ nullable: true, type: ElectionOverviewDto }) election!: ElectionOverviewDto | null;
 }
 
 export class BracketParticipantDto {
@@ -181,6 +187,8 @@ export class CompetitionsService {
         : [];
 
     const response: CompetitionResponseDto = {
+      election: competition.kind === ELECTION_KIND ? await this.electionOf(competition) : null,
+      law: competition.format === LAW_FORMAT ? await this.lawOf(competition.id, competition.structure as unknown as LawStructure) : null,
       id: competition.id,
       parentId: competition.parentId,
       name: competition.name,
@@ -219,6 +227,34 @@ export class CompetitionsService {
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);
     return response;
+  }
+
+  // Page d'une élection (J29c). Avant 20 h le jour du scrutin, aucun territoire n'est listé (article L52-2).
+  private async electionOf(competition: { id: string; structure: unknown }): Promise<ElectionOverviewDto | null> {
+    const electionId = (competition.structure as { electionId?: string } | null)?.electionId;
+    const election = electionId ? electionById(electionId) : undefined;
+    if (!election) return null;
+    const now = new Date();
+    const embargo = electionEmbargo(election.date, now);
+    const events = embargo.embargoed ? [] : await this.prisma.event.findMany({ where: { competitionId: competition.id, kind: ELECTION_RESULT_KIND }, select: { id: true, result: true } });
+    return {
+      electionId: election.id,
+      name: election.name,
+      type: election.type,
+      round: election.round,
+      date: election.date,
+      embargoed: embargo.embargoed,
+      liftsAt: embargo.liftsAt.toISOString(),
+      hasResults: election.datasetId !== null,
+      national: nationalResult(events, now),
+      territories: toElectionTerritories(events, now),
+    };
+  }
+
+  // Suivi d'une loi : la structure vient de l'ingestion ; chaque étape de vote retrouve son événement par le numéro du scrutin.
+  private async lawOf(competitionId: string, structure: LawStructure): Promise<LawDto> {
+    const votes = await this.prisma.event.findMany({ where: { competitionId, kind: VOTE_KIND }, select: { id: true, result: true } });
+    return toLawDto(structure, new Map(votes.map((v) => [(v.result as unknown as VoteResult).numero, v.id])));
   }
 
   // Nœuds (événements) et liens gagnant/perdant pour l'arbre radial (02), le

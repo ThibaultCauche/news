@@ -3,9 +3,13 @@ import { Inject, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import {
   buildNotificationText,
+  buildVoteNotificationText,
+  ELECTION_RESULT_KIND,
   isPracticeSession,
   notificationSubject,
   sessionHasWinner,
+  VOTE_KIND,
+  VoteResult,
   competitionSpecificity,
   createLogger,
   DomainEventMessage,
@@ -51,6 +55,8 @@ export class NotificationDispatchService {
       include: { competition: { select: { id: true, name: true, categoryId: true } }, participants: { include: { entity: { select: { name: true, imageUrl: true } } }, orderBy: { side: "asc" } } },
     });
     if (!event) return;
+    // Un résultat d'élection n'a pas de notification (J29c) : rien ne doit sortir du serveur avant 20 h, et un « terminé » ne dit rien.
+    if (event.kind === ELECTION_RESULT_KIND) return;
 
     // F1 (J28) : seule une course ou un sprint a un vainqueur ; les qualifications ont une pole, pas une victoire.
     const hasWinner = event.kind !== "session" || sessionHasWinner(event.name);
@@ -137,7 +143,10 @@ export class NotificationDispatchService {
         throw err;
       }
 
-      const { title, body } = buildNotificationText(type, subject, sub.user.setting?.spoilerFree ?? false, winnerName, needsPrediction);
+      const { title, body } =
+        event.kind === VOTE_KIND && event.result
+          ? buildVoteNotificationText(event.competition.name, event.result as unknown as VoteResult)
+          : buildNotificationText(type, subject, sub.user.setting?.spoilerFree ?? false, winnerName, needsPrediction);
       // Un tag par match : rappel, début et résultat se remplacent dans le volet (J21). Plusieurs matchs
       // qui commencent ensemble restent une notification chacun (la sienne remplace son rappel) :
       // Android les range lui-même sous « Keryx ».

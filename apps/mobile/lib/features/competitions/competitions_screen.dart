@@ -11,11 +11,14 @@ import "../../widgets/game_logo.dart";
 import "../bracket/bracket_provider.dart";
 import "../home/home_screen.dart" show favoriteCategoryProvider;
 import "competitions_data.dart";
+import "../politics/politics_model.dart" show isPolitics;
+import "../politics/politics_screen.dart";
 import "game_screen.dart";
 import "league_screen.dart";
 
 void _openGame(BuildContext context, CatalogGameDto game) {
-  Navigator.of(context).push(MaterialPageRoute(builder: (_) => GameScreen(game: game)));
+  // La politique n'a ni équipes ni calendrier de matchs : sa page est celle des votes et des textes (J29).
+  Navigator.of(context).push(MaterialPageRoute(builder: (_) => isPolitics(game.slug) ? const PoliticsScreen() : GameScreen(game: game)));
 }
 
 /// 5ᵉ onglet (J9) : recherche (jeux, ligues, séries), raccourci Favoris, puis les

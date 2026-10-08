@@ -207,3 +207,20 @@ Ajoutées à la fin du J28. Déjà faites dans ce jalon : suivre un pilote ou un
 | #S7 | **Avertir du début de la course d'un pilote suivi** | La grille n'est connue qu'après la session : un pilote suivi n'est prévenu que du résultat. Une alerte « la course commence » demanderait de lier pilotes et saison (liste des engagés). | M |
 | #S8 | **Carte de partage du podium** | Le partage d'une session ouvre l'écran ; une carte dédiée afficherait le podium (voir #B10 pour les classements). | S-M |
 | #S9 | **Regrouper un week-end sur l'Accueil** | Une ligne par session, sous l'en-tête du Grand Prix : une seule carte « week-end » avec ses sessions serait plus compacte. | S-M |
+
+## Politique : idées pour plus tard (2026-10-08)
+
+Ajoutées à la fin du J29. Déjà faits : analyseur de la présidentielle (testé sur les fichiers de 2022), soirée nationale, bureaux dépouillés. Le jalon J30 (partis politiques, programmes et votes) est dans `docs/04`.
+
+| # | Idée | Détail | Effort |
+|---|---|---|---|
+| #P1 | **« Qui a déposé ce texte ? »** | Deuxième famille du quiz : l'auteur est déjà dans `law.author` (groupe d'un député, gouvernement, sénateurs). | S |
+| #P2 | **Suivre sa ville et son député** | Suivre une commune pour les élections, voir comment son député a voté. Règle claire à poser pour ne pas pointer un individu. | M |
+| #P3 | **Agenda parlementaire** | Les votes à venir (« Prévu le 7 octobre » de la maquette 19) : source `agenda` de l'Assemblée, pas dans les archives du J29. | M |
+| #P4 | **Résumé hebdomadaire** | « Cette semaine : 3 textes votés, 1 promulgué », par gabarit fixe ; peut se brancher sur le résumé du matin. | S |
+| #P5 | **Pick'em politique** | Écarté pour les élections (aucun pronostic) ; possible sur des votes de loi à venir. À valider : touche à la neutralité. | M |
+| #P6 | **Sénat et Légifrance (lot d)** | Votes des sénateurs, textes promulgués sans passer par l'Assemblée (PISTE : compte à créer par l'utilisateur). | L |
+| #P7 | **Parlement européen** | HowTheyVote (CSV hebdomadaire) pour élargir. | M |
+| #P8 | **Carte de France des résultats** | Carte des départements colorés par candidat en tête, pour la soirée nationale. | M |
+| #P9 | **Titres de loi en deux niveaux** | Titre court lisible, titre officiel dépliable (titres très longs). | S |
+| #P10 | **Rejouer une soirée électorale** | Faux serveur qui sert les fichiers de 2022 minute par minute, pour tester l'appli avant avril 2027. | M |

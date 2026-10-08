@@ -115,7 +115,13 @@ export class IngestionService {
           endsAt: dto.endsAt,
           importance: dto.importance,
         };
-        const dataWithBracket = { ...data, hasBracket: dto.hasBracket, location: dto.location ?? null };
+        const dataWithBracket = {
+          ...data,
+          hasBracket: dto.hasBracket,
+          location: dto.location ?? null,
+          // Format et structure donnés par la source (loi, J29) ; le job "structure" écrit les siens pour les brackets.
+          ...(dto.format ? { format: dto.format, structure: dto.structure as Prisma.InputJsonValue } : {}),
+        };
         if (existingId) {
           await this.prisma.competition.update({ where: { id: existingId }, data: dataWithBracket });
           return existingId;

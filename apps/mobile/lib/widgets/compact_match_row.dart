@@ -79,8 +79,17 @@ class CompactMatchRow extends ConsumerWidget {
       );
     }
 
+    // Un vote de l'Assemblée (J29) : le texte voté et le résultat en une phrase. Ce n'est pas un spoil : jamais flouté.
     // Une session de F1 (J28) : son nom, et le podium une fois terminée (flouté en sans spoil, comme un score).
-    final body = event.kind == "session"
+    final body = event.kind == "vote"
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(event.competition.name, style: AppTextStyles.bodyStrong, maxLines: 1, overflow: TextOverflow.ellipsis),
+              if (event.voteOutcome != null) Text(event.voteOutcome!.sentence, style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption), maxLines: 1, overflow: TextOverflow.ellipsis),
+            ],
+          )
+        : event.kind == "session"
         ? Column(
             mainAxisSize: MainAxisSize.min,
             children: [

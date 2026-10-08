@@ -29,6 +29,9 @@ export interface CompetitionDTO {
   hasBracket: boolean;
   // Lieu de la compétition (circuit d'un Grand Prix, J28) ; absent chez les fournisseurs d'e-sport.
   location?: string | null;
+  // Format et structure propres à la compétition quand ce n'est pas un bracket (suivi d'une loi, J29).
+  format?: string | null;
+  structure?: unknown;
   raw: unknown;
 }
 

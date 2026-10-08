@@ -18,3 +18,6 @@ export * from "./pickem";
 export * from "./badges";
 export * from "./formula1";
 export * from "./affinity";
+export * from "./politics";
+export * from "./quiz";
+export * from "./elections";

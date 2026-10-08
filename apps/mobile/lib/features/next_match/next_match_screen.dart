@@ -33,6 +33,8 @@ import "../discussion/share_sheet.dart";
 import "../forum/forum_entry.dart";
 import "../profile/prediction_panel.dart";
 import "../formula1/f1_widgets.dart" show SessionBody;
+import "../politics/election_widgets.dart" show ElectionBody;
+import "../politics/vote_widgets.dart" show ScrutinBody;
 
 final eventProvider = FutureProvider.autoDispose.family<EventDetailResponseDto, String>((ref, id) async {
   final response = await ref.watch(apiClientProvider).getEventsApi().eventsControllerGetById(id: id);
@@ -97,9 +99,11 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          LearnHelpButton(articleId: "regarder-un-match", game: event.value?.competition.game ?? "valorant"),
+          // Ni guide de jeu ni « sans spoil » pour un vote ou un résultat d'élection : ce ne sont pas des matchs (J29).
+          if (!_isPolitical(event.value)) LearnHelpButton(articleId: "regarder-un-match", game: event.value?.competition.game ?? "valorant"),
           ShareButton(kind: ShareDtoKindEnum.event, refId: widget.eventId),
-          IconButton(
+          if (!_isPolitical(event.value))
+            IconButton(
             icon: Icon(scoresHidden ? Icons.visibility_off_rounded : Icons.visibility_rounded),
             tooltip: "Sans spoil",
             onPressed: () => setState(() => _scoresHiddenOverride = !scoresHidden),
@@ -109,6 +113,10 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
       body: switch (event) {
         // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
         // Une session de F1 est un classement de pilotes, pas un duel (J28).
+        // Un vote de l'Assemblée est un hémicycle et des groupes, pas un duel (J29).
+        _ when event.hasValue && event.value!.vote != null => ScrutinBody(vote: event.value!.vote!),
+        // Le résultat d'un territoire à une élection : participation, sièges, voix, ou le cadenas avant 20 h (J29c).
+        _ when event.hasValue && event.value!.election != null => ElectionBody(election: event.value!.election!),
         _ when event.hasValue && event.value!.kind == "session" =>
           SessionBody(event: event.value!, scoresHidden: scoresHidden, onReveal: () => setState(() => _scoresHiddenOverride = false)),
         _ when event.hasValue =>
@@ -119,6 +127,8 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
     );
   }
 }
+
+bool _isPolitical(EventDetailResponseDto? event) => event != null && (event.vote != null || event.election != null);
 
 /// Événement d'agenda d'un match (J18) : « Équipe A – Équipe B », la compétition en description, deux
 /// heures par défaut (un BO3 dure en moyenne autant). Pur, pour être testé sans plugin.

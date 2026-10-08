@@ -996,25 +996,76 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 ---
 
-## J29 — Politique (ajouté 2026-10-06)
+## J29 — Politique (ajouté 2026-10-06, cadré le 2026-10-08) — **Fait (2026-10-08)**, sauf l'essai sur le NAS, un vrai soir de dépouillement et la relecture externe
 
-**Origine** : `docs/06` #I6, `docs/01c`, maquettes Figma 19 (loi façon colis) et 25 (soirée électorale). **Doit être prêt avant la présidentielle (1er tour le 18 avril 2027).**
+**Origine** : `docs/06` #I6, `docs/01c`, maquettes Figma 19 (loi façon colis), 16 (quiz) et 25 (soirée électorale). **Doit être prêt avant la présidentielle (1er tour le 18 avril 2027).**
 
-**Périmètre**
-- [ ] Adaptateurs `assemblee` (zips quotidiens), `senat`, `legifrance` (PISTE), `elections` (data.gouv, rythme rapide le soir d'élection).
-- [ ] Écran 19 (suivi d'une loi façon colis) et écran 25 (soirée électorale).
-- [ ] Jeu « Qui a voté ? » à partir de `politique-quiz/`.
-- [ ] Module à part, ton neutre : charte de neutralité, sources officielles citées, **aucun pronostic électoral**, **aucun résultat électoral affiché avant 20 h** (blocage codé en dur, article L52-2).
+**Découpage décidé le 2026-10-08** : **a** lois et votes de l'Assemblée · **b** quiz « Qui a voté ? » · **c** élections et soirée électorale. Sénat et Légifrance (PISTE) restent un lot **d**, reporté : le dossier de l'Assemblée donne déjà la promulgation, le numéro de loi et le lien Légifrance (voir `docs/01c`, sonde du 2026-10-08).
 
-**À vérifier avant la présidentielle** : flux de résultats en direct testé sur un scrutin partiel.
+**Module à part, ton neutre** (règle 9 de CLAUDE.md, rappelée à l'écran par « Notre règle de neutralité ») : sources officielles citées à chaque écran, noms officiels des groupes, **groupes rangés par ordre alphabétique** (aucun ordre politique), phrases par gabarits (`voteSentence`), **aucun pronostic électoral**, **aucun résultat avant 20 h** (blocage codé en dur, article L52-2).
 
-**Critères d'acceptation** : à rédiger au cadrage.
+### Lot a — Lois et votes (écran 19)
+- [x] Adaptateur `packages/providers/src/assemblee` : trois archives (scrutins 26 Mo, dossiers 10 Mo, organes 5 Mo), lues fichier par fichier (`fflate`, par morceaux de 64 Ko : une seule poussée déborde la pile), relues toutes les 6 h, trois essais en cas de coupure. 312 textes de loi débattus en séance, 178 votes sur l'ensemble, 12 groupes (ancien identifiant UDR `PO847173` ramené à `PO872880`).
+- [x] **Rattachement des votes aux textes** : par `dossierRef` (72 scrutins sur 222) puis par le titre du texte (`titleKey` : le titre du scrutin retrouve le titre principal du document) → 178 rattachés.
+- [x] `packages/domain/src/politics.ts` : `groupPosition` (position **recalculée** depuis les voix), `voteSentence`, `computeLawProcess` (7 étapes : déposé, commission, vote, commission et vote de l'autre chambre, accord final, [Conseil constitutionnel], promulgation ; « fait » se propage vers l'arrière, un rejet saute la suite), `isLawProcedure`, `reachedFloor`, `lawTypeOf`, `conclusionLabel`, `buildVoteNotificationText`. 16 tests.
+- [x] Modèle générique, **aucune table propre** : loi = `competition` (kind `law`, format `law_process`, `structure` JSON), vote = `event` (kind `vote`, `result` JSON, groupes en `entity` kind `party_group`), catégorie « Politique » (`categoryOfGame`, jeu `assemblee-nationale`). `CompetitionDTO.format/structure` ajoutés (écrits par l'ingestion).
+- [x] API : `GET /v1/politics` (derniers votes, textes en cours, lois promulguées, élections), `law` dans `GET /v1/competitions/:id`, `vote` dans `GET /v1/events/:id` (`ScrutinDto`), `voteOutcome` dans les résumés. Notification d'un vote sur un texte suivi (jamais masquée par « sans spoil »).
+- [x] Appli `features/politics/` : `politics_screen.dart` (page Politique), `law_screen.dart` (suivi façon colis), `vote_widgets.dart` (hémicycle en points, barre par groupe, formes pour / contre / abstention / absent : jamais la couleur seule), ligne de vote compacte, mention dans Réglages → Sources.
+
+### Lot b — Quiz « Qui a voté ? » (écran 16)
+- [x] `packages/domain/src/quiz.ts` : cinq questions par jour, **mêmes pour tout le monde** (graine = jour de Paris), groupes interrogés **à tour de rôle** (quotas), bonnes réponses réparties pour / contre / abstention, jamais un groupe qui n'a pas voté, série de jours.
+- [x] Table `quiz_answer` (migration `20261011100000_j29_quiz_answer`). Le serveur corrige : **la bonne réponse ne part qu'avec la correction**, une seule réponse par question, jouable sans compte (rien n'est gardé). **Aucun point** (`docs/07` : les points mesurent les pronostics) : seulement une série de jours.
+- [x] API `GET /v1/politics/quiz`, `POST /v1/politics/quiz/answer` ; appli : tuile « Qui a voté ? » de l'onglet Jeux, `quiz_screen.dart` (question, correction avec chiffres et source officielle, bilan).
+- Reporté : famille « Qui a déposé ce texte ? » (auteur déjà dans `law.author`), « Qui a dit ça ? » (comptes rendus, risque de citation hors contexte).
+
+### Lot c — Élections et soirée électorale (écran 25)
+- [x] `packages/domain/src/elections.ts` : **`electionEmbargo`** (le jour du scrutin, aucun résultat avant 20 h heure de Paris, heure d'été comprise), `ELECTIONS` (municipales 2026 tours 1 et 2, présidentielle 2027 tours 1 et 2), `majoritySeats`. Tests sur le changement d'heure.
+- [x] Adaptateur `packages/providers/src/elections` : fichiers CSV du ministère de l'Intérieur sur data.gouv.fr (Licence ouverte 2.0), lecture du jeu de données puis de la ressource « Résultats - Communes » la plus récente, CSV lu à la main (34 836 communes en 4,5 s), gardées : les 20 plus peuplées. **Jamais de lecture avant 20 h** le jour du scrutin (règle codée dans l'adaptateur **et** dans l'API) ; relecture chaque minute le soir même, toutes les 6 h ensuite.
+- [x] Modèle générique : élection = `competition` (kind `election`, format `live_feed`), résultat d'un territoire = `event` (kind `election_result`, `result` JSON, pas de participants, **aucune notification**).
+- [x] API : `election` dans `GET /v1/events/:id` (le `result` brut est **vidé** tant que le blocage court) et dans `GET /v1/competitions/:id`, `elections` dans `GET /v1/politics`. 6 tests e2e à horloge truquée (17 h 59, 20 h pile, veille, lendemain).
+- [x] Appli : `election_widgets.dart` — page d'un scrutin (compte à rebours, cadenas), soirée électorale d'un territoire (participation, hémicycle du conseil en couleurs de série **sans valeur politique**, voix par liste, fichier officiel).
+- **Hors périmètre** : pronostics et estimations (interdits), résultats par bureau de vote, élections européennes et sénatoriales.
+
+### Critères d'acceptation
+- [x] Le suivi d'une loi se lit en 3 secondes : étapes, étape « en ce moment », vote des députés en une phrase, auteur, liens officiels (vérifié par tests d'écran, `flutter test test/politics`).
+- [x] Un vote montre l'hémicycle et la position de chaque groupe, calculée depuis les voix.
+- [x] Le quiz donne cinq questions par jour, ne dévoile jamais la réponse avant la correction, montre la source officielle avec chaque correction.
+- [x] **Aucun résultat d'élection n'est servi avant 20 h le jour du scrutin**, quel que soit le chemin (détail d'un événement, page du scrutin, résultat brut) : 6 tests e2e à horloge truquée.
+- [x] Aucune table propre à la politique dans le modèle (règle 3) — seule `quiz_answer`, déjà prévue par `docs/03`.
+- [x] **Vérifié sur un téléphone Android** (2026-10-08, build debug, compte de test) : page Politique, vote et hémicycle de 577 points, suivi d'une loi, quiz (réponse écrite en base, série), page du scrutin avec cadenas, soirée électorale de Paris sur les vraies données, **notification d'un vote reçue pour de vrai**. Six défauts trouvés et corrigés à l'écran : absents mal comptés (légende « 2 » pour 213 sièges vides), points de l'hémicycle fusionnés sur un petit conseil, bouton « Question suivante » sous le pli, bouton « ? » (guide Valorant) et œil « sans spoil » sur un vote, source citée à tort (Assemblée au lieu du ministère), icône de manette pour la politique.
+- [ ] **Sur le NAS — reporté (action de l'utilisateur)** : rejouer les migrations (démarrage de l'API), `pnpm db:seed` inchangé ; la première ingestion télécharge ~42 Mo puis ~15 Mo (élections), prévoir 1 à 2 minutes ; vérifier la mémoire du worker.
+- [x] **Analyseur de la présidentielle** (2026-10-08) : `packages/providers/src/elections/presidential.ts`, écrit et testé sur les **vrais fichiers de la présidentielle 2022** du ministère (France entière + 107 départements du 1ᵉʳ tour : la somme des voix de Macron dans les départements retombe exactement sur le total national, 9 783 058). Le jeu de données de 2027 est **retrouvé par recherche** (`matchElectionDataset` : ministère de l'Intérieur, année, tour) à partir de la veille du scrutin, sans identifiant écrit en dur ; la lecture reste bloquée avant 20 h.
+- [x] **Soirée électorale nationale** : carte « France entière » (participation, candidats dans l'ordre des voix, sans sièges) puis liste des départements ; `ElectionOverviewDto.national`. Pas de carte géographique (reportée).
+- [x] **Bureaux dépouillés** : fichier par bureau des municipales (10 à 37 Mo, relu toutes les 5 min le soir même), affichés **pendant le dépouillement seulement** (en final, un bureau sans votant ferait croire à un retard : Lyon 313 sur 314).
+- [ ] **À vérifier un soir de vrai dépouillement — reporté, aucun avant le 18 avril 2027** (seul l'adaptateur des municipales a tourné en réel, sur des fichiers déjà définitifs) : les fichiers provisoires de 2027 ont-ils la même forme que les définitifs de 2022 (noms `…-fe-t1-…` / `…-dpt-t1-…`) ? Un bureau pas encore dépouillé figure-t-il dans le fichier avec des zéros ? À défaut d'un scrutin partiel, rejouer une soirée en faisant servir les fichiers de 2022 par un faux serveur.
+- [ ] Relecture de la règle de neutralité et des textes du quiz par une personne extérieure — reporté (démarche à faire avec les relecteurs de la bêta).
+
+---
+
+## J30 — Partis politiques : programmes et votes (idée du 2026-10-08, **à cadrer**)
+
+**Demande** : une section « parti politique » avec le programme de chaque parti, découpé par thème (économie, écologie, jeunesse…) de façon **éducative et factuelle**, et la comparaison des promesses avec les votes du parti ces dernières années, par sujet.
+
+**Difficultés repérées** (à trancher au cadrage, avant tout code)
+- Les programmes n'existent pas en données ouvertes : textes protégés et partisans ; la règle 9 interdit de les résumer librement.
+- Les votes de l'Assemblée n'ont pas de thème officiel : il faudrait les classer (règles publiques et affichées, chaque vote ouvrable).
+- Une comparaison peut passer pour un verdict : **aucun verdict** (« tenue » / « non tenue »), seulement le côte à côte.
+
+**Pistes proposées**
+- Fiche d'un parti = groupe parlementaire officiel (nom, membres, historique de votes) : tout vient des données ouvertes du J29.
+- Programme : par thème, **lien vers le passage officiel** du programme et courte citation fidèle, sourcée et datée, écrite avec l'utilisateur et non générée ; ou source ouverte structurée (Manifesto Project, couvre la France jusqu'en 2022).
+- Comparaison : engagement cité à gauche, votes du groupe sur le thème à droite (pour / contre / abstention, lien vers chaque scrutin).
+- Périmètre : les 12 groupes de l'Assemblée d'abord, puis les candidats de 2027 à la sortie de leurs programmes.
+
+**Questions ouvertes** : qui écrit les extraits ; aucun verdict, confirmé ? ; les 8 thèmes proposés (économie, écologie, santé, éducation et jeunesse, sécurité, immigration, institutions, international). Autres idées pour la suite de la politique : `docs/06`, section « Politique : idées pour plus tard ».
 
 ---
 
 ## Prochains jalons (tri du 2026-10-04)
 
-Ordre décidé : **J21** correctifs avant les playoffs · **J22** refonte de la densité · **J23** League of Legends · **J17** web pour les amis (+ admin, retours, analytics) · **J24** Discussion · **J25** pick'em et économie de récompenses · **J26** diffusion et co-streamers · **J27** Smash Ultimate · **J28** sport (F1 d'abord) · **J29** politique. Contenu détaillé (idées `#…`) dans `docs/06-idees-a-trier.md`, section « Tri décidé » ; chaque jalon se cadre dans sa discussion.
+**Point au 2026-10-08** : J21 à J25, J27 et J28 faits, J29 en fin de vérification. **Restent : J17 (Windows et web pour les amis, sauté car sa section est plus haut dans ce fichier, entre J18 et J19), J26 (diffusion et co-streamers), et la vérification à l'écran du J18.** Ordre proposé : J17 après la clôture du J29, puis J26.
+
+Ordre décidé : **J21** correctifs avant les playoffs · **J22** refonte de la densité · **J23** League of Legends · **J17** web pour les amis (+ admin, retours, analytics) · **J24** Discussion · **J25** pick'em et économie de récompenses · **J26** diffusion et co-streamers · **J27** Smash Ultimate · **J28** sport (F1 d'abord) · **J29** politique (fait) · **J30** partis politiques (à cadrer). Contenu détaillé (idées `#…`) dans `docs/06-idees-a-trier.md`, section « Tri décidé » ; chaque jalon se cadre dans sa discussion.
 
 ## Ensuite (par ordre de priorité proposé, antérieur au tri du 2026-10-04)
 

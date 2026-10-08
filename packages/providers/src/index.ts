@@ -11,3 +11,7 @@ export { normalizeSet as normalizeStartGgSet, normalizeStructure as normalizeSta
 export { PHASE_SETS_QUERY as START_GG_PHASE_SETS_QUERY, PHASE_LINKS_QUERY as START_GG_PHASE_LINKS_QUERY } from "./startgg/queries";
 export * from "./jolpica/client";
 export * from "./jolpica/provider";
+export * from "./assemblee/client";
+export * from "./assemblee/provider";
+export * from "./elections/client";
+export * from "./elections/provider";

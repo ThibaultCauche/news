@@ -1,11 +1,13 @@
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
-import { buildMatchStakes, buildSwissMatchStakes, moreStreamersUrl, StreamDTO } from "@news/domain";
+import { buildMatchStakes, buildSwissMatchStakes, ELECTION_RESULT_KIND, ElectionResult, moreStreamersUrl, StreamDTO, VOTE_KIND, VoteResult } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { eventSummaryInclude, EventSummaryDto, toEventSummary } from "../common/event-summary.mapper";
 import { PRISMA } from "../db/db.module";
+import { ElectionDto, toElectionDto } from "../politics/elections.dto";
+import { toVoteDto, ScrutinDto } from "../politics/politics.dto";
 
 const TTL_SECONDS = 20;
 const RECENT_FORM_LIMIT = 5;
@@ -91,6 +93,10 @@ export class EventDetailResponseDto extends EventSummaryDto {
   /** Classement complet d'une session de F1 ; vide pour un duel et tant que la source n'a rien publié. */
   @ApiProperty({ type: [ClassificationRowDto] }) classification!: ClassificationRowDto[];
   @ApiProperty({ type: EventContextDto }) context!: EventContextDto;
+  /** Détail d'un vote de l'Assemblée (J29) : décompte et position de chaque groupe ; absent pour un match ou une session. */
+  @ApiProperty({ nullable: true, type: ScrutinDto }) vote!: ScrutinDto | null;
+  /** Résultat d'un territoire à une élection (J29c) ; son `result` brut est vide, et `election.result` absent tant que le blocage de 20 h court. */
+  @ApiProperty({ nullable: true, type: ElectionDto }) election!: ElectionDto | null;
 }
 
 // "Pourquoi ce match compte" n'a de sens que pour un format à élimination : une
@@ -132,10 +138,13 @@ export class EventsService {
       sourceUpdatedAt: event.updatedAt.toISOString(),
       streams: await this.buildStreams(event.streams),
       moreStreamersUrl: moreStreamersUrl(event.competition.game),
-      result: event.result,
+      // Un résultat d'élection ne sort jamais en brut : `election` applique le blocage de 20 h (article L52-2).
+      result: event.kind === ELECTION_RESULT_KIND ? {} : event.result,
+      election: event.kind === ELECTION_RESULT_KIND && event.result ? toElectionDto(event.result as unknown as ElectionResult, new Date()) : null,
       maps: await this.buildMaps(event.result, event.participants.map((p) => p.entityId)),
       classification: this.buildClassification(event.result, event.participants),
-      context: await this.buildContext(event),
+      context: event.kind === VOTE_KIND || event.kind === ELECTION_RESULT_KIND ? { stakes: null, recentForm: [], headToHead: null } : await this.buildContext(event),
+      vote: event.kind === VOTE_KIND && event.result ? toVoteDto(event.result as unknown as VoteResult, { id: event.competition.id, name: event.competition.name }) : null,
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);
     return response;

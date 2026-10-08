@@ -1,7 +1,9 @@
 import { BullModule } from "@nestjs/bullmq";
 import { Module } from "@nestjs/common";
-import { JolpicaProvider, PandaScoreProvider, StartGgProvider } from "@news/providers";
+import { AssembleeProvider, ElectionsProvider, JolpicaProvider, PandaScoreProvider, StartGgProvider } from "@news/providers";
+import { ASSEMBLEE_PROVIDER, AssembleeModule } from "../assemblee/assemblee.module";
 import { DbModule } from "../db/db.module";
+import { ELECTIONS_PROVIDER, ElectionsModule } from "../elections/elections.module";
 import { EventBusModule } from "../events/event-bus.module";
 import { JOLPICA_PROVIDER, JolpicaModule } from "../jolpica/jolpica.module";
 import { PANDASCORE_PROVIDER, PandaScoreModule } from "../pandascore/pandascore.module";
@@ -14,12 +16,18 @@ import { IngestionService } from "./ingestion.service";
 import { INGESTION_PROVIDERS, IngestionProviders } from "./providers";
 
 @Module({
-  imports: [DbModule, PandaScoreModule, StartGgModule, JolpicaModule, EventBusModule, BullModule.registerQueue({ name: QUEUE_NAME })],
+  imports: [DbModule, PandaScoreModule, StartGgModule, JolpicaModule, AssembleeModule, ElectionsModule, EventBusModule, BullModule.registerQueue({ name: QUEUE_NAME })],
   providers: [
     {
       provide: INGESTION_PROVIDERS,
-      useFactory: (pandascore: PandaScoreProvider, startgg: StartGgProvider | null, jolpica: JolpicaProvider): IngestionProviders => ({ pandascore, ...(startgg ? { startgg } : {}), jolpica }),
-      inject: [PANDASCORE_PROVIDER, STARTGG_PROVIDER, JOLPICA_PROVIDER],
+      useFactory: (pandascore: PandaScoreProvider, startgg: StartGgProvider | null, jolpica: JolpicaProvider, assemblee: AssembleeProvider, elections: ElectionsProvider): IngestionProviders => ({
+        pandascore,
+        ...(startgg ? { startgg } : {}),
+        jolpica,
+        assemblee,
+        elections,
+      }),
+      inject: [PANDASCORE_PROVIDER, STARTGG_PROVIDER, JOLPICA_PROVIDER, ASSEMBLEE_PROVIDER, ELECTIONS_PROVIDER],
     },
     IngestionService,
     IngestionProcessor,

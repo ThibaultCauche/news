@@ -211,6 +211,7 @@ class _SettingsBody extends ConsumerWidget {
               _StaticRow(label: "E-sport", caption: "Données PandaScore"),
               _StaticRow(label: "Smash Ultimate", caption: "Données start.gg"),
               _StaticRow(label: "Formule 1", caption: "Données Jolpica-F1, licence Apache 2.0"),
+              _StaticRow(label: "Politique", caption: "Open data de l'Assemblée nationale, Licence ouverte 2.0"),
               Divider(height: AppSpacing.lg),
               _StaticRow(label: "Contexte des compétitions", caption: "Liquipedia, licence CC-BY-SA"),
             ],

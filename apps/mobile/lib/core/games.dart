@@ -6,6 +6,7 @@ const _gameNames = {
   "league-of-legends": "League of Legends",
   "super-smash-bros-ultimate": "Super Smash Bros. Ultimate",
   "formula-1": "Formule 1",
+  "assemblee-nationale": "Assemblée nationale",
 };
 
 /// Jeux qui ont un guide « l'essentiel en une page » (`assets/learn/<slug>.json`), dans l'ordre où l'Accueil les propose.
@@ -21,4 +22,4 @@ bool gameIsSolo(String? slug) => slug == "super-smash-bros-ultimate";
 bool gameIsSport(String? slug) => slug == "formula-1";
 
 /// Catégorie d'un jeu (slug de `category` côté API) : « sport » ou « esport » (J28, #M6). Miroir de `categoryOfGame`.
-String gameCategory(String? slug) => gameIsSport(slug) ? "sport" : "esport";
+String gameCategory(String? slug) => slug == "assemblee-nationale" ? "politique" : gameIsSport(slug) ? "sport" : "esport";
