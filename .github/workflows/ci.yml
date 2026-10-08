@@ -113,15 +113,15 @@ jobs:
         working-directory: apps/mobile
 
       # Version web (J17), servie par l'API (`WEB_DIR`, voir docs/05) : à télécharger depuis l'artefact `web`
-      # et à déposer dans le dossier `web/` du NAS. Les valeurs Firebase du web sont publiques.
+      # et à déposer dans le dossier `web/` du NAS. Valeurs Firebase du web : variables du dépôt (Settings > Variables).
       - run: >
           flutter build web --release --no-wasm-dry-run --base-href /news/
           --dart-define=API_BASE_URL=/news
-          --dart-define=FIREBASE_WEB_API_KEY=AIzaSyC_zXesTvPHTZ9VDq2tA2d9F5SImgd7Yb0
-          --dart-define=FIREBASE_WEB_APP_ID=1:93449649497:web:cdc2f6fd5bb68b2e49a048
-          --dart-define=FIREBASE_WEB_SENDER_ID=93449649497
-          --dart-define=FIREBASE_WEB_PROJECT_ID=news-39844
-          --dart-define=FIREBASE_WEB_AUTH_DOMAIN=news-39844.firebaseapp.com
+          --dart-define=FIREBASE_WEB_API_KEY=${{ vars.FIREBASE_WEB_API_KEY }}
+          --dart-define=FIREBASE_WEB_APP_ID=${{ vars.FIREBASE_WEB_APP_ID }}
+          --dart-define=FIREBASE_WEB_SENDER_ID=${{ vars.FIREBASE_WEB_SENDER_ID }}
+          --dart-define=FIREBASE_WEB_PROJECT_ID=${{ vars.FIREBASE_WEB_PROJECT_ID }}
+          --dart-define=FIREBASE_WEB_AUTH_DOMAIN=${{ vars.FIREBASE_WEB_AUTH_DOMAIN }}
         working-directory: apps/mobile
 
       - uses: actions/upload-artifact@v4
