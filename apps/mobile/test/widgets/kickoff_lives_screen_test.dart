@@ -9,6 +9,7 @@ CompetitionStandingDto _standing({required String entityId, required String name
   return CompetitionStandingDto((b) => b
     ..entityId = entityId
     ..entityName = name
+    ..entityKind = "team"
     ..rank = 4 - livesLeft
     ..livesLeft = livesLeft
     ..qualified = qualified);

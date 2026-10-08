@@ -5,7 +5,15 @@ export const GAME_NAMES: Record<string, string> = {
   valorant: "Valorant",
   "league-of-legends": "League of Legends",
   "super-smash-bros-ultimate": "Super Smash Bros. Ultimate",
+  "formula-1": "Formule 1",
 };
+
+// Catégorie d'un jeu ou d'un sport (J28) : tout ce qui n'est pas listé ici est de l'e-sport.
+const SPORT_GAMES = new Set(["formula-1"]);
+
+export function categoryOfGame(slug: string | null): { slug: string; name: string } {
+  return slug && SPORT_GAMES.has(slug) ? { slug: "sport", name: "Sport" } : { slug: "esport", name: "E-sport" };
+}
 
 export function isKnownGame(slug: string): boolean {
   return Object.prototype.hasOwnProperty.call(GAME_NAMES, slug);

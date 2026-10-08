@@ -13,6 +13,7 @@ import "../../widgets/compact_match_row.dart";
 import "../../widgets/event_card.dart";
 import "../../widgets/follow_button.dart";
 import "../../widgets/section_card.dart";
+import "../formula1/f1_widgets.dart" show ChampionshipEntityBody;
 import "../../widgets/section_label.dart";
 import "../follows/follows_provider.dart";
 import "../discussion/share_sheet.dart";
@@ -54,6 +55,8 @@ class TeamScreen extends ConsumerWidget {
         actions: [const LearnHelpButton(articleId: "fiche-equipe", game: "app"), ShareButton(kind: ShareDtoKindEnum.team, refId: entityId)],
       ),
       body: switch (entity) {
+        // Un pilote ou une écurie a un classement de championnat, pas un bilan de matchs (J28).
+        _ when entity.hasValue && (entity.value!.kind == "driver" || entity.value!.kind == "constructor") => ChampionshipEntityBody(entity: entity.value!, scoresHidden: scoresHidden),
         _ when entity.hasValue => _TeamBody(entity: entity.value!, scoresHidden: scoresHidden),
         AsyncError() => ErrorState(message: "Impossible de charger cette fiche.", onRetry: () => ref.invalidate(entityProvider(entityId))),
         _ => const SkeletonCards(count: 3, height: 120),

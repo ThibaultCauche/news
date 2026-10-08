@@ -13,6 +13,7 @@ import "live_badge.dart";
 import "match_visuals.dart";
 import "ornate_frame.dart";
 import "spoiler_hold.dart";
+import "../features/formula1/f1_widgets.dart" show SessionPodium;
 
 /// Ligne de match compacte des listes (J22, #A2) : heure ou statut à gauche, les deux équipes
 /// l'une sous l'autre avec leur logo et leur score, cloche à droite avant le match. 56 px de haut :
@@ -78,7 +79,16 @@ class CompactMatchRow extends ConsumerWidget {
       );
     }
 
-    final body = teams.length != 2
+    // Une session de F1 (J28) : son nom, et le podium une fois terminée (flouté en sans spoil, comme un score).
+    final body = event.kind == "session"
+        ? Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(event.name, style: AppTextStyles.bodyLargeStrong, maxLines: 1, overflow: TextOverflow.ellipsis),
+              if (finished && teams.isNotEmpty) SessionPodium(event: event, style: const TextStyle(color: AppColors.textSecondary, fontSize: AppTypography.caption, fontWeight: FontWeight.w600)),
+            ],
+          )
+        : teams.length != 2
         ? Text(event.name, style: AppTextStyles.bodyLargeStrong, overflow: TextOverflow.ellipsis)
         : (blur ? SpoilerHold(builder: (context, sigma) => rows(sigma), onReveal: () => ref.read(revealedEventsProvider.notifier).reveal(event.id)) : rows(0));
 

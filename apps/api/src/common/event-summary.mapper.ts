@@ -64,7 +64,9 @@ export function toEventSummary(event: EventWithRelations): EventSummaryDto {
       game: event.competition.game ?? null,
       tournamentName: event.competition.parent?.name ?? null,
     },
-    participants: event.participants.map((p) => ({
+    // Une session de F1 compte une vingtaine de pilotes : les listes n'en montrent que le podium (J28), le détail
+    // de l'événement porte le classement complet.
+    participants: (event.kind === "session" ? event.participants.slice(0, 3) : event.participants).map((p) => ({
       entityId: p.entityId,
       name: p.entity.name,
       shortName: p.entity.shortName,

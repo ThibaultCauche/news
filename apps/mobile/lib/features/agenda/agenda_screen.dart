@@ -15,6 +15,7 @@ import "../../widgets/async_view.dart";
 import "../../widgets/compact_match_row.dart";
 import "../../widgets/match_context.dart";
 import "../follows/follows_provider.dart";
+import "../home/home_screen.dart" show favoriteCategoryProvider;
 import "../next_match/next_match_screen.dart";
 
 typedef AgendaQuery = ({DateTime from, DateTime to, String? category, String? leagueIds, bool mine});
@@ -90,6 +91,9 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
     if (widget.leagueIds != null) return;
     final store = ref.read(authStoreProvider);
     _selectedCategories.addAll((store.agendaCategory ?? "").split(",").where((c) => c.isNotEmpty));
+    // Première ouverture, filtre jamais touché : l'Agenda s'ouvre sur la catégorie la plus suivie (J28, #M6).
+    final favorite = ref.read(favoriteCategoryProvider);
+    if (!store.agendaFilterTouched && favorite != null && _selectedCategories.isEmpty) _selectedCategories.add(favorite);
     final leagueIds = store.agendaLeagueIds;
     if (leagueIds != null && leagueIds.isNotEmpty) _selectedLeagueIds = leagueIds.split(",").toSet();
     _mineChoice = store.agendaMine;
@@ -239,6 +243,11 @@ class _AgendaScreenState extends ConsumerState<AgendaScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Filtre jamais touché : la catégorie la plus suivie s'applique dès qu'on la connaît (J28, #M6).
+    ref.listen(favoriteCategoryProvider, (_, favorite) {
+      final untouched = widget.leagueIds == null && !ref.read(authStoreProvider).agendaFilterTouched && _selectedCategories.isEmpty;
+      if (favorite != null && untouched) setState(() => _selectedCategories.add(favorite));
+    });
     // Nouveau jour : la semaine et la sélection reprennent aujourd'hui.
     final today = ref.watch(todayProvider);
     if (today != _today) {

@@ -3,6 +3,9 @@ import { Inject, Injectable } from "@nestjs/common";
 import { PrismaClient } from "@news/db";
 import {
   buildNotificationText,
+  isPracticeSession,
+  notificationSubject,
+  sessionHasWinner,
   competitionSpecificity,
   createLogger,
   DomainEventMessage,
@@ -45,12 +48,24 @@ export class NotificationDispatchService {
 
     const event = await this.prisma.event.findUnique({
       where: { id: message.eventId },
-      include: { competition: { select: { id: true, categoryId: true } }, participants: { include: { entity: { select: { name: true, imageUrl: true } } }, orderBy: { side: "asc" } } },
+      include: { competition: { select: { id: true, name: true, categoryId: true } }, participants: { include: { entity: { select: { name: true, imageUrl: true } } }, orderBy: { side: "asc" } } },
     });
     if (!event) return;
 
-    const winnerName = event.participants.find((p) => p.isWinner)?.entity.name ?? null;
+    // F1 (J28) : seule une course ou un sprint a un vainqueur ; les qualifications ont une pole, pas une victoire.
+    const hasWinner = event.kind !== "session" || sessionHasWinner(event.name);
+    const winnerName = hasWinner ? (event.participants.find((p) => p.isWinner)?.entity.name ?? null) : null;
+    const subject = notificationSubject(event, event.competition.name);
+    // Les essais libres n'ont ni classement ni enjeu : seul qui les a demandés (la cloche d'une session) est prévenu.
+    const practice = event.kind === "session" && isPracticeSession(event.name);
     const entityIds = event.participants.map((p) => p.entityId);
+    // F1 (J28) : une écurie n'est pas un participant, mais le classement d'une session dit laquelle a roulé ;
+    // qui la suit est prévenu du résultat comme qui suit un de ses pilotes.
+    const constructorRefs = (event.result as { rows?: { constructorId?: string }[] } | null)?.rows?.flatMap((r) => (r.constructorId ? [`constructor:${r.constructorId}`] : [])) ?? [];
+    if (constructorRefs.length > 0) {
+      const refs = await this.prisma.providerRef.findMany({ where: { objectType: "entity", externalId: { in: [...new Set(constructorRefs)] } }, select: { objectId: true } });
+      entityIds.push(...refs.map((r) => r.objectId));
+    }
     const chain = await this.getCompetitionChain(event.competition.id);
     const competitionIds = chain.map((c) => c.id);
     // Famille de la série du match (J10) : rang dans la chaîne, pour la précision de la règle.
@@ -93,6 +108,7 @@ export class NotificationDispatchService {
     }
 
     for (const sub of subscriptions) {
+      if (practice && sub.targetType !== "event") continue;
       const subEnabled = type === "reminder" ? sub.notifyReminder : type === "start" || type === "called" ? sub.notifyStart : sub.notifyResult;
       // Le rappel T-15 absorbe l'ancien rappel de pronostic (J21) : sans pronostic, il part même si le
       // rappel simple est coupé, avec la phrase qui le dit.
@@ -121,7 +137,7 @@ export class NotificationDispatchService {
         throw err;
       }
 
-      const { title, body } = buildNotificationText(type, event.name, sub.user.setting?.spoilerFree ?? false, winnerName, needsPrediction);
+      const { title, body } = buildNotificationText(type, subject, sub.user.setting?.spoilerFree ?? false, winnerName, needsPrediction);
       // Un tag par match : rappel, début et résultat se remplacent dans le volet (J21). Plusieurs matchs
       // qui commencent ensemble restent une notification chacun (la sienne remplace son rappel) :
       // Android les range lui-même sous « Keryx ».

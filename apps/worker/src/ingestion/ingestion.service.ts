@@ -3,6 +3,7 @@ import { Inject, Injectable } from "@nestjs/common";
 import { Prisma, PrismaClient } from "@news/db";
 import {
   BracketFormat,
+  categoryOfGame,
   CompetitionDTO,
   buildSwissMatchStakes,
   computeIngestionLatencyMs,
@@ -21,6 +22,7 @@ import {
   isSwissMatchName,
   organizationKey,
   shouldUpsert,
+  StandingDTO,
   StandingMatchInput,
   standingsOptionsFor,
 } from "@news/domain";
@@ -29,7 +31,6 @@ import { EventBusService } from "../events/event-bus.service";
 import { INGESTION_PROVIDERS, IngestionProvider, IngestionProviders } from "./providers";
 import { commitProviderRef, findProviderRef, upsertByProviderRef } from "./provider-ref.repository";
 
-const CATEGORY_SLUG = "esport";
 const PROVIDER_PAYLOAD_RETENTION_DAYS = 7;
 
 // Au moins un lien de bracket n'a pas pu être résolu ce passage (match source
@@ -51,7 +52,7 @@ const logger = createLogger("worker:ingestion");
 // Un adaptateur par fournisseur (PandaScore, start.gg au J27), chacun avec son propre quota.
 @Injectable()
 export class IngestionService {
-  private categoryId: string | null = null;
+  private readonly categoryIds = new Map<string, string>();
 
   constructor(
     @Inject(PRISMA) private readonly prisma: PrismaClient,
@@ -59,19 +60,18 @@ export class IngestionService {
     private readonly eventBus: EventBusService,
   ) {}
 
-  private async getCategoryId(): Promise<string> {
-    if (this.categoryId) return this.categoryId;
-    const category = await this.prisma.category.upsert({
-      where: { slug: CATEGORY_SLUG },
-      create: { id: randomUUID(), slug: CATEGORY_SLUG, name: "E-sport" },
-      update: {},
-    });
-    this.categoryId = category.id;
+  // Catégorie de la compétition, selon son jeu ou son sport (« E-sport » par défaut, « Sport » pour la F1, J28).
+  private async getCategoryId(game: string | null): Promise<string> {
+    const { slug, name } = categoryOfGame(game);
+    const known = this.categoryIds.get(slug);
+    if (known) return known;
+    const category = await this.prisma.category.upsert({ where: { slug }, create: { id: randomUUID(), slug, name }, update: {} });
+    this.categoryIds.set(slug, category.id);
     return category.id;
   }
 
   private async upsertCompetition(dto: CompetitionDTO): Promise<void> {
-    const categoryId = await this.getCategoryId();
+    const categoryId = await this.getCategoryId(dto.game);
     let parentId: string | null = null;
     if (dto.parentExternalId) {
       const parentRef = await findProviderRef(this.prisma, dto.provider, "competition", dto.parentExternalId);
@@ -115,7 +115,7 @@ export class IngestionService {
           endsAt: dto.endsAt,
           importance: dto.importance,
         };
-        const dataWithBracket = { ...data, hasBracket: dto.hasBracket };
+        const dataWithBracket = { ...data, hasBracket: dto.hasBracket, location: dto.location ?? null };
         if (existingId) {
           await this.prisma.competition.update({ where: { id: existingId }, data: dataWithBracket });
           return existingId;
@@ -330,7 +330,40 @@ export class IngestionService {
         await this.upsertEvent(dto);
       }
       logger.info({ provider: name, count: events.length, quota: provider.quota.getUsageRatio() }, "calendrier ingéré");
+      await this.syncProviderStandings(name, provider);
     });
+  }
+
+  // Classements donnés par la source (F1, J28) : écrits tels quels, sans recalcul depuis nos matchs.
+  private async syncProviderStandings(name: string, provider: IngestionProvider): Promise<void> {
+    if (!provider.listStandings) return;
+    const rows = await provider.listStandings();
+    const byCompetition = new Map<string, StandingDTO[]>();
+    for (const row of rows) byCompetition.set(row.competitionExternalId, [...(byCompetition.get(row.competitionExternalId) ?? []), row]);
+    for (const [externalId, list] of byCompetition) {
+      const competitionRef = await findProviderRef(this.prisma, name, "competition", externalId);
+      if (!competitionRef) continue;
+      const competitionId = competitionRef.objectId;
+      const { changed } = await upsertByProviderRef(this.prisma, {
+        provider: name,
+        objectType: "standing",
+        externalId,
+        raw: list,
+        write: async () => {
+          for (const row of list) {
+            const entityId = await this.upsertEntity(row.entity, competitionId);
+            await this.prisma.standing.upsert({
+              where: { competitionId_entityId: { competitionId, entityId } },
+              create: { id: randomUUID(), competitionId, entityId, rank: row.rank, points: row.points, wins: row.wins },
+              update: { rank: row.rank, points: row.points, wins: row.wins },
+            });
+          }
+          return competitionId;
+        },
+      });
+      if (changed) await this.eventBus.publish({ type: "StandingChanged", competitionId });
+    }
+    logger.info({ provider: name, count: rows.length }, "classements de la source ingérés");
   }
 
   // Matchs en cours : rythme rapide, toujours exécuté (règle 5 de CLAUDE.md).

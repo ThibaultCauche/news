@@ -234,6 +234,25 @@ void main() {
     expect(find.text("FNC"), findsOneWidget);
   });
 
+  testWidgets("une session de F1 terminée sans classement (essais libres) n'encombre pas « tes suivis » (J28)", (tester) async {
+    final n = DateTime.now();
+    final earlier = DateTime(n.year, n.month, n.day, 0, 5);
+    EventSummaryDto session(String id, String name) => EventSummaryDto((e) => e
+      ..id = id
+      ..kind = "session"
+      ..name = name
+      ..status = "finished"
+      ..startsAt = earlier.toUtc().toIso8601String()
+      ..importance = 0
+      ..competition.replace(CompetitionRefDto((c) => c
+        ..id = "gp"
+        ..name = "Singapore Grand Prix"
+        ..game = "formula-1")));
+    await _pump(tester, _home(todayFollowed: [session("fp", "Essais libres 1")]));
+    expect(find.text("Essais libres 1"), findsNothing);
+    await tester.pumpWidget(const SizedBox());
+  });
+
   testWidgets("match suivi dans moins d'une heure : pastille avec compte à rebours (J22)", (tester) async {
     final soon = DateTime.now().add(const Duration(minutes: 30));
     await _pump(tester, _home(todayFollowed: [_match("s1", "scheduled", "FNC", "G2", startsAt: soon)]));

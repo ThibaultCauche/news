@@ -9,6 +9,7 @@ import "../../core/navigation.dart";
 import "../../theme/tokens.dart";
 import "../../widgets/game_logo.dart";
 import "../bracket/bracket_provider.dart";
+import "../home/home_screen.dart" show favoriteCategoryProvider;
 import "competitions_data.dart";
 import "game_screen.dart";
 import "league_screen.dart";
@@ -91,6 +92,9 @@ class _Browse extends ConsumerWidget {
     final favorites = ref.watch(favoriteGamesProvider).value ?? const <String>[];
     final favoriteCompetitions = ref.watch(favoriteCompetitionsProvider).value ?? const <FavoriteCompetitionDto>[];
     final live = liveSeries(catalog);
+    // La catégorie la plus suivie s'ouvre d'office, et passe en premier (J28, #M6) ; les autres restent repliées.
+    final favoriteCategory = ref.watch(favoriteCategoryProvider);
+    final categories = [...catalog.categories]..sort((a, b) => (b.slug == favoriteCategory ? 1 : 0).compareTo(a.slug == favoriteCategory ? 1 : 0));
     final allGames = [for (final c in catalog.categories) ...c.games];
     final favoriteGames = [
       for (final g in allGames)
@@ -141,12 +145,15 @@ class _Browse extends ConsumerWidget {
           ),
           const SizedBox(height: AppSpacing.md),
         ],
-        for (final category in catalog.categories)
+        for (final category in categories)
           FramedCard(
             margin: const EdgeInsets.only(bottom: 14),
             child: Theme(
               data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
               child: ExpansionTile(
+                // La clé suit la catégorie favorite : connue après coup, elle doit rouvrir l'accordéon au bon endroit.
+                key: ValueKey("${category.slug}-$favoriteCategory"),
+                initiallyExpanded: category.slug == favoriteCategory,
                 title: Text(category.name, style: const TextStyle(fontWeight: FontWeight.w600)),
                 children: [
                   for (final game in category.games)

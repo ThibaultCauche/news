@@ -1,7 +1,7 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
-import { buildMatchStakes } from "@news/domain";
+import { buildMatchStakes, categoryOfGame, CategoryCounts, favoriteCategory, pickSuggestion } from "@news/domain";
 import { CacheKeys } from "../cache/cache-keys";
 import { CacheService } from "../cache/cache.service";
 import { eventSummaryInclude, EventSummaryDto, toEventSummary } from "../common/event-summary.mapper";
@@ -44,6 +44,18 @@ export class MajorCompetitionDto {
   @ApiProperty({ nullable: true, type: String }) startsAt!: string | null;
 }
 
+// Catégorie à découvrir (J28, #M6) : un grand rendez-vous d'une catégorie que la personne ne suit pas encore.
+// L'appli en fait une phrase par gabarit (« en cours » ou « commence le… ») et plafonne l'affichage à une fois par semaine.
+export class HomeSuggestionDto {
+  @ApiProperty() category!: string;
+  @ApiProperty() categoryName!: string;
+  @ApiProperty() competitionId!: string;
+  @ApiProperty() competitionName!: string;
+  @ApiProperty({ nullable: true, type: String }) game!: string | null;
+  @ApiProperty() live!: boolean;
+  @ApiProperty({ nullable: true, type: String }) startsAt!: string | null;
+}
+
 export class HomeResponseDto {
   @ApiProperty() sourceUpdatedAt!: string;
   @ApiProperty({ type: [EventSummaryDto] }) liveNow!: EventSummaryDto[];
@@ -54,6 +66,9 @@ export class HomeResponseDto {
   @ApiProperty({ type: [FollowStateDto] }) follows!: FollowStateDto[];
   // Matchs des suivis autour d'aujourd'hui (J22) ; l'appli garde ceux du jour local.
   @ApiProperty({ type: [EventSummaryDto] }) todayFollowed!: EventSummaryDto[];
+  // Catégorie la plus suivie (slug), `null` sans préférence nette (J28, #M6) : l'Accueil, l'Agenda et Compétitions s'ouvrent dessus.
+  @ApiProperty({ nullable: true, type: String }) favoriteCategory!: string | null;
+  @ApiProperty({ nullable: true, type: HomeSuggestionDto }) suggestion!: HomeSuggestionDto | null;
 }
 
 // Les blocs partagés (en direct, à venir, grands rendez-vous) restent en cache
@@ -74,11 +89,51 @@ export class HomeService {
     const now = Date.now();
     const todayFollowed = userId ? await this.subscriptions.listEventsInWindow(userId, new Date(now - TODAY_BEFORE_MS), new Date(now + TODAY_AFTER_MS)) : [];
     const nowForYou = follows.find((f) => f.currentEvent?.status === "live")?.currentEvent ?? follows.find((f) => f.currentEvent)?.currentEvent ?? null;
-    return { ...shared, nowForYou, follows, todayFollowed };
+    const counts = userId ? await this.categoryCounts(userId, follows) : {};
+    const candidate = pickSuggestion(
+      counts,
+      shared.majors.map((m) => ({ ...m, category: categoryOfGame(m.game).slug })),
+    );
+    const suggestion = candidate
+      ? { category: candidate.category, categoryName: categoryOfGame(candidate.game).name, competitionId: candidate.id, competitionName: candidate.name, game: candidate.game, live: candidate.live, startsAt: candidate.startsAt }
+      : null;
+    return { ...shared, nowForYou, follows, todayFollowed, favoriteCategory: favoriteCategory(counts), suggestion };
   }
 
-  private async getSharedBlocks(): Promise<Omit<HomeResponseDto, "nowForYou" | "follows" | "todayFollowed">> {
-    const cached = await this.cache.get<Omit<HomeResponseDto, "nowForYou" | "follows" | "todayFollowed">>(CacheKeys.home());
+  // Combien de suivis et de favoris la personne a par catégorie (slug) : une équipe ou un match compte pour la
+  // catégorie de sa compétition, un jeu favori pour la sienne (J28, #M6).
+  private async categoryCounts(userId: string, follows: FollowStateDto[]): Promise<CategoryCounts> {
+    const ids = (type: string) => follows.filter((f) => f.targetType === type).map((f) => f.targetId);
+    const [favoriteGames, favoriteCompetitions, competitions, families, events, participants, categories] = await Promise.all([
+      this.prisma.favoriteGame.findMany({ where: { userId }, select: { game: true } }),
+      this.prisma.favoriteCompetition.findMany({ where: { userId }, select: { competition: { select: { categoryId: true } } } }),
+      this.prisma.competition.findMany({ where: { id: { in: ids("competition") } }, select: { categoryId: true } }),
+      this.prisma.competitionFamily.findMany({ where: { id: { in: ids("competition_family") } }, select: { league: { select: { categoryId: true } } } }),
+      this.prisma.event.findMany({ where: { id: { in: ids("event") } }, select: { competition: { select: { categoryId: true } } } }),
+      this.prisma.eventParticipant.findMany({
+        where: { entityId: { in: ids("entity") } },
+        distinct: ["entityId"],
+        select: { event: { select: { competition: { select: { categoryId: true } } } } },
+      }),
+      this.prisma.category.findMany({ select: { id: true, slug: true } }),
+    ]);
+    const slugById = new Map(categories.map((c) => [c.id, c.slug]));
+    const counts: CategoryCounts = {};
+    const add = (slug: string | undefined) => {
+      if (slug) counts[slug] = (counts[slug] ?? 0) + 1;
+    };
+    for (const id of ids("category")) add(slugById.get(id));
+    for (const c of competitions) add(slugById.get(c.categoryId));
+    for (const f of families) add(slugById.get(f.league.categoryId));
+    for (const e of events) add(slugById.get(e.competition.categoryId));
+    for (const p of participants) add(slugById.get(p.event.competition.categoryId));
+    for (const c of favoriteCompetitions) add(slugById.get(c.competition.categoryId));
+    for (const g of favoriteGames) add(categoryOfGame(g.game).slug);
+    return counts;
+  }
+
+  private async getSharedBlocks(): Promise<Omit<HomeResponseDto, "nowForYou" | "follows" | "todayFollowed" | "favoriteCategory" | "suggestion">> {
+    const cached = await this.cache.get<Omit<HomeResponseDto, "nowForYou" | "follows" | "todayFollowed" | "favoriteCategory" | "suggestion">>(CacheKeys.home());
     if (cached) return cached;
 
     const now = new Date();

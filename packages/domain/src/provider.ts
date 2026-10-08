@@ -27,6 +27,8 @@ export interface CompetitionDTO {
   importance: number;
   // Vrai si le fournisseur expose un bracket pour ce tournoi (cible le job "structure", J5).
   hasBracket: boolean;
+  // Lieu de la compétition (circuit d'un Grand Prix, J28) ; absent chez les fournisseurs d'e-sport.
+  location?: string | null;
   raw: unknown;
 }
 
@@ -73,10 +75,22 @@ export interface StructureDTO {
   links: EventLinkDTO[];
 }
 
+// Ligne de classement fournie telle quelle par la source (championnat de F1, plus tard football) : pas recalculée
+// depuis nos matchs, contrairement aux classements d'e-sport (J28).
+export interface StandingDTO {
+  competitionExternalId: string;
+  entity: EntityDTO;
+  rank: number;
+  points: number;
+  wins: number | null;
+}
+
 // Interface commune à tous les adaptateurs de fournisseur (docs/03 §3).
 export interface Provider {
   listCompetitions(window?: DateWindow): Promise<CompetitionDTO[]>;
   listEvents(window?: DateWindow): Promise<EventDTO[]>;
   getEvent(externalId: string): Promise<EventDTO>;
   getStructure?(competitionExternalId: string): Promise<StructureDTO>;
+  // Classements donnés par la source (J28) ; sans cette méthode, ils sont recalculés depuis les matchs.
+  listStandings?(): Promise<StandingDTO[]>;
 }

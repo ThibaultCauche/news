@@ -4,6 +4,7 @@ import "package:flutter/material.dart";
 import "package:flutter_riverpod/flutter_riverpod.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../../core/games.dart";
+import "../formula1/f1_widgets.dart" show F1SeasonScreen;
 import "../../core/iterable_x.dart";
 import "../../core/settings_provider.dart";
 import "../../widgets/compact_match_row.dart";
@@ -53,6 +54,8 @@ class _BracketScreenState extends ConsumerState<BracketScreen> {
   Widget build(BuildContext context) {
     final detail = ref.watch(competitionDetailProvider(widget.competitionId));
     final game = detail.value?.game ?? "valorant";
+    // Une saison de sport (J28) n'a ni tableau ni poules : sa page est celle du calendrier et des classements.
+    if (gameIsSport(game)) return F1SeasonScreen(competitionId: widget.competitionId, title: widget.title);
 
     return Scaffold(
       appBar: AppBar(

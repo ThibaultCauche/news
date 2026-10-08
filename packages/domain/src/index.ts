@@ -16,3 +16,5 @@ export * from "./ranking";
 export * from "./stage-pick";
 export * from "./pickem";
 export * from "./badges";
+export * from "./formula1";
+export * from "./affinity";

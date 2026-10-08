@@ -11,6 +11,8 @@ const _agendaCategoryKey = "agenda.category";
 const _agendaLeagueIdsKey = "agenda.leagueIds";
 const _agendaMineKey = "agenda.mine";
 const _learnChipDismissedKey = "home.learnDismissed";
+const _agendaFilterTouchedKey = "agenda.filterTouched";
+const _suggestionDismissedAtKey = "home.suggestionDismissedAt";
 // Même clé que `teamLogoPrefKey` (`local_notifications.dart`) : l'isolat des messages en arrière-plan la relit.
 const _notificationTeamLogoKey = "notif.teamLogo";
 
@@ -67,7 +69,11 @@ class AuthStore {
   String? get agendaCategory => _prefs.getString(_agendaCategoryKey);
   String? get agendaLeagueIds => _prefs.getString(_agendaLeagueIdsKey);
 
+  // Vrai dès que la personne a touché au filtre : avant, l'Agenda s'ouvre sur sa catégorie favorite (J28, #M6).
+  bool get agendaFilterTouched => _prefs.getBool(_agendaFilterTouchedKey) ?? false;
+
   Future<void> setAgendaFilter({String? category, String? leagueIds}) async {
+    await _prefs.setBool(_agendaFilterTouchedKey, true);
     if (category == null) {
       await _prefs.remove(_agendaCategoryKey);
     } else {
@@ -84,6 +90,14 @@ class AuthStore {
   bool? get agendaMine => _prefs.getBool(_agendaMineKey);
 
   Future<void> setAgendaMine(bool value) => _prefs.setBool(_agendaMineKey, value);
+
+  // Dernière fois que la suggestion d'une autre catégorie a été fermée ou ouverte : elle ne revient pas avant une semaine.
+  DateTime? get suggestionDismissedAt {
+    final millis = _prefs.getInt(_suggestionDismissedAtKey);
+    return millis == null ? null : DateTime.fromMillisecondsSinceEpoch(millis);
+  }
+
+  Future<void> dismissSuggestion(DateTime now) => _prefs.setInt(_suggestionDismissedAtKey, now.millisecondsSinceEpoch);
 
   // Puce « Nouveau sur Valorant » de l'Accueil fermée (J22).
   bool get learnChipDismissed => _prefs.getBool(_learnChipDismissedKey) ?? false;

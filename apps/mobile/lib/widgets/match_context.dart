@@ -1,11 +1,15 @@
 import "package:flutter/material.dart";
 import "package:news_api_client/news_api_client.dart";
 import "../theme/tokens.dart";
+import "../core/games.dart";
+import "../features/formula1/f1_model.dart" show grandPrixName;
 import "game_logo.dart";
 
 /// « Champions 2026 · Groupe C » : le tournoi puis l'étape (J22, #A1). Sans tournoi parent connu,
 /// le nom de la compétition seul. L'étape est en français quand l'éditeur la donne en anglais.
 String matchContextLabel(CompetitionRefDto competition) {
+  // Une session de F1 : le Grand Prix suffit, le logo du jeu dit déjà « Formule 1 » (J28).
+  if (gameIsSport(competition.game)) return grandPrixName(competition.name);
   final stage = competition.name.replaceFirst(RegExp(r"^Group "), "Groupe ");
   final tournament = competition.tournamentName;
   if (tournament == null || tournament == competition.name) return stage;

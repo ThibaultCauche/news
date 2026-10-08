@@ -1,4 +1,4 @@
-import { PARTICIPANT_ORDER } from "../common/event-summary.mapper";
+import { eventSummaryInclude, EventSummaryDto, PARTICIPANT_ORDER, toEventSummary } from "../common/event-summary.mapper";
 import { Inject, Injectable, NotFoundException } from "@nestjs/common";
 import { ApiProperty } from "@nestjs/swagger";
 import { PrismaClient } from "@news/db";
@@ -33,7 +33,12 @@ export class CompetitionChildDto {
 export class CompetitionStandingDto {
   @ApiProperty() entityId!: string;
   @ApiProperty() entityName!: string;
+  @ApiProperty({ nullable: true, type: String }) entityShortName!: string | null;
+  // team, player, driver ou constructor : un championnat de F1 mêle pilotes et écuries dans la même liste (J28).
+  @ApiProperty() entityKind!: string;
   @ApiProperty({ nullable: true, type: Number }) rank!: number | null;
+  // Points du championnat fournis par la source (F1) ; `null` pour un classement recalculé.
+  @ApiProperty({ nullable: true, type: Number }) points!: number | null;
   @ApiProperty({ nullable: true, type: Number }) wins!: number | null;
   @ApiProperty({ nullable: true, type: Number }) losses!: number | null;
   @ApiProperty({ nullable: true, type: Number }) livesLeft!: number | null;
@@ -68,6 +73,10 @@ export class CompetitionResponseDto {
   @ApiProperty({ type: [CompetitionChildDto] }) children!: CompetitionChildDto[];
   @ApiProperty({ type: [CompetitionStandingDto] }) standings!: CompetitionStandingDto[];
   @ApiProperty({ nullable: true, type: CompetitionContextDto }) context!: CompetitionContextDto | null;
+  // Lieu (circuit d'un Grand Prix, J28), `null` pour l'e-sport.
+  @ApiProperty({ nullable: true, type: String }) location!: string | null;
+  // Sessions d'un Grand Prix, dans l'ordre (J28) ; vide pour tout le reste, dont les matchs d'e-sport (écran du bracket).
+  @ApiProperty({ type: [EventSummaryDto] }) events!: EventSummaryDto[];
 }
 
 export class BracketParticipantDto {
@@ -156,7 +165,7 @@ export class CompetitionsService {
       where: { id },
       include: {
         children: true,
-        standings: { include: { entity: { select: { id: true, name: true } } }, orderBy: { rank: "asc" } },
+        standings: { include: { entity: { select: { id: true, name: true, shortName: true, kind: true } } }, orderBy: { rank: "asc" } },
       },
     });
     if (!competition) throw new NotFoundException("Compétition introuvable");
@@ -166,6 +175,11 @@ export class CompetitionsService {
       where: { targetType_targetId_kind: { targetType: "competition", targetId: id, kind: "liquipedia_intro" } },
     });
 
+    const sessions =
+      competition.kind === "tournament"
+        ? await this.prisma.event.findMany({ where: { competitionId: id, kind: "session" }, include: eventSummaryInclude, orderBy: { startsAt: "asc" } })
+        : [];
+
     const response: CompetitionResponseDto = {
       id: competition.id,
       parentId: competition.parentId,
@@ -173,6 +187,7 @@ export class CompetitionsService {
       kind: competition.kind,
       format: competition.format,
       game: competition.game,
+      location: competition.location,
       status: competition.status,
       startsAt: competition.startsAt?.toISOString() ?? null,
       endsAt: competition.endsAt?.toISOString() ?? null,
@@ -190,12 +205,16 @@ export class CompetitionsService {
       standings: competition.standings.map((s) => ({
         entityId: s.entityId,
         entityName: s.entity.name,
+        entityShortName: s.entity.shortName,
+        entityKind: s.entity.kind,
         rank: s.rank,
+        points: s.points,
         wins: s.wins,
         losses: s.losses,
         livesLeft: s.livesLeft,
         qualified: s.qualified,
       })),
+      events: sessions.map(toEventSummary),
       context: liquipedia ? { text: liquipedia.text, source: liquipedia.source ?? "Liquipedia", license: liquipedia.license ?? "CC-BY-SA" } : null,
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);

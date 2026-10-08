@@ -19,6 +19,7 @@ import "../bracket/bracket_model.dart" show liveGroupsFirst;
 import "../bracket/bracket_provider.dart";
 import "../bracket/bracket_screen.dart";
 import "../bracket/kickoff_lives_screen.dart";
+import "../formula1/f1_widgets.dart";
 import "../learn/learn_screen.dart";
 import "../learn/learn_visuals.dart";
 import "../next_match/next_match_screen.dart";
@@ -86,6 +87,16 @@ class GameScreen extends ConsumerStatefulWidget {
 class _GameScreenState extends ConsumerState<GameScreen> {
   int _tabIndex = 0;
 
+  /// Onglets d'une page sport (J28), choisis par leur libellé : Discussions et Apprendre n'y sont pas toujours.
+  Widget _sportTab(String label, CatalogGameDto game) => switch (label) {
+    "Calendrier" => F1CalendarTab(seasonId: f1SeasonId(game)),
+    "Pilotes" => F1StandingsTab(seasonId: f1SeasonId(game), constructors: false),
+    "Écuries" => F1StandingsTab(seasonId: f1SeasonId(game), constructors: true),
+    "Agenda" => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
+    "Discussions" => ForumThreadsTab(game: game.slug, gameName: game.name),
+    _ => LearnTab(game: game.slug),
+  };
+
   @override
   Widget build(BuildContext context) {
     // La frise de saison n'existe que pour Valorant : on ne l'interroge pas pour un autre jeu.
@@ -94,6 +105,10 @@ class _GameScreenState extends ConsumerState<GameScreen> {
     final game = widget.game;
     final hasLearn = ref.watch(learnGamesProvider).value?.contains(game.slug) ?? false;
     final forumEnabled = ref.watch(forumEnabledProvider);
+    // Un sport (J28) montre son calendrier et ses classements ; l'e-sport garde ses ligues et ses équipes.
+    final labels = gameIsSport(game.slug)
+        ? ["Calendrier", "Pilotes", "Écuries", "Agenda", if (forumEnabled) "Discussions", if (hasLearn) "Apprendre"]
+        : [for (final t in _tabs) t == "Équipes" && gameIsSolo(game.slug) ? "Joueurs" : t, if (forumEnabled) "Discussions", if (hasLearn) "Apprendre"];
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -112,21 +127,23 @@ class _GameScreenState extends ConsumerState<GameScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Padding(
-            padding: EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
-            child: Text("E-sport", style: TextStyle(color: AppColors.textSecondary)),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(AppSpacing.md, 0, AppSpacing.md, AppSpacing.sm),
+            child: Text(gameIsSport(game.slug) ? "Sport" : "E-sport", style: const TextStyle(color: AppColors.textSecondary)),
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.md),
-            child: _SeasonTabs(
-              labels: [for (final t in _tabs) t == "Équipes" && gameIsSolo(game.slug) ? "Joueurs" : t, if (forumEnabled) "Discussions", if (hasLearn) "Apprendre"],
+            child: SeasonTabs(
+              labels: labels,
               selectedIndex: _tabIndex,
               onSelected: (i) => setState(() => _tabIndex = i),
             ),
           ),
           const SizedBox(height: AppSpacing.md),
           Expanded(
-            child: switch (_tabIndex) {
+            child: gameIsSport(game.slug)
+                ? _sportTab(labels[_tabIndex.clamp(0, labels.length - 1)], game)
+                : switch (_tabIndex) {
               1 => LeaguesTab(game: game),
               2 => _TeamsTab(game: game),
               3 => AgendaScreen(leagueIds: [for (final l in game.leagues) l.id]),
@@ -155,8 +172,8 @@ class _GameScreenState extends ConsumerState<GameScreen> {
 /// haut, et son texte passe à la ligne sur un onglet comme "Saison" dès que
 /// la police système est agrandie). `FittedBox` réduit le texte au lieu de
 /// le couper, pour rester correct avec les réglages d'accessibilité.
-class _SeasonTabs extends StatelessWidget {
-  const _SeasonTabs({required this.labels, required this.selectedIndex, required this.onSelected});
+class SeasonTabs extends StatelessWidget {
+  const SeasonTabs({super.key, required this.labels, required this.selectedIndex, required this.onSelected});
 
   final List<String> labels;
   final int selectedIndex;

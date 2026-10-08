@@ -6,6 +6,7 @@ import "package:mobile/core/text_x.dart";
 import "package:mobile/features/bracket/bracket_provider.dart";
 import "package:mobile/features/competitions/competitions_data.dart";
 import "package:mobile/features/competitions/competitions_screen.dart";
+import "package:mobile/features/home/home_screen.dart" show favoriteCategoryProvider;
 import "package:news_api_client/news_api_client.dart";
 import "../competitions_test_helpers.dart";
 
@@ -57,6 +58,7 @@ void main() {
       ProviderScope(
         overrides: [
           catalogProvider.overrideWith((ref) async => _catalog(championsLive: championsLive, eteLive: eteLive)),
+          favoriteCategoryProvider.overrideWithValue(null),
           if (championsDetail != null) competitionDetailProvider("champions").overrideWith((ref) async => championsDetail),
           overrideFavoriteGamesWith(favorites),
           overrideFavoriteCompetitionsWith(favoriteCompetitions),

@@ -31,6 +31,8 @@ import "../follows/follows_screen.dart";
 import "../learn/learn_screen.dart";
 import "../bracket/bracket_model.dart" show scheduleLabel;
 import "grand_final_card.dart";
+import "home_modulation.dart";
+import "../formula1/f1_model.dart" show grandPrixName;
 import "../next_match/next_match_screen.dart";
 import "../profile/community_providers.dart";
 import "../profile/profile_screen.dart";
@@ -39,6 +41,9 @@ final homeProvider = FutureProvider.autoDispose<HomeResponseDto>((ref) async {
   final response = await ref.watch(apiClientProvider).getHomeApi().homeControllerGetHome();
   return response.data!;
 });
+
+/// Catégorie la plus suivie (J28, #M6) : l'Agenda et Compétitions s'ouvrent dessus. `null` tant que l'Accueil n'est pas chargé.
+final favoriteCategoryProvider = Provider.autoDispose<String?>((ref) => ref.watch(homeProvider).value?.favoriteCategory);
 
 /// Écran 17 (`docs/02`), refondu au J22 : résumé → matchs en direct (pastilles) → « Maintenant pour toi »
 /// (la seule grande carte) → aujourd'hui dans tes suivis (lignes compactes) → grands rendez-vous
@@ -172,7 +177,8 @@ class _HomeBody extends ConsumerWidget {
           ),
         _TodayFollowed(events: todayFollowed, scoresHidden: scoresHidden),
         if (yesterday.isNotEmpty) _YesterdayResults(events: yesterday, scoresHidden: scoresHidden),
-        if (home.majors.isNotEmpty) _MajorsCarousel(majors: home.majors.toList()),
+        if (home.suggestion != null) _Suggestion(suggestion: home.suggestion!),
+        if (home.majors.isNotEmpty) _MajorsCarousel(majors: orderMajorsFor(home.favoriteCategory, home.majors.toList())),
         const _LearnChip(),
         const SizedBox(height: 96),
       ]),
@@ -180,12 +186,15 @@ class _HomeBody extends ConsumerWidget {
   }
 }
 
+/// Une session de F1 terminée qui n'a pas de classement (les essais libres) n'apprend rien : on la laisse de côté (J28).
+bool _isEmptySession(EventSummaryDto e) => e.kind == "session" && e.status == "finished" && e.participants.isEmpty;
+
 /// Matchs des suivis dont le jour local est aujourd'hui, sauf [excluding] (déjà sur la grande carte).
 List<EventSummaryDto> _todayFollowed(HomeResponseDto home, {String? excluding}) {
   final today = dateOnly(DateTime.now());
   return home.todayFollowed.where((e) {
     final at = e.startsAt.toDateTime?.toLocal();
-    return e.id != excluding && at != null && dateOnly(at) == today;
+    return e.id != excluding && at != null && dateOnly(at) == today && !_isEmptySession(e);
   }).toList();
 }
 
@@ -204,20 +213,24 @@ List<EventSummaryDto> _yesterdayResults(HomeResponseDto home) {
   final yesterday = DateTime(n.year, n.month, n.day - 1);
   return home.todayFollowed.where((e) {
     final at = e.startsAt.toDateTime?.toLocal();
-    return e.status == "finished" && at != null && dateOnly(at) == yesterday;
+    return e.status == "finished" && at != null && dateOnly(at) == yesterday && !_isEmptySession(e);
   }).toList();
 }
 
 String _teams(EventSummaryDto e) => e.participants.map((p) => p.shortName ?? p.name).join(" – ");
+
+/// De quoi parle une ligne de résumé : les équipes d'un duel, ou « Grand Prix de Singapour (Course) » pour une session
+/// de F1, qui n'a pas d'équipes à nommer (J28).
+String _subject(EventSummaryDto e) => e.kind == "session" ? "${grandPrixName(e.competition.name)} (${e.name})" : _teams(e);
 
 /// Une ligne qui dit où on en est, par gabarit : « Ton match est en direct : FNC – G2. », « Ton
 /// prochain match : FNC – G2, demain à 9 h. », sinon le nombre de matchs en direct ou du jour.
 /// `null` quand il n'y a rien à dire (la ligne disparaît).
 String? homeSummary(HomeResponseDto home, DateTime now) {
   final mine = home.nowForYou;
-  if (mine != null && mine.status == "live") return "Ton match est en direct : ${_teams(mine)}.";
+  if (mine != null && mine.status == "live") return "Ton match est en direct : ${_subject(mine)}.";
   final start = mine?.startsAt.toDateTime?.toLocal();
-  if (mine != null && start != null && !start.isBefore(now)) return "Ton prochain match : ${_teams(mine)}, ${scheduleLabel(start, now)}.";
+  if (mine != null && start != null && !start.isBefore(now)) return "Ton prochain match : ${_subject(mine)}, ${scheduleLabel(start, now)}.";
   final live = home.liveNow.length;
   if (live > 0) return live == 1 ? "1 match en direct." : "$live matchs en direct.";
   final today = home.upcoming.where((e) => e.startsAt.toDateTime != null && dateOnly(e.startsAt.toDateTime!.toLocal()) == dateOnly(now)).length;
@@ -467,6 +480,71 @@ class _YesterdayResultsState extends State<_YesterdayResults> {
 }
 
 /// « Les grands rendez-vous » : un carrousel de mini-cartes de tournois importants, en cours ou proches.
+/// « À découvrir » : un grand rendez-vous d'une catégorie qu'on ne suit pas encore, avec la raison de la suggestion.
+/// Au plus une fois par semaine : la fermer, ou l'ouvrir, la fait disparaître 7 jours (J28, #M6).
+class _Suggestion extends ConsumerStatefulWidget {
+  const _Suggestion({required this.suggestion});
+
+  final HomeSuggestionDto suggestion;
+
+  @override
+  ConsumerState<_Suggestion> createState() => _SuggestionState();
+}
+
+class _SuggestionState extends ConsumerState<_Suggestion> {
+  late bool _visible = suggestionVisible(ref.read(authStoreProvider).suggestionDismissedAt, DateTime.now());
+
+  void _dismiss() {
+    ref.read(authStoreProvider).dismissSuggestion(DateTime.now());
+    setState(() => _visible = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (!_visible) return const SizedBox.shrink();
+    final s = widget.suggestion;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(AppSpacing.md, AppSpacing.lg, AppSpacing.md, 0),
+      child: OrnateFrame(
+        child: Material(
+          color: AppColors.surface,
+          borderRadius: BorderRadius.circular(AppRadii.card),
+          child: Padding(
+            padding: const EdgeInsets.all(AppSpacing.md),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    if (s.game != null) ...[GameLogo(slug: s.game!, size: 22), const SizedBox(width: AppSpacing.sm)],
+                    Text("À DÉCOUVRIR · ${s.categoryName.toUpperCase()}", style: Theme.of(context).textTheme.labelSmall?.copyWith(color: AppColors.brass)),
+                  ],
+                ),
+                const SizedBox(height: AppSpacing.sm),
+                Text(suggestionSentence(s, DateTime.now()), style: AppTextStyles.bodyStrong),
+                const SizedBox(height: AppSpacing.sm),
+                Row(
+                  children: [
+                    FilledButton(
+                      onPressed: () {
+                        _dismiss();
+                        openCompetitionPage(context, id: s.competitionId, name: s.competitionName);
+                      },
+                      child: const Text("Voir"),
+                    ),
+                    const SizedBox(width: AppSpacing.sm),
+                    TextButton(onPressed: _dismiss, child: const Text("Pas maintenant")),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
 class _MajorsCarousel extends StatelessWidget {
   const _MajorsCarousel({required this.majors});
 

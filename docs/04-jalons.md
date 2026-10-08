@@ -971,19 +971,28 @@ Profil remis à zéro (`pm clear`), API coupée (`adb reverse --remove`) ou rale
 
 ---
 
-## J28 — Sport (ajouté 2026-10-06)
+## J28 — Sport : Formule 1 (ajouté 2026-10-06, cadré le 2026-10-08) — **Fait (2026-10-08)**, sauf la vérification d'une course réelle
 
-**Origine** : `docs/06` #I4, #I3, #I5, #M6 ; sources étudiées dans `docs/01b`. Test du modèle générique sur des formes nouvelles.
+**Origine** : `docs/06` #I4, #M6 ; sources étudiées dans `docs/01b`. Test du modèle générique sur une forme nouvelle : une course à 20 participants classés, pas un duel. **Découpage décidé le 2026-10-08** : J28 = F1 seule ; le football (#I3, J28b) et le basket (#I5, J28c) sont des jalons séparés, leur source se tranche à leur cadrage (test réel de la saison en cours).
 
-**Périmètre** (par vagues, la F1 d'abord)
-- [ ] **#I4** F1 (Jolpica + OpenF1) : saison, week-ends de course, classements pilotes et constructeurs, calendrier des Grands Prix.
-- [ ] **#I3** Football (football-data.org + openfootball) : championnat et classement, coupes à élimination.
-- [ ] **#I5** Basket : saison régulière puis playoffs au meilleur des 7 ; source à choisir.
-- [ ] **#M6** Appli modulée selon l'utilisateur : accueil et filtres par défaut ordonnés selon ses suivis, ouverture sur sa catégorie favorite, suggestion occasionnelle d'une autre catégorie avec sa raison ; **barre d'onglets stable**.
+**Périmètre**
+- [x] Adaptateur **Jolpica-F1** seul (gratuit, Apache 2.0, sans clé, sans direct) : ligue → saison → Grand Prix → sessions (essais, qualifications, sprint, course) ; pilotes et constructeurs en `entity`. **OpenF1 écarté** (non commercial, direct payant).
+- [x] Classements pilotes et constructeurs **repris tels quels de Jolpica** (pas de barème recodé) : colonne `standing.points`, aucune table propre au sport (règle 3).
+- [x] Catégorie « Sport » (la catégorie d'ingestion est aujourd'hui figée sur « E-sport »).
+- [x] API : résultat d'une course sous forme de liste ordonnée (`RaceResultDto`), classements du championnat.
+- [x] Appli : carte de Grand Prix (sans « A contre B »), écran du Grand Prix (sessions, podium, arrivée), onglets Calendrier / Pilotes / Constructeurs, podium flouté en sans spoil, guide `assets/learn/formula-1.json` + glossaire, mention Jolpica dans Réglages → Sources.
+- [x] **#M6** appli modulée : ordre des sections de l'Accueil selon les catégories suivies, ouverture sur la catégorie favorite, suggestion d'une autre catégorie au plus une fois par semaine avec sa raison ; **barre d'onglets inchangée**.
 
-**À trancher au cadrage** : découpage en sous-jalons (une vague par sport ?) ; conditions commerciales de chaque source.
+**Ajouts décidés le 2026-10-08, faits dans ce jalon** : fiche d'un pilote ou d'une écurie (place au championnat, bouton Suivre ; suivre une écurie prévient du résultat de ses pilotes), circuit d'un Grand Prix (`competition.location`, générique), Accueil sans les essais libres terminés. Idées pour plus tard : `docs/06`, section « Formule 1 et sport » (#S1 à #S9).
 
-**Critères d'acceptation** : à rédiger au cadrage (au minimum : une saison de F1 complète affichée, classement à jour après une course).
+**Hors périmètre** : pronostics de course (le modèle suppose deux camps), pick'em, direct pendant la course, foot et basket.
+
+**Critères d'acceptation**
+- [x] La saison de F1 en cours est affichée complète : calendrier, classements pilotes et constructeurs.
+- [ ] Après une course, le classement est à jour dans l'heure (ingestion réelle ou course rejouée). **À vérifier avec le Grand Prix de Singapour, le 11 octobre 2026** : l'ingestion de la saison complète est vérifiée, pas encore l'arrivée en direct d'une course.
+- [x] Un Grand Prix suivi envoie « Ça commence » et le résultat, sans spoil quand c'est réglé (vérifié sur un téléphone Android, avec un Grand Prix de test).
+- [ ] Un néophyte comprend un week-end de F1 avec le guide (guide écrit et relu à l'écran ; **relecture par un néophyte externe à faire**).
+- [x] Aucune table propre au sport dans le modèle (colonnes génériques `standing.points` et `competition.location`).
 
 ---
 

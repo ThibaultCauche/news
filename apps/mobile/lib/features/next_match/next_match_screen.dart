@@ -32,6 +32,7 @@ import "../../widgets/stream_circles.dart";
 import "../discussion/share_sheet.dart";
 import "../forum/forum_entry.dart";
 import "../profile/prediction_panel.dart";
+import "../formula1/f1_widgets.dart" show SessionBody;
 
 final eventProvider = FutureProvider.autoDispose.family<EventDetailResponseDto, String>((ref, id) async {
   final response = await ref.watch(apiClientProvider).getEventsApi().eventsControllerGetById(id: id);
@@ -107,6 +108,9 @@ class _NextMatchScreenState extends ConsumerState<NextMatchScreen> {
       ),
       body: switch (event) {
         // Pendant un rechargement automatique, on garde l'ancien contenu (pas de spinner).
+        // Une session de F1 est un classement de pilotes, pas un duel (J28).
+        _ when event.hasValue && event.value!.kind == "session" =>
+          SessionBody(event: event.value!, scoresHidden: scoresHidden, onReveal: () => setState(() => _scoresHiddenOverride = false)),
         _ when event.hasValue =>
           _NextMatchBody(event: event.value!, scoresHidden: scoresHidden, onReveal: () => setState(() => _scoresHiddenOverride = false)),
         AsyncError() => ErrorState(message: "Impossible de charger ce match.", onRetry: () => ref.invalidate(eventProvider(widget.eventId))),

@@ -61,6 +61,26 @@ export class StreamDto {
   @ApiProperty({ nullable: true, type: Boolean }) live!: boolean | null;
 }
 
+// Une ligne du classement d'une session de F1 (J28) : arrivée de la course ou du sprint, ou qualifications (q1 à q3).
+export class ClassificationRowDto {
+  @ApiProperty() entityId!: string;
+  @ApiProperty() position!: number;
+  /** « R » (abandon), « D » (disqualifié)… ; le numéro de position sinon. */
+  @ApiProperty() positionText!: string;
+  @ApiProperty() name!: string;
+  @ApiProperty({ nullable: true, type: String }) code!: string | null;
+  @ApiProperty({ nullable: true, type: String }) number!: string | null;
+  @ApiProperty({ nullable: true, type: String }) constructorName!: string | null;
+  @ApiProperty({ nullable: true, type: Number }) grid!: number | null;
+  @ApiProperty({ nullable: true, type: Number }) laps!: number | null;
+  @ApiProperty({ nullable: true, type: String }) time!: string | null;
+  @ApiProperty({ nullable: true, type: String }) status!: string | null;
+  @ApiProperty({ nullable: true, type: Number }) points!: number | null;
+  @ApiProperty({ nullable: true, type: String }) q1!: string | null;
+  @ApiProperty({ nullable: true, type: String }) q2!: string | null;
+  @ApiProperty({ nullable: true, type: String }) q3!: string | null;
+}
+
 export class EventDetailResponseDto extends EventSummaryDto {
   @ApiProperty() sourceUpdatedAt!: string;
   @ApiProperty({ type: [StreamDto] }) streams!: StreamDto[];
@@ -68,6 +88,8 @@ export class EventDetailResponseDto extends EventSummaryDto {
   @ApiProperty({ nullable: true, type: String }) moreStreamersUrl!: string | null;
   @ApiProperty({ type: Object }) result!: unknown;
   @ApiProperty({ type: [MapResultDto] }) maps!: MapResultDto[];
+  /** Classement complet d'une session de F1 ; vide pour un duel et tant que la source n'a rien publié. */
+  @ApiProperty({ type: [ClassificationRowDto] }) classification!: ClassificationRowDto[];
   @ApiProperty({ type: EventContextDto }) context!: EventContextDto;
 }
 
@@ -112,10 +134,41 @@ export class EventsService {
       moreStreamersUrl: moreStreamersUrl(event.competition.game),
       result: event.result,
       maps: await this.buildMaps(event.result, event.participants.map((p) => p.entityId)),
+      classification: this.buildClassification(event.result, event.participants),
       context: await this.buildContext(event),
     };
     await this.cache.set(cacheKey, response, TTL_SECONDS);
     return response;
+  }
+
+  // Classement d'une session (J28) : les lignes sont dans `event.result.rows`, le pilote de chacune se retrouve par sa
+  // position, qui est le score de son `event_participant`.
+  private buildClassification(result: unknown, participants: { entityId: string; score: number | null; entity: { name: string } }[]): ClassificationRowDto[] {
+    type Row = { position: number; positionText?: string; code?: string | null; number?: string | null; constructor?: string | null; grid?: number | null; laps?: number | null; time?: string | null; status?: string | null; points?: number | null; q1?: string | null; q2?: string | null; q3?: string | null };
+    const data = result as { type?: string; rows?: Row[] } | null;
+    if (data?.type !== "classification") return [];
+    const byPosition = new Map(participants.map((p) => [p.score, p]));
+    return (data.rows ?? []).flatMap((r) => {
+      const driver = byPosition.get(r.position);
+      if (!driver) return [];
+      return [{
+        entityId: driver.entityId,
+        position: r.position,
+        positionText: r.positionText ?? String(r.position),
+        name: driver.entity.name,
+        code: r.code ?? null,
+        number: r.number ?? null,
+        constructorName: r.constructor ?? null,
+        grid: r.grid ?? null,
+        laps: r.laps ?? null,
+        time: r.time ?? null,
+        status: r.status ?? null,
+        points: r.points ?? null,
+        q1: r.q1 ?? null,
+        q2: r.q2 ?? null,
+        q3: r.q3 ?? null,
+      }];
+    });
   }
 
   private async buildStreams(raw: unknown): Promise<StreamDto[]> {

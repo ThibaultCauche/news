@@ -4,12 +4,14 @@ import { PrismaClient } from "@news/db";
 import {
   buildMorningDigestText,
   createLogger,
+  isPracticeSession,
   isQuietHour,
   localDayBounds,
   localHourFromOffsetMinutes,
   MORNING_DIGEST_FROM_HOUR,
   MORNING_DIGEST_TO_HOUR,
   MORNING_DIGEST_TYPE,
+  notificationSubject,
   shouldNotify,
   SubscriptionLevel,
 } from "@news/domain";
@@ -61,7 +63,7 @@ export class MorningDigestService {
       this.prisma.event.findMany({
         where: { status: "scheduled", startsAt: { gte: start, lt: end } },
         orderBy: { startsAt: "asc" },
-        include: { competition: { select: { categoryId: true } }, participants: { select: { entityId: true } } },
+        include: { competition: { select: { categoryId: true, name: true } }, participants: { select: { entityId: true } } },
       }),
     ]);
     if (subscriptions.length === 0) return;
@@ -75,8 +77,11 @@ export class MorningDigestService {
         chains.set(event.competitionId, chain);
       }
       const familyIds = chain.flatMap((c) => (c.familyId ? [c.familyId] : []));
+      // Les essais libres de F1 (J28) n'entrent pas dans le résumé, sauf pour qui a mis une cloche sur la session.
+      const practice = event.kind === "session" && isPracticeSession(event.name);
       const followed = subscriptions.some(
         (s) =>
+          (!practice || s.targetType === "event") &&
           shouldNotify({ notifyEnabled: true, subscriptionLevel: s.level as SubscriptionLevel, eventImportance: event.importance }) &&
           ((s.targetType === "event" && s.targetId === event.id) ||
             (s.targetType === "entity" && event.participants.some((p) => p.entityId === s.targetId)) ||
@@ -84,7 +89,7 @@ export class MorningDigestService {
             (s.targetType === "competition_family" && familyIds.includes(s.targetId)) ||
             (s.targetType === "category" && s.targetId === event.competition.categoryId)),
       );
-      if (followed) matches.push({ id: event.id, name: event.name, startsAt: event.startsAt });
+      if (followed) matches.push({ id: event.id, name: notificationSubject(event, event.competition.name), startsAt: event.startsAt });
     }
     if (matches.length === 0) return;
 

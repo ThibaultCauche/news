@@ -1,0 +1,128 @@
+{
+  "name": "Formule 1",
+  "articles": [
+    {
+      "id": "le-jeu",
+      "title": "Un week-end de F1 en 3 minutes",
+      "summary": "Essais, qualifications, course : comment ça se passe.",
+      "icon": "flag",
+      "visual": {"type": "flow", "items": [
+        {"icon": "build", "label": "Essais"},
+        {"icon": "timer", "label": "Qualifs"},
+        {"icon": "flag", "label": "Course"}
+      ]},
+      "essential": "Un Grand Prix se joue sur un week-end. Le vendredi et le samedi matin, les pilotes s'entraînent (les essais libres). Le samedi, les qualifications décident de la place de départ de chacun : c'est la [[grille]], et le plus rapide part en [[pole position]]. Le dimanche, la course : le premier à passer la ligne d'arrivée gagne, et les dix premiers marquent des points.",
+      "details": [
+        {
+          "title": "Qui s'affronte",
+          "visual": {"type": "chips", "items": [
+            {"icon": "person", "title": "20 pilotes", "sub": "Un classement personnel"},
+            {"icon": "roles", "title": "10 écuries", "sub": "Deux pilotes chacune"}
+          ]},
+          "body": "Il n'y a pas de duel : les vingt pilotes courent en même temps. Chaque écurie aligne deux pilotes, et ses points s'additionnent pour le championnat des constructeurs."
+        },
+        {
+          "title": "Vendredi, samedi, dimanche",
+          "visual": {"type": "stats", "items": [
+            {"big": "3", "sub": "Séances d'essais libres"},
+            {"big": "1", "sub": "Course le dimanche"}
+          ]},
+          "body": "Les essais libres ne donnent pas de points : les équipes règlent leur voiture. Ce qui compte pour le classement, c'est la course (et le [[sprint]] quand le week-end en a un)."
+        }
+      ],
+      "gradient": 0,
+      "quiz": [
+        {
+          "q": "Qu'est-ce que la pole position ?",
+          "choices": ["La première place sur la grille de départ", "Le tour le plus rapide de la course", "La victoire au championnat"],
+          "answer": 0,
+          "why": "Le pilote le plus rapide en qualifications part devant tout le monde."
+        }
+      ]
+    },
+    {
+      "id": "regarder-un-match",
+      "title": "Lire une arrivée de course",
+      "summary": "Position, écart, points : tout se lit en une ligne.",
+      "icon": "watch",
+      "visual": {"type": "stats", "items": [
+        {"big": "1:23:06", "sub": "Temps du vainqueur"},
+        {"big": "+2.974", "sub": "Écart du deuxième"}
+      ]},
+      "essential": "Dans l'arrivée, chaque pilote a sa position, son nom et son écart avec le vainqueur. Le premier affiche son temps total, les autres affichent ce qu'ils ont perdu, par exemple « +2.974 » secondes. Un pilote doublé d'un tour est noté « +1 tour ». « Ab. » veut dire abandon : sa voiture s'est arrêtée avant la fin.",
+      "details": [
+        {
+          "title": "Les points de la course",
+          "visual": {"type": "stats", "items": [
+            {"big": "25", "sub": "Pour le vainqueur"},
+            {"big": "10", "sub": "Pilotes qui marquent"}
+          ]},
+          "body": "Le vainqueur gagne 25 points, puis 18, 15, 12, 10, 8, 6, 4, 2 et 1 pour les suivants. Au-delà du dixième, pas de point."
+        },
+        {
+          "title": "La grille et la course",
+          "body": "La colonne « grille » indique d'où le pilote est parti. Gagner depuis la dixième place est plus impressionnant que depuis la pole position."
+        }
+      ],
+      "gradient": 3,
+      "quiz": [
+        {
+          "q": "Un pilote est noté « +1 tour ». Que s'est-il passé ?",
+          "choices": ["Il a été doublé d'un tour par le vainqueur", "Il a gagné un tour de bonus", "Il a changé de pneus"],
+          "answer": 0,
+          "why": "Le vainqueur a fait un tour de plus que lui : il est classé, mais loin derrière."
+        }
+      ]
+    },
+    {
+      "id": "les-points",
+      "title": "Le championnat",
+      "summary": "Deux titres, pilotes et constructeurs.",
+      "icon": "emoji",
+      "visual": {"type": "chips", "items": [
+        {"icon": "person", "title": "Pilotes", "sub": "Un titre individuel"},
+        {"icon": "roles", "title": "Constructeurs", "sub": "Les deux pilotes cumulés"}
+      ]},
+      "essential": "Toute la saison compte : chaque course apporte des points. À la fin, le pilote qui en a le plus est champion du monde, et l'écurie dont les deux pilotes en ont le plus remporte le championnat des constructeurs. Ce sont deux classements séparés, que l'appli montre dans deux onglets.",
+      "details": [
+        {
+          "title": "Combien de courses",
+          "visual": {"type": "stats", "items": [
+            {"big": "~24", "sub": "Grands Prix par saison"},
+            {"big": "mars → déc.", "sub": "Une saison dure 9 mois"}
+          ]},
+          "body": "Le calendrier fait le tour du monde. Un titre peut se jouer sur la dernière course, ou être décidé plusieurs semaines avant."
+        }
+      ],
+      "gradient": 5,
+      "quiz": [
+        {
+          "q": "Qui gagne le championnat des constructeurs ?",
+          "choices": ["L'écurie qui cumule le plus de points avec ses deux pilotes", "L'écurie du champion du monde", "L'écurie qui gagne le plus de qualifications"],
+          "answer": 0,
+          "why": "Les points des deux pilotes d'une écurie s'additionnent."
+        }
+      ]
+    },
+    {
+      "id": "le-sprint",
+      "title": "Les week-ends sprint",
+      "summary": "Une mini-course le samedi, avec ses propres points.",
+      "icon": "bolt",
+      "visual": {"type": "flow", "items": [
+        {"icon": "timer", "label": "Qualifs sprint"},
+        {"icon": "bolt", "label": "Sprint"},
+        {"icon": "timer", "label": "Qualifs"},
+        {"icon": "flag", "label": "Course"}
+      ]},
+      "essential": "Sur certains Grands Prix, le samedi accueille un [[sprint]] : une course courte, environ un tiers de la distance. Elle rapporte des points aux huit premiers, en plus de la grande course du dimanche. Le week-end change alors de programme : les qualifications du sprint ont lieu le vendredi, et celles de la course le samedi.",
+      "details": [
+        {
+          "title": "Pourquoi un sprint",
+          "body": "Pour offrir plus d'action sur un week-end : deux courses au lieu d'une. Dans l'appli, un week-end sprint affiche une session de plus."
+        }
+      ],
+      "gradient": 6
+    }
+  ]
+}

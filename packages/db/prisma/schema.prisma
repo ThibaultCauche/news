@@ -63,6 +63,8 @@ model Competition {
   // Vrai si le fournisseur expose un bracket pour ce tournoi (has_bracket PandaScore) :
   // sert à cibler le job "structure" (J5) sans appeler /brackets sur tout le catalogue.
   hasBracket Boolean       @default(false) @map("has_bracket")
+  // Lieu (J28) : circuit d'un Grand Prix, plus tard stade ou salle ; vide pour l'e-sport.
+  location   String?
   events     Event[]
   standings  Standing[]
   favorites  FavoriteCompetition[]
@@ -216,6 +218,8 @@ model Standing {
   losses        Int?
   livesLeft     Int?        @map("lives_left")
   qualified     Boolean?
+  // Points du championnat, fournis par la source (F1, J28) ; vide pour les classements recalculés.
+  points        Float?
 
   @@unique([competitionId, entityId])
   @@map("standing")

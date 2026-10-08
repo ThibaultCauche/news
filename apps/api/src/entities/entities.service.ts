@@ -51,6 +51,15 @@ export class EntityPoolDto {
   @ApiProperty({ type: [EventSummaryDto] }) events!: EventSummaryDto[];
 }
 
+// Place d'une entité dans un classement donné par la source (J28) : « 3e du championnat, 214 points ».
+export class EntityChampionshipDto {
+  @ApiProperty() competitionId!: string;
+  @ApiProperty() competitionName!: string;
+  @ApiProperty({ nullable: true, type: Number }) rank!: number | null;
+  @ApiProperty() points!: number;
+  @ApiProperty({ nullable: true, type: Number }) wins!: number | null;
+}
+
 export class EntityResponseDto {
   @ApiProperty() id!: string;
   @ApiProperty({ description: "team ou player" }) kind!: string;
@@ -66,6 +75,7 @@ export class EntityResponseDto {
   @ApiProperty({ nullable: true, type: EventSummaryDto }) nextEvent!: EventSummaryDto | null;
   @ApiProperty({ type: [EntityTournamentDto], description: "Joueurs : bilan par tournoi, le plus récent d'abord" }) tournaments!: EntityTournamentDto[];
   @ApiProperty({ type: [EntityRivalDto], description: "Joueurs : les trois adversaires les plus rencontrés" }) rivals!: EntityRivalDto[];
+  @ApiProperty({ type: [EntityChampionshipDto], description: "Pilotes et écuries : leur place dans le championnat en cours" }) championships!: EntityChampionshipDto[];
   @ApiProperty() sourceUpdatedAt!: string;
 }
 
@@ -106,6 +116,8 @@ export class EntitiesService {
         OR: [
           { kind: "team", participants: { some: { event: { competition: { game } } } } },
           { kind: "player", participants: { some: { event: { competition: { game, hasBracket: true } } } } },
+          // Pilotes (J28) : peu nombreux, listés dès qu'ils ont une session (les écuries n'en ont pas, seulement un classement).
+          { kind: "driver", participants: { some: { event: { competition: { game } } } } },
         ],
       },
       select: { id: true, name: true, shortName: true, imageUrl: true },
@@ -234,6 +246,11 @@ export class EntitiesService {
       }),
     ]);
 
+    const standings = await this.prisma.standing.findMany({
+      where: { entityId: entity.id, points: { not: null } },
+      orderBy: { competition: { startsAt: "desc" } },
+      select: { rank: true, points: true, wins: true, competition: { select: { id: true, name: true, game: true } } },
+    });
     const { tournaments, rivals } = entity.kind === "player" ? await this.playerHistory(entity.id) : { tournaments: [], rivals: [] };
     const response: EntityResponseDto = {
       id: entity.id,
@@ -241,7 +258,7 @@ export class EntitiesService {
       name: entity.name,
       shortName: entity.shortName,
       region: entity.region,
-      game: lastEvent?.competition.game ?? nextEvent?.competition.game ?? null,
+      game: lastEvent?.competition.game ?? nextEvent?.competition.game ?? standings[0]?.competition.game ?? null,
       organization: await this.organizationOf(entity.organizationId),
       wins,
       losses: history.length - wins,
@@ -250,6 +267,7 @@ export class EntitiesService {
       nextEvent: nextEvent ? toEventSummary(nextEvent) : null,
       tournaments,
       rivals,
+      championships: standings.map((s) => ({ competitionId: s.competition.id, competitionName: s.competition.name, rank: s.rank, points: s.points ?? 0, wins: s.wins })),
       sourceUpdatedAt: entity.updatedAt.toISOString(),
     };
     return response;

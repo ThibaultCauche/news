@@ -44,6 +44,21 @@ void main() {
     expect(homeSummary(_home(live: [live], mine: live), now), "Ton match est en direct : FNC – G2.");
   });
 
+  test("une session de F1 se nomme par son Grand Prix, pas par des équipes (J28)", () {
+    final session = EventSummaryDto((e) => e
+      ..id = "s"
+      ..kind = "session"
+      ..name = "Essais libres 1"
+      ..status = "scheduled"
+      ..startsAt = DateTime(2026, 10, 11, 9).toUtc().toIso8601String()
+      ..importance = 0
+      ..competition.replace(CompetitionRefDto((c) => c
+        ..id = "gp"
+        ..name = "Singapore Grand Prix"
+        ..game = "formula-1")));
+    expect(homeSummary(_home(upcoming: [session], mine: session), now), "Ton prochain match : Grand Prix de Singapour (Essais libres 1), demain à 9 h.");
+  });
+
   test("ton prochain match, avec le jour et l'heure", () {
     final next = _match("a", "scheduled", DateTime(2026, 10, 11, 9));
     expect(homeSummary(_home(upcoming: [next], mine: next), now), "Ton prochain match : FNC – G2, demain à 9 h.");

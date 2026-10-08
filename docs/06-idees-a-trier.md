@@ -191,3 +191,19 @@ Ajoutées après le J24. **Écartées** (voir `docs/idees-non-retenues/`) : mess
 | #B8 | **Invitation de groupe par lien** | Un lien plutôt qu'un code de 8 caractères ; utile avec le web du J17. | S-M |
 | #B9 | **Images dans les messages** | À **éviter pour l'instant** : même problème que les vocaux (modération, stores, stockage), la règle « texte seul » du J13 le refuse. | L |
 | #B10 | **Partage d'un classement ou d'une phase suisse en carte dédiée** | Aujourd'hui le partage d'une compétition ouvre sa page (onglets Classement et Phase suisse compris). Une carte dédiée afficherait le classement lui-même. | M |
+
+## Formule 1 et sport : idées pour plus tard (2026-10-08)
+
+Ajoutées à la fin du J28. Déjà faites dans ce jalon : suivre un pilote ou une écurie, circuit d'un Grand Prix, Accueil allégé des essais libres.
+
+| # | Idée | Détail | Effort |
+|---|---|---|---|
+| #S1 | **Pronostic du podium** | Deviner les trois premiers d'une course, des points par bonne place (économie du J25, `docs/07`). Écarté du J28 : `prediction` suppose deux camps. **Premier candidat** pour la suite. | L |
+| #S2 | **Palmarès et saisons passées** | Jolpica donne toutes les saisons depuis 1950 : champions du monde, classements passés, sans nouvelle source. Attention à la limite de 500 requêtes par heure. | M |
+| #S3 | **Football (J28b) et basket (J28c)** | La catégorie « Sport » et l'appli modulée sont prêtes ; la source de chacun se tranche à son cadrage (test réel de la saison en cours). | L |
+| #S4 | **Noms de Grands Prix et pays** | Une course inconnue reste en anglais (« Bahrain Grand Prix in Malaysia » dans les données 2026) ; le pays du circuit n'est pas affiché. Compléter la table, côté appli et domaine (`formula1.ts`). | S |
+| #S5 | **Logos d'écuries, photos de pilotes, couleurs** | Jolpica n'en donne aucun : initiales aujourd'hui. À étudier : droits des images, source (Wikidata ?). | M |
+| #S6 | **Direct pendant la course** | OpenF1 le fournit contre 9,90 €/mois et seulement en non commercial : écarté tant que l'appli reste gratuite. Aujourd'hui, le classement arrive quelques minutes après l'arrivée. | L |
+| #S7 | **Avertir du début de la course d'un pilote suivi** | La grille n'est connue qu'après la session : un pilote suivi n'est prévenu que du résultat. Une alerte « la course commence » demanderait de lier pilotes et saison (liste des engagés). | M |
+| #S8 | **Carte de partage du podium** | Le partage d'une session ouvre l'écran ; une carte dédiée afficherait le podium (voir #B10 pour les classements). | S-M |
+| #S9 | **Regrouper un week-end sur l'Accueil** | Une ligne par session, sous l'en-tête du Grand Prix : une seule carte « week-end » avec ses sessions serait plus compacte. | S-M |

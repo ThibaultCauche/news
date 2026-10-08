@@ -70,6 +70,10 @@ const GLOSSARY_TERMS: { term: string; text: string }[] = [
   { term: "winners", text: "Le tableau des gagnants : on y reste tant qu'on ne perd pas. Son vainqueur arrive en grande finale avec une « vie d'avance »." },
   { term: "losers", text: "Le tableau des perdants : on y tombe après une première défaite. Une seconde défaite élimine du tournoi." },
   { term: "top 8", text: "Les huit derniers joueurs en lice, joués sur scène et diffusés. C'est la partie d'un tournoi que presque tout le monde regarde." },
+  // Formule 1 (J28).
+  { term: "grille", text: "L'ordre de départ de la course, décidé par les qualifications : le plus rapide part en première ligne, devant les autres." },
+  { term: "pole position", text: "La première place de la grille de départ, pour le pilote le plus rapide des qualifications. Un avantage, mais pas une victoire acquise." },
+  { term: "sprint", text: "Une course courte, environ un tiers de la distance normale, organisée le samedi de certains week-ends. Elle rapporte des points aux huit premiers." },
   { term: "poule", text: "Au début d'un gros tournoi, les joueurs sont répartis en petits tableaux (poules) pour que chacun joue plusieurs sets. Les meilleurs passent à l'étape suivante." },
 ];
 

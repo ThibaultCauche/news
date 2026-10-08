@@ -265,8 +265,8 @@ describe("API v1 (e2e)", () => {
 
     const res = await request(app.getHttpServer()).get(`/v1/events/${mapsEvent.id}`).expect(200);
     expect(res.body.maps).toEqual([
-      { position: 1, winnerEntityId: teamAId, durationSeconds: 2201 },
-      { position: 2, winnerEntityId: null, durationSeconds: null },
+      { position: 1, characters: [], winnerEntityId: teamAId, durationSeconds: 2201 },
+      { position: 2, characters: [], winnerEntityId: null, durationSeconds: null },
     ]);
 
     await prisma.eventParticipant.deleteMany({ where: { eventId: mapsEvent.id } });
