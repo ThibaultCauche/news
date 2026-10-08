@@ -8,8 +8,6 @@ export class AppVersionDto {
   /** Version minimale : en dessous, l'appli bloque jusqu'à la mise à jour. */
   @ApiProperty() minSupported!: string;
   @ApiProperty({ nullable: true, type: String }) notes!: string | null;
-  /** Message de service (panne, maintenance) affiché en bandeau à tous, quelle que soit la version. */
-  @ApiProperty({ nullable: true, type: String }) message!: string | null;
 }
 
 // GET /v1/app/version — vérification de version au lancement (J21). Lu dans `.env`, donc un
@@ -25,7 +23,6 @@ export class AppVersionController {
       latest: this.config.get<string>("APP_LATEST_VERSION") || "1.0.0",
       minSupported: this.config.get<string>("APP_MIN_SUPPORTED_VERSION") || "1.0.0",
       notes: this.config.get<string>("APP_UPDATE_NOTES") || null,
-      message: this.config.get<string>("APP_MESSAGE") || null,
     };
   }
 }

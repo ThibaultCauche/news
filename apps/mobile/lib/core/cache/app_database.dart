@@ -28,8 +28,5 @@ class AppDatabase extends _$AppDatabase {
 }
 
 QueryExecutor _openConnection() {
-  return driftDatabase(
-    name: "news_cache",
-    web: DriftWebOptions(sqlite3Wasm: Uri.parse("sqlite3.wasm"), driftWorker: Uri.parse("drift_worker.js")),
-  );
+  return driftDatabase(name: "news_cache");
 }

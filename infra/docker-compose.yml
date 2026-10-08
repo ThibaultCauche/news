@@ -30,10 +30,6 @@ services:
       PORT: 3000
       # Un relais (Tailscale Funnel) devant l'API : la limite de requêtes compte chaque client séparément (J19).
       TRUST_PROXY: 1
-      # Version web (J17) : le build Flutter web déposé dans infra/web (artefact `web` de la CI, docs/05).
-      WEB_DIR: /app/web
-    volumes:
-      - ./web:/app/web:ro
     ports:
       - "127.0.0.1:3000:3000"
     depends_on:

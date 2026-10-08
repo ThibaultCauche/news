@@ -1,6 +1,4 @@
-import "package:flutter/cupertino.dart" show CupertinoPageTransitionsBuilder;
 import "package:flutter/material.dart";
-import "../widgets/responsive.dart";
 import "tokens.dart";
 
 /// Un style Inter construit depuis `AppTypography` (taille, tracking en em
@@ -125,17 +123,7 @@ ThemeData buildAppTheme() {
         textStyle: const TextStyle(fontFamily: "Inter", fontWeight: FontWeight.w600),
       ),
     ),
-    pageTransitionsTheme: const PageTransitionsTheme(
-      builders: {
-        TargetPlatform.android: WidePageTransitions(ZoomPageTransitionsBuilder()),
-        TargetPlatform.iOS: WidePageTransitions(CupertinoPageTransitionsBuilder()),
-        TargetPlatform.windows: WidePageTransitions(ZoomPageTransitionsBuilder()),
-        TargetPlatform.macOS: WidePageTransitions(CupertinoPageTransitionsBuilder()),
-        TargetPlatform.linux: WidePageTransitions(ZoomPageTransitionsBuilder()),
-      },
-    ),
     bottomSheetTheme: const BottomSheetThemeData(
-      constraints: BoxConstraints(maxWidth: kPageMaxWidth),
       backgroundColor: AppColors.surface,
       surfaceTintColor: Colors.transparent,
       showDragHandle: true,

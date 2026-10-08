@@ -224,3 +224,26 @@ Ajoutées à la fin du J29. Déjà faits : analyseur de la présidentielle (test
 | #P8 | **Carte de France des résultats** | Carte des départements colorés par candidat en tête, pour la soirée nationale. | M |
 | #P9 | **Titres de loi en deux niveaux** | Titre court lisible, titre officiel dépliable (titres très longs). | S |
 | #P10 | **Rejouer une soirée électorale** | Faux serveur qui sert les fichiers de 2022 minute par minute, pour tester l'appli avant avril 2027. | M |
+
+## Refonte du web comme réseau social : pistes pour le brainstorm (2026-10-08)
+
+Contexte : un premier essai de J17 (web Flutter, rail de navigation, Accueil en deux colonnes) a montré que **l'interface pensée pour un téléphone ne se transpose pas à l'ordinateur**. Cet essai a été **retiré** (revert) ; le web sera repensé dans un jalon dédié, après un brainstorm. L'objectif du produit est de devenir **un réseau social** autour des événements : références X, Reddit, Twitch, Discord, avec la densité de Liquipedia pour les données. Le web n'est pas un téléphone élargi : on y reste longtemps, on lit, on compare, on répond.
+
+| # | Idée | Détail |
+|---|---|---|
+| #W1 | **Trois colonnes (X)** | Gauche : navigation et raccourcis permanents vers les suivis (équipes, compétitions, groupes, comme des sous-reddits ou des serveurs Discord). Centre : le fil. Droite : contexte vivant (matchs en direct, « à suivre », classement des groupes, pick'em ouverts). |
+| #W2 | **Le fil comme accueil** | Un fil unique de cartes de types différents (résultats, débuts de match, discussions qui chauffent, sondages, pronostics d'amis, badges, cartes partagées du J24), trié par pertinence pour les suivis. Onglets « Pour toi », « Mes suivis », « Amis ». Le « sans spoil » en atout : scores floutés, révélés au clic. |
+| #W3 | **Pages-communautés (Reddit)** | Chaque jeu, compétition, équipe ou parti = une page avec discussions, direct, calendrier, classement et bouton « Rejoindre » (= le suivi actuel). Les fils `entity`/`competition`/`game` existent déjà ; il manque la mise en page, le vote (pouces haut/bas) et les tris « Hot / Nouveau / Top ». |
+| #W4 | **Le match comme salon (Twitch)** | Match et tchat côte à côte, contexte et pronostic sur le côté, fil de discussion dessous. Arbres de tournoi en pleine largeur avec les discussions de la phase à droite. |
+| #W5 | **Profils publics et abonnements** | Profils visibles hors groupe commun (badges, pronostics réglés, séries, équipes suivies, bilan de saison) ; suivre un pseudo ; fil « Amis » avec leurs pick'em et prises de position ; classement mondial en plus des groupes. |
+| #W6 | **Réactions et citations sur les cartes** | Réagir ou citer une carte de match, pas seulement un message. |
+| #W7 | **Messages et groupes en volets** | Liste à gauche, conversation à droite (Discord, Messenger). |
+| #W8 | **Contexte « en 3 secondes » permanent** | Glossaire et enjeu du match dans un panneau toujours visible à droite, au lieu de feuilles qui s'ouvrent : sert le néophyte, la cible du produit. |
+| #W9 | **Recherche globale au clavier** | `/` ou `Ctrl+K` ; résultats mêlant équipes, jeux, compétitions, personnes et discussions. |
+| #W10 | **URL par page (routage web)** | Aujourd'hui l'appli n'a pas d'URL par écran : sans elles, ni liens partageables (#J2), ni retour arrière du navigateur, ni référencement. À faire **en premier** dans le jalon web. |
+| #W11 | **Multi-direct** | Plusieurs matchs côte à côte les gros soirs (Worlds, Champions). |
+| #W12 | **Raccourcis clavier** | Navigation, recherche, changement de fil. |
+
+**À éviter** : copier X tel quel (trop de bruit pour un néophyte) ; un ordre de fil opaque (il doit rester explicable, « parce que tu suis G2 », cohérent avec la neutralité) ; ouvrir un fil public sans préparer la modération et les exigences légales (#L6).
+
+**Décisions structurantes pour ce brainstorm** : (1) le fil est-il l'écran d'accueil ? (2) quelle part du modèle « communauté » ? (3) Flutter web convient-il à un site de lecture dense et référencé, ou faut-il le site Next.js prévu pour le SEO (voir « Ensuite » du J17) ? Le poids du chargement initial et le référencement de Flutter web comptent beaucoup pour un réseau social.

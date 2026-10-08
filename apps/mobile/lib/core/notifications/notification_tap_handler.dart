@@ -1,6 +1,5 @@
 import "package:firebase_core/firebase_core.dart";
 import "package:firebase_messaging/firebase_messaging.dart";
-import "package:flutter/foundation.dart" show kIsWeb;
 import "package:flutter/material.dart";
 import "../../features/bracket/pickem.dart";
 import "../../features/forum/thread_screen.dart";
@@ -20,7 +19,6 @@ typedef NotificationTarget = Map<String, dynamic>;
 /// à traiter après le premier affichage, le `Navigator` n'existe pas encore
 /// à cet instant. Échoue sans bruit tant que Firebase n'est pas configuré.
 Future<NotificationTarget?> setupNotificationTapHandling() async {
-  if (kIsWeb) return null;
   try {
     await Firebase.initializeApp();
   } catch (_) {

@@ -19,15 +19,9 @@ int compareVersions(String a, String b) {
 enum UpdateLevel { none, suggested, required }
 
 class AppUpdate {
-  const AppUpdate(this.level, {this.notes, this.message, this.version});
+  const AppUpdate(this.level, {this.notes});
   final UpdateLevel level;
   final String? notes;
-
-  /// Message de service (J17) : bandeau fermable, quelle que soit la version.
-  final String? message;
-
-  /// Version installée, pour la feuille « Quoi de neuf » (une seule fois par version).
-  final String? version;
 }
 
 /// La version installée ; remplacée dans les tests (le plugin n'existe pas sous `flutter test`).
@@ -40,10 +34,8 @@ final appUpdateProvider = FutureProvider<AppUpdate>((ref) async {
     final installed = await ref.watch(installedVersionProvider.future);
     final res = await ref.watch(apiClientProvider).getAppVersionApi().appVersionControllerGet();
     final v = res.data!;
-    AppUpdate at(UpdateLevel level) => AppUpdate(level, notes: v.notes, message: v.message, version: installed);
-    if (compareVersions(installed, v.minSupported) < 0) return at(UpdateLevel.required);
-    if (compareVersions(installed, v.latest) < 0) return at(UpdateLevel.suggested);
-    return at(UpdateLevel.none);
+    if (compareVersions(installed, v.minSupported) < 0) return AppUpdate(UpdateLevel.required, notes: v.notes);
+    if (compareVersions(installed, v.latest) < 0) return AppUpdate(UpdateLevel.suggested, notes: v.notes);
   } catch (_) {}
   return const AppUpdate(UpdateLevel.none);
 });

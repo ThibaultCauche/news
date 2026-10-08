@@ -1,6 +1,3 @@
-import "core/firebase_web_options.dart";
-import "widgets/responsive.dart";
-import "widgets/web_column.dart";
 import "package:dio/dio.dart" show DioException;
 import "package:firebase_auth/firebase_auth.dart";
 import "package:firebase_core/firebase_core.dart";
@@ -49,7 +46,7 @@ Future<void> _start() async {
   final prefs = await SharedPreferences.getInstance();
   final authStore = AuthStore(prefs);
   try {
-    await Firebase.initializeApp(options: firebaseOptionsForPlatform);
+    await Firebase.initializeApp();
     // E-mails de vérification et de réinitialisation en français.
     await FirebaseAuth.instance.setLanguageCode("fr");
   } catch (_) {
@@ -85,11 +82,10 @@ class NewsRoot extends StatelessWidget {
       // au-delà de 1,2x (docs/02 — passe fidélité visuelle, étape 2).
       builder: (context, child) {
         final mediaQuery = MediaQuery.of(context);
-        final scaled = MediaQuery(
+        return MediaQuery(
           data: mediaQuery.copyWith(textScaler: mediaQuery.textScaler.clamp(minScaleFactor: 1, maxScaleFactor: 1.2)),
           child: child!,
         );
-        return WebColumn(child: scaled);
       },
       home: const _AppRoot(),
     );
@@ -115,8 +111,6 @@ class _AppRootState extends ConsumerState<_AppRoot> {
 
   @override
   Widget build(BuildContext context) {
-    if (_onboardingDone) return const NewsApp();
-    // Mode ordinateur : le premier lancement reste une colonne centrée plutôt que de s'étirer.
-    return Center(child: ConstrainedBox(constraints: const BoxConstraints(maxWidth: kPageMaxWidth), child: OnboardingFlow(onDone: _finishOnboarding)));
+    return _onboardingDone ? const NewsApp() : OnboardingFlow(onDone: _finishOnboarding);
   }
 }

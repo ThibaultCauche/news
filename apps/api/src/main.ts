@@ -20,9 +20,6 @@ async function bootstrap() {
   // pas besoin) ; n'active une origine que pour vérifier l'appli Flutter web
   // en local, jamais en prod (`CORS_DEV_ORIGIN` n'est jamais défini ailleurs).
   if (process.env.CORS_DEV_ORIGIN) app.enableCors();
-  // Version web (J17) : le build `flutter build web` est servi par l'API elle-même (même origine, donc pas de CORS).
-  // Hors `/v1` et `/health` ; ponytail: pas de repli sur index.html, l'appli n'utilise pas d'URL de page.
-  if (process.env.WEB_DIR) app.use(express.static(process.env.WEB_DIR));
   app.useGlobalPipes(new ValidationPipe({ transform: true, whitelist: true }));
 
   const document = SwaggerModule.createDocument(

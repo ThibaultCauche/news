@@ -111,20 +111,3 @@ jobs:
 
       - run: flutter test
         working-directory: apps/mobile
-
-      # Version web (J17), servie par l'API (`WEB_DIR`, voir docs/05) : à télécharger depuis l'artefact `web`
-      # et à déposer dans le dossier `web/` du NAS. Valeurs Firebase du web : variables du dépôt (Settings > Variables).
-      - run: >
-          flutter build web --release --no-wasm-dry-run --base-href /news/
-          --dart-define=API_BASE_URL=/news
-          --dart-define=FIREBASE_WEB_API_KEY=${{ vars.FIREBASE_WEB_API_KEY }}
-          --dart-define=FIREBASE_WEB_APP_ID=${{ vars.FIREBASE_WEB_APP_ID }}
-          --dart-define=FIREBASE_WEB_SENDER_ID=${{ vars.FIREBASE_WEB_SENDER_ID }}
-          --dart-define=FIREBASE_WEB_PROJECT_ID=${{ vars.FIREBASE_WEB_PROJECT_ID }}
-          --dart-define=FIREBASE_WEB_AUTH_DOMAIN=${{ vars.FIREBASE_WEB_AUTH_DOMAIN }}
-        working-directory: apps/mobile
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: web
-          path: apps/mobile/build/web
